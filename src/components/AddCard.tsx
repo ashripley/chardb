@@ -8,7 +8,7 @@ import { useState } from "react"
 interface Props {
   name: string
   type: string
-  collection: string
+  set: string
   year: number
 }
 
