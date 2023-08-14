@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import flame from "../assets/flame.png";
+import React from "react"
+import styled from "styled-components"
+import flame from "../assets/flame.png"
 
 const Container = styled.div`
   max-width: 100%;
@@ -10,21 +10,21 @@ const Container = styled.div`
   height: 20vh;
   justify-content: center;
   align-items: center;
-`;
+`
 
 const StyledHeader = styled.div`
   display: flex;
   max-width: 100%;
   width: 100%;
-`;
+`
 
 const MenuIcon = styled.div`
   display: flex;
   max-width: 100%;
-  width: 10%;
+  width: 8%;
   justify-content: center;
   align-items: inherit;
-`;
+`
 
 const HeaderText = styled.div`
   display: flex;
@@ -32,7 +32,7 @@ const HeaderText = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 90%;
-`;
+`
 
 export const Header = () => {
   return (
@@ -43,7 +43,10 @@ export const Header = () => {
             <img src={flame} alt="menu" style={{ width: 50, height: 50 }} />
           </MenuIcon>
           <HeaderText>
-            <span className="char" style={{ color: "darkorange" }}>
+            <span
+              className="char"
+              style={{ color: "darkorange", fontWeight: 800 }}
+            >
               char
             </span>
             <span className="db" style={{ color: "dimgray" }}>
@@ -53,5 +56,5 @@ export const Header = () => {
         </StyledHeader>
       </Container>
     </>
-  );
-};
+  )
+}
