@@ -12,6 +12,9 @@ import SearchIcon from "@mui/icons-material/Search"
 import ClearIcon from "@mui/icons-material/Clear"
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff"
 import { FilterCard } from "./FilterCard"
+import { FetchQuery } from "./TestQuery"
+import { Card } from "./Card"
+import RefreshIcon from "@mui/icons-material/Refresh"
 
 const Wrapper = styled.div`
   max-width: 100%;
@@ -71,43 +74,67 @@ export const Body = () => {
   const [error, setError] = useState(false)
   const [showAddCard, setShowAddCard] = useState(false)
   const [showFilterCard, setShowFilterCard] = useState(false)
+  const [showCard, setShowCard] = useState(false)
+  const [refresh, setRefresh] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [icon, setIcon] = useState<string>("search")
+  const [snapshot, setSnapshot] = useState<Record<string, any>>([])
 
+  //test
+  const [fetch, setFetch] = useState(false)
+
+  // query
   const QueryCard = async () => {
-    const cardsRef = collection(firestore, "cards")
-    const q = query(cardsRef, where("name", "==", name))
+    console.log("### query")
+    setIsLoading(true)
 
-    const querySnapshot = await getDocs(q)
-    console.log("### querySnapshot: ", querySnapshot)
+    const ref = await collection(firestore, "cards")
 
-    if (querySnapshot.empty) return setError(true)
+    const res = await query(ref, where("name", "==", name))
 
-    querySnapshot.forEach((doc) => {
-      // console.log("### doc data: ", doc.data())
-      return doc.data()
-    })
-    setError(false)
-  }
+    const snapshot = await getDocs(res)
 
-  const collectionQuery = useFirestoreQueryData(
-    ["cards"],
-    collection(firestore, "cards"),
-    {
-      subscribe: true,
+    // if empty, set error and early exit
+    if (snapshot.empty) {
+      setError(true)
+      setIcon("error")
+      return
     }
-  )
 
-  if (collectionQuery.isLoading) {
-    return <div>Loading...</div>
+    let snapshots: Record<string, any> = []
+
+    await snapshot.forEach((doc) => {
+      snapshots.push(doc.data())
+    })
+
+    setSnapshot(snapshots)
+
+    setShowCard(true)
+    setIsLoading(false)
+    setIcon("refresh")
+
+    return snapshots
   }
 
   const handleError = () => {
     setName("")
     setError(false)
+    setIcon("search")
   }
+
+  const handleRefresh = () => {
+    setName("")
+    setIcon("search")
+    setShowCard(false)
+    setSnapshot([])
+  }
+
+  const handleElse = () => {}
 
   return (
     <>
       <Wrapper>
+        <Button onClick={() => setFetch(!fetch)}>Fetch</Button>
         <Fields>
           <NameField>
             <TextFieldWrapper>
@@ -117,7 +144,13 @@ export const Body = () => {
                 label={`${error ? "No Pokémon Found" : "Pokémon Name"}`}
                 variant="outlined"
                 style={{ width: "100%" }}
-                color="warning"
+                color={
+                  icon === "error"
+                    ? "error"
+                    : icon === "refresh"
+                    ? "secondary"
+                    : "warning"
+                }
                 onChange={(e) => setName(e.target.value)}
                 error={error}
               />
@@ -127,11 +160,33 @@ export const Body = () => {
                 <Button
                   variant="outlined"
                   size="small"
-                  color={`${error ? "error" : "warning"}`}
+                  color={`${
+                    icon === "error"
+                      ? "error"
+                      : icon === "refresh"
+                      ? "secondary"
+                      : "warning"
+                  }`}
                   style={{ width: "15%" }}
-                  onClick={() => (error ? handleError() : QueryCard())}
+                  onClick={async () => {
+                    if (icon === "search") {
+                      QueryCard()
+                    } else if (icon === "error") {
+                      handleError()
+                    } else if (icon === "refresh") {
+                      handleRefresh()
+                    } else {
+                      handleElse()
+                    }
+                  }}
                 >
-                  {!error ? <SearchIcon /> : <ClearIcon />}
+                  {icon === "error" ? (
+                    <ClearIcon />
+                  ) : icon === "refresh" ? (
+                    <RefreshIcon />
+                  ) : (
+                    <SearchIcon />
+                  )}
                 </Button>
                 <Button
                   variant="outlined"
@@ -154,6 +209,7 @@ export const Body = () => {
             </Buttons>
           </NameField>
         </Fields>
+        {isLoading && <div>LOADING</div>}
       </Wrapper>
       <Container>
         {showAddCard && (
@@ -167,9 +223,8 @@ export const Body = () => {
           // year={year}
           />
         )}
-        {collectionQuery.data?.map((document: any) => {
-          return <div key={document.id}>{document.name}</div>
-        })}
+        {fetch && <FetchQuery />}
+        {showCard && <Card query={snapshot} />}
       </Container>
     </>
   )

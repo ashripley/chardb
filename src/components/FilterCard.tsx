@@ -57,18 +57,6 @@ export const FilterCard = (props: Props) => {
   const [year, setYear] = useState<Record<string, any>>({})
 
   const fields = [name, type, set, year]
-  const fieldLabels = ["name", "type", "set", "year"]
-  // const setField = (field: string, event: string) => {
-  //   return field === name
-  //     ? setName(event)
-  //     : field === type
-  //     ? setType(event)
-  //     : field === set
-  //     ? setSet(event)
-  //     : field === year
-  //     ? setYear(year)
-  //     : null
-  // }
 
   const QueryCard = async () => {
     const cardsRef = await collection(firestore, "cards")
@@ -77,81 +65,28 @@ export const FilterCard = (props: Props) => {
       field?.value?.length ? field : null
     )
 
-    // field.key === "name"
-    //   ? where(field.key, "==", field.value)
-    //   : where("", "==", ""),
-
-    const fetchedFields = fieldArray.map(async (field) => {
-      // let newArray = []
-
-      const fieldQueries = await query(
-        cardsRef,
-        and(...fieldArray.map((field) => where(field.key, "==", field.value)))
+    const fetchedFields = await query(
+      cardsRef,
+      and(
+        ...fieldArray.map((field) =>
+          where(
+            field.key,
+            "==",
+            field.key === "year" ? Number(field.value) : field.value
+          )
+        )
       )
+    )
 
-      // const fieldQuery = await query(
-      //   cardsRef,
-      //   and(
-      //     field.key === "name"
-      //       ? where(field.key, "==", field.value)
-      //       : where("", "==", ""),
-      //     field.key === "type"
-      //       ? where(field.key, "==", field.value)
-      //       : where("", "==", ""),
-      //     field.key === "set"
-      //       ? where(field.key, "==", field.value)
-      //       : where("", "==", ""),
-      //     field.key === "year"
-      //       ? where(field.key, "==", field.value)
-      //       : where("", "==", "")
-      //   )
-      // )
+    const fieldQuerySnapshot = await getDocs(fetchedFields)
+    // if (cardsRef.fieldQuerySnapshot) {
+    //   return <div>Loading...</div>
+    // }
 
-      const fieldQuerySnapshot = await getDocs(fieldQueries)
-
-      fieldQuerySnapshot.forEach((doc) => {
-        console.log("### doc data: ", doc.data())
-        return doc.data()
-      })
-
-      // newArray.push(fieldQuery)
-
-      // console.log("### newArray: ", newArray)
-
-      // const querySnapshot = await newArray.map(
-      //   async (snapshot) => await getDocs(snapshot)
-      // )
-
-      // querySnapshot.forEach(async (doc) => {
-      //   console.log("### doc data: ", (await doc).docs)
-      //   return (await doc).docs
-      // })
-      // return newArray.map(a => a)
+    fieldQuerySnapshot.forEach((doc) => {
+      console.log("### doc data: ", doc.data())
+      return doc.data()
     })
-    return fetchedFields
-
-    // querySnapshot.forEach((doc) => {
-    //   console.log("### doc data: ", doc.data())
-    //   return doc.data()
-    // })
-
-    // const filterQuery = await query(
-    //   cardsRef,
-    //   or(
-    //     where("name", "==", name),
-    //     where("type", "==", type),
-    //     where("set", "==", set),
-    //     where("year", "==", year)
-    //   )
-    // )
-
-    // console.log("### filterQuery: ", filterQuery)
-
-    // const querySnapshot = await getDocs(filterQuery)
-
-    // if (querySnapshot.empty) return setError(true)
-
-    // setError(false)
   }
 
   return (
@@ -159,20 +94,6 @@ export const FilterCard = (props: Props) => {
       <Wrapper>
         <Fields>
           <NameField>
-            {/* {fields.map((field, index) => {
-              return (
-                <TextField
-                  key={index}
-                  id="standard"
-                  value={field}
-                  label={field}
-                  variant="outlined"
-                  style={{ width: "20%", margin: 5 }}
-                  color="warning"
-                  onChange={(e) => setField(field, e.target.value)}
-                />
-              )
-            })} */}
             <TextField
               id="standard"
               value={name.value}
@@ -224,6 +145,8 @@ export const FilterCard = (props: Props) => {
               variant="outlined"
               style={{ width: "20%", margin: 5 }}
               color="warning"
+              type="number"
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
               onChange={(e) => setYear({ key: "year", value: e.target.value })}
             />
           </NameField>
