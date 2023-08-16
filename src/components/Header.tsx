@@ -7,9 +7,10 @@ const Container = styled.div`
   max-height: 100%;
   display: flex;
   background: blanchedalmond;
-  height: 20vh;
+  height: 10%;
   justify-content: center;
   align-items: center;
+  padding: 30px;
 `
 
 const StyledHeader = styled.div`
