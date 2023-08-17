@@ -19,6 +19,8 @@ const Title = styled.h1`
   max-width: 100%;
   width: 100%;
   height: 50%;
+  font-family: Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro,
+    sans-serif;
 `
 
 const SubTitle = styled.h3`
@@ -28,6 +30,9 @@ const SubTitle = styled.h3`
   display: flex;
   justify-content: center;
   height: 10%;
+  font-family: Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro,
+    sans-serif;
+  font-weight: 100;
 `
 
 const ButtonWrapper = styled.div`
@@ -50,13 +55,21 @@ export const Body = () => {
           </Title>
           <SubTitle>
             <span style={{ color: "white" }}>
-              a place to store the nostalgia
+              a place to store your nostalgia
             </span>
           </SubTitle>
         </div>
         <ButtonWrapper>
           <Button
-            style={{ borderRadius: 15, backgroundColor: "darkorange" }}
+            style={{
+              borderRadius: 15,
+              backgroundColor: "darkorange",
+              fontFamily:
+                'Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro, sans-serif',
+              fontSize: 18,
+              width: "10rem",
+              padding: 15,
+            }}
             variant="contained"
           >
             Search

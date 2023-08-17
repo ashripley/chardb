@@ -45,6 +45,8 @@ const HeaderText = styled.div`
   width: 90%;
   display: flex;
   margin: 0;
+  font-family: Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro,
+    sans-serif;
 `
 
 export const Header = () => {
