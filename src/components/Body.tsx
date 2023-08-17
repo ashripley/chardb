@@ -1,5 +1,5 @@
 import { FilterAlt } from "@mui/icons-material"
-import { Box, Button, Paper, TextField } from "@mui/material"
+import { Button, Paper, TextField } from "@mui/material"
 import { useState } from "react"
 import styled from "styled-components"
 import { AddCard } from "./AddCard"
@@ -9,10 +9,10 @@ import SearchIcon from "@mui/icons-material/Search"
 import ClearIcon from "@mui/icons-material/Clear"
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff"
 import { FilterCard } from "./FilterCard"
-import { FetchQuery } from "./TestQuery"
 import { PokemonCard } from "./PokemonCard"
 import RefreshIcon from "@mui/icons-material/Refresh"
 import { QueryName } from "../api/name"
+import wallpaper from "../assets/wallpaper.jpg"
 
 const Root = styled.div`
   display: flex;
