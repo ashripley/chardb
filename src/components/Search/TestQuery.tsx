@@ -4,7 +4,7 @@ import {
 } from "@react-query-firebase/firestore"
 import { collection } from "firebase/firestore"
 import React from "react"
-import { firestore } from "../services/firebase"
+import { firestore } from "../../services/firebase"
 
 export const FetchQuery = () => {
   const collectionQuery = useFirestoreQuery(

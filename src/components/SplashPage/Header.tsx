@@ -1,8 +1,12 @@
-import React from "react"
+import { useState } from "react"
 import styled from "styled-components"
 import flame from "../../assets/flame.png"
 import { AppBar, Box, Card, IconButton, Toolbar } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
+
+interface Props {
+  isOpen: (isClicked: boolean) => void
+}
 
 const Container = styled.div`
   max-width: 100%;
@@ -45,11 +49,21 @@ const HeaderText = styled.div`
   width: 90%;
   display: flex;
   margin: 0;
-  font-family: Avenir, Montserrat, Corbel, "URW Gothic", source-sans-pro,
-    sans-serif;
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+    source-sans-pro, sans-serif;
 `
 
-export const Header = () => {
+export const Header = ({ isOpen }: Props) => {
+  const [clicked, setClicked] = useState(false)
+
+  const onClick = (isClicked: boolean) => {
+    console.log("### onclick")
+
+    setClicked(isClicked)
+    isOpen(clicked)
+  }
+
   return (
     <>
       <div style={{ height: "20%" }}>
@@ -91,6 +105,10 @@ export const Header = () => {
                     aria-label="menu"
                     sx={{ mr: 2 }}
                     style={{ width: 50, margin: 0 }}
+                    onClick={() => {
+                      console.log("onclick trigger")
+                      onClick(!clicked)
+                    }}
                   >
                     <MenuIcon />
                   </IconButton>

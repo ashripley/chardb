@@ -11,7 +11,7 @@ import FilterAltOffIcon from "@mui/icons-material/FilterAltOff"
 import { FilterCard } from "./FilterCard"
 import { PokemonCard } from "./PokemonCard"
 import RefreshIcon from "@mui/icons-material/Refresh"
-import { QueryName } from "../api/name"
+import { QueryName } from "../../api/name"
 import wallpaper from "../assets/wallpaper.jpg"
 
 const Root = styled.div`

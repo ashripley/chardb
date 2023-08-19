@@ -1,5 +1,5 @@
 import { and, collection, getDocs, or, query, where } from "firebase/firestore"
-import { firestore } from "../services/firebase"
+import { firestore } from "../../services/firebase"
 import {
   Button,
   FormControl,

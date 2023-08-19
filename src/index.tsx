@@ -1,10 +1,9 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import reportWebVitals from "./reportWebVitals"
-import { Desktop } from "./components/Desktop"
 import "./index.css"
 import { QueryClient, QueryClientProvider } from "react-query"
-import { HomePage } from "./components/SplashPage/HomePage"
+import { Index } from "./components/Index"
 
 const queryClient = new QueryClient()
 
@@ -12,8 +11,7 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient} contextSharing={true}>
-      {/* <Desktop /> */}
-      <HomePage />
+      <Index />
     </QueryClientProvider>
   </React.StrictMode>
 )

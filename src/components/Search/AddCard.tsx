@@ -1,6 +1,6 @@
 import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { collection } from "firebase/firestore"
-import { firestore } from "../services/firebase"
+import { firestore } from "../../services/firebase"
 import { Button, TextField } from "@mui/material"
 import styled from "styled-components"
 import { useState } from "react"
