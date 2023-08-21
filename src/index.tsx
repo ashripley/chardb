@@ -4,6 +4,7 @@ import reportWebVitals from "./reportWebVitals"
 import "./index.css"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { Index } from "./components/Index"
+import { Desktop } from "./components/Search/Desktop"
 
 const queryClient = new QueryClient()
 
@@ -11,7 +12,8 @@ const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient} contextSharing={true}>
-      <Index />
+      {/* <Index /> */}
+      <Desktop />
     </QueryClientProvider>
   </React.StrictMode>
 )

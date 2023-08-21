@@ -97,7 +97,7 @@ export const Body = () => {
                 variant="contained"
                 onClick={() => setClicked(true)}
               >
-                search
+                browse
               </StyledButton>
             )}
           </StyledEngineProvider>

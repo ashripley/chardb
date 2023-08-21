@@ -26,6 +26,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  background: white !important;
 `
 
 const Fields = styled.div`
@@ -159,7 +160,7 @@ export const FilterCard = (props: Props) => {
             style={{ width: "10%" }}
             onClick={() => QueryCard()}
           >
-            {`search`}
+            {`browse`}
           </Button>
         </Submit>
       </Wrapper>

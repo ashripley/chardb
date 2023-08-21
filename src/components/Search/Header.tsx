@@ -1,12 +1,12 @@
 import React from "react"
 import styled from "styled-components"
-import flame from "../assets/flame.png"
+import flame from "../../assets/flame.png"
 
 const Container = styled.div`
   max-width: 100%;
   max-height: 100%;
   display: flex;
-  background: blanchedalmond;
+  background: white;
   height: 10%;
   justify-content: center;
   align-items: center;

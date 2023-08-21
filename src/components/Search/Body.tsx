@@ -1,5 +1,5 @@
 import { FilterAlt } from "@mui/icons-material"
-import { Button, Paper, TextField } from "@mui/material"
+import { Button, CircularProgress, Paper, TextField } from "@mui/material"
 import { useState } from "react"
 import styled from "styled-components"
 import { AddCard } from "./AddCard"
@@ -19,6 +19,7 @@ const Root = styled.div`
   max-width: 100%;
   width: 100%;
   justify-content: center;
+  background: white !important;
 `
 
 const StyledPaper = styled(Paper)`
@@ -38,6 +39,7 @@ const Container = styled.div`
   max-height: 100%;
   height: 80vh;
   padding: 30px;
+  background: white !important;
 `
 
 const TextFieldWrapper = styled.div`
@@ -87,7 +89,7 @@ export const Body = () => {
   const [showFilterCard, setShowFilterCard] = useState(false)
   const [showCard, setShowCard] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [icon, setIcon] = useState<string>("search")
+  const [icon, setIcon] = useState<string>("browse")
   const [snapshot, setSnapshot] = useState<Record<string, any>>([])
 
   //test
@@ -102,6 +104,7 @@ export const Body = () => {
     if (snapshot.empty) {
       setError(true)
       setIcon("error")
+      setIsLoading(false)
       return
     }
 
@@ -123,12 +126,12 @@ export const Body = () => {
   const handleError = () => {
     setName("")
     setError(false)
-    setIcon("search")
+    setIcon("browse")
   }
 
   const handleRefresh = () => {
     setName("")
-    setIcon("search")
+    setIcon("browse")
     setShowCard(false)
     setSnapshot([])
   }
@@ -141,10 +144,9 @@ export const Body = () => {
         <StyledPaper
           variant="outlined"
           elevation={5}
-          style={{ backgroundColor: "cornsilk" }}
+          style={{ backgroundColor: "white", border: "none" }}
         >
           <Wrapper>
-            {/* <Button onClick={() => setFetch(!fetch)}>Fetch</Button> */}
             <Fields>
               <NameField>
                 <TextFieldWrapper>
@@ -163,6 +165,7 @@ export const Body = () => {
                     }
                     onChange={(e) => setName(e.target.value)}
                     error={error}
+                    InputProps={{ sx: { borderRadius: "15px !important" } }}
                   />
                 </TextFieldWrapper>
                 <Buttons>
@@ -177,9 +180,9 @@ export const Body = () => {
                           ? "secondary"
                           : "warning"
                       }`}
-                      style={{ width: "15%" }}
+                      style={{ width: "15%", borderRadius: 15 }}
                       onClick={async () => {
-                        icon === "search"
+                        icon === "browse"
                           ? QueryCard()
                           : icon === "error"
                           ? handleError()
@@ -188,7 +191,9 @@ export const Body = () => {
                           : handleElse()
                       }}
                     >
-                      {icon === "error" ? (
+                      {isLoading === true ? (
+                        <CircularProgress color="warning" />
+                      ) : icon === "error" ? (
                         <ClearIcon />
                       ) : icon === "refresh" ? (
                         <RefreshIcon />
@@ -199,7 +204,7 @@ export const Body = () => {
                     <Button
                       variant="outlined"
                       size="small"
-                      style={{ width: "15%" }}
+                      style={{ width: "15%", borderRadius: 15 }}
                       onClick={() => setShowFilterCard(!showFilterCard)}
                     >
                       {!showFilterCard ? <FilterAlt /> : <FilterAltOffIcon />}
@@ -208,7 +213,7 @@ export const Body = () => {
                       variant="outlined"
                       size="small"
                       color="success"
-                      style={{ width: "15%" }}
+                      style={{ width: "15%", borderRadius: 15 }}
                       onClick={() => setShowAddCard(!showAddCard)}
                     >
                       {!showAddCard ? <AddIcon /> : <RemoveCircleOutlineIcon />}

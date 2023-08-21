@@ -5,7 +5,13 @@ import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemText from "@mui/material/ListItemText"
 import styled from "styled-components"
-import { Card, CircularProgress, IconButton } from "@mui/material"
+import {
+  Button,
+  Card,
+  CircularProgress,
+  IconButton,
+  Paper,
+} from "@mui/material"
 import flame from "../../assets/flame.png"
 import CloseIcon from "@mui/icons-material/Close"
 
@@ -87,6 +93,43 @@ const Body = styled.div`
   display: flex;
   height: 60%;
   width: 100%;
+  justify-content: center;
+`
+
+const StyledPaper = styled(Paper)`
+  background-color: transparent;
+  display: flex;
+  max-width: 100%;
+  width: 100%;
+  justify-content: center;
+  padding: 30px;
+  flex-wrap: wrap;
+`
+
+const StyledList = styled(List)`
+  max-height: 60%;
+  height: 60%;
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+`
+
+const StyledButton = styled(Button)`
+  border-radius: 15px;
+  background-color: transparent;
+  border: 1px solid white;
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+    source-sans-pro, sans-serif;
+  font-size: 16px;
+  width: 60%;
+  padding: 15px;
+  height: 20%;
+
+  &:hover {
+    background-color: darkorange !important;
+  }
 `
 
 export const MenuPanel = ({ isOpen, isClosed, drawerToggle }: Props) => {
@@ -112,7 +155,7 @@ export const MenuPanel = ({ isOpen, isClosed, drawerToggle }: Props) => {
           sx: {
             width: "100%",
             height: "100%",
-            background: "#050a09",
+            background: "#0f1a1b",
             color: "white",
           },
         }}
@@ -150,15 +193,28 @@ export const MenuPanel = ({ isOpen, isClosed, drawerToggle }: Props) => {
             </IconWrapper>
           </HeaderWrapper>
           <Body>
-            <List>
-              {["Search", "Info", "Pokedex", "Home"].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
+            <StyledList>
+              {["Browse", "Info", "Pokedex", "Home"].map((text, index) => (
+                <div style={{ maxWidth: "100%", width: "100%", padding: 20 }}>
+                  <StyledButton
+                    key={index}
+                    variant="contained"
+                    onClick={() => {}}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      background: "transparent",
+                      padding: "20px",
+                      border: "1px solid white",
+                      borderRadius: "15px",
+                      fontSize: 18,
+                    }}
+                  >
+                    {text}
+                  </StyledButton>
+                </div>
               ))}
-            </List>
+            </StyledList>
           </Body>
         </Container>
       </Drawer>

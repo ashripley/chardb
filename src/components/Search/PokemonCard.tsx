@@ -11,6 +11,11 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import styled from "styled-components"
+import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
+import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
+import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
+import TagIcon from "@mui/icons-material/Tag"
 
 interface Props {
   query: Record<string, any>
@@ -21,10 +26,11 @@ const Container = styled.div`
   max-height: 100%;
   display: flex;
   justify-content: center;
+  background: white !important;
 `
 
 const StyledPaper = styled(Paper)`
-  background-color: cornsilk;
+  background-color: white;
   display: flex;
   max-width: 100%;
   width: 100%;
@@ -37,126 +43,108 @@ const StyledPaper = styled(Paper)`
 const CardWrapper = styled.div`
   width: 20%;
   padding: 20px 30px;
+  height: 500px;
 `
 
-const CellContainer = styled.div`
+const Image = styled.div`
+  background: #0f1a1b;
+  height: 60%;
   display: flex;
-  max-width: 100%;
-  width: "100%";
-  justify-content: space-between;
-  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `
 
-const CellWrapper = styled.div`
-  padding: 10px 0px;
-  display: flex;
+const Details = styled.div`
   width: 100%;
-  justify-content: space-around;
+  height: 40%;
+  display: flex;
+  flex-wrap: wrap;
 `
 
-const Label = styled.div`
+const Row = styled.div`
+  width: 100%;
+  height: 20%;
   display: flex;
-  max-width: 100%;
-  width: 30%;
-`
-
-const Data = styled.div`
-  display: flex;
-  max-width: 100%;
-  width: 60%;
+  align-items: center;
+  justify-content: center;
 `
 
 export const PokemonCard = (props: Props) => {
   const [edit, setEdit] = useState(false)
 
+  const iconTypes = {
+    water: "primary",
+    fire: "warning",
+    grass: "success",
+    normal: "action",
+    psychic: "secondary",
+  }
+
   return (
     <Container>
       <StyledPaper
-        // variant="elevation"
         elevation={0}
-        style={{ backgroundColor: "cornsilk", maxWidth: "100%" }}
+        style={{ backgroundColor: "white", maxWidth: "100%" }}
       >
         {props.query.map((query: Record<string, any>) => (
           <CardWrapper>
             <Card
-              sx={{ minWidth: 275, backgroundColor: "floralwhite" }}
+              sx={{
+                minWidth: 275,
+                backgroundColor: "white",
+                borderRadius: 15,
+                height: "100%",
+              }}
               variant="elevation"
               raised
             >
-              <CardContent>
-                <CellContainer>
-                  <CellWrapper>
-                    <Label>
-                      <div>Name: </div>
-                    </Label>
-                    <Data>
-                      <TextField
-                        disabled={!edit}
-                        size="small"
-                        variant="standard"
-                        value={query.name}
-                      >
-                        {query.name}
-                      </TextField>
-                    </Data>
-                  </CellWrapper>
-                  <CellWrapper>
-                    <Label>
-                      <div>Type: </div>
-                    </Label>
-                    <Data>
-                      <TextField
-                        disabled={!edit}
-                        size="small"
-                        variant="standard"
-                        value={query.type}
-                      >
-                        {query.type}
-                      </TextField>
-                    </Data>
-                  </CellWrapper>
-                  <CellWrapper>
-                    <Label>
-                      <div>Set: </div>
-                    </Label>
-                    <Data>
-                      <TextField
-                        disabled={!edit}
-                        size="small"
-                        variant="standard"
-                        value={query.set}
-                      >
-                        {query.set}
-                      </TextField>
-                    </Data>
-                  </CellWrapper>
-                  <CellWrapper>
-                    <Label>
-                      <div>Year: </div>
-                    </Label>
-                    <Data>
-                      <TextField
-                        disabled={!edit}
-                        size="small"
-                        variant="standard"
-                        value={query.year}
-                      >
-                        {query.year}
-                      </TextField>
-                    </Data>
-                  </CellWrapper>
-                </CellContainer>
-              </CardContent>
-              <CardActions>
-                <Button size="small" onClick={() => setEdit(!edit)}>
+              <Image>
+                <InsertPhotoOutlinedIcon
+                  fontSize="large"
+                  sx={{
+                    width: 80,
+                    height: 80,
+                    color: "white",
+                  }}
+                />
+              </Image>
+              <Details>
+                <Row>
+                  <div>
+                    <PermIdentityOutlinedIcon />
+                  </div>
+                  <div>{query.name}</div>
+                </Row>
+                <Row>
+                  <div>
+                    <CatchingPokemonTwoToneIcon />
+                  </div>
+                  <div>{query.type}</div>
+                </Row>
+                <Row>
+                  <div>
+                    <FeaturedPlayListOutlinedIcon />
+                  </div>
+                  <div>{query.set}</div>
+                </Row>
+                <Row>
+                  <div>
+                    <TagIcon />
+                  </div>
+                  <div>{query.year}</div>
+                </Row>
+              </Details>
+              {/* <Button size="small" onClick={() => setEdit(!edit)}>
                   Edit
                 </Button>
                 <FormControlLabel
                   control={<Switch defaultChecked />}
                   label="Edit"
-                />
-              </CardActions>
+                /> */}
             </Card>
           </CardWrapper>
         ))}
