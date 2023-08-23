@@ -6,13 +6,14 @@ import MenuIcon from "@mui/icons-material/Menu"
 
 interface Props {
   isOpen: (isClicked: boolean) => void
+  menuAction: string
 }
 
 const Container = styled.div`
   max-width: 100%;
   max-height: 100%;
   display: flex;
-  height: 10%;
+  height: 10% !important;
   justify-content: center;
   align-items: center;
   padding: 30px;
@@ -54,7 +55,7 @@ const HeaderText = styled.div`
     source-sans-pro, sans-serif;
 `
 
-export const Header = ({ isOpen }: Props) => {
+export const HomeHeader = ({ isOpen, menuAction }: Props) => {
   const [clicked, setClicked] = useState(false)
 
   const onClick = (isClicked: boolean) => {
@@ -66,12 +67,18 @@ export const Header = ({ isOpen }: Props) => {
 
   return (
     <>
-      <div style={{ height: "20%" }}>
-        <Box>
+      <div style={{ height: "15%" }}>
+        <Box sx={{ height: "100%" }}>
           <AppBar
             position="static"
             variant="outlined"
-            style={{ background: "transparent" }}
+            style={{
+              background: `${
+                menuAction === "Home" ? "transparent" : "#0f1a1b"
+              }`,
+              justifyContent: "center",
+              height: "100%",
+            }}
           >
             <Toolbar style={{ padding: 0 }}>
               <Container>

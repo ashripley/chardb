@@ -1,9 +1,10 @@
 import styled from "styled-components"
-import { Header } from "./SplashPage/Header"
+import { HomeHeader } from "./Home/HomeHeader"
 import wallpaper from "../assets/wallpaper.jpg"
-import { Body } from "./SplashPage/Body"
-import { MenuPanel } from "./SplashPage/MenuPanel"
-import { useEffect, useState } from "react"
+import { HomeBody } from "./Home/HomeBody"
+import { Menu } from "./Menu/Menu"
+import { useState } from "react"
+import { BrowseBody } from "./Browse/BrowseBody"
 
 const Container = styled.div`
   max-width: 100%;
@@ -17,6 +18,7 @@ const Container = styled.div`
 export const Index = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isClosed, setIsClosed] = useState(false)
+  const [menuAction, setMenuAction] = useState("Home")
 
   const drawerToggle = (isOpen: boolean, isClosed: boolean) => {
     setIsOpen(isOpen)
@@ -27,12 +29,25 @@ export const Index = () => {
     setIsOpen(!isOpen)
   }
 
+  const MenuAction = (label?: string) => {
+    setMenuAction(label || "")
+    console.log("menuAction", menuAction)
+    console.log("### menu action")
+  }
+
   return (
     <>
       <Container>
-        <Header isOpen={MenuButtonClicked} />
-        <Body />
-        <MenuPanel
+        <HomeHeader menuAction={menuAction} isOpen={MenuButtonClicked} />
+        {menuAction === "Browse" ? (
+          <BrowseBody />
+        ) : menuAction === "Home" ? (
+          <HomeBody />
+        ) : (
+          <HomeBody />
+        )}
+        <Menu
+          menuOption={MenuAction}
           isClosed={isClosed}
           isOpen={isOpen}
           drawerToggle={drawerToggle}

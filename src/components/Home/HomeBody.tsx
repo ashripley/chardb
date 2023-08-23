@@ -71,7 +71,7 @@ const StyledButton = styled(Button)`
   }
 `
 
-export const Body = () => {
+export const HomeBody = () => {
   const [clicked, setClicked] = useState(false)
 
   return (

@@ -1,23 +1,15 @@
 import * as React from "react"
 import Drawer from "@mui/material/Drawer"
 import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemButton from "@mui/material/ListItemButton"
-import ListItemText from "@mui/material/ListItemText"
 import styled from "styled-components"
-import {
-  Button,
-  Card,
-  CircularProgress,
-  IconButton,
-  Paper,
-} from "@mui/material"
+import { Button, Card, IconButton } from "@mui/material"
 import flame from "../../assets/flame.png"
 import CloseIcon from "@mui/icons-material/Close"
 
 interface Props {
   isOpen: boolean
   isClosed: boolean
+  menuOption: (label?: string) => void
   drawerToggle: (isOpen: boolean, isClosed: boolean) => void
 }
 
@@ -32,7 +24,7 @@ const Container = styled.div`
 
 const HeaderWrapper = styled.div`
   display: flex;
-  height: 30%;
+  height: 35%;
   width: 100%;
   box-sizing: border-box;
   padding: 30px;
@@ -43,7 +35,7 @@ const TitleWrapper = styled.div`
   max-width: 40%;
   display: flex;
   height: 100%;
-  width: 40%;
+  width: 50%;
   justify-content: flex-start;
 `
 
@@ -96,16 +88,6 @@ const Body = styled.div`
   justify-content: center;
 `
 
-const StyledPaper = styled(Paper)`
-  background-color: transparent;
-  display: flex;
-  max-width: 100%;
-  width: 100%;
-  justify-content: center;
-  padding: 30px;
-  flex-wrap: wrap;
-`
-
 const StyledList = styled(List)`
   max-height: 60%;
   height: 60%;
@@ -132,7 +114,7 @@ const StyledButton = styled(Button)`
   }
 `
 
-export const MenuPanel = ({ isOpen, isClosed, drawerToggle }: Props) => {
+export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
   const [state, setState] = React.useState(false)
 
   const onClose = () => {
@@ -143,6 +125,12 @@ export const MenuPanel = ({ isOpen, isClosed, drawerToggle }: Props) => {
   React.useEffect(() => {
     setState(isOpen)
   }, [isOpen])
+
+  const onClick = (label: string) => {
+    console.log("buttonName", label)
+    menuOption(label)
+    onClose()
+  }
 
   return (
     <>
@@ -194,12 +182,12 @@ export const MenuPanel = ({ isOpen, isClosed, drawerToggle }: Props) => {
           </HeaderWrapper>
           <Body>
             <StyledList>
-              {["Browse", "Info", "Pokedex", "Home"].map((text, index) => (
+              {["Browse", "Info", "Pokedex", "Home"].map((label, index) => (
                 <div style={{ maxWidth: "100%", width: "100%", padding: 20 }}>
                   <StyledButton
                     key={index}
                     variant="contained"
-                    onClick={() => {}}
+                    onClick={() => onClick(label)}
                     style={{
                       width: "100%",
                       height: "100%",
@@ -210,7 +198,7 @@ export const MenuPanel = ({ isOpen, isClosed, drawerToggle }: Props) => {
                       fontSize: 18,
                     }}
                   >
-                    {text}
+                    {label}
                   </StyledButton>
                 </div>
               ))}
@@ -221,6 +209,3 @@ export const MenuPanel = ({ isOpen, isClosed, drawerToggle }: Props) => {
     </>
   )
 }
-
-// background colours:
-// #050a09

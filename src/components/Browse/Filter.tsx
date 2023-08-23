@@ -51,7 +51,7 @@ const Submit = styled.div`
   width: 100%;
 `
 
-export const FilterCard = (props: Props) => {
+export const Filter = (props: Props) => {
   const [name, setName] = useState<Record<string, any>>({})
   const [type, setType] = useState<Record<string, any>>({})
   const [set, setSet] = useState<Record<string, any>>({})
@@ -80,9 +80,6 @@ export const FilterCard = (props: Props) => {
     )
 
     const fieldQuerySnapshot = await getDocs(fetchedFields)
-    // if (cardsRef.fieldQuerySnapshot) {
-    //   return <div>Loading...</div>
-    // }
 
     fieldQuerySnapshot.forEach((doc) => {
       console.log("### doc data: ", doc.data())
@@ -164,7 +161,6 @@ export const FilterCard = (props: Props) => {
           </Button>
         </Submit>
       </Wrapper>
-      {/* {mutation.isError && <p>{mutation.error.message}</p>} */}
     </>
   )
 }

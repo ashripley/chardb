@@ -1,4 +1,3 @@
-import React from "react"
 import styled from "styled-components"
 import flame from "../../assets/flame.png"
 
@@ -35,7 +34,7 @@ const HeaderText = styled.div`
   width: 90%;
 `
 
-export const Header = () => {
+export const BrowseHeader = () => {
   return (
     <>
       <Container>

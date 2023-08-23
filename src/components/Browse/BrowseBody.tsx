@@ -1,18 +1,25 @@
 import { FilterAlt } from "@mui/icons-material"
-import { Button, CircularProgress, Paper, TextField } from "@mui/material"
+import {
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+} from "@mui/material"
 import { useState } from "react"
 import styled from "styled-components"
-import { AddCard } from "./AddCard"
+import { Add } from "./Add"
 import AddIcon from "@mui/icons-material/Add"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import SearchIcon from "@mui/icons-material/Search"
 import ClearIcon from "@mui/icons-material/Clear"
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff"
-import { FilterCard } from "./FilterCard"
 import { PokemonCard } from "./PokemonCard"
 import RefreshIcon from "@mui/icons-material/Refresh"
-import { QueryName } from "../../api/name"
-import wallpaper from "../assets/wallpaper.jpg"
+import { QueryCards } from "../../api/card"
 
 const Root = styled.div`
   display: flex;
@@ -58,12 +65,12 @@ const NameField = styled.div`
   max-width: 100%;
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
 `
 
 const Buttons = styled.div`
   max-width: 100%;
-  width: 30%;
+  width: 15%;
   display: flex;
   justify-content: flex-start;
 `
@@ -75,14 +82,7 @@ const Actions = styled.div`
   justify-content: space-evenly;
 `
 
-const Filter = styled.div`
-  max-width: 100%;
-  display: flex;
-  width: 20%;
-  justify-content: center;
-`
-
-export const Body = () => {
+export const BrowseBody = () => {
   const [name, setName] = useState("")
   const [error, setError] = useState(false)
   const [showAddCard, setShowAddCard] = useState(false)
@@ -91,17 +91,21 @@ export const Body = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [icon, setIcon] = useState<string>("browse")
   const [snapshot, setSnapshot] = useState<Record<string, any>>([])
-
-  //test
-  const [fetch, setFetch] = useState(false)
+  const [category, setCategory] = useState<Record<string, any>>({})
 
   const QueryCard = async () => {
+    console.log("first")
     setIsLoading(true)
 
-    const snapshot = await QueryName(name)
+    const newCategory =
+      typeof category.value === "string"
+        ? category.value.toLowerCase()
+        : category.value
+
+    const snapshot = await QueryCards(name, newCategory)
 
     // if empty, set error and early exit
-    if (snapshot.empty) {
+    if (snapshot?.empty) {
       setError(true)
       setIcon("error")
       setIsLoading(false)
@@ -110,7 +114,7 @@ export const Body = () => {
 
     let snapshots: Record<string, any> = []
 
-    await snapshot.forEach((doc) => {
+    await snapshot?.forEach((doc: Record<string, any>) => {
       snapshots.push(doc.data())
     })
 
@@ -138,6 +142,8 @@ export const Body = () => {
 
   const handleElse = () => {}
 
+  const categories = ["Name", "Type", "Set", "Year"]
+
   return (
     <>
       <Root>
@@ -149,11 +155,40 @@ export const Body = () => {
           <Wrapper>
             <Fields>
               <NameField>
+                <FormControl
+                  sx={{ borderRadius: "15px !important", width: "30%" }}
+                >
+                  <InputLabel color="warning">{"Category"}</InputLabel>
+                  <Select
+                    id="standard"
+                    variant="outlined"
+                    value={category.value}
+                    label={"Category"}
+                    color="warning"
+                    onChange={(e) =>
+                      setCategory({ key: "category", value: e.target.value })
+                    }
+                    sx={{ borderRadius: "15px !important" }}
+                  >
+                    <MenuItem value="">
+                      <b>None</b>
+                    </MenuItem>
+                    {categories.map((category) => (
+                      <MenuItem value={category}>{category}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
                 <TextFieldWrapper>
                   <TextField
                     id="standard"
                     value={name}
-                    label={`${error ? "No Pokémon Found" : "Pokémon Name"}`}
+                    label={`${
+                      error
+                        ? "No Pokémon Found"
+                        : category.value
+                        ? `Pokémon ${category.value}`
+                        : "Pokémon Card Search..."
+                    }`}
                     variant="outlined"
                     style={{ width: "100%" }}
                     color={
@@ -201,14 +236,15 @@ export const Body = () => {
                         <SearchIcon />
                       )}
                     </Button>
-                    <Button
+
+                    {/* <Button
                       variant="outlined"
                       size="small"
                       style={{ width: "15%", borderRadius: 15 }}
                       onClick={() => setShowFilterCard(!showFilterCard)}
                     >
                       {!showFilterCard ? <FilterAlt /> : <FilterAltOffIcon />}
-                    </Button>
+                    </Button> */}
                     <Button
                       variant="outlined"
                       size="small"
@@ -222,23 +258,13 @@ export const Body = () => {
                 </Buttons>
               </NameField>
             </Fields>
-            {/* {isLoading && <div>LOADING</div>} */}
           </Wrapper>
         </StyledPaper>
       </Root>
       <Container>
-        {showAddCard && (
-          <AddCard name="charmander" type="fire" set="base" year={1995} />
-        )}
-        {showFilterCard && (
-          <FilterCard
-          // name={name}
-          // type={type}
-          // set={set}
-          // year={year}
-          />
-        )}
-        {/* {fetch && <FetchQuery />} */}
+        {/* {showAddCard && (
+          <Add name="charmander" type="fire" set="base" year={1995} />
+        )} */}
         {showCard && <PokemonCard query={snapshot} />}
       </Container>
     </>

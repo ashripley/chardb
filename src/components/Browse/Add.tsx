@@ -44,7 +44,7 @@ const Submit = styled.div`
   width: 100%;
 `
 
-export const AddCard = (props: Props) => {
+export const Add = (props: Props) => {
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
 
