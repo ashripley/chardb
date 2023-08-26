@@ -82,7 +82,6 @@ export const Filter = (props: Props) => {
     const fieldQuerySnapshot = await getDocs(fetchedFields)
 
     fieldQuerySnapshot.forEach((doc) => {
-      console.log("### doc data: ", doc.data())
       return doc.data()
     })
   }

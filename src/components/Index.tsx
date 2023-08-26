@@ -31,8 +31,6 @@ export const Index = () => {
 
   const MenuAction = (label?: string) => {
     setMenuAction(label || "")
-    console.log("menuAction", menuAction)
-    console.log("### menu action")
   }
 
   return (

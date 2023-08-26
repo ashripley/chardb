@@ -26,10 +26,8 @@ import { useState } from "react"
 
 export const QueryCards = async (value?: string, category?: string) => {
   const ref = await collection(firestore, "cards")
-  console.log("1")
 
   if (!category && !value) {
-    console.log("2")
     // return all cards
     const res = await query(ref)
     const snapshot = await getDocs(res)
@@ -38,9 +36,6 @@ export const QueryCards = async (value?: string, category?: string) => {
   }
 
   if (category && value) {
-    console.log("3")
-    console.log("category", category)
-    console.log("value", value)
     // return all cards with that category and value
     const res = await query(ref, where(category, "==", value))
 
@@ -50,7 +45,6 @@ export const QueryCards = async (value?: string, category?: string) => {
   }
 
   if (!category && value) {
-    console.log("4")
     // return all cards with that value
     const res = await query(ref, where("name", "==", value))
 

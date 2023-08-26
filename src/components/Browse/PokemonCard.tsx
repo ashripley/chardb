@@ -1,13 +1,15 @@
-import { Card, Paper } from "@mui/material"
+import { Button, Card, CircularProgress, Divider, Paper } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { PokemonClient } from "pokenode-ts"
 import { useEffect, useState } from "react"
 import axios from "axios"
+import { click } from "@testing-library/user-event/dist/click"
+import GridViewIcon from "@mui/icons-material/GridView"
+import ListIcon from "@mui/icons-material/List"
 
 interface Props {
   query: Record<string, any>
@@ -16,7 +18,7 @@ interface Props {
 const Container = styled.div`
   max-width: 100%;
   max-height: 100%;
-  display: flex;
+  display: grid;
   justify-content: center;
   background: white !important;
 `
@@ -32,13 +34,34 @@ const StyledPaper = styled(Paper)`
   flex-wrap: wrap;
 `
 
-const CardWrapper = styled.div`
+const GridWrapper = styled.div`
   width: 20%;
   padding: 20px 30px;
   height: 500px;
+
+  // & > :hover {
+  //   box-shadow: 0 -6px 5px 10px lightGray, 0 6px 5px 10px lightGray,
+  //     -7px 0 4px -3px lightGray, 7px 0 4px -3px lightGray;
+  // }
+
+  & > :hover {
+    box-shadow: 0px -25px 20px -20px rgba(0, 0, 0, 0.45),
+      0px 35px 30px -20px rgba(0, 0, 0, 0.45);
+  }
 `
 
-const Image = styled.div`
+const ListWrapper = styled.div`
+  width: 90%;
+  padding: 20px 30px;
+  height: 150px;
+
+  & > :hover {
+    box-shadow: 0px -25px 20px -20px rgba(0, 0, 0, 0.45),
+      0px 35px 30px -20px rgba(0, 0, 0, 0.45);
+  }
+`
+
+const GridImage = styled.div`
   background: #0f1a1b;
   height: 60%;
   display: flex;
@@ -46,21 +69,36 @@ const Image = styled.div`
   justify-content: center;
   flex-direction: column;
   background: #0f1a1b;
-
-  &:hover {
-    background: rgba(14, 26, 27, 0.9);
-  }
 `
 
-const Details = styled.div`
-  width: 100%;
+const ListImage = styled.div`
+  height: 100%;
+  max-width: 20%;
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f1a1b;
+  border-radius: 50px;
+`
+
+const GridDetails = styled.div`
   height: 40%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 `
 
-const Row = styled.div`
+const ListDetails = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+`
+
+const GridRow = styled.div`
   width: 100%;
   height: 20%;
   display: flex;
@@ -68,13 +106,44 @@ const Row = styled.div`
   justify-content: center;
 `
 
-const Icon = styled.div`
+const ListColumn = styled.div`
+  width: 100%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`
+
+const IdColumn = styled.div`
+  width: 99%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`
+
+const IdDivider = styled.div`
+  width: 1%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const GridIcon = styled.div`
   display: flex;
   width: 15%;
   justify-content: flex-start;
 `
 
-const Data = styled.div`
+const ListIconWrapper = styled.div`
+  display: flex;
+  width: 15%;
+  justify-content: center;
+`
+
+const GridData = styled.div`
   display: flex;
   width: 60%;
   font-weight: 800;
@@ -84,7 +153,7 @@ const Data = styled.div`
   text-transform: capitalize;
 `
 
-const Id = styled.div`
+const GridId = styled.div`
   color: white;
   font-weight: 800;
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
@@ -94,117 +163,224 @@ const Id = styled.div`
   font-size: 1.5rem;
 `
 
-export const PokemonCard = (props: Props) => {
-  const [data, setData] = useState<Record<string, any>>({})
-  // const [edit, setEdit] = useState(false)
+const ListData = styled.div`
+  display: flex;
+  width: 60%;
+  font-weight: 800;
+  justify-content: center;
+  align-items: center;
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+    source-sans-pro, sans-serif;
+  text-transform: capitalize;
+  padding: 10px 0px;
+`
 
-  // const iconTypes = {
-  //   water: "primary",
-  //   fire: "warning",
-  //   grass: "success",
-  //   normal: "action",
-  //   psychic: "secondary",
-  // }
+const ListId = styled.div`
+  color: black;
+  display: flex;
+  width: 10%;
+  padding: 10px 0px;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+    source-sans-pro, sans-serif;
+`
+
+export const PokemonCard = (props: Props) => {
+  const [state, setState] = useState([{ name: "name", id: 0, url: "" }])
+  const [view, setView] = useState("grid")
 
   useEffect(() => {
-    props.query.map(async (query: Record<string, any>) => {
-      try {
-        const response = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon/${query.name}`
-        )
-        const data = response.data
-        console.log("### response: ", response)
-        setData({
-          img: data.sprites.front_default,
-          name: data.name,
-          id: data.id,
+    props.query.map(async (q: any) => {
+      axios
+        .get(`https://pokeapi.co/api/v2/pokemon/${q.name}`)
+        .then((response) => {
+          const pokemonData = {
+            ...q,
+            name: response.data.name,
+            id: response.data.id,
+            url: response.data.sprites.front_default,
+          }
+
+          setState((prev) => [...prev, pokemonData])
         })
-      } catch (error) {
-        console.error(error)
-      }
     })
   }, [])
 
-  console.log("### data: ", data?.img)
+  const pokemonField = (name: string, action: string) => {
+    const pokemon = Object.values(state).filter(
+      (pokemonName) => pokemonName.name === name
+    )
 
-  // const fetchPokemon = async () => {
-  //   const api = new PokemonClient()
-
-  //   await api
-  //     .getPokemonByName(props.query.name)
-  //     .then((data) => console.log(data.name))
-  //     .catch((error) => console.error(error))
-  // }
+    return action === "id" ? pokemon[0]?.id : pokemon[0]?.url
+  }
 
   return (
     <Container>
+      <Button>
+        {view === "grid" ? (
+          <ListIcon onClick={() => setView("list")} />
+        ) : (
+          <GridViewIcon onClick={() => setView("grid")} />
+        )}
+      </Button>
       <StyledPaper
         elevation={0}
-        style={{ backgroundColor: "white", maxWidth: "100%" }}
+        style={{ backgroundColor: "white", maxWidth: "100%", padding: 0 }}
       >
         {props.query.map((query: Record<string, any>) => (
-          <CardWrapper>
-            <Card
-              sx={{
-                minWidth: 275,
-                backgroundColor: "white",
-                borderRadius: 15,
-                height: "100%",
-              }}
-              variant="elevation"
-              raised
-            >
-              <Image>
+          <>
+            {view === "grid" ? (
+              <GridWrapper>
                 <Card
                   sx={{
-                    width: 150,
-                    height: 150,
-                    background: "white",
-                    borderRadius: 100,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    opacity: "revert",
+                    minWidth: 275,
+                    backgroundColor: "white",
+                    borderRadius: 15,
+                    height: "100%",
                   }}
+                  variant="elevation"
+                  raised
                 >
-                  <img
-                    src={data.img}
-                    style={{
-                      width: 150,
-                      height: 150,
-                    }}
-                  />
+                  <GridImage>
+                    <Card
+                      sx={{
+                        width: 150,
+                        height: 150,
+                        background: "white",
+                        borderRadius: 100,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        opacity: "revert",
+                      }}
+                    >
+                      {pokemonField(query.name, "url") ? (
+                        <img
+                          src={`${pokemonField(query.name, "url")}`}
+                          style={{
+                            width: 150,
+                            height: 150,
+                          }}
+                        />
+                      ) : (
+                        <InsertPhotoOutlinedIcon />
+                      )}
+                    </Card>
+                    <GridId>{`# ${pokemonField(query.name, "id")}`}</GridId>
+                  </GridImage>
+                  <GridDetails>
+                    <GridRow>
+                      <GridIcon>
+                        <PermIdentityOutlinedIcon />
+                      </GridIcon>
+                      <GridData>{query.name}</GridData>
+                    </GridRow>
+                    <GridRow>
+                      <GridIcon>
+                        <CatchingPokemonTwoToneIcon />
+                      </GridIcon>
+                      <GridData>{query.type}</GridData>
+                    </GridRow>
+                    <GridRow>
+                      <GridIcon>
+                        <FeaturedPlayListOutlinedIcon />
+                      </GridIcon>
+                      <GridData>{query.set}</GridData>
+                    </GridRow>
+                    <GridRow>
+                      <GridIcon>
+                        <TagIcon />
+                      </GridIcon>
+                      <GridData>{query.year}</GridData>
+                    </GridRow>
+                  </GridDetails>
                 </Card>
-                <Id>{`# ${data.id}`}</Id>
-              </Image>
-              <Details>
-                <Row>
-                  <Icon>
-                    <PermIdentityOutlinedIcon />
-                  </Icon>
-                  <Data>{query.name}</Data>
-                </Row>
-                <Row>
-                  <Icon>
-                    <CatchingPokemonTwoToneIcon />
-                  </Icon>
-                  <Data>{query.type}</Data>
-                </Row>
-                <Row>
-                  <Icon>
-                    <FeaturedPlayListOutlinedIcon />
-                  </Icon>
-                  <Data>{query.set}</Data>
-                </Row>
-                <Row>
-                  <Icon>
-                    <TagIcon />
-                  </Icon>
-                  <Data>{query.year}</Data>
-                </Row>
-              </Details>
-            </Card>
-          </CardWrapper>
+              </GridWrapper>
+            ) : (
+              <ListWrapper>
+                <Card
+                  sx={{
+                    width: "100%",
+                    backgroundColor: "white",
+                    borderRadius: 15,
+                    height: "100%",
+                    display: "flex",
+                  }}
+                  variant="elevation"
+                  raised
+                >
+                  <ListImage>
+                    <Card
+                      sx={{
+                        width: 100,
+                        height: 100,
+                        background: "white",
+                        borderRadius: 100,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        opacity: "revert",
+                      }}
+                    >
+                      {pokemonField(query.name, "url") ? (
+                        <img
+                          src={`${pokemonField(query.name, "url")}`}
+                          style={{
+                            width: 150,
+                            height: 150,
+                          }}
+                        />
+                      ) : (
+                        <InsertPhotoOutlinedIcon />
+                      )}
+                    </Card>
+                  </ListImage>
+                  <ListDetails>
+                    <IdColumn>
+                      <ListIconWrapper>
+                        <TagIcon />
+                      </ListIconWrapper>
+                      <ListId>{pokemonField(query.name, "id")}</ListId>
+                    </IdColumn>
+                    <IdDivider>
+                      <Divider
+                        sx={{ borderRightWidth: 2 }}
+                        orientation="vertical"
+                      />
+                    </IdDivider>
+                    <ListColumn>
+                      <ListIconWrapper>
+                        <PermIdentityOutlinedIcon />
+                      </ListIconWrapper>
+                      <ListData>{query.name}</ListData>
+                    </ListColumn>
+                    <ListColumn>
+                      <ListIconWrapper>
+                        <CatchingPokemonTwoToneIcon />
+                      </ListIconWrapper>
+                      <ListData>{query.type}</ListData>
+                    </ListColumn>
+                    <ListColumn>
+                      <ListIconWrapper>
+                        <FeaturedPlayListOutlinedIcon />
+                      </ListIconWrapper>
+                      <ListData>{query.set}</ListData>
+                    </ListColumn>
+                    <ListColumn>
+                      <ListIconWrapper>
+                        <TagIcon />
+                      </ListIconWrapper>
+                      <ListData>{query.year}</ListData>
+                    </ListColumn>
+                  </ListDetails>
+                </Card>
+              </ListWrapper>
+            )}
+          </>
         ))}
       </StyledPaper>
     </Container>

@@ -127,7 +127,6 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
   }, [isOpen])
 
   const onClick = (label: string) => {
-    console.log("buttonName", label)
     menuOption(label)
     onClose()
   }

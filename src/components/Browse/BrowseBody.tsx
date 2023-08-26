@@ -1,4 +1,3 @@
-import { FilterAlt } from "@mui/icons-material"
 import {
   Button,
   CircularProgress,
@@ -11,15 +10,14 @@ import {
 } from "@mui/material"
 import { useState } from "react"
 import styled from "styled-components"
-import { Add } from "./Add"
 import AddIcon from "@mui/icons-material/Add"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import SearchIcon from "@mui/icons-material/Search"
 import ClearIcon from "@mui/icons-material/Clear"
-import FilterAltOffIcon from "@mui/icons-material/FilterAltOff"
 import { PokemonCard } from "./PokemonCard"
 import RefreshIcon from "@mui/icons-material/Refresh"
 import { QueryCards } from "../../api/card"
+import { Add } from "./Add"
 
 const Root = styled.div`
   display: flex;
@@ -86,7 +84,7 @@ export const BrowseBody = () => {
   const [name, setName] = useState("")
   const [error, setError] = useState(false)
   const [showAddCard, setShowAddCard] = useState(false)
-  const [showFilterCard, setShowFilterCard] = useState(false)
+  // const [showFilterCard, setShowFilterCard] = useState(false)
   const [showCard, setShowCard] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [icon, setIcon] = useState<string>("browse")
@@ -94,7 +92,6 @@ export const BrowseBody = () => {
   const [category, setCategory] = useState<Record<string, any>>({})
 
   const QueryCard = async () => {
-    console.log("first")
     setIsLoading(true)
 
     const newCategory =
@@ -118,6 +115,7 @@ export const BrowseBody = () => {
       snapshots.push(doc.data())
     })
 
+    console.log("snapshots", snapshots)
     setSnapshot(snapshots)
 
     setShowCard(true)
@@ -134,6 +132,7 @@ export const BrowseBody = () => {
   }
 
   const handleRefresh = () => {
+    console.log("refresh")
     setName("")
     setIcon("browse")
     setShowCard(false)

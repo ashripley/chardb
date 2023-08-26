@@ -59,8 +59,6 @@ export const HomeHeader = ({ isOpen, menuAction }: Props) => {
   const [clicked, setClicked] = useState(false)
 
   const onClick = (isClicked: boolean) => {
-    console.log("### onclick")
-
     setClicked(isClicked)
     isOpen(clicked)
   }
