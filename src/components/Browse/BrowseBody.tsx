@@ -84,7 +84,6 @@ export const BrowseBody = () => {
   const [name, setName] = useState("")
   const [error, setError] = useState(false)
   const [showAddCard, setShowAddCard] = useState(false)
-  // const [showFilterCard, setShowFilterCard] = useState(false)
   const [showCard, setShowCard] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [icon, setIcon] = useState<string>("browse")
@@ -186,7 +185,9 @@ export const BrowseBody = () => {
                         ? "No Pokémon Found"
                         : category.value
                         ? `Pokémon ${category.value}`
-                        : "Pokémon Card Search..."
+                        : icon === "refresh"
+                        ? "Refresh results..."
+                        : "Search All Pokémon..."
                     }`}
                     variant="outlined"
                     style={{ width: "100%" }}
@@ -261,9 +262,9 @@ export const BrowseBody = () => {
         </StyledPaper>
       </Root>
       <Container>
-        {/* {showAddCard && (
+        {showAddCard && (
           <Add name="charmander" type="fire" set="base" year={1995} />
-        )} */}
+        )}
         {showCard && <PokemonCard query={snapshot} />}
       </Container>
     </>
