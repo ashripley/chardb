@@ -241,15 +241,6 @@ export const BrowseBody = () => {
                         <SearchIcon />
                       )}
                     </Button>
-
-                    {/* <Button
-                      variant="outlined"
-                      size="small"
-                      style={{ width: "15%", borderRadius: 15 }}
-                      onClick={() => setShowFilterCard(!showFilterCard)}
-                    >
-                      {!showFilterCard ? <FilterAlt /> : <FilterAltOffIcon />}
-                    </Button> */}
                     <Button
                       variant="outlined"
                       size="small"
@@ -270,7 +261,7 @@ export const BrowseBody = () => {
         {showAddCard && (
           <Add name="charmander" type="fire" set="base" year={1995} />
         )}
-        <PokemonCard query={snapshot} />
+        <PokemonCard query={snapshot} isLoading={isLoading} />
       </Container>
     </>
   )

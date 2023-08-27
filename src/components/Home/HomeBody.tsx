@@ -1,6 +1,15 @@
-import { Button, CircularProgress, StyledEngineProvider } from "@mui/material"
+import {
+  Button,
+  CircularProgress,
+  Slide,
+  StyledEngineProvider,
+} from "@mui/material"
 import { useState } from "react"
 import styled from "styled-components"
+
+interface Props {
+  menuOption: (label?: string) => void
+}
 
 const Root = styled.div`
   display: flex;
@@ -71,8 +80,10 @@ const StyledButton = styled(Button)`
   }
 `
 
-export const HomeBody = () => {
-  const [clicked, setClicked] = useState(false)
+export const HomeBody = ({ menuOption }: Props) => {
+  const onClick = () => {
+    menuOption("Browse")
+  }
 
   return (
     <>
@@ -90,16 +101,13 @@ export const HomeBody = () => {
         </Wrapper>
         <ButtonWrapper>
           <StyledEngineProvider injectFirst>
-            {clicked ? (
-              <CircularProgress color="warning" />
-            ) : (
-              <StyledButton
-                variant="contained"
-                onClick={() => setClicked(true)}
-              >
-                browse
-              </StyledButton>
-            )}
+            <StyledButton
+              variant="contained"
+              onClick={() => onClick()}
+              sx={{ background: "transparent" }}
+            >
+              browse
+            </StyledButton>
           </StyledEngineProvider>
         </ButtonWrapper>
       </Root>

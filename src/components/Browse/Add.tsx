@@ -73,8 +73,14 @@ export const Add = (props: Props) => {
               label={"Name"}
               variant="outlined"
               style={{ width: "20%", margin: 5 }}
+              sx={{ borderRadius: 15 }}
               color="warning"
               onChange={(e) => setName(e.target.value)}
+              InputProps={{
+                sx: {
+                  borderRadius: "15px !important",
+                },
+              }}
             />
             <TextField
               id="standard"
@@ -84,6 +90,11 @@ export const Add = (props: Props) => {
               style={{ width: "20%", margin: 5 }}
               color="warning"
               onChange={(e) => setType(e.target.value)}
+              InputProps={{
+                sx: {
+                  borderRadius: "15px !important",
+                },
+              }}
             />
             <TextField
               id="standard"
@@ -93,6 +104,11 @@ export const Add = (props: Props) => {
               style={{ width: "20%", margin: 5 }}
               color="warning"
               onChange={(e) => setSet(e.target.value)}
+              InputProps={{
+                sx: {
+                  borderRadius: "15px !important",
+                },
+              }}
             />
             <TextField
               id="standard"
@@ -102,6 +118,11 @@ export const Add = (props: Props) => {
               style={{ width: "20%", margin: 5 }}
               color="warning"
               onChange={(e) => setYear(e.target.value)}
+              InputProps={{
+                sx: {
+                  borderRadius: "15px !important",
+                },
+              }}
             />
           </NameField>
         </Fields>
@@ -109,8 +130,11 @@ export const Add = (props: Props) => {
           <Button
             variant="contained"
             size="large"
-            color="success"
-            style={{ width: "10%" }}
+            style={{
+              width: "10%",
+              borderRadius: 15,
+              backgroundColor: "#ff8c00",
+            }}
             onClick={() => addPokemonCard()}
           >
             {`submit`}

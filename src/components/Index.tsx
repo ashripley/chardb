@@ -40,9 +40,9 @@ export const Index = () => {
         {menuAction === "Browse" ? (
           <BrowseBody />
         ) : menuAction === "Home" ? (
-          <HomeBody />
+          <HomeBody menuOption={MenuAction} />
         ) : (
-          <HomeBody />
+          <HomeBody menuOption={MenuAction} />
         )}
         <Menu
           menuOption={MenuAction}

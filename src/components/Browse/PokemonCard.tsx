@@ -1,4 +1,12 @@
-import { Card, Divider, Grow, Paper, Slide } from "@mui/material"
+import {
+  Backdrop,
+  Card,
+  CircularProgress,
+  Divider,
+  Grow,
+  Paper,
+  Slide,
+} from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
@@ -9,9 +17,11 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { ViewSwitch } from "./ViewSwitch"
 import EditIcon from "@mui/icons-material/Edit"
+import { Spinner } from "./Spinner"
 
 interface Props {
   query: Record<string, any>
+  isLoading: boolean
 }
 
 const Container = styled.div`
@@ -190,7 +200,7 @@ const Switch = styled.div`
   padding-bottom: 20px;
 `
 
-export const PokemonCard = ({ query }: Props) => {
+export const PokemonCard = ({ query, isLoading }: Props) => {
   const [state, setState] = useState([
     { name: "name", id: 0, url: { front: "", back: "" } },
   ])
@@ -204,6 +214,7 @@ export const PokemonCard = ({ query }: Props) => {
       axios
         .get(`https://pokeapi.co/api/v2/pokemon/${q.name}`)
         .then((response) => {
+          if (q.name !== response.data.name) return null
           const pokemonData = {
             ...q,
             name: response.data.name,
@@ -235,6 +246,14 @@ export const PokemonCard = ({ query }: Props) => {
 
   const viewChange = () => {
     setIsGridView(!isGridView)
+  }
+
+  const mouseEnter = () => {
+    setImageOrientation("edit")
+  }
+
+  const mouseLeave = () => {
+    setImageOrientation(true)
   }
 
   return (
@@ -278,8 +297,8 @@ export const PokemonCard = ({ query }: Props) => {
                             justifyContent: "center",
                             opacity: "revert",
                           }}
-                          onMouseEnter={() => setImageOrientation("edit")}
-                          onMouseLeave={() => setImageOrientation(true)}
+                          onMouseEnter={() => mouseEnter()}
+                          onMouseLeave={() => mouseLeave()}
                         >
                           {imageOrientation === "edit" ? (
                             <EditIcon />
@@ -360,8 +379,8 @@ export const PokemonCard = ({ query }: Props) => {
                               justifyContent: "center",
                               opacity: "revert",
                             }}
-                            onMouseEnter={() => setImageOrientation("edit")}
-                            onMouseLeave={() => setImageOrientation(true)}
+                            onMouseEnter={() => mouseEnter()}
+                            onMouseLeave={() => mouseLeave()}
                           >
                             {imageOrientation === "edit" ? (
                               <EditIcon />
