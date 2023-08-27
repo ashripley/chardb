@@ -187,6 +187,7 @@ const Switch = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
+  padding-bottom: 20px;
 `
 
 export const PokemonCard = ({ query }: Props) => {

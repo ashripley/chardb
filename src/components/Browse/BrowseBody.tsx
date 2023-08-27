@@ -8,7 +8,7 @@ import {
   Select,
   TextField,
 } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import AddIcon from "@mui/icons-material/Add"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
@@ -25,6 +25,7 @@ const Root = styled.div`
   width: 100%;
   justify-content: center;
   background: white !important;
+  padding-top: 30px;
 `
 
 const StyledPaper = styled(Paper)`
@@ -77,7 +78,7 @@ const Actions = styled.div`
   max-width: 100%;
   display: flex;
   width: 100%;
-  justify-content: space-evenly;
+  justify-content: space-between;
 `
 
 export const BrowseBody = () => {
@@ -119,7 +120,6 @@ export const BrowseBody = () => {
 
     setShowCard(true)
     setIsLoading(false)
-    setIcon("refresh")
 
     return snapshots
   }
@@ -140,6 +140,10 @@ export const BrowseBody = () => {
 
   const handleElse = () => {}
 
+  useEffect(() => {
+    QueryCard()
+  }, [])
+
   const categories = ["Name", "Type", "Set", "Year"]
 
   return (
@@ -148,7 +152,12 @@ export const BrowseBody = () => {
         <StyledPaper
           variant="outlined"
           elevation={5}
-          style={{ backgroundColor: "white", border: "none" }}
+          style={{
+            backgroundColor: "white",
+            border: "none",
+            borderRadius: 15,
+            boxShadow: "0px 10px 15px 0px rgba(0, 0, 0, 0.45)",
+          }}
         >
           <Wrapper>
             <Fields>
@@ -182,25 +191,21 @@ export const BrowseBody = () => {
                     value={name}
                     label={`${
                       error
-                        ? "No Pokémon Found"
+                        ? "No Results Found"
                         : category.value
                         ? `Pokémon ${category.value}`
-                        : icon === "refresh"
-                        ? "Refresh results..."
                         : "Search All Pokémon..."
                     }`}
                     variant="outlined"
                     style={{ width: "100%" }}
-                    color={
-                      icon === "error"
-                        ? "error"
-                        : icon === "refresh"
-                        ? "secondary"
-                        : "warning"
-                    }
+                    color={icon === "error" ? "error" : "warning"}
                     onChange={(e) => setName(e.target.value)}
                     error={error}
-                    InputProps={{ sx: { borderRadius: "15px !important" } }}
+                    InputProps={{
+                      sx: {
+                        borderRadius: "15px !important",
+                      },
+                    }}
                   />
                 </TextFieldWrapper>
                 <Buttons>
@@ -265,7 +270,7 @@ export const BrowseBody = () => {
         {showAddCard && (
           <Add name="charmander" type="fire" set="base" year={1995} />
         )}
-        {showCard && <PokemonCard query={snapshot} />}
+        <PokemonCard query={snapshot} />
       </Container>
     </>
   )
