@@ -181,26 +181,28 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
           </HeaderWrapper>
           <Body>
             <StyledList>
-              {["Browse", "Info", "Pokedex", "Home"].map((label, index) => (
-                <div style={{ maxWidth: "100%", width: "100%", padding: 20 }}>
-                  <StyledButton
-                    key={index}
-                    variant="contained"
-                    onClick={() => onClick(label)}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      background: "transparent",
-                      padding: "20px",
-                      border: "1px solid white",
-                      borderRadius: "15px",
-                      fontSize: 18,
-                    }}
-                  >
-                    {label}
-                  </StyledButton>
-                </div>
-              ))}
+              {["Collections", "Info", "Pokedex", "Home"].map(
+                (label, index) => (
+                  <div style={{ maxWidth: "100%", width: "100%", padding: 20 }}>
+                    <StyledButton
+                      key={index}
+                      variant="contained"
+                      onClick={() => onClick(label)}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        background: "transparent",
+                        padding: "20px",
+                        border: "1px solid white",
+                        borderRadius: "15px",
+                        fontSize: 18,
+                      }}
+                    >
+                      {label}
+                    </StyledButton>
+                  </div>
+                )
+              )}
             </StyledList>
           </Body>
         </Container>

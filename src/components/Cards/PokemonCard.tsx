@@ -15,9 +15,8 @@ import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOu
 import TagIcon from "@mui/icons-material/Tag"
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { ViewSwitch } from "./ViewSwitch"
+import { ViewSwitch } from "../Collections/ViewSwitch"
 import EditIcon from "@mui/icons-material/Edit"
-import { Spinner } from "./Spinner"
 
 interface Props {
   query: Record<string, any>

@@ -34,7 +34,7 @@ const HeaderText = styled.div`
   width: 90%;
 `
 
-export const BrowseHeader = () => {
+export const CollectionsHeader = () => {
   return (
     <>
       <Container>

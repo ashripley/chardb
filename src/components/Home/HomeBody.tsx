@@ -71,9 +71,9 @@ const StyledButton = styled(Button)`
     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
     source-sans-pro, sans-serif;
   font-size: 16px;
-  width: 10rem;
+  width: 14rem;
   padding: 15px;
-  height: 20%;
+  height: 25%;
 
   &:hover {
     background-color: darkorange !important;
@@ -82,7 +82,7 @@ const StyledButton = styled(Button)`
 
 export const HomeBody = ({ menuOption }: Props) => {
   const onClick = () => {
-    menuOption("Browse")
+    menuOption("Collections")
   }
 
   return (
@@ -106,7 +106,7 @@ export const HomeBody = ({ menuOption }: Props) => {
               onClick={() => onClick()}
               sx={{ background: "transparent" }}
             >
-              browse
+              Collections
             </StyledButton>
           </StyledEngineProvider>
         </ButtonWrapper>

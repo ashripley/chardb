@@ -4,13 +4,13 @@ import CircularProgress from "@mui/material/CircularProgress"
 import Button from "@mui/material/Button"
 
 export const Spinner = () => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(true)
   const handleClose = () => {
     setOpen(false)
   }
-  const handleOpen = () => {
-    setOpen(true)
-  }
+  // const handleOpen = () => {
+  //   setOpen(true)
+  // }
 
   return (
     <div>
@@ -19,7 +19,7 @@ export const Spinner = () => {
         open={open}
         onClick={handleClose}
       >
-        <CircularProgress color="inherit" />
+        <CircularProgress color="warning" />
       </Backdrop>
     </div>
   )

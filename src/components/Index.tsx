@@ -4,7 +4,7 @@ import wallpaper from "../assets/wallpaper.jpg"
 import { HomeBody } from "./Home/HomeBody"
 import { Menu } from "./Menu/Menu"
 import { useState } from "react"
-import { BrowseBody } from "./Browse/BrowseBody"
+import { CollectionsBody } from "./Collections/CollectionsBody"
 
 const Container = styled.div`
   max-width: 100%;
@@ -37,8 +37,8 @@ export const Index = () => {
     <>
       <Container>
         <HomeHeader menuAction={menuAction} isOpen={MenuButtonClicked} />
-        {menuAction === "Browse" ? (
-          <BrowseBody />
+        {menuAction === "Collections" ? (
+          <CollectionsBody />
         ) : menuAction === "Home" ? (
           <HomeBody menuOption={MenuAction} />
         ) : (
