@@ -1,10 +1,10 @@
 import styled from "styled-components"
-import { HomeHeader } from "./Home/HomeHeader"
-import wallpaper from "../assets/wallpaper.jpg"
-import { HomeBody } from "./Home/HomeBody"
-import { Menu } from "./Menu/Menu"
+import { HomeHeader } from "./Home/Header"
+import wallpaper from "../assets/icons/wallpaper.jpg"
+import { HomeBody } from "./Home/Body"
+import { Menu } from "./Menu/Main"
 import { useState } from "react"
-import { CollectionsBody } from "./Collections/CollectionsBody"
+import { CollectionsBody } from "./Collections/Body"
 
 const Container = styled.div`
   max-width: 100%;

@@ -1,12 +1,4 @@
-import {
-  Backdrop,
-  Card,
-  CircularProgress,
-  Divider,
-  Grow,
-  Paper,
-  Slide,
-} from "@mui/material"
+import { Card, Divider, Grow, Paper, Slide } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
@@ -15,12 +7,13 @@ import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOu
 import TagIcon from "@mui/icons-material/Tag"
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { ViewSwitch } from "../Collections/ViewSwitch"
+import { ViewSwitch } from "../ViewSwitch"
 import EditIcon from "@mui/icons-material/Edit"
 
 interface Props {
   query: Record<string, any>
   isLoading: boolean
+  mounted: boolean
 }
 
 const Container = styled.div`
@@ -199,7 +192,7 @@ const Switch = styled.div`
   padding-bottom: 20px;
 `
 
-export const PokemonCard = ({ query, isLoading }: Props) => {
+export const PokemonCard = ({ query, isLoading, mounted }: Props) => {
   const [state, setState] = useState([
     { name: "name", id: 0, url: { front: "", back: "" } },
   ])
@@ -256,7 +249,7 @@ export const PokemonCard = ({ query, isLoading }: Props) => {
   }
 
   return (
-    <Slide direction="up" in={true} mountOnEnter unmountOnExit={false}>
+    <Slide direction="up" in={mounted} mountOnEnter unmountOnExit>
       <Container>
         <Switch>
           <ViewSwitch view={viewChange} />
@@ -303,6 +296,7 @@ export const PokemonCard = ({ query, isLoading }: Props) => {
                             <EditIcon />
                           ) : pokemonField(query.name, "frontUrl") ? (
                             <img
+                              alt="pokemon"
                               src={`${pokemonField(
                                 query.name,
                                 `${imageOrientation ? "frontUrl" : "backUrl"}`
@@ -385,6 +379,7 @@ export const PokemonCard = ({ query, isLoading }: Props) => {
                               <EditIcon />
                             ) : pokemonField(query.name, "frontUrl") ? (
                               <img
+                                alt="pokemon"
                                 src={`${pokemonField(
                                   query.name,
                                   `${imageOrientation ? "frontUrl" : "backUrl"}`

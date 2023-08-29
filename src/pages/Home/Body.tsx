@@ -1,10 +1,4 @@
-import {
-  Button,
-  CircularProgress,
-  Slide,
-  StyledEngineProvider,
-} from "@mui/material"
-import { useState } from "react"
+import { Button, StyledEngineProvider } from "@mui/material"
 import styled from "styled-components"
 
 interface Props {

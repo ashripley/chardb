@@ -15,11 +15,11 @@ import AddIcon from "@mui/icons-material/Add"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import SearchIcon from "@mui/icons-material/Search"
 import ClearIcon from "@mui/icons-material/Clear"
-import { PokemonCard } from "../Cards/PokemonCard"
+import { PokemonCard } from "../../components/Cards/PokemonCard"
 import RefreshIcon from "@mui/icons-material/Refresh"
-import { QueryCards } from "../../api/cards"
-import { AddCard } from "../Cards/AddCard"
-import { Spinner } from "./Spinner"
+import { QueryCards } from "../../api/queries/cards"
+import { AddCard } from "../../components/Cards/AddCard"
+import { Spinner } from "../../components/Spinner"
 
 const Root = styled.div`
   display: flex;
@@ -261,10 +261,10 @@ export const CollectionsBody = () => {
                         }}
                         onClick={() => setShowAddCard(!showAddCard)}
                       >
-                        {!showAddCard ? (
-                          <AddIcon />
-                        ) : (
+                        {showAddCard ? (
                           <RemoveCircleOutlineIcon />
+                        ) : (
+                          <AddIcon />
                         )}
                       </Button>
                     </Actions>
@@ -280,7 +280,11 @@ export const CollectionsBody = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          <PokemonCard query={snapshot} isLoading={isLoading} />
+          <PokemonCard
+            query={snapshot}
+            isLoading={isLoading}
+            mounted={showCard}
+          />
         )}
       </Container>
     </>

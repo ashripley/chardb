@@ -12,19 +12,13 @@ import {
   TextField,
 } from "@mui/material"
 import styled from "styled-components"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
 import AddIcon from "@mui/icons-material/Add"
-
-// interface Props {
-//   name: string
-//   type: string
-//   set: string
-//   year: number
-// }
+import DoneIcon from "@mui/icons-material/Done"
 
 const Container = styled.div`
   max-width: 100%;
@@ -106,17 +100,18 @@ const Add = styled.div`
 `
 
 export const AddCard = () => {
-  const [isLoading, setIsLoading] = useState(false)
   const [name, setName] = useState("")
   const [type, setType] = useState("")
   const [set, setSet] = useState("")
   const [year, setYear] = useState("")
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
 
-  const addPokemonCard = () => {
-    mutation.mutate({
+  const onClick = async () => {
+    console.log("onclick")
+    await mutation.mutate({
       name,
       type,
       set,
@@ -125,11 +120,24 @@ export const AddCard = () => {
 
     mutation.isError && console.log(mutation.error.message)
 
+    clearFields()
+    setIsLoading(false)
+    console.log("isLoading false", isLoading)
+  }
+
+  useEffect(() => {
+    if (isLoading) {
+      console.log("isLoading", isLoading)
+      onClick()
+    }
+  }, [isLoading])
+
+  const clearFields = () => {
+    console.log("clear fields")
     setName("")
     setType("")
     setSet("")
     setYear("")
-    setIsLoading(false)
   }
 
   return (
@@ -259,13 +267,12 @@ export const AddCard = () => {
                           borderRadius: 50,
                           height: "100%",
                         }}
-                        onClick={() => {
-                          setIsLoading(true)
-                          addPokemonCard()
-                        }}
+                        onClick={() => setIsLoading(true)}
                       >
-                        {isLoading ? (
-                          <CircularProgress color="warning" />
+                        {!isLoading && mutation.isLoading ? (
+                          <CircularProgress color="success" />
+                        ) : mutation.isSuccess ? (
+                          <DoneIcon />
                         ) : (
                           <AddIcon />
                         )}

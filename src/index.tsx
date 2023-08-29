@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client"
 import reportWebVitals from "./reportWebVitals"
 import "./index.css"
 import { QueryClient, QueryClientProvider } from "react-query"
-import { Index } from "./components/Index"
+import { Index } from "./pages/Index"
 
 const queryClient = new QueryClient()
 

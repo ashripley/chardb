@@ -1,6 +1,6 @@
 import { useState } from "react"
 import styled from "styled-components"
-import flame from "../../assets/flame.png"
+import flame from "../../assets/icons/flame.png"
 import { AppBar, Box, Card, IconButton, Toolbar } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 
