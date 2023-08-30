@@ -101,7 +101,7 @@ const Id = styled.div`
     source-sans-pro, sans-serif;
 `
 
-export const PokemonCard = ({ pokemon, cardIndex }: Props) => {
+export const ListView = ({ pokemon, cardIndex }: Props) => {
   const [state, setState] = useState([
     { name: "name", id: 0, url: { front: "", back: "" } },
   ])

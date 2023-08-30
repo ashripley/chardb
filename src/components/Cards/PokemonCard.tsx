@@ -9,6 +9,7 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { ViewSwitch } from "../ViewSwitch"
 import EditIcon from "@mui/icons-material/Edit"
+import { GridView } from "../Views/Grid"
 
 interface Props {
   cardIndex: number
@@ -21,26 +22,10 @@ enum View {
   EDIT = "edit",
 }
 
-const GridWrapper = styled.div`
-  width: 20%;
-  padding: 20px 30px;
-  height: 500px;
-`
-
 const ListWrapper = styled.div`
   width: 90%;
   padding: 20px 30px;
   height: 150px;
-`
-
-const GridImage = styled.div`
-  background: #0f1a1b;
-  height: 60%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background: #0f1a1b;
 `
 
 const ListImage = styled.div`
@@ -54,28 +39,12 @@ const ListImage = styled.div`
   border-radius: 50px;
 `
 
-const GridDetails = styled.div`
-  height: 40%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-`
-
 const ListDetails = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-`
-
-const GridRow = styled.div`
-  width: 100%;
-  height: 20%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 const ListColumn = styled.div`
@@ -103,36 +72,10 @@ const IdDivider = styled.div`
   justify-content: center;
 `
 
-const GridIcon = styled.div`
-  display: flex;
-  width: 15%;
-  justify-content: flex-start;
-`
-
 const ListIconWrapper = styled.div`
   display: flex;
   width: 15%;
   justify-content: center;
-`
-
-const GridData = styled.div`
-  display: flex;
-  width: 60%;
-  font-weight: 800;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
-  text-transform: capitalize;
-`
-
-const GridId = styled.div`
-  color: white;
-  font-weight: 800;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
-  padding-top: 30px;
-  font-size: 1.5rem;
 `
 
 const ListData = styled.div`
@@ -163,7 +106,7 @@ const ListId = styled.div`
 
 export const PokemonCard = ({ pokemon, cardIndex, view }: Props) => {
   const [state, setState] = useState([
-    { name: "name", id: 0, url: { front: "", back: "" } },
+    { name: "", id: 0, url: { front: "", back: "" } },
   ])
 
   const [cardView, setCardView] = useState<Record<string, any>>({
@@ -232,90 +175,7 @@ export const PokemonCard = ({ pokemon, cardIndex, view }: Props) => {
   }
 
   return gridView ? (
-    <GridWrapper>
-      <Grow
-        in={true}
-        style={{ transformOrigin: "1 1 1" }}
-        {...(true ? { timeout: 1000 } : {})}
-      >
-        <Card
-          sx={{
-            minWidth: 275,
-            backgroundColor: "white",
-            borderRadius: 15,
-            height: "100%",
-            transition: "box-shadow 0.8s !important",
-            ":hover": {
-              boxShadow: "0px 10px 30px dimGray",
-            },
-          }}
-          variant="elevation"
-          raised
-        >
-          <GridImage>
-            <Card
-              sx={{
-                width: 150,
-                height: 150,
-                background: "white",
-                borderRadius: 100,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                opacity: "revert",
-              }}
-              onMouseEnter={() => mouseEnter()}
-              onMouseLeave={() => mouseLeave()}
-            >
-              {imageOrientation === "edit" ? (
-                <EditIcon />
-              ) : pokemonField(pokemon.name, "frontUrl") ? (
-                <img
-                  alt="pokemon"
-                  src={`${pokemonField(
-                    pokemon.name,
-                    `${imageOrientation ? "frontUrl" : "backUrl"}`
-                  )}`}
-                  style={{
-                    width: 120,
-                    height: 120,
-                  }}
-                />
-              ) : (
-                <InsertPhotoOutlinedIcon />
-              )}
-            </Card>
-            <GridId>{`# ${pokemonField(pokemon.name, "id")}`}</GridId>
-          </GridImage>
-          <GridDetails>
-            <GridRow>
-              <GridIcon>
-                <PermIdentityOutlinedIcon />
-              </GridIcon>
-              <GridData>{pokemon.name}</GridData>
-            </GridRow>
-            <GridRow>
-              <GridIcon>
-                <CatchingPokemonTwoToneIcon />
-              </GridIcon>
-              <GridData>{pokemon.type}</GridData>
-            </GridRow>
-            <GridRow>
-              <GridIcon>
-                <FeaturedPlayListOutlinedIcon />
-              </GridIcon>
-              <GridData>{pokemon.set}</GridData>
-            </GridRow>
-            <GridRow>
-              <GridIcon>
-                <TagIcon />
-              </GridIcon>
-              <GridData>{pokemon.year}</GridData>
-            </GridRow>
-          </GridDetails>
-        </Card>
-      </Grow>
-    </GridWrapper>
+    <GridView pokemon={state} cardIndex={cardIndex++} />
   ) : (
     <Slide direction="up" in={true} mountOnEnter unmountOnExit>
       <ListWrapper>

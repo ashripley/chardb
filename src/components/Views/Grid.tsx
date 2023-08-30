@@ -10,7 +10,7 @@ import EditIcon from "@mui/icons-material/Edit"
 
 interface Props {
   cardIndex: number
-  pokemon: Record<string, any>
+  pokemon: Record<string, any>[]
 }
 
 enum View {
@@ -76,7 +76,11 @@ const Id = styled.div`
   font-size: 1.5rem;
 `
 
-export const PokemonCard = ({ pokemon, cardIndex }: Props) => {
+export const GridView = ({ pokemon, cardIndex }: Props) => {
+  const data = pokemon.find((p) => p.name.length)
+
+  console.log("data?.url.front", `"${data?.url.back}"`)
+
   const [state, setState] = useState([
     { name: "name", id: 0, url: { front: "", back: "" } },
   ])
@@ -85,30 +89,14 @@ export const PokemonCard = ({ pokemon, cardIndex }: Props) => {
     view: View.READ,
   })
 
-  const [imageOrientation, setImageOrientation] = useState<boolean | string>(
-    true
-  )
-
-  const pokemonField = (name: string, action: string) => {
-    const pokemon = Object.values(state).filter(
-      (pokemonName) => pokemonName.name === name
-    )
-
-    return action === "id"
-      ? pokemon[0]?.id
-      : action === "frontUrl"
-      ? pokemon[0]?.url.front
-      : action === "backUrl"
-      ? pokemon[0]?.url.back
-      : ""
-  }
+  const [imageFace, setImageFace] = useState<string>("front")
 
   const mouseEnter = () => {
-    setImageOrientation("edit")
+    setImageFace("back")
   }
 
   const mouseLeave = () => {
-    setImageOrientation(true)
+    setImageFace("front")
   }
 
   return (
@@ -148,50 +136,45 @@ export const PokemonCard = ({ pokemon, cardIndex }: Props) => {
                 onMouseEnter={() => mouseEnter()}
                 onMouseLeave={() => mouseLeave()}
               >
-                {imageOrientation === "edit" ? (
-                  <EditIcon />
-                ) : pokemonField(pokemon.name, "frontUrl") ? (
-                  <img
-                    alt="pokemon"
-                    src={`${pokemonField(
-                      pokemon.name,
-                      `${imageOrientation ? "frontUrl" : "backUrl"}`
-                    )}`}
-                    style={{
-                      width: 120,
-                      height: 120,
-                    }}
-                  />
-                ) : (
-                  <InsertPhotoOutlinedIcon />
-                )}
+                <img
+                  alt={`"${data?.name}"`}
+                  src={
+                    imageFace === "front"
+                      ? data?.url.front
+                      : data?.url.back || <InsertPhotoOutlinedIcon />
+                  }
+                  style={{
+                    width: 120,
+                    height: 120,
+                  }}
+                />
               </Card>
-              <Id>{`# ${pokemonField(pokemon.name, "id")}`}</Id>
+              <Id>{`# ${data?.id || ""}`}</Id>
             </Image>
             <Details>
               <Row>
                 <Icon>
                   <PermIdentityOutlinedIcon />
                 </Icon>
-                <Data>{pokemon.name}</Data>
+                <Data>{data?.name || ""}</Data>
               </Row>
               <Row>
                 <Icon>
                   <CatchingPokemonTwoToneIcon />
                 </Icon>
-                <Data>{pokemon.type}</Data>
+                <Data>{data?.type || ""}</Data>
               </Row>
               <Row>
                 <Icon>
                   <FeaturedPlayListOutlinedIcon />
                 </Icon>
-                <Data>{pokemon.set}</Data>
+                <Data>{data?.set || ""}</Data>
               </Row>
               <Row>
                 <Icon>
                   <TagIcon />
                 </Icon>
-                <Data>{pokemon.year}</Data>
+                <Data>{data?.year || ""}</Data>
               </Row>
             </Details>
           </Card>
