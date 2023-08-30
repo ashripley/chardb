@@ -1,24 +1,20 @@
-import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
-import { collection } from "firebase/firestore"
-import { firestore } from "../../services/firebase"
-import {
-  Button,
-  Card,
-  CircularProgress,
-  Divider,
-  Grow,
-  Paper,
-  Slide,
-  TextField,
-} from "@mui/material"
+import { Card, Divider, Grow, Paper, Slide, TextField } from "@mui/material"
 import styled from "styled-components"
-import { useEffect, useState } from "react"
+import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import AddIcon from "@mui/icons-material/Add"
-import DoneIcon from "@mui/icons-material/Done"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { ViewSwitch } from "../ViewSwitch"
+import EditIcon from "@mui/icons-material/Edit"
+
+interface Props {
+  query: Record<string, any>
+  isLoading: boolean
+  mounted: boolean
+}
 
 const Container = styled.div`
   max-width: 100%;
@@ -26,7 +22,6 @@ const Container = styled.div`
   display: block;
   justify-content: center;
   background: white !important;
-  padding-bottom: 30px;
 `
 
 const StyledPaper = styled(Paper)`
@@ -46,6 +41,17 @@ const ListWrapper = styled.div`
   height: 150px;
 `
 
+const ListImage = styled.div`
+  height: 100%;
+  max-width: 20%;
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f1a1b;
+  border-radius: 50px;
+`
+
 const ListDetails = styled.div`
   width: 100%;
   height: 100%;
@@ -63,6 +69,14 @@ const ListColumn = styled.div`
   flex-direction: column;
 `
 
+const IdColumn = styled.div`
+  width: 99%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`
+
 const IdDivider = styled.div`
   width: 1%;
   height: 50%;
@@ -71,9 +85,15 @@ const IdDivider = styled.div`
   justify-content: center;
 `
 
+const ListIconWrapper = styled.div`
+  display: flex;
+  width: 15%;
+  justify-content: center;
+`
+
 const ListData = styled.div`
   display: flex;
-  width: 80%;
+  width: 60%;
   font-weight: 800;
   justify-content: center;
   align-items: center;
@@ -84,74 +104,52 @@ const ListData = styled.div`
   padding: 10px 0px;
 `
 
-const ListIconWrapper = styled.div`
+const ListId = styled.div`
+  color: black;
   display: flex;
-  width: 15%;
-  justify-content: center;
-`
-
-const Add = styled.div`
-  display: flex;
-  width: 50%;
-  height: 40%;
+  width: 10%;
+  padding: 10px 0px;
   justify-content: center;
   align-items: center;
-  margin-left: -20px;
+  font-weight: 800;
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+    source-sans-pro, sans-serif;
 `
 
-export const AddCard = () => {
-  const [name, setName] = useState("")
-  const [type, setType] = useState("")
-  const [set, setSet] = useState("")
-  const [year, setYear] = useState("")
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [icon, setIcon] = useState("")
+const Switch = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  padding-bottom: 20px;
+`
 
-  const ref = collection(firestore, "cards")
-  const mutation = useFirestoreCollectionMutation(ref)
+export const PokemonCard = ({ query, mounted }: Props) => {
+  const [isGridView, setIsGridView] = useState(true)
+  const [imageOrientation, setImageOrientation] = useState<boolean | string>(
+    true
+  )
+  const [cardIndex, setCardIndex] = useState<number>()
 
-  const onClick = async () => {
-    await mutation.mutate({
-      name,
-      type,
-      set,
-      year,
-    })
-
-    !!mutation.isError && console.log(mutation.error.message)
-
-    setIcon("Success")
-    setIsLoading(false)
-    clearFields()
-    console.log("isLoading false", isLoading)
+  const viewChange = () => {
+    setIsGridView(!isGridView)
   }
 
-  useEffect(() => {
-    if (isLoading) {
-      console.log("isLoading", isLoading)
-      onClick()
-      setTimeout(() => {
-        setIcon("Add")
-      }, 1500)
-    }
-  }, [isLoading])
-
-  const clearFields = () => {
-    console.log("clear fields")
-    setName("")
-    setType("")
-    setSet("")
-    setYear("")
+  const mouseEnter = (index: number) => {
+    setCardIndex(index)
+    setImageOrientation("edit")
   }
 
-  const changeIcon = () => {
-    mutation.status === "success" && setTimeout(() => {}, 2000)
-    return <AddIcon />
+  const mouseLeave = () => {
+    setImageOrientation(true)
   }
 
   return (
-    <>
+    <Slide direction="up" in={mounted} mountOnEnter unmountOnExit>
       <Container>
+        <Switch>
+          <ViewSwitch view={viewChange} />
+        </Switch>
         <StyledPaper
           elevation={0}
           style={{ backgroundColor: "white", maxWidth: "100%", padding: 0 }}
@@ -170,10 +168,30 @@ export const AddCard = () => {
                     borderRadius: 15,
                     height: "100%",
                     display: "flex",
+                    transition: "box-shadow 0.8s !important",
+                    ":hover": {
+                      boxShadow: "0px 10px 30px dimGray",
+                    },
                   }}
                   variant="elevation"
                   raised
                 >
+                  <ListImage>
+                    <Card
+                      sx={{
+                        width: 120,
+                        height: 120,
+                        background: "white",
+                        borderRadius: 100,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        opacity: "revert",
+                      }}
+                    >
+                      <EditIcon />
+                    </Card>
+                  </ListImage>
                   <ListDetails>
                     <ListColumn>
                       <ListIconWrapper>
@@ -182,13 +200,13 @@ export const AddCard = () => {
                       <ListData>
                         <TextField
                           id="standard"
-                          value={name}
+                          value={query.name}
                           label={"Name"}
                           variant="outlined"
                           style={{ width: "100%", margin: 5 }}
                           sx={{ borderRadius: 15 }}
                           color="warning"
-                          onChange={(e) => setName(e.target.value)}
+                          onChange={() => {}}
                           InputProps={{
                             sx: {
                               borderRadius: "15px !important",
@@ -204,12 +222,12 @@ export const AddCard = () => {
                       <ListData>
                         <TextField
                           id="standard"
-                          value={type}
+                          value={query.type}
                           label={"Type"}
                           variant="outlined"
                           style={{ width: "100%", margin: 5 }}
                           color="warning"
-                          onChange={(e) => setType(e.target.value)}
+                          onChange={() => {}}
                           InputProps={{
                             sx: {
                               borderRadius: "15px !important",
@@ -225,12 +243,12 @@ export const AddCard = () => {
                       <ListData>
                         <TextField
                           id="standard"
-                          value={set}
+                          value={query.set}
                           label={"Set"}
                           variant="outlined"
                           style={{ width: "100%", margin: 5 }}
                           color="warning"
-                          onChange={(e) => setSet(e.target.value)}
+                          onChange={() => {}}
                           InputProps={{
                             sx: {
                               borderRadius: "15px !important",
@@ -246,12 +264,12 @@ export const AddCard = () => {
                       <ListData>
                         <TextField
                           id="standard"
-                          value={year}
+                          value={query.year}
                           label={"Year"}
                           variant="outlined"
                           style={{ width: "100%", margin: 5 }}
                           color="warning"
-                          onChange={(e) => setYear(e.target.value)}
+                          onChange={() => {}}
                           InputProps={{
                             sx: {
                               borderRadius: "15px !important",
@@ -260,39 +278,6 @@ export const AddCard = () => {
                         />
                       </ListData>
                     </ListColumn>
-                    <IdDivider>
-                      <Divider
-                        sx={{ borderRightWidth: 2 }}
-                        orientation="vertical"
-                      />
-                    </IdDivider>
-                    <Add>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        color="success"
-                        style={{
-                          width: "15%",
-                          borderRadius: 50,
-                          height: "100%",
-                        }}
-                        onClick={() => setIsLoading(true)}
-                      >
-                        {!!isLoading || mutation.isLoading ? (
-                          <CircularProgress color="success" />
-                        ) : mutation.isSuccess ? (
-                          icon === "Success" ? (
-                            <DoneIcon />
-                          ) : icon === "Add" ? (
-                            <AddIcon />
-                          ) : (
-                            <></>
-                          )
-                        ) : (
-                          <AddIcon />
-                        )}
-                      </Button>
-                    </Add>
                   </ListDetails>
                 </Card>
               </Grow>
@@ -300,6 +285,6 @@ export const AddCard = () => {
           </Slide>
         </StyledPaper>
       </Container>
-    </>
+    </Slide>
   )
 }

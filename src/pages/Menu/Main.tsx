@@ -3,7 +3,7 @@ import Drawer from "@mui/material/Drawer"
 import List from "@mui/material/List"
 import styled from "styled-components"
 import { Button, Card, IconButton } from "@mui/material"
-import flame from "../../assets/icons/wallpaper.jpg"
+import flame from "../../assets/icons/flame.png"
 import CloseIcon from "@mui/icons-material/Close"
 
 interface Props {

@@ -20,6 +20,7 @@ import RefreshIcon from "@mui/icons-material/Refresh"
 import { QueryCards } from "../../api/queries/cards"
 import { AddCard } from "../../components/Cards/AddCard"
 import { Spinner } from "../../components/Spinner"
+import { Cards } from "../../components/Cards/Cards"
 
 const Root = styled.div`
   display: flex;
@@ -90,7 +91,7 @@ export const CollectionsBody = () => {
   const [showCard, setShowCard] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [icon, setIcon] = useState<string>("collections")
-  const [snapshot, setSnapshot] = useState<Record<string, any>>([])
+  const [snapshots, setSnapshots] = useState<Record<string, any>[]>([])
   const [category, setCategory] = useState<Record<string, any>>({})
 
   const QueryCard = async () => {
@@ -111,16 +112,18 @@ export const CollectionsBody = () => {
       return
     }
 
-    let snapshots: Record<string, any> = []
+    let snapshots: Record<string, any>[] = []
 
     await snapshot?.forEach((doc: Record<string, any>) => {
       snapshots.push(doc.data())
     })
 
-    setSnapshot(snapshots)
+    setSnapshots(snapshots)
 
     setShowCard(true)
     setIsLoading(false)
+
+    console.log("snapshots", snapshots)
 
     return snapshots
   }
@@ -135,7 +138,7 @@ export const CollectionsBody = () => {
     setName("")
     setIcon("collections")
     setShowCard(false)
-    setSnapshot([])
+    setSnapshots([])
   }
 
   const handleElse = () => {}
@@ -148,11 +151,12 @@ export const CollectionsBody = () => {
 
   return (
     <>
+      {isLoading && <Spinner />}
       <Root>
         <Grow
           in={true}
           style={{ transformOrigin: "1 1 1" }}
-          {...(true ? { timeout: 1000 } : {})}
+          {...(true ? { timeout: 1000 } : { timeout: 1000 })}
         >
           <StyledPaper
             variant="outlined"
@@ -277,15 +281,18 @@ export const CollectionsBody = () => {
       </Root>
       <Container>
         {showAddCard && <AddCard />}
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <PokemonCard
-            query={snapshot}
-            isLoading={isLoading}
-            mounted={showCard}
-          />
+        {!!snapshots.length && showCard && (
+          <Cards pokemon={snapshots} mounted={showCard} />
         )}
+        {/* {snapshots &&
+          snapshots.map((snapshot, index) => (
+            <PokemonCard
+              cardIndex={index}
+              query={snapshot}
+              isLoading={isLoading}
+              mounted={showCard}
+            />
+          ))} */}
       </Container>
     </>
   )
