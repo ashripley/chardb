@@ -282,7 +282,7 @@ export const CollectionsBody = () => {
       <Container>
         {showAddCard && <AddCard />}
         {!!snapshots.length && showCard && (
-          <Cards pokemon={snapshots} mounted={showCard} />
+          <Cards pokemon={snapshots} mounted={showCard} isLoading={isLoading} />
         )}
         {/* {snapshots &&
           snapshots.map((snapshot, index) => (

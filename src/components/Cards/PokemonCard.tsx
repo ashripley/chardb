@@ -10,11 +10,13 @@ import axios from "axios"
 import { ViewSwitch } from "../ViewSwitch"
 import EditIcon from "@mui/icons-material/Edit"
 import { GridView } from "../Views/Grid"
+import { ListView } from "../Views/List"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
   view: boolean
+  isLoading: boolean
 }
 
 enum View {
@@ -104,7 +106,7 @@ const ListId = styled.div`
     source-sans-pro, sans-serif;
 `
 
-export const PokemonCard = ({ pokemon, cardIndex, view }: Props) => {
+export const PokemonCard = ({ pokemon, cardIndex, view, isLoading }: Props) => {
   const [state, setState] = useState([
     { name: "", id: 0, url: { front: "", back: "" } },
   ])
@@ -175,230 +177,8 @@ export const PokemonCard = ({ pokemon, cardIndex, view }: Props) => {
   }
 
   return gridView ? (
-    <GridView pokemon={state} cardIndex={cardIndex++} />
+    <GridView pokemon={state} cardIndex={cardIndex++} isLoading={isLoading} />
   ) : (
-    <Slide direction="up" in={true} mountOnEnter unmountOnExit>
-      <ListWrapper>
-        <Grow
-          in={true}
-          style={{ transformOrigin: "1 1 1" }}
-          {...(true ? { timeout: 1000 } : {})}
-        >
-          {cardView.view === View.READ ? (
-            <Card
-              sx={{
-                width: "100%",
-                backgroundColor: "white",
-                borderRadius: 15,
-                height: "100%",
-                display: "flex",
-                transition: "box-shadow 0.8s !important",
-                ":hover": {
-                  boxShadow: "0px 10px 30px dimGray",
-                },
-              }}
-              variant="elevation"
-              raised
-            >
-              <ListImage>
-                <Card
-                  sx={{
-                    width: 120,
-                    height: 120,
-                    background: "white",
-                    borderRadius: 100,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    opacity: "revert",
-                  }}
-                  onMouseEnter={() => mouseEnter()}
-                  onMouseLeave={() => mouseLeave()}
-                >
-                  {imageOrientation === "edit" ? (
-                    <EditIcon onClick={() => onViewChange()} />
-                  ) : pokemonField(pokemon.name, "frontUrl") ? (
-                    <img
-                      alt="pokemon"
-                      src={`${pokemonField(
-                        pokemon.name,
-                        `${imageOrientation ? "frontUrl" : "backUrl"}`
-                      )}`}
-                      style={{
-                        width: 100,
-                        height: 100,
-                      }}
-                      onClick={() => onViewChange()}
-                    />
-                  ) : (
-                    <InsertPhotoOutlinedIcon />
-                  )}
-                </Card>
-              </ListImage>
-              <ListDetails>
-                <IdColumn>
-                  <ListIconWrapper>
-                    <TagIcon />
-                  </ListIconWrapper>
-                  <ListId>{pokemonField(pokemon.name, "id")}</ListId>
-                </IdColumn>
-                <IdDivider>
-                  <Divider
-                    sx={{ borderRightWidth: 2 }}
-                    orientation="vertical"
-                  />
-                </IdDivider>
-                <ListColumn>
-                  <ListIconWrapper>
-                    <PermIdentityOutlinedIcon />
-                  </ListIconWrapper>
-                  <ListData>{pokemon.name}</ListData>
-                </ListColumn>
-                <ListColumn>
-                  <ListIconWrapper>
-                    <CatchingPokemonTwoToneIcon />
-                  </ListIconWrapper>
-                  <ListData>{pokemon.type}</ListData>
-                </ListColumn>
-                <ListColumn>
-                  <ListIconWrapper>
-                    <FeaturedPlayListOutlinedIcon />
-                  </ListIconWrapper>
-                  <ListData>{pokemon.set}</ListData>
-                </ListColumn>
-                <ListColumn>
-                  <ListIconWrapper>
-                    <TagIcon />
-                  </ListIconWrapper>
-                  <ListData>{pokemon.year}</ListData>
-                </ListColumn>
-              </ListDetails>
-            </Card>
-          ) : cardView.view === View.EDIT ? (
-            <Card
-              sx={{
-                width: "100%",
-                backgroundColor: "white",
-                borderRadius: 15,
-                height: "100%",
-                display: "flex",
-                transition: "box-shadow 0.8s !important",
-                ":hover": {
-                  boxShadow: "0px 10px 30px dimGray",
-                },
-              }}
-              variant="elevation"
-              raised
-            >
-              <ListImage>
-                <Card
-                  sx={{
-                    width: 120,
-                    height: 120,
-                    background: "white",
-                    borderRadius: 100,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    opacity: "revert",
-                  }}
-                >
-                  <EditIcon />
-                </Card>
-              </ListImage>
-              <ListDetails>
-                <ListColumn>
-                  <ListIconWrapper>
-                    <PermIdentityOutlinedIcon />
-                  </ListIconWrapper>
-                  <ListData>
-                    <TextField
-                      id="standard"
-                      value={pokemon.name}
-                      label={"Name"}
-                      variant="outlined"
-                      style={{ width: "100%", margin: 5 }}
-                      sx={{ borderRadius: 15 }}
-                      color="warning"
-                      onChange={() => {}}
-                      InputProps={{
-                        sx: {
-                          borderRadius: "15px !important",
-                        },
-                      }}
-                    />
-                  </ListData>
-                </ListColumn>
-                <ListColumn>
-                  <ListIconWrapper>
-                    <CatchingPokemonTwoToneIcon />
-                  </ListIconWrapper>
-                  <ListData>
-                    <TextField
-                      id="standard"
-                      value={pokemon.type}
-                      label={"Type"}
-                      variant="outlined"
-                      style={{ width: "100%", margin: 5 }}
-                      color="warning"
-                      onChange={() => {}}
-                      InputProps={{
-                        sx: {
-                          borderRadius: "15px !important",
-                        },
-                      }}
-                    />
-                  </ListData>
-                </ListColumn>
-                <ListColumn>
-                  <ListIconWrapper>
-                    <FeaturedPlayListOutlinedIcon />
-                  </ListIconWrapper>
-                  <ListData>
-                    <TextField
-                      id="standard"
-                      value={pokemon.set}
-                      label={"Set"}
-                      variant="outlined"
-                      style={{ width: "100%", margin: 5 }}
-                      color="warning"
-                      onChange={() => {}}
-                      InputProps={{
-                        sx: {
-                          borderRadius: "15px !important",
-                        },
-                      }}
-                    />
-                  </ListData>
-                </ListColumn>
-                <ListColumn>
-                  <ListIconWrapper>
-                    <TagIcon />
-                  </ListIconWrapper>
-                  <ListData>
-                    <TextField
-                      id="standard"
-                      value={pokemon.year}
-                      label={"Year"}
-                      variant="outlined"
-                      style={{ width: "100%", margin: 5 }}
-                      color="warning"
-                      onChange={() => {}}
-                      InputProps={{
-                        sx: {
-                          borderRadius: "15px !important",
-                        },
-                      }}
-                    />
-                  </ListData>
-                </ListColumn>
-              </ListDetails>
-            </Card>
-          ) : (
-            <></>
-          )}
-        </Grow>
-      </ListWrapper>
-    </Slide>
+    <ListView pokemon={state} cardIndex={cardIndex++} isLoading={isLoading} />
   )
 }

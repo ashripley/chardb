@@ -7,10 +7,12 @@ import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOu
 import TagIcon from "@mui/icons-material/Tag"
 import { useState } from "react"
 import EditIcon from "@mui/icons-material/Edit"
+import { Spinner } from "../Spinner"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>[]
+  isLoading: boolean
 }
 
 enum View {
@@ -31,7 +33,7 @@ const Image = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: #0f1a1b;
+  border-radius: 50px;
 `
 
 const Details = styled.div`
@@ -76,14 +78,8 @@ const Id = styled.div`
   font-size: 1.5rem;
 `
 
-export const GridView = ({ pokemon, cardIndex }: Props) => {
+export const GridView = ({ pokemon, cardIndex, isLoading }: Props) => {
   const data = pokemon.find((p) => p.name.length)
-
-  console.log("data?.url.front", `"${data?.url.back}"`)
-
-  const [state, setState] = useState([
-    { name: "name", id: 0, url: { front: "", back: "" } },
-  ])
 
   const [cardView, setCardView] = useState<Record<string, any>>({
     view: View.READ,
@@ -106,15 +102,18 @@ export const GridView = ({ pokemon, cardIndex }: Props) => {
         style={{ transformOrigin: "1 1 1" }}
         {...(true ? { timeout: 1000 } : {})}
       >
-        {cardView.view === View.READ ? (
+        {isLoading ? (
+          <Spinner />
+        ) : cardView.view === View.READ ? (
           <Card
             sx={{
               minWidth: 275,
               backgroundColor: "white",
               borderRadius: 15,
               height: "100%",
-              transition: "box-shadow 0.8s !important",
+              transition: "all 0.8s !important",
               ":hover": {
+                padding: "0.5em",
                 boxShadow: "0px 10px 30px dimGray",
               },
             }}
@@ -132,6 +131,11 @@ export const GridView = ({ pokemon, cardIndex }: Props) => {
                   alignItems: "center",
                   justifyContent: "center",
                   opacity: "revert",
+                  transition: "all 0.8s !important",
+                  ":hover": {
+                    padding: "0.5em",
+                    boxShadow: "0px 0px 30px gray",
+                  },
                 }}
                 onMouseEnter={() => mouseEnter()}
                 onMouseLeave={() => mouseLeave()}

@@ -5,13 +5,14 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { useState } from "react"
 import EditIcon from "@mui/icons-material/Edit"
+import { Spinner } from "../Spinner"
 
 interface Props {
   cardIndex: number
-  pokemon: Record<string, any>
+  pokemon: Record<string, any>[]
+  isLoading: boolean
 }
 
 enum View {
@@ -101,47 +102,20 @@ const Id = styled.div`
     source-sans-pro, sans-serif;
 `
 
-export const ListView = ({ pokemon, cardIndex }: Props) => {
-  const [state, setState] = useState([
-    { name: "name", id: 0, url: { front: "", back: "" } },
-  ])
-
+export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
+  const data = pokemon.find((p) => p.name.length)
   const [cardView, setCardView] = useState<Record<string, any>>({
     view: View.READ,
   })
 
-  const [imageOrientation, setImageOrientation] = useState<boolean | string>(
-    true
-  )
-
-  const pokemonField = (name: string, action: string) => {
-    const pokemon = Object.values(state).filter(
-      (pokemonName) => pokemonName.name === name
-    )
-
-    return action === "id"
-      ? pokemon[0]?.id
-      : action === "frontUrl"
-      ? pokemon[0]?.url.front
-      : action === "backUrl"
-      ? pokemon[0]?.url.back
-      : ""
-  }
+  const [imageFace, setImageFace] = useState<string>("front")
 
   const mouseEnter = () => {
-    setImageOrientation("edit")
+    setImageFace("back")
   }
 
   const mouseLeave = () => {
-    setImageOrientation(true)
-  }
-
-  const onViewChange = () => {
-    if (cardView.view === View.READ && imageOrientation === "edit") {
-      setCardView({ view: View.EDIT })
-    } else {
-      setCardView({ view: View.READ })
-    }
+    setImageFace("front")
   }
 
   return (
@@ -152,7 +126,9 @@ export const ListView = ({ pokemon, cardIndex }: Props) => {
           style={{ transformOrigin: "1 1 1" }}
           {...(true ? { timeout: 1000 } : {})}
         >
-          {cardView.view === View.READ ? (
+          {isLoading ? (
+            <Spinner />
+          ) : cardView.view === View.READ ? (
             <Card
               sx={{
                 width: "100%",
@@ -160,8 +136,9 @@ export const ListView = ({ pokemon, cardIndex }: Props) => {
                 borderRadius: 15,
                 height: "100%",
                 display: "flex",
-                transition: "box-shadow 0.8s !important",
+                transition: "all 0.8s !important",
                 ":hover": {
+                  padding: "0.5em",
                   boxShadow: "0px 10px 30px dimGray",
                 },
               }}
@@ -179,28 +156,27 @@ export const ListView = ({ pokemon, cardIndex }: Props) => {
                     alignItems: "center",
                     justifyContent: "center",
                     opacity: "revert",
+                    transition: "all 0.8s !important",
+                    ":hover": {
+                      padding: "0.3em",
+                      boxShadow: "0px 0px 30px gray",
+                    },
                   }}
                   onMouseEnter={() => mouseEnter()}
                   onMouseLeave={() => mouseLeave()}
                 >
-                  {imageOrientation === "edit" ? (
-                    <EditIcon onClick={() => onViewChange()} />
-                  ) : pokemonField(pokemon.name, "frontUrl") ? (
-                    <img
-                      alt="pokemon"
-                      src={`${pokemonField(
-                        pokemon.name,
-                        `${imageOrientation ? "frontUrl" : "backUrl"}`
-                      )}`}
-                      style={{
-                        width: 100,
-                        height: 100,
-                      }}
-                      onClick={() => onViewChange()}
-                    />
-                  ) : (
-                    <InsertPhotoOutlinedIcon />
-                  )}
+                  <img
+                    alt={`"${data?.name}"`}
+                    src={
+                      imageFace === "front"
+                        ? data?.url.front
+                        : data?.url.back || <InsertPhotoOutlinedIcon />
+                    }
+                    style={{
+                      width: 100,
+                      height: 100,
+                    }}
+                  />
                 </Card>
               </Image>
               <Details>
@@ -208,7 +184,7 @@ export const ListView = ({ pokemon, cardIndex }: Props) => {
                   <IconWrapper>
                     <TagIcon />
                   </IconWrapper>
-                  <Id>{pokemonField(pokemon.name, "id")}</Id>
+                  <Id>{data?.id || ""}</Id>
                 </IdColumn>
                 <IdDivider>
                   <Divider
@@ -220,25 +196,25 @@ export const ListView = ({ pokemon, cardIndex }: Props) => {
                   <IconWrapper>
                     <PermIdentityOutlinedIcon />
                   </IconWrapper>
-                  <Data>{pokemon.name}</Data>
+                  <Data>{data?.name || ""}</Data>
                 </Column>
                 <Column>
                   <IconWrapper>
                     <CatchingPokemonTwoToneIcon />
                   </IconWrapper>
-                  <Data>{pokemon.type}</Data>
+                  <Data>{data?.type || ""}</Data>
                 </Column>
                 <Column>
                   <IconWrapper>
                     <FeaturedPlayListOutlinedIcon />
                   </IconWrapper>
-                  <Data>{pokemon.set}</Data>
+                  <Data>{data?.set || ""}</Data>
                 </Column>
                 <Column>
                   <IconWrapper>
                     <TagIcon />
                   </IconWrapper>
-                  <Data>{pokemon.year}</Data>
+                  <Data>{data?.year || ""}</Data>
                 </Column>
               </Details>
             </Card>
@@ -282,7 +258,7 @@ export const ListView = ({ pokemon, cardIndex }: Props) => {
                   <Data>
                     <TextField
                       id="standard"
-                      value={pokemon.name}
+                      value={data?.name}
                       label={"Name"}
                       variant="outlined"
                       style={{ width: "100%", margin: 5 }}
@@ -304,7 +280,7 @@ export const ListView = ({ pokemon, cardIndex }: Props) => {
                   <Data>
                     <TextField
                       id="standard"
-                      value={pokemon.type}
+                      value={data?.type}
                       label={"Type"}
                       variant="outlined"
                       style={{ width: "100%", margin: 5 }}
@@ -325,7 +301,7 @@ export const ListView = ({ pokemon, cardIndex }: Props) => {
                   <Data>
                     <TextField
                       id="standard"
-                      value={pokemon.set}
+                      value={data?.set}
                       label={"Set"}
                       variant="outlined"
                       style={{ width: "100%", margin: 5 }}
@@ -346,7 +322,7 @@ export const ListView = ({ pokemon, cardIndex }: Props) => {
                   <Data>
                     <TextField
                       id="standard"
-                      value={pokemon.year}
+                      value={data?.year}
                       label={"Year"}
                       variant="outlined"
                       style={{ width: "100%", margin: 5 }}
@@ -363,7 +339,7 @@ export const ListView = ({ pokemon, cardIndex }: Props) => {
               </Details>
             </Card>
           ) : (
-            <></>
+            <>test</>
           )}
         </Grow>
       </Wrapper>

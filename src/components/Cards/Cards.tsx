@@ -7,6 +7,7 @@ import { PokemonCard } from "./PokemonCard"
 interface Props {
   pokemon: Record<string, any>[]
   mounted: boolean
+  isLoading: boolean
 }
 
 const Container = styled.div`
@@ -35,7 +36,7 @@ const Switch = styled.div`
   padding-bottom: 20px;
 `
 
-export const Cards = ({ pokemon, mounted }: Props) => {
+export const Cards = ({ pokemon, mounted, isLoading }: Props) => {
   const [gridView, setGridView] = useState(true)
 
   const viewChange = () => {
@@ -53,7 +54,12 @@ export const Cards = ({ pokemon, mounted }: Props) => {
           style={{ backgroundColor: "white", maxWidth: "100%", padding: 0 }}
         >
           {pokemon.map((poke, index) => (
-            <PokemonCard pokemon={poke} cardIndex={index} view={gridView} />
+            <PokemonCard
+              pokemon={poke}
+              cardIndex={index}
+              view={gridView}
+              isLoading={isLoading}
+            />
           ))}
         </StyledPaper>
       </Container>
