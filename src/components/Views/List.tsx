@@ -1,13 +1,14 @@
-import { Card, Divider, Grow, Paper, Slide, TextField } from "@mui/material"
+import { Button, Card, Divider, Grow } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import EditIcon from "@mui/icons-material/Edit"
 import { Spinner } from "../Spinner"
+import DeleteIcon from "@mui/icons-material/Delete"
 
 interface Props {
   cardIndex: number
@@ -15,10 +16,10 @@ interface Props {
   isLoading: boolean
 }
 
-enum View {
-  READ = "read",
-  EDIT = "edit",
-}
+// enum View {
+//   READ = "read",
+//   EDIT = "edit",
+// }
 
 const Wrapper = styled.div`
   width: 90%;
@@ -37,12 +38,13 @@ const Image = styled.div`
   border-radius: 50px;
 `
 
-const Details = styled.div`
-  width: 100%;
+const Details = styled.div<{ isHovered: boolean }>`
+  width: ${(props) => (props.isHovered ? "75%" : "100%")};
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  transition: 2s ease-out;
 `
 
 const Column = styled.div`
@@ -102,247 +104,191 @@ const Id = styled.div`
     source-sans-pro, sans-serif;
 `
 
+const ActionColumn = styled.div`
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  background: #0f1a1b;
+  border-radius: 50px;
+  transition: all 1s ease;
+
+  &:hover {
+    width: 10%;
+  }
+`
+
 export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
   const data = pokemon.find((p) => p.name.length)
-  const [cardView, setCardView] = useState<Record<string, any>>({
-    view: View.READ,
-  })
+  // const [cardView, setCardView] = useState<Record<string, any>>({
+  //   view: View.READ,
+  // })
 
   const [imageFace, setImageFace] = useState<string>("front")
+  const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
+  const [isActionsEnabled, setIsActionsEnabled] = useState<boolean>(false)
 
-  const mouseEnter = () => {
+  const onImageEnter = () => {
     setImageFace("back")
   }
 
-  const mouseLeave = () => {
+  const onImageLeave = () => {
     setImageFace("front")
   }
 
+  const onCardEnter = () => {
+    setIsCardHovered(true)
+  }
+
+  const onCardLeave = () => {
+    setIsCardHovered(false)
+  }
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     isCardHovered ? setIsActionsEnabled(true) : setIsActionsEnabled(false)
+  //   }, 2000)
+  // }, [isCardHovered])
+
   return (
-    <Slide direction="up" in={true} mountOnEnter unmountOnExit>
-      <Wrapper key={`list-${cardIndex}`}>
-        <Grow
-          in={true}
-          style={{ transformOrigin: "1 1 1" }}
-          {...(true ? { timeout: 1000 } : {})}
-        >
-          {isLoading ? (
-            <Spinner />
-          ) : cardView.view === View.READ ? (
-            <Card
-              sx={{
-                width: "100%",
-                backgroundColor: "white",
-                borderRadius: 15,
-                height: "100%",
-                display: "flex",
-                transition: "all 0.8s !important",
-                ":hover": {
-                  padding: "0.5em",
-                  boxShadow: "0px 10px 30px dimGray",
-                },
-              }}
-              variant="elevation"
-              raised
-            >
-              <Image>
-                <Card
-                  sx={{
-                    width: 120,
-                    height: 120,
-                    background: "white",
-                    borderRadius: 100,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    opacity: "revert",
-                    transition: "all 0.8s !important",
-                    ":hover": {
-                      padding: "0.3em",
-                      boxShadow: "0px 0px 30px gray",
-                    },
+    <Wrapper key={`list-${cardIndex}`}>
+      <Grow
+        in={true}
+        style={{ transformOrigin: "1 1 1" }}
+        {...(true ? { timeout: 1000 } : {})}
+      >
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <Card
+            sx={{
+              width: "100%",
+              backgroundColor: "white",
+              borderRadius: 15,
+              height: "100%",
+              display: "flex",
+              transition: "all 0.8s !important",
+              ":hover": {
+                padding: "0.5em",
+                boxShadow: "0px 10px 30px dimGray",
+              },
+            }}
+            variant="elevation"
+            raised
+            onMouseEnter={() => onCardEnter()}
+            onMouseLeave={() => onCardLeave()}
+          >
+            <Image>
+              <Card
+                sx={{
+                  width: 120,
+                  height: 120,
+                  background: "white",
+                  borderRadius: 100,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  opacity: "revert",
+                  transition: "all 0.8s !important",
+                  ":hover": {
+                    padding: "0.3em",
+                    boxShadow: "0px 0px 30px gray",
+                  },
+                }}
+                onMouseEnter={() => onImageEnter()}
+                onMouseLeave={() => onImageLeave()}
+              >
+                <img
+                  alt={`"${data?.name}"`}
+                  src={
+                    imageFace === "front"
+                      ? data?.url.front
+                      : data?.url.back || <InsertPhotoOutlinedIcon />
+                  }
+                  style={{
+                    width: 100,
+                    height: 100,
                   }}
-                  onMouseEnter={() => mouseEnter()}
-                  onMouseLeave={() => mouseLeave()}
-                >
-                  <img
-                    alt={`"${data?.name}"`}
-                    src={
-                      imageFace === "front"
-                        ? data?.url.front
-                        : data?.url.back || <InsertPhotoOutlinedIcon />
-                    }
-                    style={{
-                      width: 100,
-                      height: 100,
+                />
+              </Card>
+            </Image>
+            <Details isHovered={isCardHovered}>
+              <IdColumn>
+                <IconWrapper>
+                  <TagIcon />
+                </IconWrapper>
+                <Id>{data?.id || ""}</Id>
+              </IdColumn>
+              <IdDivider>
+                <Divider sx={{ borderRightWidth: 2 }} orientation="vertical" />
+              </IdDivider>
+              <Column>
+                <IconWrapper>
+                  <PermIdentityOutlinedIcon />
+                </IconWrapper>
+                <Data>{data?.name || ""}</Data>
+              </Column>
+              <Column>
+                <IconWrapper>
+                  <CatchingPokemonTwoToneIcon />
+                </IconWrapper>
+                <Data>{data?.type || ""}</Data>
+              </Column>
+              <Column>
+                <IconWrapper>
+                  <FeaturedPlayListOutlinedIcon />
+                </IconWrapper>
+                <Data>{data?.set || ""}</Data>
+              </Column>
+              <Column>
+                <IconWrapper>
+                  <TagIcon />
+                </IconWrapper>
+                <Data>{data?.year || ""}</Data>
+              </Column>
+            </Details>
+            <Grow
+              in={isCardHovered}
+              style={{ transformOrigin: "1 1 1" }}
+              {...(true ? { timeout: 1000 } : {})}
+            >
+              <ActionColumn>
+                <Button sx={{ borderRadius: 50 }}>
+                  <EditIcon
+                    sx={{
+                      height: 30,
+                      width: 30,
+                      borderRadius: 100,
+                      background: "transparent",
+                      color: "white",
+                      transition: "all 0.3s !important",
+                      ":hover": {
+                        padding: "0.5em",
+                        boxShadow: "0px 10px 30px dimGray",
+                      },
                     }}
                   />
-                </Card>
-              </Image>
-              <Details>
-                <IdColumn>
-                  <IconWrapper>
-                    <TagIcon />
-                  </IconWrapper>
-                  <Id>{data?.id || ""}</Id>
-                </IdColumn>
-                <IdDivider>
-                  <Divider
-                    sx={{ borderRightWidth: 2 }}
-                    orientation="vertical"
+                </Button>
+                <Button sx={{ borderRadius: 50 }}>
+                  <DeleteIcon
+                    sx={{
+                      borderRadius: 100,
+                      color: "white",
+                      transition: "all 0.3s !important",
+                      ":hover": {
+                        padding: "0.5em",
+                        boxShadow: "0px 10px 30px dimGray",
+                      },
+                    }}
                   />
-                </IdDivider>
-                <Column>
-                  <IconWrapper>
-                    <PermIdentityOutlinedIcon />
-                  </IconWrapper>
-                  <Data>{data?.name || ""}</Data>
-                </Column>
-                <Column>
-                  <IconWrapper>
-                    <CatchingPokemonTwoToneIcon />
-                  </IconWrapper>
-                  <Data>{data?.type || ""}</Data>
-                </Column>
-                <Column>
-                  <IconWrapper>
-                    <FeaturedPlayListOutlinedIcon />
-                  </IconWrapper>
-                  <Data>{data?.set || ""}</Data>
-                </Column>
-                <Column>
-                  <IconWrapper>
-                    <TagIcon />
-                  </IconWrapper>
-                  <Data>{data?.year || ""}</Data>
-                </Column>
-              </Details>
-            </Card>
-          ) : cardView.view === View.EDIT ? (
-            <Card
-              sx={{
-                width: "100%",
-                backgroundColor: "white",
-                borderRadius: 15,
-                height: "100%",
-                display: "flex",
-                transition: "box-shadow 0.8s !important",
-                ":hover": {
-                  boxShadow: "0px 10px 30px dimGray",
-                },
-              }}
-              variant="elevation"
-              raised
-            >
-              <Image>
-                <Card
-                  sx={{
-                    width: 120,
-                    height: 120,
-                    background: "white",
-                    borderRadius: 100,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    opacity: "revert",
-                  }}
-                >
-                  <EditIcon />
-                </Card>
-              </Image>
-              <Details>
-                <Column>
-                  <IconWrapper>
-                    <PermIdentityOutlinedIcon />
-                  </IconWrapper>
-                  <Data>
-                    <TextField
-                      id="standard"
-                      value={data?.name}
-                      label={"Name"}
-                      variant="outlined"
-                      style={{ width: "100%", margin: 5 }}
-                      sx={{ borderRadius: 15 }}
-                      color="warning"
-                      onChange={() => {}}
-                      InputProps={{
-                        sx: {
-                          borderRadius: "15px !important",
-                        },
-                      }}
-                    />
-                  </Data>
-                </Column>
-                <Column>
-                  <IconWrapper>
-                    <CatchingPokemonTwoToneIcon />
-                  </IconWrapper>
-                  <Data>
-                    <TextField
-                      id="standard"
-                      value={data?.type}
-                      label={"Type"}
-                      variant="outlined"
-                      style={{ width: "100%", margin: 5 }}
-                      color="warning"
-                      onChange={() => {}}
-                      InputProps={{
-                        sx: {
-                          borderRadius: "15px !important",
-                        },
-                      }}
-                    />
-                  </Data>
-                </Column>
-                <Column>
-                  <IconWrapper>
-                    <FeaturedPlayListOutlinedIcon />
-                  </IconWrapper>
-                  <Data>
-                    <TextField
-                      id="standard"
-                      value={data?.set}
-                      label={"Set"}
-                      variant="outlined"
-                      style={{ width: "100%", margin: 5 }}
-                      color="warning"
-                      onChange={() => {}}
-                      InputProps={{
-                        sx: {
-                          borderRadius: "15px !important",
-                        },
-                      }}
-                    />
-                  </Data>
-                </Column>
-                <Column>
-                  <IconWrapper>
-                    <TagIcon />
-                  </IconWrapper>
-                  <Data>
-                    <TextField
-                      id="standard"
-                      value={data?.year}
-                      label={"Year"}
-                      variant="outlined"
-                      style={{ width: "100%", margin: 5 }}
-                      color="warning"
-                      onChange={() => {}}
-                      InputProps={{
-                        sx: {
-                          borderRadius: "15px !important",
-                        },
-                      }}
-                    />
-                  </Data>
-                </Column>
-              </Details>
-            </Card>
-          ) : (
-            <>test</>
-          )}
-        </Grow>
-      </Wrapper>
-    </Slide>
+                </Button>
+              </ActionColumn>
+            </Grow>
+          </Card>
+        )}
+      </Grow>
+    </Wrapper>
   )
 }
