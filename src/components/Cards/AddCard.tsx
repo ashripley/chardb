@@ -19,6 +19,7 @@ import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOu
 import TagIcon from "@mui/icons-material/Tag"
 import AddIcon from "@mui/icons-material/Add"
 import DoneIcon from "@mui/icons-material/Done"
+import { v4 as uuidv4 } from "uuid"
 
 const Container = styled.div`
   max-width: 100%;
@@ -112,6 +113,7 @@ export const AddCard = () => {
 
   const onClick = async () => {
     await mutation.mutate({
+      cardId: uuidv4(),
       name,
       type,
       set,
@@ -123,12 +125,10 @@ export const AddCard = () => {
     setIcon("Success")
     setIsLoading(false)
     clearFields()
-    console.log("isLoading false", isLoading)
   }
 
   useEffect(() => {
     if (isLoading) {
-      console.log("isLoading", isLoading)
       onClick()
       setTimeout(() => {
         setIcon("Add")
@@ -137,7 +137,6 @@ export const AddCard = () => {
   }, [isLoading])
 
   const clearFields = () => {
-    console.log("clear fields")
     setName("")
     setType("")
     setSet("")

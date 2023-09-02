@@ -15,7 +15,6 @@ import AddIcon from "@mui/icons-material/Add"
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import SearchIcon from "@mui/icons-material/Search"
 import ClearIcon from "@mui/icons-material/Clear"
-import { PokemonCard } from "../../components/Cards/PokemonCard"
 import RefreshIcon from "@mui/icons-material/Refresh"
 import { QueryCards } from "../../api/queries/cards"
 import { AddCard } from "../../components/Cards/AddCard"
@@ -115,15 +114,13 @@ export const CollectionsBody = () => {
     let snapshots: Record<string, any>[] = []
 
     await snapshot?.forEach((doc: Record<string, any>) => {
-      snapshots.push(doc.data())
+      snapshots.push({ cardId: doc.id, ...doc.data() })
     })
 
     setSnapshots(snapshots)
 
     setShowCard(true)
     setIsLoading(false)
-
-    console.log("snapshots", snapshots)
 
     return snapshots
   }

@@ -1,4 +1,4 @@
-import { Card, Grow } from "@mui/material"
+import { Button, Card, Grow } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
@@ -7,6 +7,7 @@ import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOu
 import TagIcon from "@mui/icons-material/Tag"
 import { useState } from "react"
 import EditIcon from "@mui/icons-material/Edit"
+import DeleteIcon from "@mui/icons-material/Delete"
 import { Spinner } from "../Spinner"
 
 interface Props {
@@ -78,21 +79,46 @@ const Id = styled.div`
   font-size: 1.5rem;
 `
 
+const ActionColumn = styled.div`
+  width: 100%;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f1a1b;
+  border-radius: 50px;
+  transition: all 1s ease;
+
+  &:hover {
+    height: 20%;
+  }
+`
+
 export const GridView = ({ pokemon, cardIndex, isLoading }: Props) => {
   const data = pokemon.find((p) => p.name.length)
 
   const [cardView, setCardView] = useState<Record<string, any>>({
     view: View.READ,
   })
-
   const [imageFace, setImageFace] = useState<string>("front")
+  const [isHovered, setIsHovered] = useState<boolean>(false)
 
   const mouseEnter = () => {
+    setIsHovered(true)
     setImageFace("back")
   }
 
   const mouseLeave = () => {
+    setIsHovered(false)
     setImageFace("front")
+  }
+
+  const onCardEnter = () => {
+    setIsHovered(true)
+  }
+
+  const onCardLeave = () => {
+    setIsHovered(false)
   }
 
   return (
@@ -119,6 +145,8 @@ export const GridView = ({ pokemon, cardIndex, isLoading }: Props) => {
             }}
             variant="elevation"
             raised
+            onMouseEnter={() => onCardEnter()}
+            onMouseLeave={() => onCardLeave()}
           >
             <Image>
               <Card

@@ -37,6 +37,7 @@ const Switch = styled.div`
 `
 
 export const Cards = ({ pokemon, mounted, isLoading }: Props) => {
+  console.log("pokemon", pokemon)
   const [gridView, setGridView] = useState(true)
 
   const viewChange = () => {

@@ -1,4 +1,4 @@
-import { Button, Card, Divider, Grow } from "@mui/material"
+import { Button, Card, Divider, Grow, Slide, TextField } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
@@ -9,6 +9,14 @@ import { useEffect, useState } from "react"
 import EditIcon from "@mui/icons-material/Edit"
 import { Spinner } from "../Spinner"
 import DeleteIcon from "@mui/icons-material/Delete"
+import DoneIcon from "@mui/icons-material/Done"
+import { collection, doc } from "firebase/firestore"
+import {
+  useFirestoreCollectionMutation,
+  useFirestoreDocumentDeletion,
+} from "@react-query-firebase/firestore"
+import { firestore } from "../../services/firebase"
+import { DeleteCard } from "../../api/mutations/deleteCard"
 
 interface Props {
   cardIndex: number
@@ -16,10 +24,10 @@ interface Props {
   isLoading: boolean
 }
 
-// enum View {
-//   READ = "read",
-//   EDIT = "edit",
-// }
+enum View {
+  READ = "read",
+  EDIT = "edit",
+}
 
 const Wrapper = styled.div`
   width: 90%;
@@ -105,7 +113,7 @@ const Id = styled.div`
 `
 
 const ActionColumn = styled.div`
-  width: 10%;
+  width: 8%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -114,21 +122,26 @@ const ActionColumn = styled.div`
   background: #0f1a1b;
   border-radius: 50px;
   transition: all 1s ease;
-
-  &:hover {
-    width: 10%;
-  }
 `
 
 export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
   const data = pokemon.find((p) => p.name.length)
-  // const [cardView, setCardView] = useState<Record<string, any>>({
-  //   view: View.READ,
-  // })
-
+  const cardId = data?.cardId
+  const [cardView, setCardView] = useState<Record<string, any>>({
+    view: View.READ,
+  })
+  const [name, setName] = useState("")
+  const [type, setType] = useState("")
+  const [set, setSet] = useState("")
+  const [year, setYear] = useState("")
   const [imageFace, setImageFace] = useState<string>("front")
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
-  const [isActionsEnabled, setIsActionsEnabled] = useState<boolean>(false)
+
+  const updateRef = collection(firestore, "cards")
+  const deleteRef = doc(collection(firestore, "cards"), cardId)
+
+  const deleteMutation = useFirestoreDocumentDeletion(deleteRef)
+  const updateMutation = useFirestoreCollectionMutation(updateRef)
 
   const onImageEnter = () => {
     setImageFace("back")
@@ -146,11 +159,35 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
     setIsCardHovered(false)
   }
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     isCardHovered ? setIsActionsEnabled(true) : setIsActionsEnabled(false)
-  //   }, 2000)
-  // }, [isCardHovered])
+  const onEdit = () => {
+    setCardView({ view: View.EDIT })
+  }
+
+  const onDelete = async () => {
+    await deleteMutation.mutate()
+    deleteMutation.isError && console.error(deleteMutation.error.message)
+  }
+
+  const onSubmit = async () => {
+    await updateMutation.mutate({
+      name: name.length ? name : data?.name,
+      type: type.length ? type : data?.type,
+      set: set.length ? set : data?.set,
+      year: year.length ? year : data?.year,
+    })
+
+    !!updateMutation.isError && console.log(updateMutation.error.message)
+
+    setCardView({ view: View.READ })
+    clearFields()
+  }
+
+  const clearFields = () => {
+    setName("")
+    setType("")
+    setSet("")
+    setYear("")
+  }
 
   return (
     <Wrapper key={`list-${cardIndex}`}>
@@ -228,48 +265,157 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
                 <IconWrapper>
                   <PermIdentityOutlinedIcon />
                 </IconWrapper>
-                <Data>{data?.name || ""}</Data>
+                {cardView.view === View.READ ? (
+                  <Data>{data?.name || ""}</Data>
+                ) : cardView.view === View.EDIT ? (
+                  <TextField
+                    id="standard"
+                    autoFocus
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder={data?.name}
+                    variant="outlined"
+                    style={{ width: "80%", margin: 5 }}
+                    sx={{ borderRadius: 15 }}
+                    color="warning"
+                    InputProps={{
+                      sx: {
+                        borderRadius: "15px !important",
+                      },
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
               </Column>
               <Column>
                 <IconWrapper>
                   <CatchingPokemonTwoToneIcon />
                 </IconWrapper>
-                <Data>{data?.type || ""}</Data>
+                {cardView.view === View.READ ? (
+                  <Data>{data?.type || ""}</Data>
+                ) : cardView.view === View.EDIT ? (
+                  <TextField
+                    id="standard"
+                    value={type}
+                    placeholder={data?.type}
+                    variant="outlined"
+                    style={{ width: "80%", margin: 5 }}
+                    sx={{ borderRadius: 15 }}
+                    color="warning"
+                    onChange={(e) => setType(e.target.value)}
+                    InputProps={{
+                      sx: {
+                        borderRadius: "15px !important",
+                        borderColor: "red",
+                      },
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
               </Column>
               <Column>
                 <IconWrapper>
                   <FeaturedPlayListOutlinedIcon />
                 </IconWrapper>
-                <Data>{data?.set || ""}</Data>
+                {cardView.view === View.READ ? (
+                  <Data>{data?.set || ""}</Data>
+                ) : cardView.view === View.EDIT ? (
+                  <TextField
+                    id="standard"
+                    value={set}
+                    placeholder={data?.set}
+                    variant="outlined"
+                    style={{ width: "80%", margin: 5 }}
+                    sx={{ borderRadius: 15 }}
+                    color="warning"
+                    onChange={(e) => setSet(e.target.value)}
+                    InputProps={{
+                      sx: {
+                        borderRadius: "15px !important",
+                      },
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
               </Column>
               <Column>
                 <IconWrapper>
                   <TagIcon />
                 </IconWrapper>
-                <Data>{data?.year || ""}</Data>
+                {cardView.view === View.READ ? (
+                  <Data>{data?.year || ""}</Data>
+                ) : cardView.view === View.EDIT ? (
+                  <TextField
+                    id="standard"
+                    value={year}
+                    placeholder={data?.year}
+                    variant="outlined"
+                    style={{ width: "80%", margin: 5 }}
+                    sx={{ borderRadius: 15 }}
+                    color="warning"
+                    onChange={(e) => setYear(e.target.value)}
+                    InputProps={{
+                      sx: {
+                        borderRadius: "15px !important",
+                      },
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
               </Column>
             </Details>
-            <Grow
+            <Slide
               in={isCardHovered}
+              direction="left"
               style={{ transformOrigin: "1 1 1" }}
               {...(true ? { timeout: 1000 } : {})}
             >
               <ActionColumn>
-                <Button sx={{ borderRadius: 50 }}>
-                  <EditIcon
-                    sx={{
-                      height: 30,
-                      width: 30,
-                      borderRadius: 100,
-                      background: "transparent",
-                      color: "white",
-                      transition: "all 0.3s !important",
-                      ":hover": {
-                        padding: "0.5em",
-                        boxShadow: "0px 10px 30px dimGray",
-                      },
-                    }}
-                  />
+                <Button
+                  sx={{ borderRadius: 50 }}
+                  onClick={() =>
+                    cardView.view === View.READ
+                      ? onEdit()
+                      : cardView.view === View.EDIT
+                      ? onSubmit()
+                      : null
+                  }
+                >
+                  {cardView.view === View.READ ? (
+                    <EditIcon
+                      sx={{
+                        height: 30,
+                        width: 30,
+                        borderRadius: 100,
+                        background: "transparent",
+                        color: "white",
+                        transition: "all 0.3s !important",
+                        ":hover": {
+                          padding: "0.5em",
+                          boxShadow: "0px 10px 30px dimGray",
+                        },
+                      }}
+                    />
+                  ) : (
+                    <DoneIcon
+                      sx={{
+                        height: 30,
+                        width: 30,
+                        borderRadius: 100,
+                        background: "transparent",
+                        color: "white",
+                        transition: "all 0.3s !important",
+                        ":hover": {
+                          padding: "0.5em",
+                          boxShadow: "0px 10px 30px dimGray",
+                        },
+                      }}
+                    />
+                  )}
                 </Button>
                 <Button sx={{ borderRadius: 50 }}>
                   <DeleteIcon
@@ -282,10 +428,11 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
                         boxShadow: "0px 10px 30px dimGray",
                       },
                     }}
+                    onClick={() => onDelete()}
                   />
                 </Button>
               </ActionColumn>
-            </Grow>
+            </Slide>
           </Card>
         )}
       </Grow>
