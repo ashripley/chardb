@@ -20,7 +20,7 @@ import { DeleteCard } from "../../api/mutations/deleteCard"
 
 interface Props {
   cardIndex: number
-  pokemon: Record<string, any>[]
+  pokemon: Record<string, any>
   isLoading: boolean
 }
 
@@ -125,8 +125,6 @@ const ActionColumn = styled.div`
 `
 
 export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
-  const data = pokemon.find((p) => p.name.length)
-  const cardId = data?.cardId
   const [cardView, setCardView] = useState<Record<string, any>>({
     view: View.READ,
   })
@@ -138,7 +136,7 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
 
   const updateRef = collection(firestore, "cards")
-  const deleteRef = doc(collection(firestore, "cards"), cardId)
+  const deleteRef = doc(collection(firestore, "cards"), pokemon.cardId)
 
   const deleteMutation = useFirestoreDocumentDeletion(deleteRef)
   const updateMutation = useFirestoreCollectionMutation(updateRef)
@@ -170,10 +168,10 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
 
   const onSubmit = async () => {
     await updateMutation.mutate({
-      name: name.length ? name : data?.name,
-      type: type.length ? type : data?.type,
-      set: set.length ? set : data?.set,
-      year: year.length ? year : data?.year,
+      name: name.length ? name : pokemon.name,
+      type: type.length ? type : pokemon.type,
+      set: set.length ? set : pokemon.set,
+      year: year.length ? year : pokemon.year,
     })
 
     !!updateMutation.isError && console.log(updateMutation.error.message)
@@ -238,11 +236,11 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
                 onMouseLeave={() => onImageLeave()}
               >
                 <img
-                  alt={`"${data?.name}"`}
+                  alt={`"${pokemon.name}"`}
                   src={
                     imageFace === "front"
-                      ? data?.url.front
-                      : data?.url.back || <InsertPhotoOutlinedIcon />
+                      ? pokemon.url.front
+                      : pokemon.url.back || <InsertPhotoOutlinedIcon />
                   }
                   style={{
                     width: 100,
@@ -256,7 +254,7 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
                 <IconWrapper>
                   <TagIcon />
                 </IconWrapper>
-                <Id>{data?.id || ""}</Id>
+                <Id>{pokemon.id || ""}</Id>
               </IdColumn>
               <IdDivider>
                 <Divider sx={{ borderRightWidth: 2 }} orientation="vertical" />
@@ -266,14 +264,14 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
                   <PermIdentityOutlinedIcon />
                 </IconWrapper>
                 {cardView.view === View.READ ? (
-                  <Data>{data?.name || ""}</Data>
+                  <Data>{pokemon.name || ""}</Data>
                 ) : cardView.view === View.EDIT ? (
                   <TextField
                     id="standard"
                     autoFocus
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder={data?.name}
+                    placeholder={pokemon.name}
                     variant="outlined"
                     style={{ width: "80%", margin: 5 }}
                     sx={{ borderRadius: 15 }}
@@ -293,12 +291,12 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
                   <CatchingPokemonTwoToneIcon />
                 </IconWrapper>
                 {cardView.view === View.READ ? (
-                  <Data>{data?.type || ""}</Data>
+                  <Data>{pokemon.type || ""}</Data>
                 ) : cardView.view === View.EDIT ? (
                   <TextField
                     id="standard"
                     value={type}
-                    placeholder={data?.type}
+                    placeholder={pokemon.type}
                     variant="outlined"
                     style={{ width: "80%", margin: 5 }}
                     sx={{ borderRadius: 15 }}
@@ -320,12 +318,12 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
                   <FeaturedPlayListOutlinedIcon />
                 </IconWrapper>
                 {cardView.view === View.READ ? (
-                  <Data>{data?.set || ""}</Data>
+                  <Data>{pokemon.set || ""}</Data>
                 ) : cardView.view === View.EDIT ? (
                   <TextField
                     id="standard"
                     value={set}
-                    placeholder={data?.set}
+                    placeholder={pokemon.set}
                     variant="outlined"
                     style={{ width: "80%", margin: 5 }}
                     sx={{ borderRadius: 15 }}
@@ -346,12 +344,12 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
                   <TagIcon />
                 </IconWrapper>
                 {cardView.view === View.READ ? (
-                  <Data>{data?.year || ""}</Data>
+                  <Data>{pokemon.year || ""}</Data>
                 ) : cardView.view === View.EDIT ? (
                   <TextField
                     id="standard"
                     value={year}
-                    placeholder={data?.year}
+                    placeholder={pokemon.year}
                     variant="outlined"
                     style={{ width: "80%", margin: 5 }}
                     sx={{ borderRadius: 15 }}

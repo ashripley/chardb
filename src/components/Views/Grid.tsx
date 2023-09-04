@@ -12,7 +12,7 @@ import { Spinner } from "../Spinner"
 
 interface Props {
   cardIndex: number
-  pokemon: Record<string, any>[]
+  pokemon: Record<string, any>
   isLoading: boolean
 }
 
@@ -95,8 +95,6 @@ const ActionColumn = styled.div`
 `
 
 export const GridView = ({ pokemon, cardIndex, isLoading }: Props) => {
-  const data = pokemon.find((p) => p.name.length)
-
   const [cardView, setCardView] = useState<Record<string, any>>({
     view: View.READ,
   })
@@ -169,11 +167,11 @@ export const GridView = ({ pokemon, cardIndex, isLoading }: Props) => {
                 onMouseLeave={() => mouseLeave()}
               >
                 <img
-                  alt={`"${data?.name}"`}
+                  alt={`"${pokemon.name}"`}
                   src={
                     imageFace === "front"
-                      ? data?.url.front
-                      : data?.url.back || <InsertPhotoOutlinedIcon />
+                      ? pokemon.url?.front
+                      : pokemon.url?.back || <InsertPhotoOutlinedIcon />
                   }
                   style={{
                     width: 120,
@@ -181,32 +179,32 @@ export const GridView = ({ pokemon, cardIndex, isLoading }: Props) => {
                   }}
                 />
               </Card>
-              <Id>{`# ${data?.id || ""}`}</Id>
+              <Id>{`# ${pokemon.id || ""}`}</Id>
             </Image>
             <Details>
               <Row>
                 <Icon>
                   <PermIdentityOutlinedIcon />
                 </Icon>
-                <Data>{data?.name || ""}</Data>
+                <Data>{pokemon.name || ""}</Data>
               </Row>
               <Row>
                 <Icon>
                   <CatchingPokemonTwoToneIcon />
                 </Icon>
-                <Data>{data?.type || ""}</Data>
+                <Data>{pokemon.type || ""}</Data>
               </Row>
               <Row>
                 <Icon>
                   <FeaturedPlayListOutlinedIcon />
                 </Icon>
-                <Data>{data?.set || ""}</Data>
+                <Data>{pokemon.set || ""}</Data>
               </Row>
               <Row>
                 <Icon>
                   <TagIcon />
                 </Icon>
-                <Data>{data?.year || ""}</Data>
+                <Data>{pokemon.year || ""}</Data>
               </Row>
             </Details>
           </Card>

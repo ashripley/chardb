@@ -3,7 +3,7 @@ import React from "react"
 import { firestore } from "../../services/firebase"
 import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 
-export const MutateCard = async (
+export const UpdateCard = async (
   name: string,
   type: string,
   set: string,

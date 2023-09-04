@@ -1,36 +1,49 @@
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
+import axios from "axios"
 
-// if category and value is false = return all cards
-// if category is true and value is false = return all cards with that category
-// if category is false and value is true = return all cards with that value (name)
-
-export const QueryCards = async (value?: string, category?: string) => {
+export const Card = async (value?: string, category?: string) => {
   const ref = await collection(firestore, "cards")
 
-  if (!category && !value) {
-    // return all cards
-    const res = await query(ref)
-    const snapshot = await getDocs(res)
+  // return all cards with that category and value
+  let tempSnapshots: Record<string, any>[] = []
+  let snapshots: Record<string, any>[] = []
 
-    return snapshot
-  }
+  const data =
+    category && value
+      ? await query(ref, where(category, "==", value))
+      : await query(ref, where("name", "==", value))
 
-  if (category && value) {
-    // return all cards with that category and value
-    const res = await query(ref, where(category, "==", value))
+  const res = await getDocs(data)
+  console.log("res", res)
 
-    const snapshot = await getDocs(res)
+  await res?.forEach((doc: Record<string, any>) => {
+    tempSnapshots.push({ cardId: doc.id, ...doc.data() })
+  })
 
-    return snapshot
-  }
+  console.log("tempSnapshots", tempSnapshots)
+  await tempSnapshots.forEach((pokemon) => {
+    axios
+      .get(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)
+      .then((response) => {
+        if (pokemon.name !== response.data.name) return null
+        const pokemonData = {
+          ...pokemon,
+          cardId: pokemon.cardId,
+          name: response.data.name,
+          id: response.data.id,
+          url: {
+            front: response.data.sprites.front_default,
+            back: response.data.sprites.back_default,
+          },
+        }
 
-  if (!category && value) {
-    // return all cards with that value
-    const res = await query(ref, where("name", "==", value))
+        console.log("pokemonData", pokemonData)
+        snapshots.push({ ...pokemonData })
+      })
+  })
 
-    const snapshot = await getDocs(res)
+  console.log("snapshots card query", snapshots)
 
-    return snapshot
-  }
+  return snapshots
 }
