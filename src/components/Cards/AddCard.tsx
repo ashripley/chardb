@@ -19,6 +19,7 @@ import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOu
 import TagIcon from "@mui/icons-material/Tag"
 import AddIcon from "@mui/icons-material/Add"
 import DoneIcon from "@mui/icons-material/Done"
+import { AddCardMutation } from "../../api/mutations/addCard"
 
 const Container = styled.div`
   max-width: 100%;
@@ -111,14 +112,7 @@ export const AddCard = () => {
   const mutation = useFirestoreCollectionMutation(ref)
 
   const onClick = async () => {
-    await mutation.mutate({
-      name,
-      type,
-      set,
-      year,
-    })
-
-    !!mutation.isError && console.log(mutation.error.message)
+    AddCardMutation(name, type, set, year)
 
     setIcon("Success")
     setIsLoading(false)

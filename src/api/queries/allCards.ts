@@ -1,8 +1,8 @@
-import axios from "axios"
 import { collection, getDocs, query } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
 
 export const AllCards = async () => {
+  console.log("cards")
   let snapshot: Record<string, any>[] = []
 
   const ref = await collection(firestore, "cards")
@@ -10,7 +10,7 @@ export const AllCards = async () => {
   const res = await getDocs(data)
 
   await res?.forEach((doc: Record<string, any>) => {
-    snapshot.push({ cardId: doc.id, ...doc.data() })
+    snapshot.push({ ...doc.data() })
   })
 
   return snapshot

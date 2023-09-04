@@ -5,18 +5,14 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import EditIcon from "@mui/icons-material/Edit"
 import { Spinner } from "../Spinner"
 import DeleteIcon from "@mui/icons-material/Delete"
 import DoneIcon from "@mui/icons-material/Done"
-import { collection, doc } from "firebase/firestore"
-import {
-  useFirestoreCollectionMutation,
-  useFirestoreDocumentDeletion,
-} from "@react-query-firebase/firestore"
+import { collection, deleteDoc, doc } from "firebase/firestore"
+import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { firestore } from "../../services/firebase"
-import { DeleteCard } from "../../api/mutations/deleteCard"
 
 interface Props {
   cardIndex: number
@@ -136,9 +132,6 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
 
   const updateRef = collection(firestore, "cards")
-  const deleteRef = doc(collection(firestore, "cards"), pokemon.cardId)
-
-  const deleteMutation = useFirestoreDocumentDeletion(deleteRef)
   const updateMutation = useFirestoreCollectionMutation(updateRef)
 
   const onImageEnter = () => {
@@ -162,8 +155,9 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
   }
 
   const onDelete = async () => {
-    await deleteMutation.mutate()
-    deleteMutation.isError && console.error(deleteMutation.error.message)
+    console.log("delete")
+    console.log("pokemon.cardId", pokemon.cardId)
+    await deleteDoc(doc(firestore, "cards", pokemon.cardId))
   }
 
   const onSubmit = async () => {

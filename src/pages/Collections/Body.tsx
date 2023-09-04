@@ -21,7 +21,6 @@ import { AllCards } from "../../api/queries/allCards"
 import { AddCard } from "../../components/Cards/AddCard"
 import { Spinner } from "../../components/Spinner"
 import { Cards } from "../../components/Cards/Cards"
-import axios from "axios"
 
 const Root = styled.div`
   display: flex;
@@ -92,36 +91,25 @@ export const CollectionsBody = () => {
   const [showCard, setShowCard] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [icon, setIcon] = useState<string>("collections")
-  const [data, setData] = useState([{ id: 0, url: { front: "", back: "" } }])
+  const [data, setData] = useState([{}])
   const [category, setCategory] = useState<Record<string, any>>({})
 
-  const axiosTest = async (pokemon: string) => {
-    const response = await axios.get(
-      `https://pokeapi.co/api/v2/pokemon/${pokemon}`
-    )
-    return response.data
-  }
-
-  const QueryAllCards = async () => {
+  const Query = async () => {
     setData([])
+    setError(false)
     setIsLoading(true)
 
-    const allCards = await AllCards()
+    const cards =
+      name?.length || category.value?.length
+        ? await Card(name, category.value)
+        : await AllCards()
 
-    allCards.map(async (card) => {
-      const pokemon = await axiosTest(card.name)
-
-      const tempData = {
-        ...card,
-        id: pokemon.id,
-        url: {
-          front: pokemon.sprites.front_default,
-          back: pokemon.sprites.back_default,
-        },
-      }
-      setData((prev) => [...prev, tempData])
+    if (!cards) {
+      setError(true)
+      setIsLoading(false)
       return
-    })
+    }
+    setData([...cards])
 
     setShowCard(true)
     setIsLoading(false)
@@ -143,7 +131,7 @@ export const CollectionsBody = () => {
   const handleElse = () => {}
 
   useEffect(() => {
-    QueryAllCards()
+    Query()
   }, [])
 
   const categories = ["Name", "Type", "Set", "Year"]
@@ -234,9 +222,9 @@ export const CollectionsBody = () => {
                           borderRadius: 50,
                         }}
                         onClick={async () => {
-                          // icon === "collections"
-                          //   ? QueryCard()
-                          icon === "error"
+                          icon === "collections"
+                            ? Query()
+                            : icon === "error"
                             ? handleError()
                             : icon === "refresh"
                             ? handleRefresh()
@@ -283,15 +271,6 @@ export const CollectionsBody = () => {
         {showCard && (
           <Cards pokemon={data} mounted={showCard} isLoading={isLoading} />
         )}
-        {/* {snapshots &&
-          snapshots.map((snapshot, index) => (
-            <PokemonCard
-              cardIndex={index}
-              query={snapshot}
-              isLoading={isLoading}
-              mounted={showCard}
-            />
-          ))} */}
       </Container>
     </>
   )
