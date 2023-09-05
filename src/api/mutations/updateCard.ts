@@ -1,25 +1,32 @@
-import { collection } from "firebase/firestore"
-import React from "react"
+import { doc, updateDoc } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
-import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 
 export const UpdateCard = async (
+  cardId: string,
   name: string,
   type: string,
   set: string,
-  year?: string
+  year: string
 ) => {
-  const ref = collection(firestore, "cards")
-  const mutation = useFirestoreCollectionMutation(ref)
+  const docRef = doc(firestore, "cards", cardId)
 
-  await mutation.mutate({
+  let alertText = ""
+
+  const data = {
     name,
     type,
     set,
     year,
-  })
+  }
 
-  mutation.isError && console.log(mutation.error.message)
+  updateDoc(docRef, data)
+    .then((docRef) => {
+      alertText = `Fields for ${name} have been updated`
+      return alertText
+    })
+    .catch((error) => {
+      return error
+    })
 
   return
 }

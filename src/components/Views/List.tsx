@@ -1,10 +1,11 @@
 import {
+  Alert,
   Button,
   Card,
-  CircularProgress,
   Divider,
   Grow,
   Slide,
+  Snackbar,
   TextField,
 } from "@mui/material"
 import styled from "styled-components"
@@ -13,7 +14,7 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useEffect, useReducer, useState } from "react"
+import { useState } from "react"
 import EditIcon from "@mui/icons-material/Edit"
 import { Spinner } from "../Spinner"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -21,7 +22,7 @@ import DoneIcon from "@mui/icons-material/Done"
 import { collection, deleteDoc, doc } from "firebase/firestore"
 import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { firestore } from "../../services/firebase"
-import { AllCards } from "../../api/queries/allCards"
+import { UpdateCard } from "../../api/mutations/updateCard"
 
 interface Props {
   cardIndex: number
@@ -146,6 +147,8 @@ export const ListView = ({
   const [imageFace, setImageFace] = useState<string>("front")
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
   const [isCardLoading, setIsCardLoading] = useState<boolean>(false)
+  const [alert, setAlert] = useState<string>("")
+  const [open, setOpen] = useState<boolean>(false)
   // const [isDeleted, setIsDeleted] = useState<boolean>(false)
 
   const updateRef = collection(firestore, "cards")
@@ -173,20 +176,22 @@ export const ListView = ({
 
   const onDelete = async () => {
     await deleteDoc(doc(firestore, "cards", pokemon.cardId))
-    // await setIsDeleted(true)
     isCardDeleted(true)
   }
 
   const onSubmit = async () => {
     setIsCardLoading(true)
-    await updateMutation.mutate({
-      name: name.length ? name : pokemon.name,
-      type: type.length ? type : pokemon.type,
-      set: set.length ? set : pokemon.set,
-      year: year.length ? year : pokemon.year,
-    })
 
-    !!updateMutation.isError && console.log(updateMutation.error.message)
+    await UpdateCard(
+      pokemon.cardId,
+      name.length ? name : pokemon.name,
+      type.length ? type : pokemon.type,
+      set.length ? set : pokemon.set,
+      year.length ? year : pokemon.year
+    )
+
+    setOpen(true)
+    setAlert(`Fields for ${pokemon.name.toUpperCase()} have been updated`)
 
     setCardView({ view: View.READ })
     clearFields()
@@ -445,6 +450,15 @@ export const ListView = ({
                 </Button>
               </ActionColumn>
             </Slide>
+            <Snackbar open={open} autoHideDuration={2000} onClose={() => {}}>
+              <Alert
+                onClose={() => {}}
+                severity="success"
+                sx={{ width: "100%" }}
+              >
+                {alert}
+              </Alert>
+            </Snackbar>
           </Card>
         )}
       </Grow>
