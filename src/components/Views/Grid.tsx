@@ -1,4 +1,4 @@
-import { Button, Card, Grow } from "@mui/material"
+import { Card, Grow } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
@@ -6,8 +6,6 @@ import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTo
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
 import { useState } from "react"
-import EditIcon from "@mui/icons-material/Edit"
-import DeleteIcon from "@mui/icons-material/Delete"
 import { Spinner } from "../Spinner"
 
 interface Props {

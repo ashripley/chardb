@@ -1,11 +1,19 @@
-import { Button, Card, Divider, Grow, Slide, TextField } from "@mui/material"
+import {
+  Button,
+  Card,
+  CircularProgress,
+  Divider,
+  Grow,
+  Slide,
+  TextField,
+} from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useState } from "react"
+import { useEffect, useReducer, useState } from "react"
 import EditIcon from "@mui/icons-material/Edit"
 import { Spinner } from "../Spinner"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -13,11 +21,13 @@ import DoneIcon from "@mui/icons-material/Done"
 import { collection, deleteDoc, doc } from "firebase/firestore"
 import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { firestore } from "../../services/firebase"
+import { AllCards } from "../../api/queries/allCards"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
   isLoading: boolean
+  isCardDeleted: (isDeleted: boolean) => void
 }
 
 enum View {
@@ -120,7 +130,12 @@ const ActionColumn = styled.div`
   transition: all 1s ease;
 `
 
-export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
+export const ListView = ({
+  pokemon,
+  cardIndex,
+  isLoading,
+  isCardDeleted,
+}: Props) => {
   const [cardView, setCardView] = useState<Record<string, any>>({
     view: View.READ,
   })
@@ -130,6 +145,8 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
   const [year, setYear] = useState("")
   const [imageFace, setImageFace] = useState<string>("front")
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
+  const [isCardLoading, setIsCardLoading] = useState<boolean>(false)
+  // const [isDeleted, setIsDeleted] = useState<boolean>(false)
 
   const updateRef = collection(firestore, "cards")
   const updateMutation = useFirestoreCollectionMutation(updateRef)
@@ -155,12 +172,13 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
   }
 
   const onDelete = async () => {
-    console.log("delete")
-    console.log("pokemon.cardId", pokemon.cardId)
     await deleteDoc(doc(firestore, "cards", pokemon.cardId))
+    // await setIsDeleted(true)
+    isCardDeleted(true)
   }
 
   const onSubmit = async () => {
+    setIsCardLoading(true)
     await updateMutation.mutate({
       name: name.length ? name : pokemon.name,
       type: type.length ? type : pokemon.type,
@@ -172,6 +190,7 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
 
     setCardView({ view: View.READ })
     clearFields()
+    setIsCardLoading(false)
   }
 
   const clearFields = () => {
@@ -185,6 +204,7 @@ export const ListView = ({ pokemon, cardIndex, isLoading }: Props) => {
     <Wrapper key={`list-${cardIndex}`}>
       <Grow
         in={true}
+        unmountOnExit
         style={{ transformOrigin: "1 1 1" }}
         {...(true ? { timeout: 1000 } : {})}
       >

@@ -13,5 +13,6 @@ export const AllCards = async () => {
     snapshot.push({ ...doc.data() })
   })
 
+  console.log("snapshot", snapshot)
   return snapshot
 }

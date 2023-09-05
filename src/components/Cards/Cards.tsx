@@ -3,11 +3,13 @@ import styled from "styled-components"
 import { useEffect, useState } from "react"
 import { ViewSwitch } from "../ViewSwitch"
 import { PokemonCard } from "./PokemonCard"
+import { AllCards } from "../../api/queries/allCards"
 
 interface Props {
   pokemon: Record<string, any>[]
   mounted: boolean
   isLoading: boolean
+  isCardDeleted: (hasChanged: boolean) => void
 }
 
 const Container = styled.div`
@@ -36,9 +38,16 @@ const Switch = styled.div`
   padding-bottom: 20px;
 `
 
-export const Cards = ({ pokemon, mounted, isLoading }: Props) => {
+export const Cards = ({
+  pokemon,
+  mounted,
+  isLoading,
+  isCardDeleted,
+}: Props) => {
   const [cards, setCards] = useState<Record<string, any>[]>([])
   const [gridView, setGridView] = useState(true)
+  const [state, setState] = useState(false)
+  // const [key, setKey] = useState(0)
 
   const viewChange = () => {
     setGridView(!gridView)
@@ -54,6 +63,13 @@ export const Cards = ({ pokemon, mounted, isLoading }: Props) => {
     setCards(filteredCards)
   }, [pokemon])
 
+  const isDeleted = (hasChanged: boolean) => {
+    isCardDeleted(hasChanged)
+    // let counter = 1
+    // !!hasChanged && setKey(counter++)
+    // AllCards()
+  }
+
   return (
     <Slide direction="up" in={mounted} mountOnEnter unmountOnExit>
       <Container>
@@ -66,6 +82,8 @@ export const Cards = ({ pokemon, mounted, isLoading }: Props) => {
         >
           {cards.map((poke, index) => (
             <PokemonCard
+              // key={key}
+              isCardDeleted={isDeleted}
               pokemon={poke}
               cardIndex={index}
               view={gridView}

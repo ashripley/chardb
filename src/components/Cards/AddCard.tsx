@@ -12,7 +12,7 @@ import {
   TextField,
 } from "@mui/material"
 import styled from "styled-components"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
@@ -112,21 +112,19 @@ export const AddCard = () => {
   const mutation = useFirestoreCollectionMutation(ref)
 
   const onClick = async () => {
-    AddCardMutation(name, type, set, year)
+    setIsLoading(true)
+
+    await AddCardMutation(name, type, set, year)
 
     setIcon("Success")
-    setIsLoading(false)
     clearFields()
-  }
 
-  useEffect(() => {
-    if (isLoading) {
-      onClick()
-      setTimeout(() => {
-        setIcon("Add")
-      }, 1500)
-    }
-  }, [isLoading])
+    setTimeout(() => {
+      setIcon("Add")
+    }, 2500)
+
+    setIsLoading(false)
+  }
 
   const clearFields = () => {
     setName("")
@@ -267,9 +265,9 @@ export const AddCard = () => {
                           borderRadius: 50,
                           height: "100%",
                         }}
-                        onClick={() => setIsLoading(true)}
+                        onClick={() => onClick()}
                       >
-                        {!!isLoading || mutation.isLoading ? (
+                        {isLoading || mutation.isLoading ? (
                           <CircularProgress color="success" />
                         ) : mutation.isSuccess ? (
                           icon === "Success" ? (

@@ -134,6 +134,14 @@ export const CollectionsBody = () => {
     Query()
   }, [])
 
+  const isDeleted = async (hasChanged: boolean) => {
+    if (hasChanged) {
+      const cards = await AllCards()
+
+      setData([...cards])
+    }
+  }
+
   const categories = ["Name", "Type", "Set", "Year"]
 
   return (
@@ -269,7 +277,12 @@ export const CollectionsBody = () => {
       <Container>
         {showAddCard && <AddCard />}
         {showCard && (
-          <Cards pokemon={data} mounted={showCard} isLoading={isLoading} />
+          <Cards
+            isCardDeleted={isDeleted}
+            pokemon={data}
+            mounted={showCard}
+            isLoading={isLoading}
+          />
         )}
       </Container>
     </>
