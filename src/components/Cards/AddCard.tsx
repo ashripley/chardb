@@ -24,7 +24,6 @@ import AddIcon from "@mui/icons-material/Add"
 import DoneIcon from "@mui/icons-material/Done"
 import { AddCardMutation } from "../../api/mutations/addCard"
 import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
-import StarOutlineOutlinedIcon from "@mui/icons-material/StarOutlineOutlined"
 
 const Container = styled.div`
   max-width: 100%;
@@ -120,16 +119,15 @@ export const AddCard = () => {
   const [set, setSet] = useState("")
   const [year, setYear] = useState("")
   const [quantity, setQuantity] = useState("")
+  const [attribute, setAttribute] = useState("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [icon, setIcon] = useState("")
-  const [attribute, setAttribute] = useState("")
 
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAttribute((event.target as HTMLInputElement).value)
-    console.log("attribute", attribute)
   }
 
   const onClick = async () => {

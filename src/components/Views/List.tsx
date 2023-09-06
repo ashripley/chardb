@@ -3,7 +3,10 @@ import {
   Button,
   Card,
   Divider,
+  FormControlLabel,
   Grow,
+  Radio,
+  RadioGroup,
   Slide,
   Snackbar,
   TextField,
@@ -23,6 +26,7 @@ import { collection, deleteDoc, doc } from "firebase/firestore"
 import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { firestore } from "../../services/firebase"
 import { UpdateCard } from "../../api/mutations/updateCard"
+import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
 
 interface Props {
   cardIndex: number
@@ -131,6 +135,15 @@ const ActionColumn = styled.div`
   transition: all 1s ease;
 `
 
+const StyledRadioGroup = styled(RadioGroup)`
+  width: 50%;
+  margin: 5px;
+  font-weight: 300 !important;
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+    source-sans-pro, sans-serif;
+`
+
 export const ListView = ({
   pokemon,
   cardIndex,
@@ -144,6 +157,8 @@ export const ListView = ({
   const [type, setType] = useState("")
   const [set, setSet] = useState("")
   const [year, setYear] = useState("")
+  const [quantity, setQuantity] = useState("")
+  const [attribute, setAttribute] = useState("")
   const [imageFace, setImageFace] = useState<string>("front")
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
   const [isCardLoading, setIsCardLoading] = useState<boolean>(false)
@@ -203,6 +218,12 @@ export const ListView = ({
     setType("")
     setSet("")
     setYear("")
+    setQuantity("")
+    setAttribute("")
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAttribute((event.target as HTMLInputElement).value)
   }
 
   return (
@@ -384,6 +405,56 @@ export const ListView = ({
                   <></>
                 )}
               </Column>
+              {cardView.view === View.EDIT && (
+                <>
+                  <Column>
+                    <IconWrapper>
+                      <PlaylistAddOutlinedIcon />
+                    </IconWrapper>
+                    <TextField
+                      id="standard"
+                      value={attribute}
+                      placeholder={pokemon.quantity}
+                      variant="outlined"
+                      type="number"
+                      style={{ width: "80%", margin: 5 }}
+                      color="warning"
+                      onChange={(e) => setQuantity(e.target.value)}
+                      InputProps={{
+                        sx: {
+                          borderRadius: "15px !important",
+                        },
+                      }}
+                    />
+                  </Column>
+                  <StyledRadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="controlled-radio-buttons-group"
+                    defaultValue={pokemon.attribute}
+                    value={attribute}
+                    onChange={handleChange}
+                  >
+                    <FormControlLabel
+                      value="normal"
+                      control={<Radio color="warning" />}
+                      label="Normal"
+                      sx={{ height: 35 }}
+                    />
+                    <FormControlLabel
+                      value="holo"
+                      control={<Radio color="warning" />}
+                      label="Holo"
+                      sx={{ height: 35 }}
+                    />
+                    <FormControlLabel
+                      value="special"
+                      control={<Radio color="warning" />}
+                      label="Special"
+                      sx={{ height: 35 }}
+                    />
+                  </StyledRadioGroup>
+                </>
+              )}
             </Details>
             <Slide
               in={isCardHovered}
