@@ -202,7 +202,9 @@ export const ListView = ({
       name.length ? name : pokemon.name,
       type.length ? type : pokemon.type,
       set.length ? set : pokemon.set,
-      year.length ? year : pokemon.year
+      year.length ? year : pokemon.year,
+      quantity.length ? quantity : pokemon.quantity,
+      attribute.length ? attribute : pokemon.attribute
     )
 
     setOpen(true)
