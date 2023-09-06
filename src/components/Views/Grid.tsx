@@ -1,4 +1,4 @@
-import { Card, Grow } from "@mui/material"
+import { Card, Fade, Grow, Tooltip } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
@@ -7,6 +7,8 @@ import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOu
 import TagIcon from "@mui/icons-material/Tag"
 import { useState } from "react"
 import { Spinner } from "../Spinner"
+import StarOutlineIcon from "@mui/icons-material/StarOutline"
+import StarIcon from "@mui/icons-material/Star"
 
 interface Props {
   cardIndex: number
@@ -25,13 +27,17 @@ const Wrapper = styled.div`
   height: 500px;
 `
 
-const Image = styled.div`
+const Image = styled.div<{ attribute: boolean }>`
   background: #0f1a1b;
   height: 60%;
   display: flex;
   align-items: center;
+  ${(props) =>
+    !!props.attribute &&
+    `
+    flex-direction: column;
+    `}
   justify-content: center;
-  flex-direction: column;
   border-radius: 50px;
 `
 
@@ -67,7 +73,7 @@ const Data = styled.div`
   text-transform: capitalize;
 `
 
-const Id = styled.div`
+const Id = styled.div<{ attribute: boolean }>`
   color: white;
   font-weight: 800;
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
@@ -75,21 +81,27 @@ const Id = styled.div`
     source-sans-pro, sans-serif;
   padding-top: 30px;
   font-size: 1.5rem;
+
+  ${(props) =>
+    !!props.attribute &&
+    `
+  justify-content: center;
+  display: flex;
+  `}
 `
 
-const ActionColumn = styled.div`
-  width: 100%;
-  height: 20%;
+const Attribute = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #0f1a1b;
-  border-radius: 50px;
-  transition: all 1s ease;
+  color: white;
+  height: 75%;
+  width: 25px;
+  margin-right: -25px;
+`
 
-  &:hover {
-    height: 20%;
-  }
+const CardWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `
 
 export const GridView = ({ pokemon, cardIndex, isLoading }: Props) => {
@@ -144,40 +156,65 @@ export const GridView = ({ pokemon, cardIndex, isLoading }: Props) => {
             onMouseEnter={() => onCardEnter()}
             onMouseLeave={() => onCardLeave()}
           >
-            <Image>
-              <Card
-                sx={{
-                  width: 150,
-                  height: 150,
-                  background: "white",
-                  borderRadius: 100,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  opacity: "revert",
-                  transition: "all 0.8s !important",
-                  ":hover": {
-                    padding: "0.5em",
-                    boxShadow: "0px 0px 30px gray",
-                  },
-                }}
-                onMouseEnter={() => mouseEnter()}
-                onMouseLeave={() => mouseLeave()}
-              >
-                <img
-                  alt={`"${pokemon.name}"`}
-                  src={
-                    imageFace === "front"
-                      ? pokemon.url?.front
-                      : pokemon.url?.back || <InsertPhotoOutlinedIcon />
-                  }
-                  style={{
-                    width: 120,
-                    height: 120,
+            <Image attribute={pokemon.attribute === ("" || "standard")}>
+              <CardWrapper>
+                <Card
+                  sx={{
+                    width: 150,
+                    height: 150,
+                    background: "white",
+                    borderRadius: 100,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    opacity: "revert",
+                    transition: "all 0.8s !important",
+                    ":hover": {
+                      padding: "0.5em",
+                      boxShadow: "0px 0px 30px gray",
+                    },
                   }}
-                />
-              </Card>
-              <Id>{`# ${pokemon.id || ""}`}</Id>
+                  onMouseEnter={() => mouseEnter()}
+                  onMouseLeave={() => mouseLeave()}
+                >
+                  <img
+                    alt={`"${pokemon.name}"`}
+                    src={
+                      imageFace === "front"
+                        ? pokemon.url?.front
+                        : pokemon.url?.back || <InsertPhotoOutlinedIcon />
+                    }
+                    style={{
+                      width: 120,
+                      height: 120,
+                    }}
+                  />
+                </Card>
+                <Id attribute={pokemon.attribute !== ("" || "standard")}>{`# ${
+                  pokemon.id || ""
+                }`}</Id>
+              </CardWrapper>
+              {!!pokemon.attribute && (
+                <Attribute>
+                  {pokemon.attribute === "holo" ? (
+                    <Tooltip
+                      title="Holographic"
+                      TransitionComponent={Fade}
+                      TransitionProps={{ timeout: 600 }}
+                    >
+                      <StarOutlineIcon />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip
+                      title="Special"
+                      TransitionComponent={Fade}
+                      TransitionProps={{ timeout: 600 }}
+                    >
+                      <StarIcon />
+                    </Tooltip>
+                  )}
+                </Attribute>
+              )}
             </Image>
             <Details>
               <Row>

@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Divider,
+  Fade,
   FormControlLabel,
   Grow,
   Radio,
@@ -10,6 +11,7 @@ import {
   Slide,
   Snackbar,
   TextField,
+  Tooltip,
 } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
@@ -28,8 +30,8 @@ import { firestore } from "../../services/firebase"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
 import ClearIcon from "@mui/icons-material/Clear"
-import holo from "../../assets/icons/holo.jpg"
-import gold from "../../assets/icons/gold.jpg"
+import StarOutlineIcon from "@mui/icons-material/StarOutline"
+import StarIcon from "@mui/icons-material/Star"
 
 interface Props {
   cardIndex: number
@@ -145,6 +147,14 @@ const StyledRadioGroup = styled(RadioGroup)`
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
     source-sans-pro, sans-serif;
+`
+
+const Attribute = styled.div`
+  display: flex;
+  color: white;
+  height: 120px;
+  width: 25px;
+  margin-right: -25px;
 `
 
 export const ListView = ({
@@ -274,14 +284,6 @@ export const ListView = ({
                   alignItems: "center",
                   justifyContent: "center",
                   opacity: "revert",
-                  background: `${
-                    pokemon.attribute === "holo"
-                      ? `url(${holo})`
-                      : pokemon.attribute === "special"
-                      ? `url(${gold})`
-                      : "white"
-                  }`,
-                  backgroundSize: "200px 200px",
                   transition: "all 0.8s !important",
                   ":hover": {
                     padding: "0.3em",
@@ -304,6 +306,27 @@ export const ListView = ({
                   }}
                 />
               </Card>
+              {!!pokemon.attribute && (
+                <Attribute>
+                  {pokemon.attribute === "holo" ? (
+                    <Tooltip
+                      title="Holographic"
+                      TransitionComponent={Fade}
+                      TransitionProps={{ timeout: 600 }}
+                    >
+                      <StarOutlineIcon />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip
+                      title="Special"
+                      TransitionComponent={Fade}
+                      TransitionProps={{ timeout: 600 }}
+                    >
+                      <StarIcon />
+                    </Tooltip>
+                  )}
+                </Attribute>
+              )}
             </Image>
             <Details isHovered={isCardHovered}>
               <IdColumn>

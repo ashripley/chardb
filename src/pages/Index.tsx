@@ -4,12 +4,6 @@ import { Home } from "./Home/Index"
 import { Collections } from "./Collections/Index"
 import { Menu } from "./Menu/Menu"
 
-const Container = styled.div`
-  max-width: 100%;
-  max-height: 100%;
-  height: 100vh;
-  width: 100vw;
-`
 export const Index = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isClosed, setIsClosed] = useState(false)
@@ -33,27 +27,25 @@ export const Index = () => {
 
   return (
     <>
-      <Container>
-        {page === "Home" ? (
-          <Home
-            menuAction={page}
-            passMenuActionLabel={MenuAction}
-            isOpen={onClick}
-          />
-        ) : (
-          <Collections
-            menuAction={page}
-            passMenuActionLabel={MenuAction}
-            isOpen={onClick}
-          />
-        )}
-        <Menu
-          menuOption={MenuAction}
-          isClosed={isClosed}
-          isOpen={isOpen}
-          drawerToggle={drawerToggle}
+      {page === "Home" ? (
+        <Home
+          menuAction={page}
+          passMenuActionLabel={MenuAction}
+          isOpen={onClick}
         />
-      </Container>
+      ) : (
+        <Collections
+          menuAction={page}
+          passMenuActionLabel={MenuAction}
+          isOpen={onClick}
+        />
+      )}
+      <Menu
+        menuOption={MenuAction}
+        isClosed={isClosed}
+        isOpen={isOpen}
+        drawerToggle={drawerToggle}
+      />
     </>
   )
 }

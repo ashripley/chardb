@@ -20,7 +20,7 @@ const Container = styled.div`
 `
 
 const StyledPaper = styled(Paper)`
-  background-color: white;
+  background-color: transparent;
   display: flex;
   max-width: 100%;
   width: 100%;
@@ -77,7 +77,11 @@ export const Cards = ({
         </Switch>
         <StyledPaper
           elevation={0}
-          style={{ backgroundColor: "white", maxWidth: "100%", padding: 0 }}
+          style={{
+            backgroundColor: "transparent",
+            maxWidth: "100%",
+            padding: 0,
+          }}
         >
           {cards.map((poke, index) => (
             <PokemonCard

@@ -11,12 +11,8 @@ interface Props {
 }
 
 const Container = styled.div`
-  background: url(${collections});
-  background-size: 100vw 100vh;
-  background-position: center;
+  background: white;
   background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
 `
 export const Collections = ({
   menuAction,
