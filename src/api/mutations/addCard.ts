@@ -7,7 +7,9 @@ export const AddCardMutation = async (
   name: string,
   type: string,
   set: string,
-  year: string
+  year: string,
+  quantity: string,
+  attribute: string
 ) => {
   const uniqueId = uuidv4()
 
@@ -27,9 +29,13 @@ export const AddCardMutation = async (
     type,
     set,
     year,
+    quantity,
+    attribute,
     url: {
       front: pokemon.sprites.front_default,
       back: pokemon.sprites.back_default,
     },
   })
 }
+
+// also add fields for quantity, holo, special

@@ -25,3 +25,5 @@ export const Card = async (value?: string, category?: string) => {
 
   return snapshots
 }
+
+// query for quanity, holo, special, evolutions

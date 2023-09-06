@@ -6,8 +6,11 @@ import {
   Card,
   CircularProgress,
   Divider,
+  FormControlLabel,
   Grow,
   Paper,
+  Radio,
+  RadioGroup,
   Slide,
   TextField,
 } from "@mui/material"
@@ -20,6 +23,8 @@ import TagIcon from "@mui/icons-material/Tag"
 import AddIcon from "@mui/icons-material/Add"
 import DoneIcon from "@mui/icons-material/Done"
 import { AddCardMutation } from "../../api/mutations/addCard"
+import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
+import StarOutlineOutlinedIcon from "@mui/icons-material/StarOutlineOutlined"
 
 const Container = styled.div`
   max-width: 100%;
@@ -93,11 +98,20 @@ const ListIconWrapper = styled.div`
 
 const Add = styled.div`
   display: flex;
-  width: 50%;
+  width: 80%;
   height: 40%;
   justify-content: center;
   align-items: center;
   margin-left: -20px;
+`
+
+const StyledRadioGroup = styled(RadioGroup)`
+  width: 50%;
+  margin: 5px;
+  font-weight: 300 !important;
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+    source-sans-pro, sans-serif;
 `
 
 export const AddCard = () => {
@@ -105,16 +119,23 @@ export const AddCard = () => {
   const [type, setType] = useState("")
   const [set, setSet] = useState("")
   const [year, setYear] = useState("")
+  const [quantity, setQuantity] = useState("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [icon, setIcon] = useState("")
+  const [attribute, setAttribute] = useState("")
 
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAttribute((event.target as HTMLInputElement).value)
+    console.log("attribute", attribute)
+  }
+
   const onClick = async () => {
     setIsLoading(true)
 
-    await AddCardMutation(name, type, set, year)
+    await AddCardMutation(name, type, set, year, quantity, attribute)
 
     setIcon("Success")
     clearFields()
@@ -131,6 +152,8 @@ export const AddCard = () => {
     setType("")
     setSet("")
     setYear("")
+    setQuantity("")
+    setAttribute("")
   }
 
   // const changeIcon = () => {
@@ -237,6 +260,7 @@ export const AddCard = () => {
                           id="standard"
                           value={year}
                           label={"Year"}
+                          type="number"
                           variant="outlined"
                           style={{ width: "100%", margin: 5 }}
                           color="warning"
@@ -249,6 +273,53 @@ export const AddCard = () => {
                         />
                       </ListData>
                     </ListColumn>
+                    <ListColumn>
+                      <ListIconWrapper>
+                        <PlaylistAddOutlinedIcon />
+                      </ListIconWrapper>
+                      <ListData>
+                        <TextField
+                          id="standard"
+                          value={quantity}
+                          label={"Quantity"}
+                          variant="outlined"
+                          type="number"
+                          style={{ width: "100%", margin: 5 }}
+                          color="warning"
+                          onChange={(e) => setQuantity(e.target.value)}
+                          InputProps={{
+                            sx: {
+                              borderRadius: "15px !important",
+                            },
+                          }}
+                        />
+                      </ListData>
+                    </ListColumn>
+                    <StyledRadioGroup
+                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      name="controlled-radio-buttons-group"
+                      value={attribute}
+                      onChange={handleChange}
+                    >
+                      <FormControlLabel
+                        value="normal"
+                        control={<Radio color="warning" />}
+                        label="Normal"
+                        sx={{ height: 35 }}
+                      />
+                      <FormControlLabel
+                        value="holo"
+                        control={<Radio color="warning" />}
+                        label="Holo"
+                        sx={{ height: 35 }}
+                      />
+                      <FormControlLabel
+                        value="special"
+                        control={<Radio color="warning" />}
+                        label="Special"
+                        sx={{ height: 35 }}
+                      />
+                    </StyledRadioGroup>
                     <IdDivider>
                       <Divider
                         sx={{ borderRightWidth: 2 }}
