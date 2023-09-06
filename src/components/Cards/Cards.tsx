@@ -17,7 +17,6 @@ const Container = styled.div`
   max-height: 100%;
   display: block;
   justify-content: center;
-  background: white !important;
 `
 
 const StyledPaper = styled(Paper)`

@@ -27,7 +27,6 @@ const Root = styled.div`
   max-width: 100%;
   width: 100%;
   justify-content: center;
-  background: white !important;
   padding-top: 30px;
 `
 
@@ -48,7 +47,6 @@ const Container = styled.div`
   max-height: 100%;
   height: 80vh;
   padding: 30px;
-  background: white !important;
 `
 
 const TextFieldWrapper = styled.div`

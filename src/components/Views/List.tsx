@@ -27,6 +27,9 @@ import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { firestore } from "../../services/firebase"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
+import ClearIcon from "@mui/icons-material/Clear"
+import holo from "../../assets/icons/holo.jpg"
+import gold from "../../assets/icons/gold.jpg"
 
 interface Props {
   cardIndex: number
@@ -194,6 +197,10 @@ export const ListView = ({
     isCardDeleted(true)
   }
 
+  const onClear = async () => {
+    setCardView({ view: View.READ })
+  }
+
   const onSubmit = async () => {
     setIsCardLoading(true)
 
@@ -203,8 +210,8 @@ export const ListView = ({
       type.length ? type : pokemon.type,
       set.length ? set : pokemon.set,
       year.length ? year : pokemon.year,
-      quantity.length ? quantity : pokemon.quantity,
-      attribute.length ? attribute : pokemon.attribute
+      quantity.length ? quantity : pokemon.quantity ?? "",
+      attribute.length ? attribute : pokemon.attribute ?? ""
     )
 
     setOpen(true)
@@ -262,12 +269,19 @@ export const ListView = ({
                 sx={{
                   width: 120,
                   height: 120,
-                  background: "white",
                   borderRadius: 100,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   opacity: "revert",
+                  background: `${
+                    pokemon.attribute === "holo"
+                      ? `url(${holo})`
+                      : pokemon.attribute === "special"
+                      ? `url(${gold})`
+                      : "white"
+                  }`,
+                  backgroundSize: "200px 200px",
                   transition: "all 0.8s !important",
                   ":hover": {
                     padding: "0.3em",
@@ -415,7 +429,7 @@ export const ListView = ({
                     </IconWrapper>
                     <TextField
                       id="standard"
-                      value={attribute}
+                      value={quantity}
                       placeholder={pokemon.quantity}
                       variant="outlined"
                       type="number"
@@ -430,10 +444,9 @@ export const ListView = ({
                     />
                   </Column>
                   <StyledRadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
-                    name="controlled-radio-buttons-group"
-                    defaultValue={pokemon.attribute}
-                    value={attribute}
+                    defaultValue={
+                      pokemon.attribute ? pokemon.attribute : attribute
+                    }
                     onChange={handleChange}
                   >
                     <FormControlLabel
@@ -508,18 +521,33 @@ export const ListView = ({
                   )}
                 </Button>
                 <Button sx={{ borderRadius: 50 }}>
-                  <DeleteIcon
-                    sx={{
-                      borderRadius: 100,
-                      color: "white",
-                      transition: "all 0.3s !important",
-                      ":hover": {
-                        padding: "0.5em",
-                        boxShadow: "0px 10px 30px dimGray",
-                      },
-                    }}
-                    onClick={() => onDelete()}
-                  />
+                  {cardView.view === View.READ ? (
+                    <DeleteIcon
+                      sx={{
+                        borderRadius: 100,
+                        color: "white",
+                        transition: "all 0.3s !important",
+                        ":hover": {
+                          padding: "0.5em",
+                          boxShadow: "0px 10px 30px dimGray",
+                        },
+                      }}
+                      onClick={() => onDelete()}
+                    />
+                  ) : (
+                    <ClearIcon
+                      sx={{
+                        borderRadius: 100,
+                        color: "white",
+                        transition: "all 0.3s !important",
+                        ":hover": {
+                          padding: "0.5em",
+                          boxShadow: "0px 10px 30px dimGray",
+                        },
+                      }}
+                      onClick={() => onClear()}
+                    />
+                  )}
                 </Button>
               </ActionColumn>
             </Slide>

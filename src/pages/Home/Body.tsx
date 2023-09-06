@@ -1,4 +1,4 @@
-import { Button, StyledEngineProvider } from "@mui/material"
+import { Button, Grow, StyledEngineProvider } from "@mui/material"
 import styled from "styled-components"
 
 interface Props {
@@ -81,30 +81,36 @@ export const HomeBody = ({ menuOption }: Props) => {
 
   return (
     <>
-      <Root>
-        <Wrapper>
-          <Title>
-            <span style={{ color: "darkorange", fontWeight: 800 }}>char</span>
-            <span style={{ color: "white" }}>db</span>
-          </Title>
-          <SubTitle>
-            <span style={{ color: "white" }}>
-              a place to store your nostalgia
-            </span>
-          </SubTitle>
-        </Wrapper>
-        <ButtonWrapper>
-          <StyledEngineProvider injectFirst>
-            <StyledButton
-              variant="contained"
-              onClick={() => onClick()}
-              sx={{ background: "transparent" }}
-            >
-              Collections
-            </StyledButton>
-          </StyledEngineProvider>
-        </ButtonWrapper>
-      </Root>
+      <Grow
+        in={true}
+        style={{ transformOrigin: "1 1 1" }}
+        {...(true ? { timeout: 1000 } : { timeout: 1000 })}
+      >
+        <Root>
+          <Wrapper>
+            <Title>
+              <span style={{ color: "darkorange", fontWeight: 800 }}>char</span>
+              <span style={{ color: "white" }}>db</span>
+            </Title>
+            <SubTitle>
+              <span style={{ color: "white" }}>
+                a place to store your nostalgia
+              </span>
+            </SubTitle>
+          </Wrapper>
+          <ButtonWrapper>
+            <StyledEngineProvider injectFirst>
+              <StyledButton
+                variant="contained"
+                onClick={() => onClick()}
+                sx={{ background: "transparent" }}
+              >
+                Collections
+              </StyledButton>
+            </StyledEngineProvider>
+          </ButtonWrapper>
+        </Root>
+      </Grow>
     </>
   )
 }
