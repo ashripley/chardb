@@ -57,15 +57,15 @@ export const AddCardMutation = async (
   }
 
   const firstEvolution = chain.chain.species
-  const secondEvolution = chain.chain.evolves_to[0]?.species
-  const thirdEvolution = chain.chain.evolves_to[0].evolves_to[0]?.species
+  const secondEvolution = chain.chain.evolves_to?.[0]?.species
+  const thirdEvolution = chain.chain.evolves_to?.[0]?.evolves_to?.[0]?.species
 
   const evolutionChainObj = {
     first: {
       id: getImageId(firstEvolution.url),
       name: firstEvolution.name ?? "",
       url: firstEvolution.url ?? "",
-      imageId: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getImageId(
+      image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getImageId(
         firstEvolution.url
       )}.png`,
     },
@@ -73,7 +73,7 @@ export const AddCardMutation = async (
       id: getImageId(secondEvolution?.url) ?? "",
       name: secondEvolution?.name ?? "",
       url: secondEvolution?.url ?? "",
-      imageId: getImageId(secondEvolution?.url)
+      image: getImageId(secondEvolution?.url)
         ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getImageId(
             secondEvolution.url
           )}.png`
@@ -83,7 +83,7 @@ export const AddCardMutation = async (
       id: getImageId(thirdEvolution?.url) ?? "",
       name: thirdEvolution?.name ?? "",
       url: thirdEvolution?.url ?? "",
-      imageId: getImageId(thirdEvolution?.url)
+      image: getImageId(thirdEvolution?.url)
         ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getImageId(
             thirdEvolution.url
           )}.png`

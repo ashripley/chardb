@@ -17,16 +17,16 @@ export const AllCards = async () => {
   return snapshot
 }
 
-let allPokemonImgs: Record<string, any>[] = []
+// let allPokemonImgs: Record<string, any>[] = []
 
-const getAllPokemonImgs = () => {
-  // 802 Pokemon with images available
-  for (var i = 1; i <= 802; i++) {
-    allPokemonImgs.push({
-      [i]: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`,
-    })
-  }
-}
-getAllPokemonImgs()
+// const getAllPokemonImgs = () => {
+//   // 802 Pokemon with images available
+//   for (var i = 1; i <= 802; i++) {
+//     allPokemonImgs.push({
+//       [i]: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`,
+//     })
+//   }
+// }
+// getAllPokemonImgs()
 
-console.log("allPokemonImgs", allPokemonImgs)
+// console.log("allPokemonImgs", allPokemonImgs)

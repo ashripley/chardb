@@ -12,6 +12,7 @@ import {
   Snackbar,
   TextField,
   Tooltip,
+  Zoom,
 } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
@@ -19,7 +20,7 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import EditIcon from "@mui/icons-material/Edit"
 import { Spinner } from "../Spinner"
 import DeleteIcon from "@mui/icons-material/Delete"
@@ -53,13 +54,16 @@ const Wrapper = styled.div`
 
 const Image = styled.div`
   height: 100%;
-  max-width: 20%;
   width: 20%;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #0f1a1b;
   border-radius: 50px;
+
+  & :hover {
+    border-radius: 45px;
+  }
 `
 
 const Details = styled.div<{ isHovered: boolean }>`
@@ -104,7 +108,7 @@ const IconWrapper = styled.div`
 
 const Data = styled.div`
   display: flex;
-  width: 60%;
+  width: 100%;
   font-weight: 800;
   justify-content: center;
   align-items: center;
@@ -157,6 +161,11 @@ const Attribute = styled.div`
   margin-right: -25px;
 `
 
+const Evolutions = styled.div`
+  display: flex;
+  justify-content: space-around;
+`
+
 export const ListView = ({
   pokemon,
   cardIndex,
@@ -177,6 +186,8 @@ export const ListView = ({
   const [isCardLoading, setIsCardLoading] = useState<boolean>(false)
   const [alert, setAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
+  const [index, setIndex] = useState(0)
+
   // const [isDeleted, setIsDeleted] = useState<boolean>(false)
 
   const updateRef = collection(firestore, "cards")
@@ -245,6 +256,13 @@ export const ListView = ({
     setAttribute((event.target as HTMLInputElement).value)
   }
 
+  const evolutions =
+    [
+      pokemon?.evolutionChain?.first?.image ?? pokemon.url.front,
+      pokemon?.evolutionChain?.second?.image ?? null,
+      pokemon?.evolutionChain?.third?.image ?? null,
+    ] ?? pokemon.url.front
+
   return (
     <Wrapper key={`list-${cardIndex}`}>
       <Grow
@@ -284,27 +302,57 @@ export const ListView = ({
                   alignItems: "center",
                   justifyContent: "center",
                   opacity: "revert",
-                  transition: "all 0.8s !important",
+                  transition: "all 1.5s !important",
                   ":hover": {
-                    padding: "0.3em",
-                    boxShadow: "0px 0px 30px gray",
+                    width: 300,
+                    height: "100%",
+                    boxShadow: "none",
                   },
                 }}
                 onMouseEnter={() => onImageEnter()}
                 onMouseLeave={() => onImageLeave()}
               >
-                <img
-                  alt={`"${pokemon.name}"`}
-                  src={
-                    imageFace === "front"
-                      ? pokemon.url.front
-                      : pokemon.url.back || <InsertPhotoOutlinedIcon />
-                  }
-                  style={{
-                    width: 100,
-                    height: 100,
-                  }}
-                />
+                {imageFace === "front" ? (
+                  <Grow
+                    in={true}
+                    unmountOnExit
+                    {...(true ? { timeout: 1500 } : {})}
+                  >
+                    <img
+                      alt={`"${pokemon.name}"`}
+                      src={pokemon.url.front ?? InsertPhotoOutlinedIcon}
+                      style={{
+                        width: 100,
+                        height: 100,
+                      }}
+                    />
+                  </Grow>
+                ) : (
+                  <Evolutions>
+                    {evolutions.map(
+                      (image, index) =>
+                        !!image && (
+                          <Grow
+                            in={true}
+                            unmountOnExit
+                            style={{ transformOrigin: "1 1 1" }}
+                            {...(true ? { timeout: 1500 } : {})}
+                          >
+                            <img
+                              key={index}
+                              alt={`"${pokemon.name}"`}
+                              src={image || null}
+                              style={{
+                                width: 100,
+                                height: 100,
+                                padding: 0,
+                              }}
+                            />
+                          </Grow>
+                        )
+                    )}
+                  </Evolutions>
+                )}
               </Card>
               {!!pokemon.attribute && (
                 <Attribute>
