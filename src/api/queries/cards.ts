@@ -7,17 +7,6 @@ export const Card = async (value?: string, category?: string) => {
   console.log("category", category)
   let snapshots: Record<string, any>[] = []
 
-  // const evolutions = async (name: number) => {
-  //   const response = await axios.get(
-  //     `https://pokeapi.co/api/v2/evolution-chain/${name}`
-  //   )
-  //   return response.data
-  // }
-
-  // const evolution = await evolutions(2)
-
-  // console.log("evolution", evolution)
-
   const ref = await collection(firestore, "cards")
   const data =
     category && value
