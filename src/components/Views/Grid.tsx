@@ -1,5 +1,6 @@
 import {
   Alert,
+  Backdrop,
   Button,
   Card,
   Divider,
@@ -44,17 +45,33 @@ enum View {
   EDIT = "edit",
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ isCardHovered: boolean; editView: boolean }>`
   width: 22%;
   padding: 20px 20px;
-  height: 600px;
+  height: ${(props) =>
+    !!props.isCardHovered && !!props.editView
+      ? "800px"
+      : !!props.isCardHovered
+      ? "700px"
+      : "600px"};
+  transition: all 1s ease;
 `
 
-const Image = styled.div<{ attribute: boolean }>`
+const Image = styled.div<{
+  attribute: boolean
+  isCardHovered: boolean
+  editView: boolean
+}>`
   background: #0f1a1b;
-  height: 60%;
+  height: ${(props) =>
+    !!props.isCardHovered && !!props.editView
+      ? "30%"
+      : props.isCardHovered
+      ? "40%"
+      : "60%"};
   display: flex;
   align-items: center;
+  transition: all 1s ease;
   ${(props) =>
     !!props.attribute &&
     `
@@ -68,12 +85,19 @@ const Image = styled.div<{ attribute: boolean }>`
   }
 `
 
-const Details = styled.div`
-  height: 40%;
+const Details = styled.div<{ isCardHovered: boolean; editView: boolean }>`
+  height: ${(props) =>
+    !!props.isCardHovered && !!props.editView
+      ? "60%"
+      : props.isCardHovered
+      ? "50%"
+      : "40%"};
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  position: relative;
+  transition: all 1s ease;
 `
 
 const Row = styled.div`
@@ -100,22 +124,6 @@ const Data = styled.div`
   text-transform: capitalize;
 `
 
-// const Id = styled.div<{ attribute: boolean }>`
-//   color: black;
-//   font-weight: 800;
-//   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-//     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-//     source-sans-pro, sans-serif;
-//   font-size: 1.2rem;
-
-//   ${(props) =>
-//     !!props.attribute &&
-//     `
-//   justify-content: center;
-//   display: flex;
-//   `}
-// `
-
 const Attribute = styled.div`
   display: flex;
   color: white;
@@ -131,13 +139,20 @@ const CardWrapper = styled.div`
 `
 
 const ActionColumn = styled.div`
-  margin-top: 280px;
-  margin-left: -125px;
-  width: 125px;
+  width: 100%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0f1a1b;
+  border-radius: 50px;
+  transition: all 1s ease;
 `
 
 const StyledRadioGroup = styled(RadioGroup)`
-  width: 50%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
   margin: 5px;
   font-weight: 300 !important;
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
@@ -188,6 +203,7 @@ export const GridView = ({
 
   const onCardLeave = () => {
     setIsCardHovered(false)
+    setCardView({ view: View.READ })
   }
 
   const onEdit = () => {
@@ -245,7 +261,11 @@ export const GridView = ({
     ] ?? pokemon.url.front
 
   return (
-    <Wrapper key={`grid-${cardIndex}`}>
+    <Wrapper
+      editView={cardView.view === View.EDIT}
+      isCardHovered={isCardHovered}
+      key={`grid-${cardIndex}`}
+    >
       <Grow
         in={true}
         style={{ transformOrigin: "1 1 1" }}
@@ -253,7 +273,7 @@ export const GridView = ({
       >
         {isLoading ? (
           <Spinner />
-        ) : cardView.view === View.READ ? (
+        ) : (
           <Card
             sx={{
               minWidth: 275,
@@ -264,6 +284,10 @@ export const GridView = ({
               ":hover": {
                 padding: "0.5em",
                 boxShadow: "0px 10px 30px dimGray",
+                ".card-image": {
+                  height: 150,
+                  width: 150,
+                },
               },
             }}
             variant="elevation"
@@ -271,7 +295,11 @@ export const GridView = ({
             onMouseEnter={() => onCardEnter()}
             onMouseLeave={() => onCardLeave()}
           >
-            <Image attribute={pokemon.attribute === ("" || "standard")}>
+            <Image
+              editView={cardView.view === View.EDIT}
+              isCardHovered={isCardHovered}
+              attribute={pokemon.attribute === ("" || "standard")}
+            >
               <CardWrapper>
                 <Card
                   sx={{
@@ -285,11 +313,12 @@ export const GridView = ({
                     opacity: "revert",
                     transition: "all 1.8s !important",
                     ":hover": {
-                      width: 400,
-                      height: 400,
+                      width: "400px !important",
+                      height: "400px !important",
                       boxShadow: "none",
                     },
                   }}
+                  className="card-image"
                   onMouseEnter={() => mouseEnter()}
                   onMouseLeave={() => mouseLeave()}
                 >
@@ -357,93 +386,19 @@ export const GridView = ({
                   )}
                 </Attribute>
               )}
-              {/* <Grow
-                in={isCardHovered}
-                style={{ transformOrigin: "1 1 1" }}
-                {...(true ? { timeout: 1000 } : {})}
-              >
-                <ActionColumn>
-                  <Button
-                    sx={{ borderRadius: 50, marginLeft: "-40px !important" }}
-                    onClick={() =>
-                      cardView.view === View.READ
-                        ? onEdit()
-                        : cardView.view === View.EDIT
-                        ? onSubmit()
-                        : null
-                    }
-                  >
-                    {cardView.view === View.READ ? (
-                      <EditIcon
-                        sx={{
-                          height: 30,
-                          width: 30,
-                          borderRadius: 100,
-                          background: "transparent",
-                          color: "white",
-                          transition: "all 0.3s !important",
-                          ":hover": {
-                            padding: "0.5em",
-                            boxShadow: "0px 10px 30px dimGray",
-                          },
-                        }}
-                      />
-                    ) : (
-                      <DoneIcon
-                        sx={{
-                          height: 30,
-                          width: 30,
-                          borderRadius: 100,
-                          background: "transparent",
-                          color: "white",
-                          transition: "all 0.3s !important",
-                          ":hover": {
-                            padding: "0.5em",
-                            boxShadow: "0px 10px 30px dimGray",
-                          },
-                        }}
-                      />
-                    )}
-                  </Button>
-                  <Button sx={{ borderRadius: 50 }}>
-                    {cardView.view === View.READ ? (
-                      <DeleteIcon
-                        sx={{
-                          borderRadius: 100,
-                          color: "white",
-                          transition: "all 0.3s !important",
-                          ":hover": {
-                            padding: "0.5em",
-                            boxShadow: "0px 10px 30px dimGray",
-                          },
-                        }}
-                        onClick={() => onDelete()}
-                      />
-                    ) : (
-                      <ClearIcon
-                        sx={{
-                          borderRadius: 100,
-                          color: "white",
-                          transition: "all 0.3s !important",
-                          ":hover": {
-                            padding: "0.5em",
-                            boxShadow: "0px 10px 30px dimGray",
-                          },
-                        }}
-                        onClick={() => onClear()}
-                      />
-                    )}
-                  </Button>
-                </ActionColumn>
-              </Grow> */}
             </Image>
-            <Details>
-              <Row>
-                <Icon>
-                  <TagIcon />
-                </Icon>
-                <Data>{pokemon.id || ""}</Data>
-              </Row>
+            <Details
+              editView={cardView.view === View.EDIT}
+              isCardHovered={isCardHovered}
+            >
+              {cardView.view === View.READ && (
+                <Row>
+                  <Icon>
+                    <TagIcon />
+                  </Icon>
+                  <Data>{pokemon.id || ""}</Data>
+                </Row>
+              )}
               <Row>
                 <Icon>
                   <PermIdentityOutlinedIcon />
@@ -576,6 +531,7 @@ export const GridView = ({
                     defaultValue={
                       pokemon.attribute ? pokemon.attribute : attribute
                     }
+                    row
                     onChange={handleChange}
                   >
                     <FormControlLabel
@@ -600,6 +556,85 @@ export const GridView = ({
                 </>
               )}
             </Details>
+            <Grow
+              in={isCardHovered}
+              style={{ transformOrigin: "1 1 1" }}
+              {...(true ? { timeout: 1000 } : {})}
+            >
+              <ActionColumn>
+                <Button
+                  sx={{ borderRadius: 50 }}
+                  onClick={() =>
+                    cardView.view === View.READ
+                      ? onEdit()
+                      : cardView.view === View.EDIT
+                      ? onSubmit()
+                      : null
+                  }
+                >
+                  {cardView.view === View.READ ? (
+                    <EditIcon
+                      sx={{
+                        height: 30,
+                        width: 30,
+                        borderRadius: 100,
+                        background: "transparent",
+                        color: "white",
+                        transition: "all 0.3s !important",
+                        ":hover": {
+                          padding: "0.5em",
+                          boxShadow: "0px 10px 30px dimGray",
+                        },
+                      }}
+                    />
+                  ) : (
+                    <DoneIcon
+                      sx={{
+                        height: 30,
+                        width: 30,
+                        borderRadius: 100,
+                        background: "transparent",
+                        color: "white",
+                        transition: "all 0.3s !important",
+                        ":hover": {
+                          padding: "0.5em",
+                          boxShadow: "0px 10px 30px dimGray",
+                        },
+                      }}
+                    />
+                  )}
+                </Button>
+                <Button sx={{ borderRadius: 50 }}>
+                  {cardView.view === View.READ ? (
+                    <DeleteIcon
+                      sx={{
+                        borderRadius: 100,
+                        color: "white",
+                        transition: "all 0.3s !important",
+                        ":hover": {
+                          padding: "0.5em",
+                          boxShadow: "0px 10px 30px dimGray",
+                        },
+                      }}
+                      onClick={() => onDelete()}
+                    />
+                  ) : (
+                    <ClearIcon
+                      sx={{
+                        borderRadius: 100,
+                        color: "white",
+                        transition: "all 0.3s !important",
+                        ":hover": {
+                          padding: "0.5em",
+                          boxShadow: "0px 10px 30px dimGray",
+                        },
+                      }}
+                      onClick={() => onClear()}
+                    />
+                  )}
+                </Button>
+              </ActionColumn>
+            </Grow>
             <Snackbar open={open} autoHideDuration={2000} onClose={() => {}}>
               <Alert
                 onClose={() => {}}
@@ -610,8 +645,6 @@ export const GridView = ({
               </Alert>
             </Snackbar>
           </Card>
-        ) : (
-          <></>
         )}
       </Grow>
     </Wrapper>
