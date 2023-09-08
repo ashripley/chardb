@@ -33,7 +33,12 @@ export const PokemonCard = ({
   }, [view])
 
   return gridView ? (
-    <GridView pokemon={pokemon} cardIndex={cardIndex++} isLoading={isLoading} />
+    <GridView
+      isCardDeleted={onDelete}
+      pokemon={pokemon}
+      cardIndex={cardIndex++}
+      isLoading={isLoading}
+    />
   ) : (
     <ListView
       // key={key}

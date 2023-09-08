@@ -304,7 +304,7 @@ export const ListView = ({
                   opacity: "revert",
                   transition: "all 1.5s !important",
                   ":hover": {
-                    width: 300,
+                    width: 290,
                     height: "100%",
                     boxShadow: "none",
                   },
