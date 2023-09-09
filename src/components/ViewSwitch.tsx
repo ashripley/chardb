@@ -62,14 +62,20 @@ export const ViewSwitch = ({ view }: Props) => {
       <FormControlLabel
         control={
           <>
-            <GridViewIcon color={!switchView ? "success" : "disabled"} />
+            <GridViewIcon
+              fontSize="medium"
+              color={!switchView ? "success" : "disabled"}
+            />
             <MaterialUISwitch
               sx={{ m: 1 }}
               defaultChecked
               checked={switchView}
               onClick={() => onClick()}
             />
-            <ListIcon color={switchView ? "success" : "disabled"} />
+            <ListIcon
+              fontSize="medium"
+              color={switchView ? "success" : "disabled"}
+            />
           </>
         }
         label=""

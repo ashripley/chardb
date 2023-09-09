@@ -9,6 +9,7 @@ import {
   Grow,
   Radio,
   RadioGroup,
+  Skeleton,
   Slide,
   Snackbar,
   TextField,
@@ -20,8 +21,7 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useState } from "react"
-import { Spinner } from "../Spinner"
+import { useCallback, useState } from "react"
 import StarOutlineIcon from "@mui/icons-material/StarOutline"
 import StarIcon from "@mui/icons-material/Star"
 import { deleteDoc, doc } from "firebase/firestore"
@@ -45,7 +45,11 @@ enum View {
   EDIT = "edit",
 }
 
-const Wrapper = styled.div<{ isCardHovered: boolean; editView: boolean }>`
+const Wrapper = styled.div<{
+  isCardHovered: boolean
+  editView: boolean
+  isLoading: boolean
+}>`
   width: 22%;
   padding: 20px 20px;
   height: ${(props) =>
@@ -53,6 +57,8 @@ const Wrapper = styled.div<{ isCardHovered: boolean; editView: boolean }>`
       ? "800px"
       : !!props.isCardHovered
       ? "700px"
+      : props.isLoading
+      ? "0px"
       : "600px"};
   transition: all 1s ease;
 `
@@ -165,6 +171,39 @@ const Evolutions = styled.div`
   justify-content: space-around;
 `
 
+const StyledImageCard = styled(Card)<{ attribute: string }>`
+  ${(props) =>
+    props.attribute === "holo"
+      ? `
+    -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
+      200%;
+    background-repeat: no-repeat;
+    animation: shimmer 3s infinite linear;
+    transition: all 1s ease;
+
+    @keyframes shimmer {
+      100% {
+        -webkit-mask-position: left;
+      }
+    }
+  `
+      : props.attribute === "special"
+      ? `
+      -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
+      200%;
+    background-repeat: no-repeat;
+    animation: shimmer 3s infinite linear;
+    transition: all 1s ease;
+
+    @keyframes shimmer {
+      100% {
+        -webkit-mask-position: left;
+      }
+    }
+  `
+      : ``}
+`
+
 export const GridView = ({
   pokemon,
   cardIndex,
@@ -262,6 +301,7 @@ export const GridView = ({
 
   return (
     <Wrapper
+      isLoading={isLoading}
       editView={cardView.view === View.EDIT}
       isCardHovered={isCardHovered}
       key={`grid-${cardIndex}`}
@@ -272,7 +312,12 @@ export const GridView = ({
         {...(true ? { timeout: 1000 } : {})}
       >
         {isLoading ? (
-          <Spinner />
+          <Skeleton
+            variant="rounded"
+            width={350}
+            height={600}
+            sx={{ borderRadius: 30 }}
+          />
         ) : (
           <Card
             sx={{
@@ -301,7 +346,7 @@ export const GridView = ({
               attribute={pokemon.attribute === ("" || "standard")}
             >
               <CardWrapper>
-                <Card
+                <StyledImageCard
                   sx={{
                     width: 200,
                     height: 200,
@@ -312,12 +357,15 @@ export const GridView = ({
                     justifyContent: "center",
                     opacity: "revert",
                     transition: "all 1.8s !important",
+                    position: "relative",
+                    zIndex: 100,
                     ":hover": {
                       width: "400px !important",
                       height: "400px !important",
                       boxShadow: "none",
                     },
                   }}
+                  attribute={pokemon.attribute}
                   className="card-image"
                   onMouseEnter={() => mouseEnter()}
                   onMouseLeave={() => mouseLeave()}
@@ -356,6 +404,7 @@ export const GridView = ({
                                   width: 120,
                                   height: 120,
                                   padding: 0,
+                                  zIndex: 100,
                                 }}
                               />
                             </Grow>
@@ -363,26 +412,28 @@ export const GridView = ({
                       )}
                     </Evolutions>
                   )}
-                </Card>
+                </StyledImageCard>
               </CardWrapper>
               {!!pokemon.attribute && (
                 <Attribute>
                   {pokemon.attribute === "holo" ? (
                     <Tooltip
-                      title="Holographic"
+                      title={"Holographic"}
                       TransitionComponent={Fade}
                       TransitionProps={{ timeout: 600 }}
                     >
                       <StarOutlineIcon />
                     </Tooltip>
-                  ) : (
+                  ) : pokemon.attribute === "special" ? (
                     <Tooltip
-                      title="Special"
+                      title={"Special"}
                       TransitionComponent={Fade}
                       TransitionProps={{ timeout: 600 }}
                     >
                       <StarIcon />
                     </Tooltip>
+                  ) : (
+                    <></>
                   )}
                 </Attribute>
               )}

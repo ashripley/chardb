@@ -7,6 +7,7 @@ import {
   MenuItem,
   Paper,
   Select,
+  Skeleton,
   TextField,
 } from "@mui/material"
 import { useEffect, useState } from "react"
@@ -144,7 +145,7 @@ export const CollectionsBody = () => {
 
   return (
     <>
-      {isLoading && <Spinner />}
+      {/* {isLoading && <Skeleton variant="rectangular" width={210} height={118} />} */}
       <Root>
         <Grow
           in={true}

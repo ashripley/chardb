@@ -23,9 +23,6 @@ export const PokemonCard = ({
 
   const onDelete = (hasChanged: boolean) => {
     isCardDeleted(hasChanged)
-    // let counter = 1
-    // !!hasChanged && setKey(counter++)
-    // AllCards()
   }
 
   useEffect(() => {
@@ -41,7 +38,6 @@ export const PokemonCard = ({
     />
   ) : (
     <ListView
-      // key={key}
       isCardDeleted={onDelete}
       pokemon={pokemon}
       cardIndex={cardIndex++}

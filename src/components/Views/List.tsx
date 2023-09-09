@@ -8,6 +8,7 @@ import {
   Grow,
   Radio,
   RadioGroup,
+  Skeleton,
   Slide,
   Snackbar,
   TextField,
@@ -272,7 +273,12 @@ export const ListView = ({
         {...(true ? { timeout: 1000 } : {})}
       >
         {isLoading ? (
-          <Spinner />
+          <Skeleton
+            variant="rounded"
+            width={"100%"}
+            height={150}
+            sx={{ borderRadius: 30 }}
+          />
         ) : (
           <Card
             sx={{

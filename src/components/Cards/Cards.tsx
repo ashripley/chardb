@@ -64,9 +64,6 @@ export const Cards = ({
 
   const isDeleted = (hasChanged: boolean) => {
     isCardDeleted(hasChanged)
-    // let counter = 1
-    // !!hasChanged && setKey(counter++)
-    // AllCards()
   }
 
   return (
@@ -85,7 +82,6 @@ export const Cards = ({
         >
           {cards.map((poke, index) => (
             <PokemonCard
-              // key={key}
               isCardDeleted={isDeleted}
               pokemon={poke}
               cardIndex={index}
