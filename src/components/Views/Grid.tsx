@@ -32,6 +32,7 @@ import ClearIcon from "@mui/icons-material/Clear"
 import EditIcon from "@mui/icons-material/Edit"
 import DoneIcon from "@mui/icons-material/Done"
 import DeleteIcon from "@mui/icons-material/Delete"
+import { Particle } from "../Particle"
 
 interface Props {
   cardIndex: number
@@ -169,39 +170,6 @@ const StyledRadioGroup = styled(RadioGroup)`
 const Evolutions = styled.div`
   display: flex;
   justify-content: space-around;
-`
-
-const StyledImageCard = styled(Card)<{ attribute: string }>`
-  ${(props) =>
-    props.attribute === "holo"
-      ? `
-    -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
-      200%;
-    background-repeat: no-repeat;
-    animation: shimmer 3s infinite linear;
-    transition: all 1s ease;
-
-    @keyframes shimmer {
-      100% {
-        -webkit-mask-position: left;
-      }
-    }
-  `
-      : props.attribute === "special"
-      ? `
-      -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
-      200%;
-    background-repeat: no-repeat;
-    animation: shimmer 3s infinite linear;
-    transition: all 1s ease;
-
-    @keyframes shimmer {
-      100% {
-        -webkit-mask-position: left;
-      }
-    }
-  `
-      : ``}
 `
 
 export const GridView = ({
@@ -346,11 +314,10 @@ export const GridView = ({
               attribute={pokemon.attribute === ("" || "standard")}
             >
               <CardWrapper>
-                <StyledImageCard
+                <Card
                   sx={{
                     width: 200,
                     height: 200,
-                    background: "white",
                     borderRadius: 100,
                     display: "flex",
                     alignItems: "center",
@@ -358,18 +325,18 @@ export const GridView = ({
                     opacity: "revert",
                     transition: "all 1.8s !important",
                     position: "relative",
-                    zIndex: 100,
+                    zIndex: 1,
                     ":hover": {
                       width: "400px !important",
                       height: "400px !important",
                       boxShadow: "none",
                     },
                   }}
-                  attribute={pokemon.attribute}
                   className="card-image"
                   onMouseEnter={() => mouseEnter()}
                   onMouseLeave={() => mouseLeave()}
                 >
+                  <Particle />
                   {imageFace === "front" ? (
                     <Grow
                       in={true}
@@ -382,6 +349,8 @@ export const GridView = ({
                         style={{
                           width: 130,
                           height: 130,
+                          zIndex: 100,
+                          position: "absolute",
                         }}
                       />
                     </Grow>
@@ -412,7 +381,7 @@ export const GridView = ({
                       )}
                     </Evolutions>
                   )}
-                </StyledImageCard>
+                </Card>
               </CardWrapper>
               {!!pokemon.attribute && (
                 <Attribute>
