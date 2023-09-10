@@ -32,7 +32,6 @@ import ClearIcon from "@mui/icons-material/Clear"
 import EditIcon from "@mui/icons-material/Edit"
 import DoneIcon from "@mui/icons-material/Done"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { Particle } from "../Particle"
 
 interface Props {
   cardIndex: number
@@ -170,6 +169,37 @@ const StyledRadioGroup = styled(RadioGroup)`
 const Evolutions = styled.div`
   display: flex;
   justify-content: space-around;
+`
+
+const StyledImageCard = styled(Card)<{ attribute: string }>`
+  ${(props) =>
+    props.attribute === "holo"
+      ? `
+    -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
+      200%;
+    background-repeat: no-repeat;
+    animation: shimmer 3s infinite linear;
+    transition: all 1s ease;
+    @keyframes shimmer {
+      100% {
+        -webkit-mask-position: left;
+      }
+    }
+  `
+      : props.attribute === "special"
+      ? `
+      -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
+      200%;
+    background-repeat: no-repeat;
+    animation: shimmer 3s infinite linear;
+    transition: all 1s ease;
+    @keyframes shimmer {
+      100% {
+        -webkit-mask-position: left;
+      }
+    }
+  `
+      : ``}
 `
 
 export const GridView = ({
@@ -314,7 +344,7 @@ export const GridView = ({
               attribute={pokemon.attribute === ("" || "standard")}
             >
               <CardWrapper>
-                <Card
+                <StyledImageCard
                   sx={{
                     width: 200,
                     height: 200,
@@ -333,10 +363,10 @@ export const GridView = ({
                     },
                   }}
                   className="card-image"
+                  attribute={pokemon.attribute}
                   onMouseEnter={() => mouseEnter()}
                   onMouseLeave={() => mouseLeave()}
                 >
-                  <Particle />
                   {imageFace === "front" ? (
                     <Grow
                       in={true}
@@ -381,7 +411,7 @@ export const GridView = ({
                       )}
                     </Evolutions>
                   )}
-                </Card>
+                </StyledImageCard>
               </CardWrapper>
               {!!pokemon.attribute && (
                 <Attribute>
