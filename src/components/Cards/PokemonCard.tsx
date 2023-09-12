@@ -1,7 +1,6 @@
-import { useEffect, useReducer, useState } from "react"
+import { useEffect, useState } from "react"
 import { GridView } from "../Views/Grid"
 import { ListView } from "../Views/List"
-import { AllCards } from "../../api/queries/allCards"
 
 interface Props {
   cardIndex: number
@@ -19,7 +18,6 @@ export const PokemonCard = ({
   isCardDeleted,
 }: Props) => {
   const [gridView, setGridView] = useState(view)
-  // const [key, setKey] = useState(0)
 
   const onDelete = (hasChanged: boolean) => {
     isCardDeleted(hasChanged)

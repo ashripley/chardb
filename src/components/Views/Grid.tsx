@@ -171,36 +171,56 @@ const Evolutions = styled.div`
   justify-content: space-around;
 `
 
-const StyledImageCard = styled(Card)<{ attribute: string }>`
-  ${(props) =>
-    props.attribute === "holo"
-      ? `
-    -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
-      200%;
-    background-repeat: no-repeat;
-    animation: shimmer 3s infinite linear;
-    transition: all 1s ease;
-    @keyframes shimmer {
-      100% {
-        -webkit-mask-position: left;
-      }
-    }
-  `
-      : props.attribute === "special"
-      ? `
-      -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
-      200%;
-    background-repeat: no-repeat;
-    animation: shimmer 3s infinite linear;
-    transition: all 1s ease;
-    @keyframes shimmer {
-      100% {
-        -webkit-mask-position: left;
-      }
-    }
-  `
-      : ``}
-`
+// const StyledImageCard = styled(Card)<{ attribute: string }>`
+//   ${(props) =>
+//     props.attribute === "holo"
+//       ? `
+//     -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
+//       200%;
+//     background-repeat: no-repeat;
+//     animation: shimmer 3s infinite linear;
+//     transition: all 1s ease;
+//     @keyframes shimmer {
+//       100% {
+//         -webkit-mask-position: left;
+//       }
+//     }
+//   `
+//       : props.attribute === "special"
+//       ? `
+//       -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
+//       200%;
+//     background-repeat: no-repeat;
+//     animation: shimmer 3s infinite linear;
+//     transition: all 1s ease;
+//     @keyframes shimmer {
+//       100% {
+//         -webkit-mask-position: left;
+//       }
+//     }
+//   `
+//       : ``}
+// `
+
+// const StyledImageCard = styled(Card)<{ colour: string }>`
+//     cursor: pointer;
+//     background-color: #ffffff;
+//     cursor: pointer;
+//     box-shadow: 0 0 0 rgba(0,0,0, 0.4) inset;
+//     animation: pulse 3s infinite linear;
+
+//     @-webkit-keyframes pulse {
+//       0% {
+//         -webkit-box-shadow: 0 0 0 0 ${props => props.colour} inset;
+//       }
+//       70% {
+//           -webkit-box-shadow: 0 0 0 20px rgba(0,0,0, 0) inset;
+//       }
+//       100% {
+//           -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0, 0) inset;
+//       }
+//     }
+// `
 
 export const GridView = ({
   pokemon,
@@ -344,7 +364,7 @@ export const GridView = ({
               attribute={pokemon.attribute === ("" || "standard")}
             >
               <CardWrapper>
-                <StyledImageCard
+                <Card
                   sx={{
                     width: 200,
                     height: 200,
@@ -354,16 +374,15 @@ export const GridView = ({
                     justifyContent: "center",
                     opacity: "revert",
                     transition: "all 1.8s !important",
-                    position: "relative",
-                    zIndex: 1,
+                    // boxShadow: `10px 10px 30px ${pokemon.colour} inset`,
+                    boxShadow: `${pokemon.colour} 0px 50px 100px -20px, ${pokemon.colour} 0px 30px 60px -30px, ${pokemon.colour} 0px -2px 6px 0px inset`,
                     ":hover": {
                       width: "400px !important",
-                      height: "400px !important",
+                      height: "300px !important",
                       boxShadow: "none",
                     },
                   }}
                   className="card-image"
-                  attribute={pokemon.attribute}
                   onMouseEnter={() => mouseEnter()}
                   onMouseLeave={() => mouseLeave()}
                 >
@@ -411,7 +430,7 @@ export const GridView = ({
                       )}
                     </Evolutions>
                   )}
-                </StyledImageCard>
+                </Card>
               </CardWrapper>
               {!!pokemon.attribute && (
                 <Attribute>
