@@ -13,7 +13,6 @@ import {
   Snackbar,
   TextField,
   Tooltip,
-  Zoom,
 } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
@@ -21,13 +20,11 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import EditIcon from "@mui/icons-material/Edit"
-import { Spinner } from "../Spinner"
 import DeleteIcon from "@mui/icons-material/Delete"
 import DoneIcon from "@mui/icons-material/Done"
-import { collection, deleteDoc, doc } from "firebase/firestore"
-import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
+import { deleteDoc, doc } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
@@ -167,6 +164,29 @@ const Evolutions = styled.div`
   justify-content: space-around;
 `
 
+export const readIconProps = {
+  height: 30,
+  width: 30,
+  borderRadius: 100,
+  background: "transparent",
+  color: "white",
+  transition: "all 0.3s !important",
+  ":hover": {
+    padding: "0.5em",
+    boxShadow: "0px 10px 30px dimGray",
+  },
+}
+
+export const editIconProps = {
+  borderRadius: 100,
+  color: "white",
+  transition: "all 0.3s !important",
+  ":hover": {
+    padding: "0.5em",
+    boxShadow: "0px 10px 30px dimGray",
+  },
+}
+
 export const ListView = ({
   pokemon,
   cardIndex,
@@ -187,12 +207,6 @@ export const ListView = ({
   const [isCardLoading, setIsCardLoading] = useState<boolean>(false)
   const [alert, setAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
-  const [index, setIndex] = useState(0)
-
-  // const [isDeleted, setIsDeleted] = useState<boolean>(false)
-
-  const updateRef = collection(firestore, "cards")
-  const updateMutation = useFirestoreCollectionMutation(updateRef)
 
   const onImageEnter = () => {
     setImageFace("back")
@@ -309,6 +323,7 @@ export const ListView = ({
                   justifyContent: "center",
                   opacity: "revert",
                   transition: "all 1.5s !important",
+                  boxShadow: `${pokemon.colour} 0px 2px 4px 0px, ${pokemon.colour} 0px 0px 26px 0px`,
                   ":hover": {
                     width: 290,
                     height: "100%",
@@ -398,7 +413,7 @@ export const ListView = ({
                 </IconWrapper>
                 {cardView.view === View.READ ? (
                   <Data>{pokemon.name || ""}</Data>
-                ) : cardView.view === View.EDIT ? (
+                ) : (
                   <TextField
                     id="standard"
                     autoFocus
@@ -415,8 +430,6 @@ export const ListView = ({
                       },
                     }}
                   />
-                ) : (
-                  <></>
                 )}
               </Column>
               <Column>
@@ -425,7 +438,7 @@ export const ListView = ({
                 </IconWrapper>
                 {cardView.view === View.READ ? (
                   <Data>{pokemon.type || ""}</Data>
-                ) : cardView.view === View.EDIT ? (
+                ) : (
                   <TextField
                     id="standard"
                     value={type}
@@ -442,8 +455,6 @@ export const ListView = ({
                       },
                     }}
                   />
-                ) : (
-                  <></>
                 )}
               </Column>
               <Column>
@@ -452,7 +463,7 @@ export const ListView = ({
                 </IconWrapper>
                 {cardView.view === View.READ ? (
                   <Data>{pokemon.set || ""}</Data>
-                ) : cardView.view === View.EDIT ? (
+                ) : (
                   <TextField
                     id="standard"
                     value={set}
@@ -468,8 +479,6 @@ export const ListView = ({
                       },
                     }}
                   />
-                ) : (
-                  <></>
                 )}
               </Column>
               <Column>
@@ -478,7 +487,7 @@ export const ListView = ({
                 </IconWrapper>
                 {cardView.view === View.READ ? (
                   <Data>{pokemon.year || ""}</Data>
-                ) : cardView.view === View.EDIT ? (
+                ) : (
                   <TextField
                     id="standard"
                     value={year}
@@ -494,8 +503,6 @@ export const ListView = ({
                       },
                     }}
                   />
-                ) : (
-                  <></>
                 )}
               </Column>
               {cardView.view === View.EDIT && (
@@ -526,24 +533,15 @@ export const ListView = ({
                     }
                     onChange={handleChange}
                   >
-                    <FormControlLabel
-                      value="normal"
-                      control={<Radio color="warning" />}
-                      label="Normal"
-                      sx={{ height: 35 }}
-                    />
-                    <FormControlLabel
-                      value="holo"
-                      control={<Radio color="warning" />}
-                      label="Holo"
-                      sx={{ height: 35 }}
-                    />
-                    <FormControlLabel
-                      value="special"
-                      control={<Radio color="warning" />}
-                      label="Special"
-                      sx={{ height: 35 }}
-                    />
+                    {["Normal", "Holo", "Normal"].map((label, index) => (
+                      <FormControlLabel
+                        key={index}
+                        value={label.toLowerCase()}
+                        control={<Radio color="warning" />}
+                        label={label}
+                        sx={{ height: 35 }}
+                      />
+                    ))}
                   </StyledRadioGroup>
                 </>
               )}
@@ -566,62 +564,20 @@ export const ListView = ({
                   }
                 >
                   {cardView.view === View.READ ? (
-                    <EditIcon
-                      sx={{
-                        height: 30,
-                        width: 30,
-                        borderRadius: 100,
-                        background: "transparent",
-                        color: "white",
-                        transition: "all 0.3s !important",
-                        ":hover": {
-                          padding: "0.5em",
-                          boxShadow: "0px 10px 30px dimGray",
-                        },
-                      }}
-                    />
+                    <EditIcon sx={{ ...readIconProps }} />
                   ) : (
-                    <DoneIcon
-                      sx={{
-                        height: 30,
-                        width: 30,
-                        borderRadius: 100,
-                        background: "transparent",
-                        color: "white",
-                        transition: "all 0.3s !important",
-                        ":hover": {
-                          padding: "0.5em",
-                          boxShadow: "0px 10px 30px dimGray",
-                        },
-                      }}
-                    />
+                    <DoneIcon sx={{ ...readIconProps }} />
                   )}
                 </Button>
                 <Button sx={{ borderRadius: 50 }}>
                   {cardView.view === View.READ ? (
                     <DeleteIcon
-                      sx={{
-                        borderRadius: 100,
-                        color: "white",
-                        transition: "all 0.3s !important",
-                        ":hover": {
-                          padding: "0.5em",
-                          boxShadow: "0px 10px 30px dimGray",
-                        },
-                      }}
+                      sx={{ ...editIconProps }}
                       onClick={() => onDelete()}
                     />
                   ) : (
                     <ClearIcon
-                      sx={{
-                        borderRadius: 100,
-                        color: "white",
-                        transition: "all 0.3s !important",
-                        ":hover": {
-                          padding: "0.5em",
-                          boxShadow: "0px 10px 30px dimGray",
-                        },
-                      }}
+                      sx={{ ...editIconProps }}
                       onClick={() => onClear()}
                     />
                   )}

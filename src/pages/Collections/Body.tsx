@@ -7,7 +7,6 @@ import {
   MenuItem,
   Paper,
   Select,
-  Skeleton,
   TextField,
 } from "@mui/material"
 import { useEffect, useState } from "react"
@@ -20,7 +19,6 @@ import RefreshIcon from "@mui/icons-material/Refresh"
 import { Card } from "../../api/queries/cards"
 import { AllCards } from "../../api/queries/allCards"
 import { AddCard } from "../../components/Cards/AddCard"
-import { Spinner } from "../../components/Spinner"
 import { Cards } from "../../components/Cards/Cards"
 
 const Root = styled.div`
@@ -141,11 +139,8 @@ export const CollectionsBody = () => {
     }
   }
 
-  const categories = ["Name", "Type", "Set", "Year"]
-
   return (
     <>
-      {/* {isLoading && <Skeleton variant="rectangular" width={210} height={118} />} */}
       <Root>
         <Grow
           in={true}
@@ -183,9 +178,13 @@ export const CollectionsBody = () => {
                       <MenuItem value="">
                         <b>None</b>
                       </MenuItem>
-                      {categories.map((category) => (
-                        <MenuItem value={category}>{category}</MenuItem>
-                      ))}
+                      {["Name", "Type", "Set", "Year"].map(
+                        (category, index) => (
+                          <MenuItem key={index} value={category}>
+                            {category}
+                          </MenuItem>
+                        )
+                      )}
                     </Select>
                   </FormControl>
                   <TextFieldWrapper>

@@ -1,16 +1,13 @@
 import {
   Alert,
-  Backdrop,
   Button,
   Card,
-  Divider,
   Fade,
   FormControlLabel,
   Grow,
   Radio,
   RadioGroup,
   Skeleton,
-  Slide,
   Snackbar,
   TextField,
   Tooltip,
@@ -21,7 +18,7 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import StarOutlineIcon from "@mui/icons-material/StarOutline"
 import StarIcon from "@mui/icons-material/Star"
 import { deleteDoc, doc } from "firebase/firestore"
@@ -32,6 +29,7 @@ import ClearIcon from "@mui/icons-material/Clear"
 import EditIcon from "@mui/icons-material/Edit"
 import DoneIcon from "@mui/icons-material/Done"
 import DeleteIcon from "@mui/icons-material/Delete"
+import { editIconProps, readIconProps } from "./List"
 
 interface Props {
   cardIndex: number
@@ -171,6 +169,8 @@ const Evolutions = styled.div`
   justify-content: space-around;
 `
 
+// holographic styling
+
 // const StyledImageCard = styled(Card)<{ attribute: string }>`
 //   ${(props) =>
 //     props.attribute === "holo"
@@ -200,26 +200,6 @@ const Evolutions = styled.div`
 //     }
 //   `
 //       : ``}
-// `
-
-// const StyledImageCard = styled(Card)<{ colour: string }>`
-//     cursor: pointer;
-//     background-color: #ffffff;
-//     cursor: pointer;
-//     box-shadow: 0 0 0 rgba(0,0,0, 0.4) inset;
-//     animation: pulse 3s infinite linear;
-
-//     @-webkit-keyframes pulse {
-//       0% {
-//         -webkit-box-shadow: 0 0 0 0 ${props => props.colour} inset;
-//       }
-//       70% {
-//           -webkit-box-shadow: 0 0 0 20px rgba(0,0,0, 0) inset;
-//       }
-//       100% {
-//           -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0, 0) inset;
-//       }
-//     }
 // `
 
 export const GridView = ({
@@ -374,8 +354,7 @@ export const GridView = ({
                     justifyContent: "center",
                     opacity: "revert",
                     transition: "all 1.8s !important",
-                    // boxShadow: `10px 10px 30px ${pokemon.colour} inset`,
-                    boxShadow: `${pokemon.colour} 0px 50px 100px -20px, ${pokemon.colour} 0px 30px 60px -30px, ${pokemon.colour} 0px -2px 6px 0px inset`,
+                    boxShadow: `${pokemon.colour} 0px 2px 4px 0px, ${pokemon.colour} 0px 0px 26px 0px`,
                     ":hover": {
                       width: "400px !important",
                       height: "300px !important",
@@ -474,7 +453,7 @@ export const GridView = ({
                 </Icon>
                 {cardView.view === View.READ ? (
                   <Data>{pokemon.name || ""}</Data>
-                ) : cardView.view === View.EDIT ? (
+                ) : (
                   <TextField
                     id="standard"
                     autoFocus
@@ -491,8 +470,6 @@ export const GridView = ({
                       },
                     }}
                   />
-                ) : (
-                  <></>
                 )}
               </Row>
               <Row>
@@ -501,7 +478,7 @@ export const GridView = ({
                 </Icon>
                 {cardView.view === View.READ ? (
                   <Data>{pokemon.type || ""}</Data>
-                ) : cardView.view === View.EDIT ? (
+                ) : (
                   <TextField
                     id="standard"
                     value={type}
@@ -518,8 +495,6 @@ export const GridView = ({
                       },
                     }}
                   />
-                ) : (
-                  <></>
                 )}
               </Row>
               <Row>
@@ -528,7 +503,7 @@ export const GridView = ({
                 </Icon>
                 {cardView.view === View.READ ? (
                   <Data>{pokemon.set || ""}</Data>
-                ) : cardView.view === View.EDIT ? (
+                ) : (
                   <TextField
                     id="standard"
                     value={set}
@@ -544,8 +519,6 @@ export const GridView = ({
                       },
                     }}
                   />
-                ) : (
-                  <></>
                 )}
               </Row>
               <Row>
@@ -554,7 +527,7 @@ export const GridView = ({
                 </Icon>
                 {cardView.view === View.READ ? (
                   <Data>{pokemon.year || ""}</Data>
-                ) : cardView.view === View.EDIT ? (
+                ) : (
                   <TextField
                     id="standard"
                     value={year}
@@ -570,8 +543,6 @@ export const GridView = ({
                       },
                     }}
                   />
-                ) : (
-                  <></>
                 )}
               </Row>
               {cardView.view === View.EDIT && (
@@ -603,24 +574,15 @@ export const GridView = ({
                     row
                     onChange={handleChange}
                   >
-                    <FormControlLabel
-                      value="normal"
-                      control={<Radio color="warning" />}
-                      label="Normal"
-                      sx={{ height: 35 }}
-                    />
-                    <FormControlLabel
-                      value="holo"
-                      control={<Radio color="warning" />}
-                      label="Holo"
-                      sx={{ height: 35 }}
-                    />
-                    <FormControlLabel
-                      value="special"
-                      control={<Radio color="warning" />}
-                      label="Special"
-                      sx={{ height: 35 }}
-                    />
+                    {["Normal", "Holo", "Normal"].map((label, index) => (
+                      <FormControlLabel
+                        key={index}
+                        value={label.toLowerCase()}
+                        control={<Radio color="warning" />}
+                        label={label}
+                        sx={{ height: 35 }}
+                      />
+                    ))}
                   </StyledRadioGroup>
                 </>
               )}
@@ -642,62 +604,20 @@ export const GridView = ({
                   }
                 >
                   {cardView.view === View.READ ? (
-                    <EditIcon
-                      sx={{
-                        height: 30,
-                        width: 30,
-                        borderRadius: 100,
-                        background: "transparent",
-                        color: "white",
-                        transition: "all 0.3s !important",
-                        ":hover": {
-                          padding: "0.5em",
-                          boxShadow: "0px 10px 30px dimGray",
-                        },
-                      }}
-                    />
+                    <EditIcon sx={{ ...readIconProps }} />
                   ) : (
-                    <DoneIcon
-                      sx={{
-                        height: 30,
-                        width: 30,
-                        borderRadius: 100,
-                        background: "transparent",
-                        color: "white",
-                        transition: "all 0.3s !important",
-                        ":hover": {
-                          padding: "0.5em",
-                          boxShadow: "0px 10px 30px dimGray",
-                        },
-                      }}
-                    />
+                    <DoneIcon sx={{ ...readIconProps }} />
                   )}
                 </Button>
                 <Button sx={{ borderRadius: 50 }}>
                   {cardView.view === View.READ ? (
                     <DeleteIcon
-                      sx={{
-                        borderRadius: 100,
-                        color: "white",
-                        transition: "all 0.3s !important",
-                        ":hover": {
-                          padding: "0.5em",
-                          boxShadow: "0px 10px 30px dimGray",
-                        },
-                      }}
+                      sx={{ ...editIconProps }}
                       onClick={() => onDelete()}
                     />
                   ) : (
                     <ClearIcon
-                      sx={{
-                        borderRadius: 100,
-                        color: "white",
-                        transition: "all 0.3s !important",
-                        ":hover": {
-                          padding: "0.5em",
-                          boxShadow: "0px 10px 30px dimGray",
-                        },
-                      }}
+                      sx={{ ...editIconProps }}
                       onClick={() => onClear()}
                     />
                   )}

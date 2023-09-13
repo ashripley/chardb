@@ -1,6 +1,6 @@
 import styled from "styled-components"
-import { CollectionsBody } from "./Body"
 import { Header } from "../Header"
+import { PokedexBody } from "./Body"
 
 interface Props {
   menuAction: string
@@ -12,7 +12,7 @@ const Container = styled.div`
   background: white;
   background-size: cover;
 `
-export const Collections = ({ menuAction, isOpen }: Props) => {
+export const Pokedex = ({ menuAction, isOpen }: Props) => {
   const onClick = (clicked: boolean) => {
     isOpen(clicked)
   }
@@ -20,7 +20,7 @@ export const Collections = ({ menuAction, isOpen }: Props) => {
   return (
     <Container>
       <Header menuAction={menuAction} isOpen={onClick} />
-      <CollectionsBody />
+      <PokedexBody />
     </Container>
   )
 }

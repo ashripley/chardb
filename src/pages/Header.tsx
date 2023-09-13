@@ -81,7 +81,14 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                   style={{ display: "flex", width: "100%", padding: 0 }}
                 >
                   <MenuWrapper>
-                    <IconWrapper>
+                    <IconWrapper
+                      sx={{
+                        transition: "all 0.5s !important",
+                        ":hover": {
+                          boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
+                        },
+                      }}
+                    >
                       <img
                         src={flame}
                         alt="menu"
@@ -105,8 +112,14 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                     edge="start"
                     color="inherit"
                     aria-label="menu"
-                    sx={{ mr: 2 }}
-                    style={{ width: 50, margin: 0 }}
+                    sx={{
+                      mr: 2,
+                      transition: "all 0.5s !important",
+                      ":hover": {
+                        boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
+                      },
+                    }}
+                    style={{ width: 50, height: 50, margin: 0 }}
                     onClick={() => onClick(!isClicked)}
                   >
                     <MenuIcon />

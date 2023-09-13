@@ -1,9 +1,8 @@
-import { Paper, Slide } from "@mui/material"
+import { Paper, Skeleton, Slide } from "@mui/material"
 import styled from "styled-components"
 import { useEffect, useState } from "react"
 import { ViewSwitch } from "../ViewSwitch"
 import { PokemonCard } from "./PokemonCard"
-import { AllCards } from "../../api/queries/allCards"
 
 interface Props {
   pokemon: Record<string, any>[]
@@ -45,8 +44,6 @@ export const Cards = ({
 }: Props) => {
   const [cards, setCards] = useState<Record<string, any>[]>([])
   const [gridView, setGridView] = useState(true)
-  const [state, setState] = useState(false)
-  // const [key, setKey] = useState(0)
 
   const viewChange = () => {
     setGridView(!gridView)
@@ -72,24 +69,33 @@ export const Cards = ({
         <Switch>
           <ViewSwitch view={viewChange} />
         </Switch>
-        <StyledPaper
-          elevation={0}
-          style={{
-            backgroundColor: "transparent",
-            maxWidth: "100%",
-            padding: 0,
-          }}
-        >
-          {cards.map((poke, index) => (
-            <PokemonCard
-              isCardDeleted={isDeleted}
-              pokemon={poke}
-              cardIndex={index}
-              view={gridView}
-              isLoading={isLoading}
-            />
-          ))}
-        </StyledPaper>
+        {isLoading ? (
+          <Skeleton
+            variant="rounded"
+            width={350}
+            height={600}
+            sx={{ borderRadius: 30 }}
+          />
+        ) : (
+          <StyledPaper
+            elevation={0}
+            style={{
+              backgroundColor: "transparent",
+              maxWidth: "100%",
+              padding: 0,
+            }}
+          >
+            {cards.map((poke, index) => (
+              <PokemonCard
+                isCardDeleted={isDeleted}
+                pokemon={poke}
+                cardIndex={index}
+                view={gridView}
+                isLoading={isLoading}
+              />
+            ))}
+          </StyledPaper>
+        )}
       </Container>
     </Slide>
   )

@@ -68,6 +68,7 @@ const StyledButton = styled(Button)`
   width: 14rem;
   padding: 15px;
   height: 25%;
+  transition: all 0.5s ease;
 
   &:hover {
     background-color: darkorange !important;

@@ -45,13 +45,13 @@ const StyledPaper = styled(Paper)`
   flex-wrap: wrap;
 `
 
-const ListWrapper = styled.div`
+const Wrapper = styled.div`
   width: 90%;
   padding: 20px 30px;
   height: 150px;
 `
 
-const ListDetails = styled.div`
+const Details = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -59,7 +59,7 @@ const ListDetails = styled.div`
   justify-content: space-evenly;
 `
 
-const ListColumn = styled.div`
+const Column = styled.div`
   width: 100%;
   height: 15%;
   display: flex;
@@ -76,7 +76,7 @@ const IdDivider = styled.div`
   justify-content: center;
 `
 
-const ListData = styled.div`
+const Data = styled.div`
   display: flex;
   width: 80%;
   font-weight: 800;
@@ -89,7 +89,7 @@ const ListData = styled.div`
   padding: 10px 0px;
 `
 
-const ListIconWrapper = styled.div`
+const IconWrapper = styled.div`
   display: flex;
   width: 15%;
   justify-content: center;
@@ -167,7 +167,7 @@ export const AddCard = () => {
           style={{ backgroundColor: "white", maxWidth: "100%", padding: 0 }}
         >
           <Slide direction="up" in={true} mountOnEnter unmountOnExit>
-            <ListWrapper>
+            <Wrapper>
               <Grow
                 in={true}
                 style={{ transformOrigin: "1 1 1" }}
@@ -177,19 +177,19 @@ export const AddCard = () => {
                   sx={{
                     width: "100%",
                     backgroundColor: "white",
-                    borderRadius: 15,
+                    borderRadius: "35px",
                     height: "100%",
                     display: "flex",
                   }}
                   variant="elevation"
                   raised
                 >
-                  <ListDetails>
-                    <ListColumn>
-                      <ListIconWrapper>
+                  <Details>
+                    <Column>
+                      <IconWrapper>
                         <PermIdentityOutlinedIcon />
-                      </ListIconWrapper>
-                      <ListData>
+                      </IconWrapper>
+                      <Data>
                         <TextField
                           id="standard"
                           value={name}
@@ -205,13 +205,13 @@ export const AddCard = () => {
                             },
                           }}
                         />
-                      </ListData>
-                    </ListColumn>
-                    <ListColumn>
-                      <ListIconWrapper>
+                      </Data>
+                    </Column>
+                    <Column>
+                      <IconWrapper>
                         <CatchingPokemonTwoToneIcon />
-                      </ListIconWrapper>
-                      <ListData>
+                      </IconWrapper>
+                      <Data>
                         <TextField
                           id="standard"
                           value={type}
@@ -226,13 +226,13 @@ export const AddCard = () => {
                             },
                           }}
                         />
-                      </ListData>
-                    </ListColumn>
-                    <ListColumn>
-                      <ListIconWrapper>
+                      </Data>
+                    </Column>
+                    <Column>
+                      <IconWrapper>
                         <FeaturedPlayListOutlinedIcon />
-                      </ListIconWrapper>
-                      <ListData>
+                      </IconWrapper>
+                      <Data>
                         <TextField
                           id="standard"
                           value={set}
@@ -247,13 +247,13 @@ export const AddCard = () => {
                             },
                           }}
                         />
-                      </ListData>
-                    </ListColumn>
-                    <ListColumn>
-                      <ListIconWrapper>
+                      </Data>
+                    </Column>
+                    <Column>
+                      <IconWrapper>
                         <TagIcon />
-                      </ListIconWrapper>
-                      <ListData>
+                      </IconWrapper>
+                      <Data>
                         <TextField
                           id="standard"
                           value={year}
@@ -269,13 +269,13 @@ export const AddCard = () => {
                             },
                           }}
                         />
-                      </ListData>
-                    </ListColumn>
-                    <ListColumn>
-                      <ListIconWrapper>
+                      </Data>
+                    </Column>
+                    <Column>
+                      <IconWrapper>
                         <PlaylistAddOutlinedIcon />
-                      </ListIconWrapper>
-                      <ListData>
+                      </IconWrapper>
+                      <Data>
                         <TextField
                           id="standard"
                           value={quantity}
@@ -291,32 +291,23 @@ export const AddCard = () => {
                             },
                           }}
                         />
-                      </ListData>
-                    </ListColumn>
+                      </Data>
+                    </Column>
                     <StyledRadioGroup
-                      aria-labelledby="demo-controlled-radio-buttons-group"
+                      aria-labelledby="controlled-radio-buttons-group"
                       name="controlled-radio-buttons-group"
                       value={attribute}
                       onChange={handleChange}
                     >
-                      <FormControlLabel
-                        value="normal"
-                        control={<Radio color="warning" />}
-                        label="Normal"
-                        sx={{ height: 35 }}
-                      />
-                      <FormControlLabel
-                        value="holo"
-                        control={<Radio color="warning" />}
-                        label="Holo"
-                        sx={{ height: 35 }}
-                      />
-                      <FormControlLabel
-                        value="special"
-                        control={<Radio color="warning" />}
-                        label="Special"
-                        sx={{ height: 35 }}
-                      />
+                      {["Normal", "Holo", "Normal"].map((label, index) => (
+                        <FormControlLabel
+                          key={index}
+                          value={label.toLowerCase()}
+                          control={<Radio color="warning" />}
+                          label={label}
+                          sx={{ height: 35 }}
+                        />
+                      ))}
                     </StyledRadioGroup>
                     <IdDivider>
                       <Divider
@@ -351,10 +342,10 @@ export const AddCard = () => {
                         )}
                       </Button>
                     </Add>
-                  </ListDetails>
+                  </Details>
                 </Card>
               </Grow>
-            </ListWrapper>
+            </Wrapper>
           </Slide>
         </StyledPaper>
       </Container>

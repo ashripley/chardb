@@ -13,16 +13,17 @@ export const AddCardMutation = async (
 ) => {
   const uniqueId = uuidv4()
 
-  const axiosTest = async (pokemon: string) => {
+  // fetch pokemon blob from pokeapi
+  const fetchPokemon = async (pokemon: string) => {
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${pokemon}`
     )
     return response.data
   }
 
-  const pokemon = await axiosTest(name)
+  const pokemon = await fetchPokemon(name)
 
-  // fetch evolution chain url
+  // fetch evolution chain url from pokeapi
   const fetchEvolutionChainUrl = async (pokemon: string) => {
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon-species/${pokemon}`
@@ -34,7 +35,7 @@ export const AddCardMutation = async (
 
   const chainUrl = await fetchEvolutionChainUrl(name)
 
-  // fetch evolution chain
+  // fetch evolution chain from pokeapi
   const fetchEvolutionChain = async () => {
     const response = await axios.get(`${chainUrl.url}`)
 
@@ -112,7 +113,7 @@ export const AddCardMutation = async (
     fairy: "#f0b6bc",
   }
 
-  const colour = typeColours[type]
+  const colour = typeColours[type] ?? "#a8a878"
 
   console.log("colour", colour)
 

@@ -1,10 +1,7 @@
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
-import axios from "axios"
 
 export const Card = async (value?: string, category?: string) => {
-  console.log("value", value)
-  console.log("category", category)
   let snapshots: Record<string, any>[] = []
 
   const ref = await collection(firestore, "cards")
@@ -23,5 +20,3 @@ export const Card = async (value?: string, category?: string) => {
 
   return snapshots
 }
-
-// query for quanity, holo, special, evolutions

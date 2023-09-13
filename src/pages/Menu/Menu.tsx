@@ -97,22 +97,24 @@ const StyledList = styled(List)`
   flex-direction: column;
 `
 
-const StyledButton = styled(Button)`
-  border-radius: 15px;
-  background-color: transparent;
-  border: 1px solid white;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
-  font-size: 16px;
-  width: 60%;
-  padding: 15px;
-  height: 20%;
+// const StyledButton = styled(Button)`
+//   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+//     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+//     source-sans-pro, sans-serif;
+//   width: 60%;
+//   height: 20%;
+//   padding: 15px;
+//   background-color: transparent;
+//   padding: 20px;
+//   border: 1px solid white;
+//   border-radius: 15px;
+//   font-size: 18;
+//   transition: all 1s ease;
 
-  &:hover {
-    background-color: darkorange !important;
-  }
-`
+//   &:hover {
+//     background-colour: darkorange !important;
+//   },
+// `
 
 export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
   console.log("menu")
@@ -153,13 +155,26 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
             <TitleWrapper>
               <FlameWrapper>
                 <FlameContainer>
-                  <FlameCard>
+                  {/* <FlameCard> */}
+                  <IconButton
+                    sx={{
+                      background: "white",
+                      borderRadius: "35px",
+                      padding: "10px",
+                      transition: "all 1s !important",
+                      ":hover": {
+                        background: "white",
+                        boxShadow: `0px 0px 20px 0px #ff8c00 , 0px 0px 20px 0px #ffffff`,
+                      },
+                    }}
+                  >
                     <img
                       src={flame}
                       alt="menu"
                       style={{ width: 50, height: 50, padding: 10 }}
                     />
-                  </FlameCard>
+                  </IconButton>
+                  {/* </FlameCard> */}
                 </FlameContainer>
               </FlameWrapper>
               <HeaderText>
@@ -175,7 +190,16 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
               </HeaderText>
             </TitleWrapper>
             <IconWrapper>
-              <IconButton onClick={() => onClose()} style={{ color: "white" }}>
+              <IconButton
+                onClick={() => onClose()}
+                style={{ color: "white" }}
+                sx={{
+                  transition: "all 1s !important",
+                  ":hover": {
+                    boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
+                  },
+                }}
+              >
                 <CloseIcon fontSize="large" style={{ width: 50, height: 50 }} />
               </IconButton>
             </IconWrapper>
@@ -185,22 +209,28 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
               {["Collections", "Info", "Pokedex", "Home"].map(
                 (label, index) => (
                   <div style={{ maxWidth: "100%", width: "100%", padding: 20 }}>
-                    <StyledButton
+                    <Button
                       key={index}
                       variant="contained"
                       onClick={() => onClick(label)}
-                      style={{
+                      sx={{
                         width: "100%",
                         height: "100%",
                         background: "transparent",
-                        padding: "20px",
+                        padding: "30px",
                         border: "1px solid white",
-                        borderRadius: "15px",
-                        fontSize: 18,
+                        borderRadius: "35px",
+                        fontSize: "18px",
+                        transition: "all 1s ease",
+                        fontFamily:
+                          "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif",
+                        ":hover": {
+                          background: "darkorange !important",
+                        },
                       }}
                     >
                       {label}
-                    </StyledButton>
+                    </Button>
                   </div>
                 )
               )}
