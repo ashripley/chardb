@@ -18,8 +18,8 @@ import ClearIcon from "@mui/icons-material/Clear"
 import RefreshIcon from "@mui/icons-material/Refresh"
 import { Card } from "../../api/queries/cards"
 import { AllCards } from "../../api/queries/allCards"
-import { AddCard } from "../../components/Cards/AddCard"
 import { Cards } from "../../components/Cards/Cards"
+import { AddModal } from "../../components/AddModal"
 
 const Root = styled.div`
   display: flex;
@@ -125,6 +125,15 @@ export const CollectionsBody = () => {
     setData([])
   }
 
+  const handleAdd = () => {
+    showAddCard ? setShowAddCard(false) : setShowAddCard(true)
+  }
+
+  const onAddClose = (isClosed: boolean) => {
+    !isClosed && setShowAddCard(false)
+    Query()
+  }
+
   const handleElse = () => {}
 
   useEffect(() => {
@@ -153,7 +162,7 @@ export const CollectionsBody = () => {
             style={{
               backgroundColor: "white",
               border: "none",
-              borderRadius: 15,
+              borderRadius: 35,
               boxShadow: "0px 10px 15px 0px rgba(0, 0, 0, 0.45)",
             }}
           >
@@ -225,7 +234,7 @@ export const CollectionsBody = () => {
                         style={{
                           width: "15%",
                           height: "100%",
-                          borderRadius: 50,
+                          borderRadius: 15,
                         }}
                         onClick={async () => {
                           icon === "collections"
@@ -254,28 +263,26 @@ export const CollectionsBody = () => {
                         style={{
                           width: "15%",
                           height: "100%",
-                          borderRadius: 50,
+                          borderRadius: 15,
                         }}
-                        onClick={() => setShowAddCard(!showAddCard)}
+                        onClick={handleAdd}
                       >
-                        {showAddCard ? (
-                          <RemoveCircleOutlineIcon />
-                        ) : (
-                          <AddIcon />
-                        )}
+                        <AddIcon />
                       </Button>
                     </Actions>
                   </Buttons>
+                  {/* <AddModal /> */}
                 </NameField>
               </Fields>
             </Wrapper>
           </StyledPaper>
         </Grow>
       </Root>
+      <AddModal openModal={showAddCard} closeModal={onAddClose} />
       <Container>
-        {showAddCard && <AddCard />}
         {showCard && (
           <Cards
+            // key={key}
             isCardDeleted={isDeleted}
             pokemon={data}
             mounted={showCard}

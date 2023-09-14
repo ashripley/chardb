@@ -1,8 +1,9 @@
-import { Paper, Skeleton, Slide } from "@mui/material"
+import { Paper, Slide } from "@mui/material"
 import styled from "styled-components"
 import { useEffect, useState } from "react"
 import { ViewSwitch } from "../ViewSwitch"
 import { PokemonCard } from "./PokemonCard"
+import { Loading } from "../Skeleton"
 
 interface Props {
   pokemon: Record<string, any>[]
@@ -70,12 +71,7 @@ export const Cards = ({
           <ViewSwitch view={viewChange} />
         </Switch>
         {isLoading ? (
-          <Skeleton
-            variant="rounded"
-            width={350}
-            height={600}
-            sx={{ borderRadius: 30 }}
-          />
+          <Loading view={gridView} />
         ) : (
           <StyledPaper
             elevation={0}

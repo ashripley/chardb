@@ -533,7 +533,7 @@ export const ListView = ({
                     }
                     onChange={handleChange}
                   >
-                    {["Normal", "Holo", "Normal"].map((label, index) => (
+                    {["Normal", "Holo", "Special"].map((label, index) => (
                       <FormControlLabel
                         key={index}
                         value={label.toLowerCase()}

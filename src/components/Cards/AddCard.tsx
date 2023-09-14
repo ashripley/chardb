@@ -121,7 +121,7 @@ export const AddCard = () => {
   const [quantity, setQuantity] = useState("")
   const [attribute, setAttribute] = useState("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [icon, setIcon] = useState("")
+  const [icon, setIcon] = useState("add")
 
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
@@ -135,14 +135,11 @@ export const AddCard = () => {
 
     await AddCardMutation(name, type, set, year, quantity, attribute)
 
-    setIcon("Success")
-    clearFields()
-
     setTimeout(() => {
-      setIcon("Add")
+      setIsLoading(false)
+      clearFields()
+      setIcon("add")
     }, 2500)
-
-    setIsLoading(false)
   }
 
   const clearFields = () => {
@@ -153,11 +150,6 @@ export const AddCard = () => {
     setQuantity("")
     setAttribute("")
   }
-
-  // const changeIcon = () => {
-  //   mutation.status === "success" && setTimeout(() => {}, 2000)
-  //   return <AddIcon />
-  // }
 
   return (
     <>
@@ -196,7 +188,7 @@ export const AddCard = () => {
                           label={"Name"}
                           variant="outlined"
                           style={{ width: "100%", margin: 5 }}
-                          sx={{ borderRadius: 15 }}
+                          sx={{ borderRadius: "15px" }}
                           color="warning"
                           onChange={(e) => setName(e.target.value)}
                           InputProps={{
@@ -322,23 +314,19 @@ export const AddCard = () => {
                         color="success"
                         style={{
                           width: "15%",
-                          borderRadius: 50,
+                          borderRadius: 15,
                           height: "100%",
                         }}
                         onClick={() => onClick()}
                       >
                         {isLoading || mutation.isLoading ? (
                           <CircularProgress color="success" />
-                        ) : mutation.isSuccess ? (
-                          icon === "Success" ? (
-                            <DoneIcon />
-                          ) : icon === "Add" ? (
-                            <AddIcon />
-                          ) : (
-                            <></>
-                          )
-                        ) : (
+                        ) : icon === "add" ? (
                           <AddIcon />
+                        ) : icon === "success" ? (
+                          <DoneIcon />
+                        ) : (
+                          <></>
                         )}
                       </Button>
                     </Add>
