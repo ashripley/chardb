@@ -1,5 +1,6 @@
 import {
   Button,
+  Chip,
   CircularProgress,
   FormControl,
   Grow,
@@ -12,7 +13,6 @@ import {
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import AddIcon from "@mui/icons-material/Add"
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"
 import SearchIcon from "@mui/icons-material/Search"
 import ClearIcon from "@mui/icons-material/Clear"
 import RefreshIcon from "@mui/icons-material/Refresh"
@@ -20,6 +20,8 @@ import { Card } from "../../api/queries/cards"
 import { AllCards } from "../../api/queries/allCards"
 import { Cards } from "../../components/Cards/Cards"
 import { AddModal } from "../../components/AddModal"
+import WindowIcon from "@mui/icons-material/Window"
+import ListIcon from "@mui/icons-material/List"
 
 const Root = styled.div`
   display: flex;
@@ -29,9 +31,15 @@ const Root = styled.div`
   padding-top: 30px;
 `
 
+const Header = styled.div`
+  display: flex;
+  width: 100%;
+  padding: 0px 50px;
+`
+
 const StyledPaper = styled(Paper)`
   margin: 20px;
-  width: 60%;
+  width: 100%;
 `
 
 const Wrapper = styled.div`
@@ -81,6 +89,13 @@ const Actions = styled.div`
   justify-content: space-between;
 `
 
+const Chips = styled.div`
+  width: 15%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`
+
 export const CollectionsBody = () => {
   const [name, setName] = useState("")
   const [error, setError] = useState(false)
@@ -89,6 +104,7 @@ export const CollectionsBody = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [icon, setIcon] = useState<string>("collections")
   const [data, setData] = useState([{}])
+  const [viewToggle, setViewToggle] = useState(true)
   const [category, setCategory] = useState<Record<string, any>>({})
 
   const Query = async () => {
@@ -148,141 +164,211 @@ export const CollectionsBody = () => {
     }
   }
 
+  const isViewToggled = (view: boolean) => {
+    setViewToggle(view)
+  }
+
+  const onViewChange = () => {
+    setViewToggle(!viewToggle)
+  }
+
   return (
     <>
       <Root>
-        <Grow
-          in={true}
-          style={{ transformOrigin: "1 1 1" }}
-          {...(true ? { timeout: 1000 } : { timeout: 1000 })}
-        >
-          <StyledPaper
-            variant="outlined"
-            elevation={5}
-            style={{
-              backgroundColor: "white",
-              border: "none",
-              borderRadius: 35,
-              boxShadow: "0px 10px 15px 0px rgba(0, 0, 0, 0.45)",
-            }}
+        <Header>
+          <Grow
+            in={true}
+            style={{ transformOrigin: "1 1 1" }}
+            {...(true ? { timeout: 1000 } : { timeout: 1000 })}
           >
-            <Wrapper>
-              <Fields>
-                <NameField>
-                  <FormControl
-                    sx={{ borderRadius: "15px !important", width: "30%" }}
-                  >
-                    <InputLabel color="warning">{"Category"}</InputLabel>
-                    <Select
-                      id="standard"
-                      variant="outlined"
-                      value={category.value}
-                      label={"Category"}
-                      color="warning"
-                      onChange={(e) =>
-                        setCategory({ key: "category", value: e.target.value })
-                      }
-                      sx={{ borderRadius: "15px !important" }}
+            <StyledPaper
+              variant="outlined"
+              elevation={5}
+              sx={{
+                backgroundColor: "white",
+                border: "none",
+                borderRadius: "35px",
+                boxShadow:
+                  "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+                transition: "all 1s ease !important",
+
+                "&:hover": {
+                  padding: "0.2rem",
+                  boxShadow:
+                    "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
+                },
+              }}
+            >
+              <Wrapper>
+                <Fields>
+                  <NameField>
+                    <FormControl
+                      sx={{ borderRadius: "15px !important", width: "15%" }}
                     >
-                      <MenuItem value="">
-                        <b>None</b>
-                      </MenuItem>
-                      {["Name", "Type", "Set", "Year"].map(
-                        (category, index) => (
-                          <MenuItem key={index} value={category}>
-                            {category}
-                          </MenuItem>
-                        )
-                      )}
-                    </Select>
-                  </FormControl>
-                  <TextFieldWrapper>
-                    <TextField
-                      id="standard"
-                      value={name}
-                      label={`${
-                        error
-                          ? "No Results Found"
-                          : category.value
-                          ? `Pokémon ${category.value}`
-                          : "Search All Pokémon..."
-                      }`}
-                      variant="outlined"
-                      style={{ width: "100%" }}
-                      color={icon === "error" ? "error" : "warning"}
-                      onChange={(e) => setName(e.target.value)}
-                      error={error}
-                      InputProps={{
-                        sx: {
+                      <InputLabel color="warning">{"Category"}</InputLabel>
+                      <Select
+                        id="standard"
+                        variant="outlined"
+                        value={category.value}
+                        label={"Category"}
+                        color="warning"
+                        onChange={(e) =>
+                          setCategory({
+                            key: "category",
+                            value: e.target.value,
+                          })
+                        }
+                        sx={{
                           borderRadius: "15px !important",
-                        },
-                      }}
-                    />
-                  </TextFieldWrapper>
-                  <Buttons>
-                    <Actions>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        color={`${
-                          icon === "error"
-                            ? "error"
-                            : icon === "refresh"
-                            ? "secondary"
-                            : "warning"
-                        }`}
-                        style={{
-                          width: "15%",
-                          height: "100%",
-                          borderRadius: 15,
-                        }}
-                        onClick={async () => {
-                          icon === "collections"
-                            ? Query()
-                            : icon === "error"
-                            ? handleError()
-                            : icon === "refresh"
-                            ? handleRefresh()
-                            : handleElse()
+                          input: { color: "#ed6d03" },
+                          label: { color: "#ed6d03" },
+                          fieldset: { borderColor: "#ed6d03" },
                         }}
                       >
-                        {isLoading === true ? (
-                          <CircularProgress color="warning" />
-                        ) : icon === "error" ? (
-                          <ClearIcon />
-                        ) : icon === "refresh" ? (
-                          <RefreshIcon />
-                        ) : (
-                          <SearchIcon />
+                        <MenuItem value="">
+                          <b>None</b>
+                        </MenuItem>
+                        {["Name", "Type", "Set", "Year"].map(
+                          (category, index) => (
+                            <MenuItem key={index} value={category}>
+                              {category}
+                            </MenuItem>
+                          )
                         )}
-                      </Button>
-                      <Button
+                      </Select>
+                    </FormControl>
+                    <TextFieldWrapper>
+                      <TextField
+                        id="standard"
+                        value={name}
+                        label={`${
+                          error
+                            ? "No Results Found"
+                            : category.value
+                            ? `Pokémon ${category.value}`
+                            : "Search All Pokémon..."
+                        }`}
                         variant="outlined"
-                        size="small"
-                        color="success"
-                        style={{
-                          width: "15%",
-                          height: "100%",
-                          borderRadius: 15,
+                        style={{ width: "100%" }}
+                        color={icon === "error" ? "error" : "warning"}
+                        onChange={(e) => setName(e.target.value)}
+                        error={error}
+                        InputProps={{
+                          sx: {
+                            borderRadius: "15px !important",
+                            fieldset: { borderColor: "#ed6d03" },
+                          },
                         }}
-                        onClick={handleAdd}
-                      >
-                        <AddIcon />
-                      </Button>
-                    </Actions>
-                  </Buttons>
-                  {/* <AddModal /> */}
-                </NameField>
-              </Fields>
-            </Wrapper>
-          </StyledPaper>
-        </Grow>
+                      />
+                    </TextFieldWrapper>
+                    <Buttons>
+                      <Actions>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          color={`${
+                            icon === "error"
+                              ? "error"
+                              : icon === "refresh"
+                              ? "secondary"
+                              : "warning"
+                          }`}
+                          style={{
+                            width: "45%",
+                            height: "100%",
+                            borderRadius: 15,
+                          }}
+                          onClick={async () => {
+                            icon === "collections"
+                              ? Query()
+                              : icon === "error"
+                              ? handleError()
+                              : icon === "refresh"
+                              ? handleRefresh()
+                              : handleElse()
+                          }}
+                        >
+                          {isLoading === true ? (
+                            <CircularProgress color="warning" />
+                          ) : icon === "error" ? (
+                            <ClearIcon />
+                          ) : icon === "refresh" ? (
+                            <RefreshIcon />
+                          ) : (
+                            <SearchIcon />
+                          )}
+                        </Button>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          color="success"
+                          style={{
+                            width: "45%",
+                            height: "100%",
+                            borderRadius: 15,
+                          }}
+                          onClick={handleAdd}
+                        >
+                          <AddIcon />
+                        </Button>
+                      </Actions>
+                    </Buttons>
+                    <Chips>
+                      <Chip
+                        label="GRID"
+                        onClick={onViewChange}
+                        icon={
+                          <WindowIcon
+                            fontSize="small"
+                            style={{
+                              color: `${!viewToggle ? "#a0aec0" : "#ed6d03"}`,
+                            }}
+                          />
+                        }
+                        sx={{
+                          padding: "15px 5px",
+                          borderRadius: "15px",
+                          borderColor: "#a0aec0",
+                          color: `${!viewToggle ? "#a0aec0" : "#ed6d03"}`,
+                          fontFamily:
+                            "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
+                        }}
+                        variant={viewToggle ? "filled" : "outlined"}
+                      />
+                      <Chip
+                        label="LIST"
+                        onClick={onViewChange}
+                        icon={
+                          <ListIcon
+                            fontSize="small"
+                            style={{
+                              color: `${viewToggle ? "#a0aec0" : "#ed6d03"}`,
+                            }}
+                          />
+                        }
+                        sx={{
+                          padding: "15px 5px",
+                          borderRadius: "15px",
+                          borderColor: "#a0aec0",
+                          color: `${viewToggle ? "#a0aec0" : "#ed6d03"}`,
+                          fontFamily:
+                            "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
+                        }}
+                        variant={!viewToggle ? "filled" : "outlined"}
+                      />
+                    </Chips>
+                  </NameField>
+                </Fields>
+              </Wrapper>
+            </StyledPaper>
+          </Grow>
+        </Header>
       </Root>
       <AddModal openModal={showAddCard} closeModal={onAddClose} />
       <Container>
         {showCard && (
           <Cards
-            // key={key}
+            view={viewToggle}
             isCardDeleted={isDeleted}
             pokemon={data}
             mounted={showCard}

@@ -117,9 +117,7 @@ const style = {
   width: "80%",
   height: "35%",
   bgcolor: "background.paper",
-  boxShadow: `#f08030 0px 2px 4px 0px, #f08030 0px 0px 10px 0px`,
-  // boxShadow:
-  //   "rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px",
+  boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
   borderRadius: 15,
   p: 4,
 }

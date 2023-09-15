@@ -169,39 +169,6 @@ const Evolutions = styled.div`
   justify-content: space-around;
 `
 
-// holographic styling
-
-// const StyledImageCard = styled(Card)<{ attribute: string }>`
-//   ${(props) =>
-//     props.attribute === "holo"
-//       ? `
-//     -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
-//       200%;
-//     background-repeat: no-repeat;
-//     animation: shimmer 3s infinite linear;
-//     transition: all 1s ease;
-//     @keyframes shimmer {
-//       100% {
-//         -webkit-mask-position: left;
-//       }
-//     }
-//   `
-//       : props.attribute === "special"
-//       ? `
-//       -webkit-mask: linear-gradient(-60deg, #000 30%, #0118, #101 70%) right/400%
-//       200%;
-//     background-repeat: no-repeat;
-//     animation: shimmer 3s infinite linear;
-//     transition: all 1s ease;
-//     @keyframes shimmer {
-//       100% {
-//         -webkit-mask-position: left;
-//       }
-//     }
-//   `
-//       : ``}
-// `
-
 export const GridView = ({
   pokemon,
   cardIndex,
