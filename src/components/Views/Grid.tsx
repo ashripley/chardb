@@ -126,6 +126,7 @@ const Data = styled.div`
     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
     source-sans-pro, sans-serif;
   text-transform: capitalize;
+  color: dimGray;
 `
 
 const Attribute = styled.div`
@@ -142,7 +143,7 @@ const CardWrapper = styled.div`
   justify-content: center;
 `
 
-const ActionColumn = styled.div`
+const ActionRow = styled.div`
   width: 100%;
   height: 10%;
   display: flex;
@@ -551,7 +552,7 @@ export const GridView = ({
             style={{ transformOrigin: "1 1 1" }}
             {...(true ? { timeout: 1000 } : {})}
           >
-            <ActionColumn>
+            <ActionRow>
               <Button
                 sx={{ borderRadius: 50 }}
                 onClick={() =>
@@ -581,7 +582,7 @@ export const GridView = ({
                   />
                 )}
               </Button>
-            </ActionColumn>
+            </ActionRow>
           </Grow>
           <Snackbar open={open} autoHideDuration={2000} onClose={() => {}}>
             <Alert onClose={() => {}} severity="success" sx={{ width: "100%" }}>

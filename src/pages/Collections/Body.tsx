@@ -220,17 +220,28 @@ export const CollectionsBody = () => {
                         }
                         sx={{
                           borderRadius: "15px !important",
-                          input: { color: "#ed6d03" },
-                          label: { color: "#ed6d03" },
-                          fieldset: { borderColor: "#ed6d03" },
+                          fieldset: {
+                            borderColor: "dimGray",
+                          },
+                          color: "dimGray",
+
+                          "&:hover": {
+                            fieldset: {
+                              borderColor: "#ed6d03 !important",
+                            },
+                          },
                         }}
                       >
                         <MenuItem value="">
-                          <b>None</b>
+                          <b style={{ color: "dimGray" }}>None</b>
                         </MenuItem>
                         {["Name", "Type", "Set", "Year"].map(
                           (category, index) => (
-                            <MenuItem key={index} value={category}>
+                            <MenuItem
+                              key={index}
+                              value={category}
+                              sx={{ color: "dimGray" }}
+                            >
                               {category}
                             </MenuItem>
                           )
@@ -256,7 +267,16 @@ export const CollectionsBody = () => {
                         InputProps={{
                           sx: {
                             borderRadius: "15px !important",
-                            fieldset: { borderColor: "#ed6d03" },
+                            fieldset: {
+                              borderColor: "dimGray",
+                            },
+                            input: { color: "dimGray" },
+
+                            "&:hover": {
+                              fieldset: {
+                                borderColor: "#ed6d03 !important",
+                              },
+                            },
                           },
                         }}
                       />

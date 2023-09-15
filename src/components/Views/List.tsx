@@ -115,6 +115,7 @@ const Data = styled.div`
     source-sans-pro, sans-serif;
   text-transform: capitalize;
   padding: 10px 0px;
+  color: dimGray;
 `
 
 const Id = styled.div`
@@ -128,6 +129,7 @@ const Id = styled.div`
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
     source-sans-pro, sans-serif;
+  color: dimGray;
 `
 
 const ActionColumn = styled.div`
