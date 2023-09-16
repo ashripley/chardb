@@ -66,7 +66,7 @@ const Image = styled.div<{
   isCardHovered: boolean
   editView: boolean
 }>`
-  background: #0f1a1b;
+  background: dimGray;
   height: ${(props) =>
     !!props.isCardHovered && !!props.editView
       ? "30%"
@@ -85,7 +85,7 @@ const Image = styled.div<{
   border-radius: 50px;
 
   & :hover {
-    border-radius: 45px;
+    border-radius: 45px !important;
   }
 `
 
@@ -131,7 +131,7 @@ const Data = styled.div`
 
 const Attribute = styled.div`
   display: flex;
-  color: white;
+  color: #eeefeb;
   height: 75%;
   width: 25px;
   margin-right: -25px;
@@ -149,7 +149,7 @@ const ActionRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0f1a1b;
+  background: dimGray;
   border-radius: 50px;
   transition: all 1s ease;
 `
@@ -280,7 +280,7 @@ export const GridView = ({
         <Card
           sx={{
             minWidth: 275,
-            backgroundColor: "white",
+            backgroundColor: "#eeefeb",
             borderRadius: 15,
             height: "100%",
             transition: "all 0.8s !important",
@@ -309,9 +309,12 @@ export const GridView = ({
                   width: 200,
                   height: 200,
                   borderRadius: 100,
+                  // borderBottomLeftRadius: "30px !important",
+                  // borderBottomRightRadius: "30px !important",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  backgroundColor: "#eeefeb !important",
                   opacity: "revert",
                   transition: "all 1.8s !important",
                   boxShadow: `${pokemon.colour} 0px 2px 4px 0px, ${pokemon.colour} 0px 0px 26px 0px`,

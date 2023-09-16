@@ -5,6 +5,7 @@ import styled from "styled-components"
 import { Button, Card, IconButton } from "@mui/material"
 import flame from "../../assets/icons/flame.png"
 import CloseIcon from "@mui/icons-material/Close"
+import menuWallpaper from "../../assets/icons/menuWallpaper.png"
 
 interface Props {
   isOpen: boolean
@@ -20,15 +21,18 @@ const Container = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   flex-direction: column;
+  background-color: #e3e4db;
+  z-index: 1;
 `
 
 const HeaderWrapper = styled.div`
   display: flex;
-  height: 35%;
+  height: 25%;
   width: 100%;
   box-sizing: border-box;
   padding: 30px;
   justify-content: space-around;
+  background-color: #e3e4db;
 `
 
 const TitleWrapper = styled.div`
@@ -62,11 +66,6 @@ const FlameContainer = styled.div`
   height: 80px;
 `
 
-const FlameCard = styled(Card)`
-  border-radius: 15px !important;
-  padding: 5px;
-`
-
 const HeaderText = styled.div`
   display: flex;
   font-size: 2.5rem;
@@ -83,9 +82,21 @@ const HeaderText = styled.div`
 
 const Body = styled.div`
   display: flex;
-  height: 60%;
+  height: 75%;
   width: 100%;
   justify-content: center;
+  justify-items: center;
+  align-items: center;
+  justify-content: center;
+  background-color: #eeefeb;
+
+  border-top-left-radius: 45% 50%;
+  border-top-right-radius: 95% 60%;
+  border-bottom-left-radius: 45% 70%;
+  border-bottom-right-radius: 95% 60%;
+  bottom: 0;
+  z-index: -1;
+  transition: all 2s ease;
 `
 
 const StyledList = styled(List)`
@@ -96,25 +107,6 @@ const StyledList = styled(List)`
   justify-content: center;
   flex-direction: column;
 `
-
-// const StyledButton = styled(Button)`
-//   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-//     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-//     source-sans-pro, sans-serif;
-//   width: 60%;
-//   height: 20%;
-//   padding: 15px;
-//   background-color: transparent;
-//   padding: 20px;
-//   border: 1px solid white;
-//   border-radius: 15px;
-//   font-size: 18;
-//   transition: all 1s ease;
-
-//   &:hover {
-//     background-colour: darkorange !important;
-//   },
-// `
 
 export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
   console.log("menu")
@@ -145,7 +137,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
           sx: {
             width: "100%",
             height: "100%",
-            background: "#0f1a1b",
+            // backgroundImage: `url(${menuWallpaper})`,
             color: "white",
           },
         }}
@@ -155,10 +147,9 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
             <TitleWrapper>
               <FlameWrapper>
                 <FlameContainer>
-                  {/* <FlameCard> */}
                   <IconButton
                     sx={{
-                      background: "white",
+                      background: "#eeefeb",
                       borderRadius: "35px",
                       padding: "10px",
                       transition: "all 1s !important",
@@ -174,7 +165,6 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
                       style={{ width: 50, height: 50, padding: 10 }}
                     />
                   </IconButton>
-                  {/* </FlameCard> */}
                 </FlameContainer>
               </FlameWrapper>
               <HeaderText>
@@ -184,7 +174,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
                 >
                   char
                 </span>
-                <span className="db" style={{ color: "white" }}>
+                <span className="db" style={{ color: "dimGray" }}>
                   db
                 </span>
               </HeaderText>
@@ -192,10 +182,11 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
             <IconWrapper>
               <IconButton
                 onClick={() => onClose()}
-                style={{ color: "white" }}
+                style={{ color: "dimGray" }}
                 sx={{
                   transition: "all 1s !important",
                   ":hover": {
+                    background: "#eeefeb",
                     boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
                   },
                 }}
@@ -216,16 +207,20 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
                       sx={{
                         width: "100%",
                         height: "100%",
-                        background: "transparent",
+                        backgroundColor: "#e3e4db",
+                        color: "dimGray",
                         padding: "30px",
-                        border: "1px solid white",
                         borderRadius: "35px",
                         fontSize: "18px",
+                        boxShadow:
+                          "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
                         transition: "all 1s ease",
                         fontFamily:
                           "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif",
                         ":hover": {
-                          background: "darkorange !important",
+                          backgroundColor: "darkorange !important",
+                          boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
+                          color: "#e3e4db !important",
                         },
                       }}
                     >

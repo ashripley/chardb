@@ -59,8 +59,7 @@ const ButtonWrapper = styled.div`
 
 const StyledButton = styled(Button)`
   border-radius: 15px;
-  background-color: transparent;
-  border: 1px solid white;
+  background-color: #e3e4db;
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
     source-sans-pro, sans-serif;
@@ -68,10 +67,14 @@ const StyledButton = styled(Button)`
   width: 14rem;
   padding: 15px;
   height: 25%;
-  transition: all 0.5s ease;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
+    rgba(0, 0, 0, 0.05) 0px 5px 10px;
+  transition: all 1s ease;
 
   &:hover {
     background-color: darkorange !important;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+    color: #e3e4db !important;
   }
 `
 
@@ -91,10 +94,10 @@ export const HomeBody = ({ menuOption }: Props) => {
           <Wrapper>
             <Title>
               <span style={{ color: "darkorange", fontWeight: 800 }}>char</span>
-              <span style={{ color: "white" }}>db</span>
+              <span style={{ color: "dimGray" }}>db</span>
             </Title>
             <SubTitle>
-              <span style={{ color: "white" }}>
+              <span style={{ color: "dimGray" }}>
                 a place to store your nostalgia
               </span>
             </SubTitle>
@@ -104,7 +107,7 @@ export const HomeBody = ({ menuOption }: Props) => {
               <StyledButton
                 variant="contained"
                 onClick={() => onClick()}
-                sx={{ background: "transparent" }}
+                sx={{ color: "dimGray" }}
               >
                 Collections
               </StyledButton>

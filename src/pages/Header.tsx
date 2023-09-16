@@ -68,11 +68,10 @@ export const Header = ({ isOpen, menuAction }: Props) => {
             position="static"
             variant="outlined"
             style={{
-              background: `${
-                menuAction === "Home" ? "transparent" : "#0f1a1b"
-              }`,
+              background: "transparent",
               justifyContent: "center",
               height: "100%",
+              borderBottom: "none",
             }}
           >
             <Toolbar style={{ padding: 0 }}>
@@ -83,8 +82,10 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                   <MenuWrapper>
                     <IconWrapper
                       sx={{
+                        backgroundColor: "#eeefeb",
                         transition: "all 0.5s !important",
                         ":hover": {
+                          background: "#eeefeb",
                           boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
                         },
                       }}
@@ -103,7 +104,7 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                     >
                       char
                     </span>
-                    <span className="db" style={{ color: "white" }}>
+                    <span className="db" style={{ color: "dimGray" }}>
                       db
                     </span>
                   </HeaderText>
@@ -116,13 +117,19 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                       mr: 2,
                       transition: "all 0.5s !important",
                       ":hover": {
+                        background: "#eeefeb",
                         boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
                       },
                     }}
                     style={{ width: 50, height: 50, margin: 0 }}
                     onClick={() => onClick(!isClicked)}
                   >
-                    <MenuIcon />
+                    <MenuIcon
+                      style={{
+                        filter:
+                          "brightness(0) saturate(100%) invert(36%) sepia(8%) saturate(8%) hue-rotate(332deg) brightness(90%) contrast(88%)",
+                      }}
+                    />
                   </IconButton>
                 </StyledHeader>
               </Container>

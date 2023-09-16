@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import wallpaper from "../../assets/icons/wallpaper.jpg"
+import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
 import { HomeBody } from "./Body"
 import { useState } from "react"
 import { Header } from "../Header"
@@ -15,7 +15,7 @@ const Container = styled.div`
   max-height: 100%;
   height: 100vh;
   width: 100vw;
-  background: url(${wallpaper});
+  background: url(${greyWallpaper});
   background-repeat: no-repeat;
   background-size: 100vw 100vh;
 `

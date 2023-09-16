@@ -29,6 +29,8 @@ const Root = styled.div`
   width: 100%;
   justify-content: center;
   padding-top: 30px;
+  position: relative;
+  z-index: 1 !important;
 `
 
 const Header = styled.div`
@@ -40,6 +42,11 @@ const Header = styled.div`
 const StyledPaper = styled(Paper)`
   margin: 20px;
   width: 100%;
+
+  // border-top-left-radius: 25% 20% !important;
+  // border-top-right-radius: 25% 20% !important;
+  // border-bottom-left-radius: 35% 10% !important;
+  // border-bottom-right-radius: 45% 20% !important;
 `
 
 const Wrapper = styled.div`
@@ -52,8 +59,10 @@ const Wrapper = styled.div`
 const Container = styled.div`
   max-width: 100%;
   max-height: 100%;
-  height: 80vh;
+  height: auto;
   padding: 30px;
+  position: relative;
+  z-index: 1 !important;
 `
 
 const TextFieldWrapper = styled.div`
@@ -185,7 +194,7 @@ export const CollectionsBody = () => {
               variant="outlined"
               elevation={5}
               sx={{
-                backgroundColor: "white",
+                backgroundColor: "#eeefeb",
                 border: "none",
                 borderRadius: "35px",
                 boxShadow:
@@ -341,15 +350,15 @@ export const CollectionsBody = () => {
                           <WindowIcon
                             fontSize="small"
                             style={{
-                              color: `${!viewToggle ? "#a0aec0" : "#ed6d03"}`,
+                              color: `${!viewToggle ? "dimGray" : "#ed6d03"}`,
                             }}
                           />
                         }
                         sx={{
                           padding: "15px 5px",
                           borderRadius: "15px",
-                          borderColor: "#a0aec0",
-                          color: `${!viewToggle ? "#a0aec0" : "#ed6d03"}`,
+                          borderColor: "dimGray",
+                          color: `${!viewToggle ? "dimGray" : "#ed6d03"}`,
                           fontFamily:
                             "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
                         }}
@@ -362,15 +371,15 @@ export const CollectionsBody = () => {
                           <ListIcon
                             fontSize="small"
                             style={{
-                              color: `${viewToggle ? "#a0aec0" : "#ed6d03"}`,
+                              color: `${viewToggle ? "dimGray" : "#ed6d03"}`,
                             }}
                           />
                         }
                         sx={{
                           padding: "15px 5px",
                           borderRadius: "15px",
-                          borderColor: "#a0aec0",
-                          color: `${viewToggle ? "#a0aec0" : "#ed6d03"}`,
+                          borderColor: "dimGray",
+                          color: `${viewToggle ? "dimGray" : "#ed6d03"}`,
                           fontFamily:
                             "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
                         }}

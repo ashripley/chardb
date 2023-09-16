@@ -155,7 +155,7 @@ const StyledRadioGroup = styled(RadioGroup)`
 
 const Attribute = styled.div`
   display: flex;
-  color: white;
+  color: #eeefeb;
   height: 120px;
   width: 25px;
   margin-right: -25px;
@@ -171,7 +171,7 @@ export const readIconProps = {
   width: 30,
   borderRadius: 100,
   background: "transparent",
-  color: "white",
+  color: "#eeefeb",
   transition: "all 0.3s !important",
   ":hover": {
     padding: "0.5em",
@@ -181,7 +181,7 @@ export const readIconProps = {
 
 export const editIconProps = {
   borderRadius: 100,
-  color: "white",
+  color: "#eeefeb",
   transition: "all 0.3s !important",
   ":hover": {
     padding: "0.5em",
@@ -299,11 +299,11 @@ export const ListView = ({
           <Card
             sx={{
               width: "100%",
-              backgroundColor: "white",
               borderRadius: 15,
               height: "100%",
               display: "flex",
               transition: "all 0.8s !important",
+              backgroundColor: "#eeefeb",
               ":hover": {
                 padding: "0.5em",
                 boxShadow: "0px 10px 30px dimGray",
@@ -321,6 +321,7 @@ export const ListView = ({
                   height: 120,
                   borderRadius: 100,
                   display: "flex",
+                  backgroundColor: "#eeefeb",
                   alignItems: "center",
                   justifyContent: "center",
                   opacity: "revert",
