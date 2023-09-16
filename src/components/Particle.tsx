@@ -47,7 +47,7 @@ export const Particle = () => {
           color: "#e3e4db",
         },
         particles: {
-          color: { value: "#eeefeb" },
+          color: { value: ["#eeefeb", "#595959", "#ff8c00"] },
           move: {
             direction: "none",
             enable: true,
@@ -59,21 +59,21 @@ export const Particle = () => {
           number: {
             density: {
               enable: true,
-              area: 800,
+              area: 1000,
             },
-            value: 180,
+            value: 80,
           },
           opacity: {
             value: {
               min: 0.2,
-              max: 4,
+              max: 2,
             },
           },
           shape: {
             type: "circle",
           },
           size: {
-            value: { min: 1, max: 5 },
+            value: { min: 1, max: 3 },
           },
         },
       }}
