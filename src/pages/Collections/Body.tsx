@@ -42,11 +42,6 @@ const Header = styled.div`
 const StyledPaper = styled(Paper)`
   margin: 20px;
   width: 100%;
-
-  // border-top-left-radius: 25% 20% !important;
-  // border-top-right-radius: 25% 20% !important;
-  // border-bottom-left-radius: 35% 10% !important;
-  // border-bottom-right-radius: 45% 20% !important;
 `
 
 const Wrapper = styled.div`
@@ -197,14 +192,14 @@ export const CollectionsBody = () => {
                 backgroundColor: "#eeefeb",
                 border: "none",
                 borderRadius: "35px",
-                boxShadow:
-                  "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+                // boxShadow:
+                //   "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
                 transition: "all 1s ease !important",
+                boxShadow:
+                  "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
 
                 "&:hover": {
                   padding: "0.2rem",
-                  boxShadow:
-                    "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
                 },
               }}
             >
@@ -228,9 +223,9 @@ export const CollectionsBody = () => {
                           })
                         }
                         sx={{
-                          borderRadius: "15px !important",
+                          borderRadius: "15px 35px 35px 15px",
                           fieldset: {
-                            borderColor: "dimGray",
+                            borderColor: "#e3e4db",
                           },
                           color: "dimGray",
 
@@ -277,7 +272,7 @@ export const CollectionsBody = () => {
                           sx: {
                             borderRadius: "15px !important",
                             fieldset: {
-                              borderColor: "dimGray",
+                              borderColor: "#e3e4db",
                             },
                             input: { color: "dimGray" },
 
@@ -306,6 +301,7 @@ export const CollectionsBody = () => {
                             width: "45%",
                             height: "100%",
                             borderRadius: 15,
+                            borderColor: "#e3e4db",
                           }}
                           onClick={async () => {
                             icon === "collections"
@@ -335,6 +331,7 @@ export const CollectionsBody = () => {
                             width: "45%",
                             height: "100%",
                             borderRadius: 15,
+                            borderColor: "#e3e4db",
                           }}
                           onClick={handleAdd}
                         >
@@ -357,7 +354,7 @@ export const CollectionsBody = () => {
                         sx={{
                           padding: "15px 5px",
                           borderRadius: "15px",
-                          borderColor: "dimGray",
+                          borderColor: "#e3e4db",
                           color: `${!viewToggle ? "dimGray" : "#ed6d03"}`,
                           fontFamily:
                             "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
@@ -378,7 +375,7 @@ export const CollectionsBody = () => {
                         sx={{
                           padding: "15px 5px",
                           borderRadius: "15px",
-                          borderColor: "dimGray",
+                          borderColor: "#e3e4db",
                           color: `${viewToggle ? "dimGray" : "#ed6d03"}`,
                           fontFamily:
                             "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",

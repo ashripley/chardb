@@ -66,7 +66,7 @@ const Image = styled.div<{
   isCardHovered: boolean
   editView: boolean
 }>`
-  background: dimGray;
+  background: #333333;
   height: ${(props) =>
     !!props.isCardHovered && !!props.editView
       ? "30%"
@@ -116,6 +116,7 @@ const Icon = styled.div`
   display: flex;
   width: 15%;
   justify-content: flex-start;
+  color: #333333;
 `
 
 const Data = styled.div`
@@ -149,7 +150,7 @@ const ActionRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: dimGray;
+  background: #333333;
   border-radius: 50px;
   transition: all 1s ease;
 `
