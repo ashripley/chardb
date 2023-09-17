@@ -320,11 +320,7 @@ export const ListView = ({
                 sx={{
                   width: 120,
                   height: 120,
-                  // borderRadius: "100px",
-                  borderTopLeftRadius: "45% 50%",
-                  borderTopRightRadius: "95% 60%",
-                  borderBottomLeftRadius: "45% 70%",
-                  borderBottomRightRadius: "95% 60%",
+                  borderRadius: "100px",
                   display: "flex",
                   backgroundColor: Theme.lightBg,
                   alignItems: "center",

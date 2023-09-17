@@ -310,18 +310,14 @@ export const GridView = ({
                 sx={{
                   width: 200,
                   height: 200,
-                  // borderRadius: 100,
+                  borderRadius: 100,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   backgroundColor: `${Theme.lightBg} !important`,
                   opacity: "revert",
                   transition: "all 1.8s !important",
-                  boxShadow: `${Theme.lightBg} 0px 0px 0px 0px !important`,
-                  borderTopLeftRadius: "45% 50%",
-                  borderTopRightRadius: "95% 60%",
-                  borderBottomLeftRadius: "45% 70%",
-                  borderBottomRightRadius: "95% 60%",
+                  boxShadow: `${Theme.lightBg} 0px 0px 10px 0px !important`,
 
                   ":hover": {
                     width: "400px !important",
