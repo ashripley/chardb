@@ -30,6 +30,7 @@ import EditIcon from "@mui/icons-material/Edit"
 import DoneIcon from "@mui/icons-material/Done"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { editIconProps, readIconProps } from "./List"
+import { Theme } from "../../Theme"
 
 interface Props {
   cardIndex: number
@@ -82,7 +83,7 @@ const Image = styled.div<{
     flex-direction: column;
     `}
   justify-content: center;
-  border-radius: 50px;
+  border-radius: 30px;
 
   & :hover {
     border-radius: 45px !important;
@@ -127,12 +128,12 @@ const Data = styled.div`
     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
     source-sans-pro, sans-serif;
   text-transform: capitalize;
-  color: dimGray;
+  color: ${Theme.primaryText};
 `
 
 const Attribute = styled.div`
   display: flex;
-  color: #eeefeb;
+  color: ${Theme.lightBg};
   height: 75%;
   width: 25px;
   margin-right: -25px;
@@ -151,7 +152,7 @@ const ActionRow = styled.div`
   align-items: center;
   justify-content: center;
   background: #333333;
-  border-radius: 50px;
+  border-radius: 30px;
   transition: all 1s ease;
 `
 
@@ -281,13 +282,13 @@ export const GridView = ({
         <Card
           sx={{
             minWidth: 275,
-            backgroundColor: "#eeefeb",
-            borderRadius: 15,
+            backgroundColor: Theme.lightBg,
+            borderRadius: "30px",
             height: "100%",
             transition: "all 0.8s !important",
             ":hover": {
+              boxShadow: `${pokemon.colour} 0px 2px 4px 0px, ${pokemon.colour} 0px 0px 26px 0px`,
               padding: "0.5em",
-              boxShadow: "0px 10px 30px dimGray",
               ".card-image": {
                 height: 150,
                 width: 150,
@@ -309,16 +310,19 @@ export const GridView = ({
                 sx={{
                   width: 200,
                   height: 200,
-                  borderRadius: 100,
-                  // borderBottomLeftRadius: "30px !important",
-                  // borderBottomRightRadius: "30px !important",
+                  // borderRadius: 100,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: "#eeefeb !important",
+                  backgroundColor: `${Theme.lightBg} !important`,
                   opacity: "revert",
                   transition: "all 1.8s !important",
-                  boxShadow: `${pokemon.colour} 0px 2px 4px 0px, ${pokemon.colour} 0px 0px 26px 0px`,
+                  boxShadow: `${Theme.lightBg} 0px 0px 0px 0px !important`,
+                  borderTopLeftRadius: "45% 50%",
+                  borderTopRightRadius: "95% 60%",
+                  borderBottomLeftRadius: "45% 70%",
+                  borderBottomRightRadius: "95% 60%",
+
                   ":hover": {
                     width: "400px !important",
                     height: "300px !important",

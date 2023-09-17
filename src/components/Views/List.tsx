@@ -31,6 +31,7 @@ import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
 import ClearIcon from "@mui/icons-material/Clear"
 import StarOutlineIcon from "@mui/icons-material/StarOutline"
 import StarIcon from "@mui/icons-material/Star"
+import { Theme } from "../../Theme"
 
 interface Props {
   cardIndex: number
@@ -57,10 +58,10 @@ const Image = styled.div`
   align-items: center;
   justify-content: center;
   background: #0f1a1b;
-  border-radius: 50px;
+  border-radius: 30px;
 
   & :hover {
-    border-radius: 45px;
+    border-radius: 30px;
   }
 `
 
@@ -115,7 +116,7 @@ const Data = styled.div`
     source-sans-pro, sans-serif;
   text-transform: capitalize;
   padding: 10px 0px;
-  color: dimGray;
+  color: ${Theme.primaryText};
 `
 
 const Id = styled.div`
@@ -129,7 +130,7 @@ const Id = styled.div`
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
     source-sans-pro, sans-serif;
-  color: dimGray;
+  color: ${Theme.primaryText};
 `
 
 const ActionColumn = styled.div`
@@ -140,7 +141,7 @@ const ActionColumn = styled.div`
   justify-content: space-evenly;
   flex-direction: column;
   background: #0f1a1b;
-  border-radius: 50px;
+  border-radius: 30px;
   transition: all 1s ease;
 `
 
@@ -155,7 +156,7 @@ const StyledRadioGroup = styled(RadioGroup)`
 
 const Attribute = styled.div`
   display: flex;
-  color: #eeefeb;
+  color: ${Theme.lightBg};
   height: 120px;
   width: 25px;
   margin-right: -25px;
@@ -171,21 +172,21 @@ export const readIconProps = {
   width: 30,
   borderRadius: 100,
   background: "transparent",
-  color: "#eeefeb",
+  color: Theme.lightBg,
   transition: "all 0.3s !important",
   ":hover": {
     padding: "0.5em",
-    boxShadow: "0px 10px 30px dimGray",
+    boxShadow: `0px 10px 30px ${Theme.primaryText}`,
   },
 }
 
 export const editIconProps = {
   borderRadius: 100,
-  color: "#eeefeb",
+  color: Theme.lightBg,
   transition: "all 0.3s !important",
   ":hover": {
     padding: "0.5em",
-    boxShadow: "0px 10px 30px dimGray",
+    boxShadow: `0px 10px 30px ${Theme.primaryText}`,
   },
 }
 
@@ -293,20 +294,20 @@ export const ListView = ({
             variant="rounded"
             width={"100%"}
             height={150}
-            sx={{ borderRadius: 30 }}
+            sx={{ borderRadius: "30px" }}
           />
         ) : (
           <Card
             sx={{
               width: "100%",
-              borderRadius: 15,
+              borderRadius: "30px",
               height: "100%",
               display: "flex",
               transition: "all 0.8s !important",
-              backgroundColor: "#eeefeb",
+              backgroundColor: Theme.lightBg,
               ":hover": {
+                boxShadow: `${pokemon.colour} 0px 2px 4px 0px, ${pokemon.colour} 0px 0px 26px 0px`,
                 padding: "0.5em",
-                boxShadow: "0px 10px 30px dimGray",
               },
             }}
             variant="elevation"
@@ -319,18 +320,23 @@ export const ListView = ({
                 sx={{
                   width: 120,
                   height: 120,
-                  borderRadius: 100,
+                  // borderRadius: "100px",
+                  borderTopLeftRadius: "45% 50%",
+                  borderTopRightRadius: "95% 60%",
+                  borderBottomLeftRadius: "45% 70%",
+                  borderBottomRightRadius: "95% 60%",
                   display: "flex",
-                  backgroundColor: "#eeefeb",
+                  backgroundColor: Theme.lightBg,
                   alignItems: "center",
                   justifyContent: "center",
                   opacity: "revert",
                   transition: "all 1.5s !important",
-                  boxShadow: `${pokemon.colour} 0px 2px 4px 0px, ${pokemon.colour} 0px 0px 26px 0px`,
+                  boxShadow: `${Theme.lightBg} 0px 0px 10px 0px`,
                   ":hover": {
                     width: 290,
                     height: "100%",
                     boxShadow: "none",
+                    borderRadius: "10px",
                   },
                 }}
                 onMouseEnter={() => onImageEnter()}
@@ -557,7 +563,7 @@ export const ListView = ({
             >
               <ActionColumn>
                 <Button
-                  sx={{ borderRadius: 50 }}
+                  sx={{ borderRadius: "50px" }}
                   onClick={() =>
                     cardView.view === View.READ
                       ? onEdit()
@@ -572,7 +578,7 @@ export const ListView = ({
                     <DoneIcon sx={{ ...readIconProps }} />
                   )}
                 </Button>
-                <Button sx={{ borderRadius: 50 }}>
+                <Button sx={{ borderRadius: "50px" }}>
                   {cardView.view === View.READ ? (
                     <DeleteIcon
                       sx={{ ...editIconProps }}

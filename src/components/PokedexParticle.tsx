@@ -14,7 +14,7 @@ const StyledParticles = styled(Particles)`
   z-index: 0;
 `
 
-export const Particle = () => {
+export const PokedexParticle = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
     console.log(engine)
 
@@ -50,12 +50,12 @@ export const Particle = () => {
         particles: {
           color: { value: [Theme.lightBg, "#595959", "#ff8c00", "#ff8c00"] },
           move: {
-            direction: "none",
+            direction: "top",
             enable: true,
             outModes: "out",
             random: false,
             speed: 2,
-            straight: false,
+            straight: true,
           },
           number: {
             density: {

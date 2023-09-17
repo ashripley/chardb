@@ -6,6 +6,7 @@ import { Button, Card, IconButton } from "@mui/material"
 import flame from "../../assets/icons/flame.png"
 import CloseIcon from "@mui/icons-material/Close"
 import menuWallpaper from "../../assets/icons/menuWallpaper.png"
+import { Theme } from "../../Theme"
 
 interface Props {
   isOpen: boolean
@@ -88,7 +89,7 @@ const Body = styled.div`
   justify-items: center;
   align-items: center;
   justify-content: center;
-  background-color: #eeefeb;
+  background-color: ${Theme.lightBg};
 
   border-top-left-radius: 45% 50%;
   border-top-right-radius: 95% 60%;
@@ -137,7 +138,6 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
           sx: {
             width: "100%",
             height: "100%",
-            // backgroundImage: `url(${menuWallpaper})`,
             color: "white",
           },
         }}
@@ -149,8 +149,13 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
                 <FlameContainer>
                   <IconButton
                     sx={{
-                      background: "#eeefeb",
-                      borderRadius: "35px",
+                      background: Theme.lightBg,
+                      borderTopLeftRadius: "45% 50%",
+                      borderTopRightRadius: "95% 60%",
+                      borderBottomLeftRadius: "45% 70%",
+                      borderBottomRightRadius: "95% 60%",
+                      boxShadow:
+                        "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
                       padding: "10px",
                       transition: "all 1s !important",
                       ":hover": {
@@ -174,7 +179,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
                 >
                   char
                 </span>
-                <span className="db" style={{ color: "dimGray" }}>
+                <span className="db" style={{ color: Theme.primaryText }}>
                   db
                 </span>
               </HeaderText>
@@ -182,11 +187,11 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
             <IconWrapper>
               <IconButton
                 onClick={() => onClose()}
-                style={{ color: "dimGray" }}
+                style={{ color: Theme.primaryText }}
                 sx={{
                   transition: "all 1s !important",
                   ":hover": {
-                    background: "#eeefeb",
+                    background: Theme.lightBg,
                     boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
                   },
                 }}
@@ -208,7 +213,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
                         width: "100%",
                         height: "100%",
                         backgroundColor: "#e3e4db",
-                        color: "dimGray",
+                        color: Theme.primaryText,
                         padding: "30px",
                         borderRadius: "35px",
                         fontSize: "18px",
@@ -219,6 +224,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
                           "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif",
                         ":hover": {
                           backgroundColor: "darkorange !important",
+                          opacity: "0.8",
                           boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
                           color: "#e3e4db !important",
                         },

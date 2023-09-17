@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { useEffect, useState } from "react"
 import { PokemonCard } from "./PokemonCard"
 import { Loading } from "../Skeleton"
+import { Theme } from "../../Theme"
 
 interface Props {
   pokemon: Record<string, any>[]
@@ -114,18 +115,14 @@ export const Cards = ({
           }}
           nextIconButtonProps={{ color: "warning" }}
           sx={{
-            height: 150,
-            marginTop: 15,
-            borderTop: "solid",
+            height: 100,
+            backgroundColor: "#e3e4db",
+            color: "#595959",
+            borderTop: `1px solid ${Theme.primaryText}`,
             borderBottom: "none",
-            borderWidth: 3,
-            borderTopRightRadius: 50,
-            borderImage:
-              "linear-gradient(to left, #ed6d03, rgba(0, 0, 0, 0)) 1",
             width: "100%",
             display: "flex",
             justifyContent: "flex-end",
-            padding: "20px 0px",
             fontFamily:
               "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
           }}

@@ -22,6 +22,9 @@ import { Cards } from "../../components/Cards/Cards"
 import { AddModal } from "../../components/AddModal"
 import WindowIcon from "@mui/icons-material/Window"
 import ListIcon from "@mui/icons-material/List"
+import { Theme } from "../../Theme"
+
+const Main = styled.div``
 
 const Root = styled.div`
   display: flex;
@@ -177,7 +180,7 @@ export const CollectionsBody = () => {
   }
 
   return (
-    <>
+    <Main>
       <Root>
         <Header>
           <Grow
@@ -189,11 +192,9 @@ export const CollectionsBody = () => {
               variant="outlined"
               elevation={5}
               sx={{
-                backgroundColor: "#eeefeb",
+                backgroundColor: Theme.lightBg,
                 border: "none",
-                borderRadius: "35px",
-                // boxShadow:
-                //   "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+                borderRadius: "15px",
                 transition: "all 1s ease !important",
                 boxShadow:
                   "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
@@ -227,7 +228,7 @@ export const CollectionsBody = () => {
                           fieldset: {
                             borderColor: "#e3e4db",
                           },
-                          color: "dimGray",
+                          color: Theme.primaryText,
 
                           "&:hover": {
                             fieldset: {
@@ -237,14 +238,14 @@ export const CollectionsBody = () => {
                         }}
                       >
                         <MenuItem value="">
-                          <b style={{ color: "dimGray" }}>None</b>
+                          <b style={{ color: Theme.primaryText }}>None</b>
                         </MenuItem>
                         {["Name", "Type", "Set", "Year"].map(
                           (category, index) => (
                             <MenuItem
                               key={index}
                               value={category}
-                              sx={{ color: "dimGray" }}
+                              sx={{ color: Theme.primaryText }}
                             >
                               {category}
                             </MenuItem>
@@ -274,7 +275,7 @@ export const CollectionsBody = () => {
                             fieldset: {
                               borderColor: "#e3e4db",
                             },
-                            input: { color: "dimGray" },
+                            input: { color: Theme.primaryText },
 
                             "&:hover": {
                               fieldset: {
@@ -347,7 +348,9 @@ export const CollectionsBody = () => {
                           <WindowIcon
                             fontSize="small"
                             style={{
-                              color: `${!viewToggle ? "dimGray" : "#ed6d03"}`,
+                              color: `${
+                                !viewToggle ? Theme.primaryText : "#ed6d03"
+                              }`,
                             }}
                           />
                         }
@@ -355,7 +358,9 @@ export const CollectionsBody = () => {
                           padding: "15px 5px",
                           borderRadius: "15px",
                           borderColor: "#e3e4db",
-                          color: `${!viewToggle ? "dimGray" : "#ed6d03"}`,
+                          color: `${
+                            !viewToggle ? Theme.primaryText : "#ed6d03"
+                          }`,
                           fontFamily:
                             "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
                         }}
@@ -368,7 +373,9 @@ export const CollectionsBody = () => {
                           <ListIcon
                             fontSize="small"
                             style={{
-                              color: `${viewToggle ? "dimGray" : "#ed6d03"}`,
+                              color: `${
+                                viewToggle ? Theme.primaryText : "#ed6d03"
+                              }`,
                             }}
                           />
                         }
@@ -376,7 +383,9 @@ export const CollectionsBody = () => {
                           padding: "15px 5px",
                           borderRadius: "15px",
                           borderColor: "#e3e4db",
-                          color: `${viewToggle ? "dimGray" : "#ed6d03"}`,
+                          color: `${
+                            viewToggle ? Theme.primaryText : "#ed6d03"
+                          }`,
                           fontFamily:
                             "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
                         }}
@@ -402,6 +411,6 @@ export const CollectionsBody = () => {
           />
         )}
       </Container>
-    </>
+    </Main>
   )
 }

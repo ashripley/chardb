@@ -3,6 +3,7 @@ import styled from "styled-components"
 import flame from "../assets/icons/flame.png"
 import { AppBar, Box, Card, IconButton, Toolbar } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
+import { Theme } from "../Theme"
 
 interface Props {
   isOpen: (isClicked: boolean) => void
@@ -28,7 +29,10 @@ const StyledHeader = styled.div`
 `
 
 const IconWrapper = styled(Card)`
-  border-radius: 15px !important;
+  border-top-left-radius: 45% 50% !important;
+  border-top-right-radius: 95% 60% !important;
+  border-bottom-left-radius: 45% 70% !important;
+  border-bottom-right-radius: 95% 60% !important;
   padding: 5px;
 `
 
@@ -82,10 +86,10 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                   <MenuWrapper>
                     <IconWrapper
                       sx={{
-                        backgroundColor: "#eeefeb",
+                        backgroundColor: Theme.lightBg,
                         transition: "all 0.5s !important",
                         ":hover": {
-                          background: "#eeefeb",
+                          background: Theme.lightBg,
                           boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
                         },
                       }}
@@ -104,7 +108,7 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                     >
                       char
                     </span>
-                    <span className="db" style={{ color: "dimGray" }}>
+                    <span className="db" style={{ color: Theme.primaryText }}>
                       db
                     </span>
                   </HeaderText>
@@ -117,7 +121,7 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                       mr: 2,
                       transition: "all 0.5s !important",
                       ":hover": {
-                        background: "#eeefeb",
+                        background: Theme.lightBg,
                         boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
                       },
                     }}

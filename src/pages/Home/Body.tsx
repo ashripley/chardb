@@ -1,5 +1,6 @@
 import { Button, Grow, StyledEngineProvider } from "@mui/material"
 import styled from "styled-components"
+import { Theme } from "../../Theme"
 
 interface Props {
   menuOption: (label?: string) => void
@@ -94,10 +95,10 @@ export const HomeBody = ({ menuOption }: Props) => {
           <Wrapper>
             <Title>
               <span style={{ color: "darkorange", fontWeight: 800 }}>char</span>
-              <span style={{ color: "dimGray" }}>db</span>
+              <span style={{ color: Theme.primaryText }}>db</span>
             </Title>
             <SubTitle>
-              <span style={{ color: "dimGray" }}>
+              <span style={{ color: Theme.primaryText }}>
                 a place to store your nostalgia
               </span>
             </SubTitle>
@@ -107,7 +108,7 @@ export const HomeBody = ({ menuOption }: Props) => {
               <StyledButton
                 variant="contained"
                 onClick={() => onClick()}
-                sx={{ color: "dimGray" }}
+                sx={{ color: Theme.primaryText }}
               >
                 Collections
               </StyledButton>
