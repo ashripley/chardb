@@ -103,6 +103,7 @@ const IconWrapper = styled.div`
   display: flex;
   width: 15%;
   justify-content: center;
+  color: ${Theme.primaryText};
 `
 
 const Data = styled.div`
@@ -120,7 +121,7 @@ const Data = styled.div`
 `
 
 const Id = styled.div`
-  color: black;
+  color: ${Theme.primaryText};
   display: flex;
   width: 10%;
   padding: 10px 0px;
@@ -130,7 +131,6 @@ const Id = styled.div`
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
     source-sans-pro, sans-serif;
-  color: ${Theme.primaryText};
 `
 
 const ActionColumn = styled.div`

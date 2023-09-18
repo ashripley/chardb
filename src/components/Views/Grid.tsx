@@ -290,8 +290,8 @@ export const GridView = ({
               boxShadow: `${pokemon.colour} 0px 2px 4px 0px, ${pokemon.colour} 0px 0px 26px 0px`,
               padding: "0.5em",
               ".card-image": {
-                height: 150,
-                width: 150,
+                height: 180,
+                width: 180,
               },
             },
           }}

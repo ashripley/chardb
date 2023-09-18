@@ -202,39 +202,37 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
           </HeaderWrapper>
           <Body>
             <StyledList>
-              {["Collections", "Info", "Pokedex", "Home"].map(
-                (label, index) => (
-                  <div style={{ maxWidth: "100%", width: "100%", padding: 20 }}>
-                    <Button
-                      key={index}
-                      variant="contained"
-                      onClick={() => onClick(label)}
-                      sx={{
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "#e3e4db",
-                        color: Theme.primaryText,
-                        padding: "30px",
-                        borderRadius: "35px",
-                        fontSize: "18px",
-                        boxShadow:
-                          "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
-                        transition: "all 1s ease",
-                        fontFamily:
-                          "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif",
-                        ":hover": {
-                          backgroundColor: "darkorange !important",
-                          opacity: "0.8",
-                          boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
-                          color: "#e3e4db !important",
-                        },
-                      }}
-                    >
-                      {label}
-                    </Button>
-                  </div>
-                )
-              )}
+              {["Collections", "Pokedex", "Home"].map((label, index) => (
+                <div style={{ maxWidth: "100%", width: "100%", padding: 20 }}>
+                  <Button
+                    key={index}
+                    variant="contained"
+                    onClick={() => onClick(label)}
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      backgroundColor: "#e3e4db",
+                      color: Theme.primaryText,
+                      padding: "30px",
+                      borderRadius: "35px",
+                      fontSize: "18px",
+                      boxShadow:
+                        "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
+                      transition: "all 1s ease",
+                      fontFamily:
+                        "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif",
+                      ":hover": {
+                        backgroundColor: "darkorange !important",
+                        opacity: "0.8",
+                        boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
+                        color: "#e3e4db !important",
+                      },
+                    }}
+                  >
+                    {label}
+                  </Button>
+                </div>
+              ))}
             </StyledList>
           </Body>
         </Container>

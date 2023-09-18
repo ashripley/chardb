@@ -45,12 +45,13 @@ export const Index = () => {
           isOpen={onClick}
         />
       ) : page === "Info" ? (
-        <Info
-          menuAction={page}
-          passMenuActionLabel={MenuAction}
-          isOpen={onClick}
-        />
+        <></>
       ) : (
+        // <Info
+        //   menuAction={page}
+        //   passMenuActionLabel={MenuAction}
+        //   isOpen={onClick}
+        // />
         <></>
       )}
       <Menu
