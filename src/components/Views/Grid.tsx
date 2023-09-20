@@ -2,6 +2,7 @@ import {
   Alert,
   Button,
   Card,
+  Collapse,
   Fade,
   FormControlLabel,
   Grow,
@@ -211,6 +212,17 @@ export const GridView = ({
   const onCardLeave = () => {
     setIsCardHovered(false)
     setCardView({ view: View.READ })
+  }
+
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return
+    }
+
+    setOpen(false)
   }
 
   const onEdit = () => {
@@ -588,8 +600,12 @@ export const GridView = ({
               </Button>
             </ActionRow>
           </Grow>
-          <Snackbar open={open} autoHideDuration={2000} onClose={() => {}}>
-            <Alert onClose={() => {}} severity="success" sx={{ width: "100%" }}>
+          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              onClose={handleClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
               {editAlert}
             </Alert>
           </Snackbar>

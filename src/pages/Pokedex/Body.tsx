@@ -67,17 +67,6 @@ export const PokedexBody = () => {
     setPokemon(tempPokemon)
   }
 
-  // useEffect(() => {
-  //   let allPokemonImgs: string[] = []
-  //   // 802 Pokemon with images available
-  //   for (var i = 1; i <= 802; i++) {
-  //     allPokemonImgs.push(
-  //       `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`
-  //     )
-  //   }
-  //   setImages(allPokemonImgs)
-  // }, [])
-
   useEffect(() => {
     const fetchPokemon = async () => {
       setIsLoading(true)
@@ -107,7 +96,7 @@ export const PokedexBody = () => {
             })
           })
       }
-      console.log("pokedex", pokedex)
+      pokedex.shift()
       setPokedex(pokedex)
       return pokedex
     }
@@ -125,6 +114,7 @@ export const PokedexBody = () => {
       <Images>
         {pokedex.map((p, index) => (
           <Card
+            key={index}
             sx={{
               height: 200,
               width: 200,
@@ -136,7 +126,9 @@ export const PokedexBody = () => {
               transition: "all 0.8s !important",
               ":hover": {
                 padding: "1.8em",
-                boxShadow: `0px 0px 10px 5px ${p.colour} , 0px 0px 0px 0px #ffffff`,
+                boxShadow: `0px 0px 10px 5px ${
+                  TypeColours[p.types[0]]
+                } , 0px 0px 0px 0px #ffffff`,
               },
             }}
             variant="elevation"

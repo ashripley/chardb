@@ -240,6 +240,17 @@ export const ListView = ({
     setCardView({ view: View.READ })
   }
 
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return
+    }
+
+    setOpen(false)
+  }
+
   const onSubmit = async () => {
     setIsCardLoading(true)
 
@@ -589,9 +600,9 @@ export const ListView = ({
                 </Button>
               </ActionColumn>
             </Slide>
-            <Snackbar open={open} autoHideDuration={2000} onClose={() => {}}>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
               <Alert
-                onClose={() => {}}
+                onClose={handleClose}
                 severity="success"
                 sx={{ width: "100%" }}
               >

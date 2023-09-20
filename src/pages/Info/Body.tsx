@@ -12,7 +12,7 @@ const Content = styled.div`
 const HeaderText = styled.div`
   display: flex;
   height: 20%;
-  font-size: 3.5rem;
+  font-size: 5.5rem;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -26,7 +26,7 @@ const HeaderText = styled.div`
 
 const Body = styled.div`
   display: flex;
-  height: 50%;
+  height: 70%;
   justify-content: center;
   width: 100%;
 `
@@ -34,7 +34,7 @@ const Body = styled.div`
 const Text = styled.span`
   color: ${Theme.primaryText};
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   display: flex;
   width: 60%;
   justify-content: center;
@@ -59,11 +59,29 @@ export const InfoBody = () => {
       </HeaderText>
       <Body>
         <Text>
-          Welcome to {"char"}db! Chardb is a place to store your nostalgia.
+          Welcome to chardb! Chardb is a place to store your nostalgia.
           <br />
           <br />
-          Here you can manage your db for your most precious pokemon cards in
-          your collection!
+          Here you can manage your Pokémon card collection! Your cards are
+          stored in Firebase, with a wide array of data set against each card.
+          <br />
+          <br />
+          The mutations write your cards to the database with information
+          including: name, type, set, year, type-of-card, and some custom data
+          that you may configure.
+          <br />
+          <br />
+          From here, chardb does the rest! From the information that you
+          provide, chardb will go and retrieve data from pokeapi to fill in
+          things like images, id's, type colours, and other pokemon information
+          points.
+          <br />
+          This is then concatenated into one object that represents your card.
+          <br />
+          <br />
+          <br />
+          So what are you waiting for? Add in your collection, and watch chardb
+          bring your cards to life!
         </Text>
       </Body>
     </Content>

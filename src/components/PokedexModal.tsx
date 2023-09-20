@@ -126,7 +126,6 @@ const style = {
 }
 
 export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
-  console.log("pokemon", pokemon)
   const [open, setOpen] = React.useState(false)
   const [attribute, setAttribute] = useState("")
 
@@ -167,7 +166,9 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
           <Box
             sx={{
               ...style,
-              boxShadow: `0px 0px 10px 5px ${pokemon.colour} , 0px 0px 0px 0px #ffffff !important`,
+              boxShadow: `0px 0px 10px 5px ${
+                TypeColours[pokemon.types[0]]
+              } , 0px 0px 0px 0px #ffffff !important`,
             }}
           >
             <Container>

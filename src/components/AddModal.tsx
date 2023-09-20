@@ -7,11 +7,13 @@ import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { collection } from "firebase/firestore"
 import { firestore } from "../services/firebase"
 import {
+  Alert,
   Button,
   CircularProgress,
   FormControlLabel,
   Radio,
   RadioGroup,
+  Snackbar,
   TextField,
 } from "@mui/material"
 import styled from "styled-components"
@@ -151,6 +153,8 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
   const [attribute, setAttribute] = useState("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [icon, setIcon] = useState("add")
+  const [alert, setAlert] = useState("add")
+  const [toastOpen, setToastOpen] = useState(false)
 
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
@@ -168,6 +172,17 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
     setOpen(openModal)
   }, [openModal])
 
+  const toastClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return
+    }
+
+    setToastOpen(false)
+  }
+
   const onClick = async () => {
     setIsLoading(true)
 
@@ -178,6 +193,9 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
       clearFields()
       setIcon("add")
     }, 1500)
+
+    setToastOpen(true)
+    setAlert(`${name.toUpperCase()} Added!`)
   }
 
   const clearFields = () => {
@@ -366,6 +384,11 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
           </Box>
         </Fade>
       </Modal>
+      <Snackbar open={toastOpen} autoHideDuration={6000} onClose={toastClose}>
+        <Alert onClose={toastClose} severity="success" sx={{ width: "100%" }}>
+          {alert}
+        </Alert>
+      </Snackbar>
     </div>
   )
 }
