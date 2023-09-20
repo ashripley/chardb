@@ -25,6 +25,7 @@ import DoneIcon from "@mui/icons-material/Done"
 import { AddCardMutation } from "../api/mutations/addCard"
 import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
 import CloseIcon from "@mui/icons-material/Close"
+import { Theme } from "../Theme"
 
 interface Props {
   openModal: boolean
@@ -39,7 +40,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  background: white !important;
+  background: ${Theme.lightBg};
 `
 
 const Details = styled.div`
@@ -77,6 +78,7 @@ const IconWrapper = styled.div`
   display: flex;
   width: 15%;
   justify-content: center;
+  color: ${Theme.primaryText};
 `
 
 const Buttons = styled.div`
@@ -103,6 +105,7 @@ const StyledRadioGroup = styled(RadioGroup)`
   justify-content: center;
   align-items: center;
   margin: 5px;
+  color: ${Theme.primaryText};
   font-weight: 300 !important;
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
@@ -116,10 +119,26 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "80%",
   height: "35%",
-  bgcolor: "background.paper",
+  bgcolor: Theme.lightBg,
   boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
-  borderRadius: 15,
+  borderRadius: "15px",
   p: 4,
+}
+
+const inputProps = {
+  sx: {
+    borderRadius: "15px !important",
+    fieldset: {
+      borderColor: "#e3e4db",
+    },
+    input: { color: Theme.primaryText },
+
+    "&:hover": {
+      fieldset: {
+        borderColor: "#ed6d03 !important",
+      },
+    },
+  },
 }
 
 export const AddModal = ({ openModal, closeModal }: Props) => {
@@ -147,7 +166,6 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
 
   React.useEffect(() => {
     setOpen(openModal)
-    console.log("open", open)
   }, [openModal])
 
   const onClick = async () => {
@@ -207,14 +225,9 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                         label={"Name"}
                         variant="outlined"
                         style={{ width: "100%", margin: 5 }}
-                        sx={{ borderRadius: "15px" }}
                         color="warning"
                         onChange={(e) => setName(e.target.value)}
-                        InputProps={{
-                          sx: {
-                            borderRadius: "15px !important",
-                          },
-                        }}
+                        InputProps={inputProps}
                       />
                     </Data>
                   </Column>
@@ -231,11 +244,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                         style={{ width: "100%", margin: 5 }}
                         color="warning"
                         onChange={(e) => setType(e.target.value)}
-                        InputProps={{
-                          sx: {
-                            borderRadius: "15px !important",
-                          },
-                        }}
+                        InputProps={inputProps}
                       />
                     </Data>
                   </Column>
@@ -252,11 +261,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                         style={{ width: "100%", margin: 5 }}
                         color="warning"
                         onChange={(e) => setSet(e.target.value)}
-                        InputProps={{
-                          sx: {
-                            borderRadius: "15px !important",
-                          },
-                        }}
+                        InputProps={inputProps}
                       />
                     </Data>
                   </Column>
@@ -274,11 +279,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                         style={{ width: "100%", margin: 5 }}
                         color="warning"
                         onChange={(e) => setYear(e.target.value)}
-                        InputProps={{
-                          sx: {
-                            borderRadius: "15px !important",
-                          },
-                        }}
+                        InputProps={inputProps}
                       />
                     </Data>
                   </Column>
@@ -296,11 +297,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                         style={{ width: "100%", margin: 5 }}
                         color="warning"
                         onChange={(e) => setQuantity(e.target.value)}
-                        InputProps={{
-                          sx: {
-                            borderRadius: "15px !important",
-                          },
-                        }}
+                        InputProps={inputProps}
                       />
                     </Data>
                   </Column>
@@ -333,6 +330,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                       width: "80%",
                       borderRadius: 15,
                       height: "100%",
+                      borderColor: Theme.darkBg,
                     }}
                     onClick={() => onClick()}
                   >
@@ -356,6 +354,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                       width: "80%",
                       borderRadius: 15,
                       height: "100%",
+                      borderColor: Theme.darkBg,
                     }}
                     onClick={handleClose}
                   >

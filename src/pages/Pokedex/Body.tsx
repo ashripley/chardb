@@ -1,8 +1,9 @@
 import { Card } from "@mui/material"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Theme } from "../../Theme"
+import { Theme, TypeColours } from "../../Theme"
 import { PokedexModal } from "../../components/PokedexModal"
+import { Loading } from "../../components/Skeleton"
 
 const Wrapper = styled.div`
   max-height: 100%;
@@ -46,74 +47,83 @@ const Header = styled.div`
 
 export const PokedexBody = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [pokedex, setPokedex] = useState([{}])
+  const [isLoading, setIsLoading] = useState(false)
+  const [pokedex, setPokedex] = useState<Record<string, any>[]>([{}])
+  const [pokemon, setPokemon] = useState<Record<string, any>>({})
   const [images, setImages] = useState<string[]>([])
 
   const onClose = () => setIsModalOpen(!isModalOpen)
 
   const onOpen = async (index: number) => {
+    index++
     setIsModalOpen(!isModalOpen)
 
-    let pokedex: Record<string, any>[] = [{}]
-    index++
-    await fetch(`https://pokeapi.co/api/v2/pokemon/${index}`)
-      .then((response) => response.json())
-      .then((data) => {
-        pokedex.push({
-          name: data.name,
-          id: data.id,
-          height: data.height,
-          weight: data.weight,
-          types: data.types.map((type: Record<string, any>) =>
-            Object.values(type.type)
-          ),
-          abilities: data.abilities.map((ability: Record<string, any>) =>
-            Object.values(ability.ability)
-          ),
-          sprites: {
-            front: data.sprites.front_default,
-            back: data.sprites.back_default,
-          },
-          data: { ...data },
-        })
-      })
+    const tempPokemon: Record<string, any> = pokedex
+      .filter((p: Record<string, any>) => p.id === index)
+      .reduce(function (a, b) {
+        return (a = b)
+      }, {})
 
-    setPokedex(pokedex)
-    return pokedex
+    setPokemon(tempPokemon)
   }
 
+  // useEffect(() => {
+  //   let allPokemonImgs: string[] = []
+  //   // 802 Pokemon with images available
+  //   for (var i = 1; i <= 802; i++) {
+  //     allPokemonImgs.push(
+  //       `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`
+  //     )
+  //   }
+  //   setImages(allPokemonImgs)
+  // }, [])
+
   useEffect(() => {
-    const getAllPokemonImgs = () => {
-      let allPokemonImgs: string[] = []
-      // 802 Pokemon with images available
-      for (var i = 1; i <= 802; i++) {
-        allPokemonImgs.push(
-          `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`
-        )
+    const fetchPokemon = async () => {
+      setIsLoading(true)
+      let pokedex: Record<string, any>[] = [{}]
+
+      for (var i = 1; i <= 151; i++) {
+        await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`)
+          .then((response) => response.json())
+          .then((data) => {
+            pokedex.push({
+              name: data.name,
+              id: data.id,
+              height: data.height,
+              weight: data.weight,
+              types: data.types.map(
+                (type: Record<string, any>) => type.type.name
+              ),
+              abilities: data.abilities.map(
+                (ability: Record<string, any>) => ability.ability.name
+              ),
+              sprites: {
+                front: data.sprites.front_default,
+                back: data.sprites.back_default,
+              },
+              colour: TypeColours[pokemon?.types?.[0]] ?? "#a8a878",
+              image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`,
+            })
+          })
       }
-      setImages(allPokemonImgs)
+      console.log("pokedex", pokedex)
+      setPokedex(pokedex)
+      return pokedex
     }
 
-    getAllPokemonImgs()
+    fetchPokemon()
+
+    setIsLoading(false)
   }, [])
 
-  // data we want
-  /*
-  
-    abilities = data.abilities.map.name
-    height = data.height
-    height = data.weight
-    id = data.id
-    sprites = data.sprites.front_default && back_default
-    types = data.types.map
-  
-  */
-
-  return (
+  return isLoading ? (
+    <Loading view={true} />
+  ) : (
     <Wrapper>
       <Header>Pokédex</Header>
       <Images>
-        {images.map((image, index) => (
+        {pokedex.map((p, index) => (
           <Card
             sx={{
               height: 200,
@@ -126,7 +136,7 @@ export const PokedexBody = () => {
               transition: "all 0.8s !important",
               ":hover": {
                 padding: "1.8em",
-                boxShadow: `0px 0px 10px 5px #ff8c00 , 0px 0px 0px 0px #ffffff`,
+                boxShadow: `0px 0px 10px 5px ${p.colour} , 0px 0px 0px 0px #ffffff`,
               },
             }}
             variant="elevation"
@@ -134,7 +144,7 @@ export const PokedexBody = () => {
           >
             <Image
               key={index}
-              src={image}
+              src={p.image}
               alt="image"
               onClick={() => onOpen(index)}
             />
@@ -142,7 +152,7 @@ export const PokedexBody = () => {
         ))}
       </Images>
       <PokedexModal
-        pokemon={pokedex}
+        pokemon={pokemon}
         openModal={isModalOpen}
         closeModal={onClose}
       />

@@ -67,7 +67,7 @@ const Image = styled.div<{
   isCardHovered: boolean
   editView: boolean
 }>`
-  background: #333333;
+  background: ${Theme.card};
   height: ${(props) =>
     !!props.isCardHovered && !!props.editView
       ? "30%"

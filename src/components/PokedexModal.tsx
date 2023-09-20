@@ -5,7 +5,8 @@ import Modal from "@mui/material/Modal"
 import Fade from "@mui/material/Fade"
 import styled from "styled-components"
 import { useState } from "react"
-import { Theme } from "../Theme"
+import { Theme, TypeColours } from "../Theme"
+import { Divider } from "@mui/material"
 
 interface Props {
   pokemon: Record<string, any>
@@ -21,23 +22,16 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  background: white !important;
+  background: ${Theme.lightBg};
 `
 
 const Header = styled.div`
   display: flex;
   flex-direction: column;
-  height: 50%;
+  height: 30%;
+  max-height: 50%;
   width: 100%;
   justify-content: space-between;
-`
-
-const Details = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 50%;
-  align-items: center;
 `
 
 const Image = styled.div`
@@ -58,54 +52,65 @@ const Label = styled.div`
   font-size: 30px;
   justify-content: center;
   padding: 20px 0px;
-  margin-bottom: 20px;
   padding-top: 0px;
   text-transform: capitalize;
   height: 20%;
 }
 `
 
-const Key = styled.div`
+const Details = styled.div`
   display: flex;
-  width: 20%;
-  font-weight: 800;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
-  color: ${Theme.primaryText};
-  font-size: 18px;
+  width: 100%;
+  flex-direction: column;
   justify-content: center;
-  padding: 10px 0px;
-  text-transform: capitalize;
-}
-`
-
-const Value = styled.div`
-display: flex;
-width: 20%;
-font-weight: 800;
-font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-  Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-  source-sans-pro, sans-serif;
-color: ${Theme.primaryText};
-font-size: 18px;
-justify-content: center;
-padding: 10px 0px;
-text-transform: capitalize;
-}
+  height: 50%;
+  max-height: auto;
+  align-items: center;
 `
 
 const Row = styled.div`
   display: flex;
   width: 100%;
-  justify-content: center;
+  justify-content: left;
+  position: relative;
+  left: 37%;
 `
 
-const Abilities = styled.div`
+const Key = styled.div`
+  display: flex;
+  width: 20%;
+  min-width: 20%;
+  font-weight: 800;
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+  Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+  source-sans-pro, sans-serif;
+  color: ${Theme.primaryText};
+  font-size: 18px;
+  justify-content: flex-start;
+  padding: 10px 0px;
+  text-transform: capitalize;
+  }
+`
+
+const Value = styled.div`
+  display: flex;
+  width: auto;
+  font-weight: 800;
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+  Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+  source-sans-pro, sans-serif;
+  color: ${Theme.primaryText};
+  font-size: 18px;
+  justify-content: flex-start;
+  padding: 10px 0px;
+  text-transform: capitalize;
+  }
+`
+
+const Descriptions = styled(Value)`
   display: flex;
   flex-direction: column;
-  width: 20%;
-  justify-content: center;
+  padding: 0px;
 `
 
 const style = {
@@ -114,32 +119,22 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "40%",
-  height: "60%",
-  bgcolor: "background.paper",
-  boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
+  height: "80%",
+  bgcolor: Theme.lightBg,
   borderRadius: "15px",
   p: 4,
 }
 
 export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
+  console.log("pokemon", pokemon)
   const [open, setOpen] = React.useState(false)
   const [attribute, setAttribute] = useState("")
-  console.log("pokemon[1]", pokemon)
 
-  const { name, sprites, id, height, weight } = pokemon[1] ?? ""
-  const abilities: string[] = pokemon[1]?.abilities.map((a: string) => a[0])
-  console.log(
-    "abilities",
-    pokemon[1]?.abilities.map((a: string) => a[0])
-  )
+  const { name, sprites, types, abilities, id, height, weight } = pokemon
 
   React.useEffect(() => {
     setOpen(openModal)
   }, [openModal])
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAttribute((event.target as HTMLInputElement).value)
-  }
 
   const handleClose = () => {
     setOpen(false)
@@ -155,7 +150,9 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
         onClose={handleClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
-        style={{ backdropFilter: "blur(2px)" }}
+        style={{
+          backdropFilter: "blur(2px)",
+        }}
         slotProps={{
           backdrop: {
             timeout: {
@@ -167,7 +164,12 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box
+            sx={{
+              ...style,
+              boxShadow: `0px 0px 10px 5px ${pokemon.colour} , 0px 0px 0px 0px #ffffff !important`,
+            }}
+          >
             <Container>
               <Header>
                 <Image>
@@ -184,25 +186,34 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
                 </Image>
                 <Label>{name ?? ""}</Label>
               </Header>
+              <Divider orientation="horizontal" />
               <Details>
                 <Row>
-                  <Key>id</Key>
+                  <Key>id:</Key>
                   <Value>{id}</Value>
                 </Row>
                 <Row>
-                  <Key>Abilities</Key>
-                  <Abilities>
-                    {abilities.map((abilitiy, index) => (
-                      <Value key={index}>{abilitiy}</Value>
+                  <Key>Type:</Key>
+                  <Descriptions>
+                    {types?.map((type: [], index: number) => (
+                      <Value>{type}</Value>
                     ))}
-                  </Abilities>
+                  </Descriptions>
                 </Row>
                 <Row>
-                  <Key>Height</Key>
+                  <Key>Abilities:</Key>
+                  <Descriptions>
+                    {abilities?.map((abilitiy: [], index: number) => (
+                      <Value key={index}>{abilitiy}</Value>
+                    ))}
+                  </Descriptions>
+                </Row>
+                <Row>
+                  <Key>Height:</Key>
                   <Value>{height}</Value>
                 </Row>
                 <Row>
-                  <Key>Weight</Key>
+                  <Key>Weight:</Key>
                   <Value>{weight}</Value>
                 </Row>
               </Details>

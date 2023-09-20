@@ -16,7 +16,7 @@ const StyledParticles = styled(Particles)`
 
 export const Particle = () => {
   const particlesInit = useCallback(async (engine: Engine) => {
-    console.log(engine)
+    // console.log(engine)
 
     // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
     // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
@@ -27,7 +27,7 @@ export const Particle = () => {
 
   const particlesLoaded = useCallback(
     async (container: Container | undefined) => {
-      await console.log(container)
+      // await console.log(container)
     },
     []
   )
@@ -48,7 +48,9 @@ export const Particle = () => {
           color: "#e3e4db",
         },
         particles: {
-          color: { value: [Theme.lightBg, "#595959", "#ff8c00", "#ff8c00"] },
+          color: {
+            value: [Theme.lightBg, Theme.primaryText, "#ff8c00", "#ff8c00"],
+          },
           move: {
             direction: "none",
             enable: true,

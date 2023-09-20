@@ -57,7 +57,7 @@ const Image = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0f1a1b;
+  background: ${Theme.card};
   border-radius: 30px;
 
   & :hover {
