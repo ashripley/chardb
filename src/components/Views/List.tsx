@@ -32,6 +32,7 @@ import ClearIcon from "@mui/icons-material/Clear"
 import StarOutlineIcon from "@mui/icons-material/StarOutline"
 import StarIcon from "@mui/icons-material/Star"
 import { Theme } from "../../Theme"
+import { upperCaseFirst } from "../helpers"
 
 interface Props {
   cardIndex: number
@@ -205,18 +206,17 @@ export const ListView = ({
   const [year, setYear] = useState("")
   const [quantity, setQuantity] = useState("")
   const [attribute, setAttribute] = useState("")
-  const [imageFace, setImageFace] = useState<string>("front")
+  const [isEvolutionsHovered, setIsEvolutionsHovered] = useState<boolean>(false)
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
-  const [isCardLoading, setIsCardLoading] = useState<boolean>(false)
   const [alert, setAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
 
   const onImageEnter = () => {
-    setImageFace("back")
+    setIsEvolutionsHovered(true)
   }
 
   const onImageLeave = () => {
-    setImageFace("front")
+    setIsEvolutionsHovered(false)
   }
 
   const onCardEnter = () => {
@@ -252,8 +252,6 @@ export const ListView = ({
   }
 
   const onSubmit = async () => {
-    setIsCardLoading(true)
-
     await UpdateCard(
       pokemon.cardId,
       name.length ? name : pokemon.name,
@@ -265,11 +263,10 @@ export const ListView = ({
     )
 
     setOpen(true)
-    setAlert(`Fields for ${pokemon.name.toUpperCase()} have been updated`)
+    setAlert(`Fields for ${upperCaseFirst(pokemon.name)} have been updated`)
 
     setCardView({ view: View.READ })
     clearFields()
-    setIsCardLoading(false)
   }
 
   const clearFields = () => {
@@ -349,7 +346,7 @@ export const ListView = ({
                 onMouseEnter={() => onImageEnter()}
                 onMouseLeave={() => onImageLeave()}
               >
-                {imageFace === "front" ? (
+                {!isEvolutionsHovered ? (
                   <Grow
                     in={true}
                     unmountOnExit

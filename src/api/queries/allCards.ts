@@ -44,20 +44,5 @@ export const fetchKantoPokemon = async () => {
     return res
   }
 
-  console.log("pokedex", pokedex)
   return pokedex
 }
-
-// let allPokemonImgs: Record<string, any>[] = []
-
-// const getAllPokemonImgs = () => {
-//   // 802 Pokemon with images available
-//   for (var i = 1; i <= 802; i++) {
-//     allPokemonImgs.push({
-//       [i]: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${i}.png`,
-//     })
-//   }
-// }
-// getAllPokemonImgs()
-
-// console.log("allPokemonImgs", allPokemonImgs)

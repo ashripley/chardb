@@ -1,7 +1,6 @@
 import styled from "styled-components"
 import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
 import { HomeBody } from "./Body"
-import { useState } from "react"
 import { Header } from "../Header"
 
 interface Props {
@@ -25,7 +24,6 @@ export const Home = ({ isOpen, menuAction, passMenuActionLabel }: Props) => {
   }
 
   const MenuAction = (label?: string) => {
-    console.log("label", label)
     passMenuActionLabel(label || "")
   }
 

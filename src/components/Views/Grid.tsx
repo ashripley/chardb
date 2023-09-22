@@ -2,13 +2,11 @@ import {
   Alert,
   Button,
   Card,
-  Collapse,
   Fade,
   FormControlLabel,
   Grow,
   Radio,
   RadioGroup,
-  Skeleton,
   Snackbar,
   TextField,
   Tooltip,
@@ -19,7 +17,7 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import StarOutlineIcon from "@mui/icons-material/StarOutline"
 import StarIcon from "@mui/icons-material/Star"
 import { deleteDoc, doc } from "firebase/firestore"
@@ -32,6 +30,7 @@ import DoneIcon from "@mui/icons-material/Done"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { editIconProps, readIconProps } from "./List"
 import { Theme } from "../../Theme"
+import { upperCaseFirst } from "../helpers"
 
 interface Props {
   cardIndex: number
@@ -182,7 +181,7 @@ export const GridView = ({
   const [cardView, setCardView] = useState<Record<string, any>>({
     view: View.READ,
   })
-  const [imageFace, setImageFace] = useState<string>("front")
+  const [isEvolutionsHovered, setIsEvolutionsHovered] = useState<boolean>(false)
   const [name, setName] = useState("")
   const [type, setType] = useState("")
   const [set, setSet] = useState("")
@@ -192,17 +191,13 @@ export const GridView = ({
   const [editAlert, setEditAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
-  const [isCardLoading, setIsCardLoading] = useState<boolean>(false)
-  const [isHovered, setIsHovered] = useState<boolean>(false)
 
   const mouseEnter = () => {
-    setIsHovered(true)
-    setImageFace("back")
+    setIsEvolutionsHovered(true)
   }
 
   const mouseLeave = () => {
-    setIsHovered(false)
-    setImageFace("front")
+    setIsEvolutionsHovered(false)
   }
 
   const onCardEnter = () => {
@@ -239,8 +234,6 @@ export const GridView = ({
   }
 
   const onSubmit = async () => {
-    setIsCardLoading(true)
-
     await UpdateCard(
       pokemon.cardId,
       name.length ? name : pokemon.name,
@@ -252,11 +245,10 @@ export const GridView = ({
     )
 
     setOpen(true)
-    setEditAlert(`Fields for ${pokemon.name.toUpperCase()} have been updated`)
+    setEditAlert(`Fields for ${upperCaseFirst(pokemon.name)} have been updated`)
 
     setCardView({ view: View.READ })
     clearFields()
-    setIsCardLoading(false)
   }
 
   const clearFields = () => {
@@ -341,7 +333,7 @@ export const GridView = ({
                 onMouseEnter={() => mouseEnter()}
                 onMouseLeave={() => mouseLeave()}
               >
-                {imageFace === "front" ? (
+                {!isEvolutionsHovered ? (
                   <Grow
                     in={true}
                     unmountOnExit

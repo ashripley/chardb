@@ -4,7 +4,6 @@ import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 import Fade from "@mui/material/Fade"
 import styled from "styled-components"
-import { useState } from "react"
 import { Theme, TypeColours } from "../Theme"
 import { Divider } from "@mui/material"
 
@@ -127,9 +126,8 @@ const style = {
 
 export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
   const [open, setOpen] = React.useState(false)
-  const [attribute, setAttribute] = useState("")
 
-  const { name, sprites, types, abilities, id, height, weight } = pokemon
+  const { name, sprites, types, abilities, id, height, weight } = pokemon ?? ""
 
   React.useEffect(() => {
     setOpen(openModal)
@@ -141,7 +139,7 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
   }
 
   return (
-    <div>
+    <>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -167,7 +165,7 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
             sx={{
               ...style,
               boxShadow: `0px 0px 10px 5px ${
-                TypeColours[pokemon.types[0]]
+                TypeColours[pokemon.types?.[0]]
               } , 0px 0px 0px 0px #ffffff !important`,
             }}
           >
@@ -197,7 +195,7 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
                   <Key>Type:</Key>
                   <Descriptions>
                     {types?.map((type: [], index: number) => (
-                      <Value>{type}</Value>
+                      <Value key={index}>{type}</Value>
                     ))}
                   </Descriptions>
                 </Row>
@@ -222,6 +220,6 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
           </Box>
         </Fade>
       </Modal>
-    </div>
+    </>
   )
 }

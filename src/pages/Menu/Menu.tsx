@@ -203,7 +203,10 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
             <StyledList>
               {["Info", "Collections", "Pokedex", "Home"].map(
                 (label, index) => (
-                  <div style={{ maxWidth: "100%", width: "100%", padding: 20 }}>
+                  <div
+                    key={index}
+                    style={{ maxWidth: "100%", width: "100%", padding: 20 }}
+                  >
                     <Button
                       key={index}
                       variant="contained"

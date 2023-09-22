@@ -93,6 +93,7 @@ export const Cards = ({
               : cards
             ).map((poke, index) => (
               <PokemonCard
+                key={index}
                 isCardDeleted={isDeleted}
                 pokemon={poke}
                 cardIndex={index}
@@ -118,7 +119,6 @@ export const Cards = ({
             height: 100,
             backgroundColor: Theme.darkBg,
             color: Theme.primaryText,
-            // borderTop: `1px solid ${Theme.primaryText}`,
             borderBottom: "none",
             width: "100%",
             display: "flex",

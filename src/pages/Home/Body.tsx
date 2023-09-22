@@ -17,7 +17,7 @@ const Root = styled.div`
   justify-content: space-evenly;
 `
 
-const Wrapper = styled.h1`
+const Wrapper = styled.div`
   max-height: 60%;
 `
 

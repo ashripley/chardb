@@ -28,6 +28,7 @@ import { AddCardMutation } from "../api/mutations/addCard"
 import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
 import CloseIcon from "@mui/icons-material/Close"
 import { Theme } from "../Theme"
+import { upperCaseFirst } from "./helpers"
 
 interface Props {
   openModal: boolean
@@ -195,7 +196,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
     }, 1500)
 
     setToastOpen(true)
-    setAlert(`${name.toUpperCase()} Added!`)
+    setAlert(`${upperCaseFirst(name)} Added!`)
   }
 
   const clearFields = () => {

@@ -115,8 +115,6 @@ export const AddCardMutation = async (
 
   const colour = typeColours[type] ?? "#a8a878"
 
-  console.log("colour", colour)
-
   await setDoc(doc(firestore, "cards", uniqueId), {
     cardId: uniqueId,
     id: pokemon.id,

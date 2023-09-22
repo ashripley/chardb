@@ -190,7 +190,6 @@ export const CollectionsBody = () => {
           >
             <StyledPaper
               variant="outlined"
-              elevation={5}
               sx={{
                 backgroundColor: Theme.lightBg,
                 border: "none",
