@@ -1,6 +1,6 @@
 import {
   Card,
-  Chip,
+  CircularProgress,
   FormControl,
   Grow,
   InputLabel,
@@ -13,7 +13,8 @@ import styled from "styled-components"
 import { Theme, TypeColours } from "../../Theme"
 import { PokedexModal } from "../../components/PokedexModal"
 import { Loading } from "../../components/Skeleton"
-import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
+import Spinner from "../../components/Spinner"
+import { AllCards } from "../../api/queries/allCards"
 
 const Container = styled.div`
   max-height: 100%;
@@ -63,12 +64,12 @@ const Images = styled.div`
   justify-content: space-evenly;
 `
 
-const Image = styled.img`
+const Image = styled.img<{ hasPokemon: boolean }>`
   display: flex;
   height: 150px;
   width: 150px;
   padding: 20px;
-  // filter: brightness(0.5);
+  ${(props) => !props.hasPokemon && `filter: brightness(0.1); opacity: 0.9;`};
 `
 
 const Fields = styled.div`
@@ -90,13 +91,27 @@ export const PokedexBody = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [pokedex, setPokedex] = useState<Record<string, any>[]>([{}])
   const [pokemon, setPokemon] = useState<Record<string, any>>({})
-  const [regionToggle, setRegionToggle] = useState<boolean>(false)
+  const [hasPokemon, setHasPokemon] = useState<string[]>([])
   const [generation, setGeneration] = useState<Record<string, any>>({})
+  const [mappedPokedex, setMappedPokedex] = useState<Record<string, any>[]>([
+    {},
+  ])
 
-  const Gen1 = "1 - 151"
-  const Gen2 = "152 - 251"
-  const Gen3 = "252 - 386"
-  const Gen4 = "387 - 493"
+  useEffect(() => {
+    const res: Record<string, any>[] =
+      generation.value == 1
+        ? pokedex.filter((p: Record<string, any>) => p.id <= 151)
+        : generation.value == 2
+        ? pokedex.filter((p: Record<string, any>) => p.id > 152 && p.id <= 251)
+        : generation.value == 3
+        ? pokedex.filter((p: Record<string, any>) => p.id > 251 && p.id <= 386)
+        : generation.value == 4
+        ? pokedex.filter((p: Record<string, any>) => p.id > 386 && p.id <= 493)
+        : pokedex
+
+    console.log("res", res)
+    setMappedPokedex(res)
+  }, [generation])
 
   const onClose = () => setIsModalOpen(!isModalOpen)
 
@@ -143,22 +158,28 @@ export const PokedexBody = () => {
           })
       }
       pokedex.shift()
+
+      const cards = await AllCards()
+
+      const cardFilter = cards.map((p) => p.name)
+
+      setHasPokemon(cardFilter)
+
       setPokedex(pokedex)
+      setMappedPokedex(pokedex)
+      setIsLoading(false)
       return pokedex
     }
 
     fetchPokemon()
-
-    setIsLoading(false)
   }, [])
 
-  const onViewChange = () => {
-    setRegionToggle(!regionToggle)
-  }
+  const pokedexLength = pokedex.reduce(
+    (a, obj) => a + Object.keys(obj).length,
+    0
+  )
 
-  return isLoading ? (
-    <Loading view={true} />
-  ) : (
+  return (
     <Container>
       <Wrapper>
         <Grow
@@ -241,36 +262,44 @@ export const PokedexBody = () => {
         </Grow>
       </Wrapper>
       <Images>
-        {pokedex?.map((p, index) => (
-          <Card
-            key={index}
-            sx={{
-              height: 200,
-              width: 200,
-              padding: "2rem",
-              margin: "1rem",
-              backgroundColor: Theme.lightBg,
-              borderRadius: "15px",
-              boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
-              transition: "all 0.8s !important",
-              ":hover": {
-                padding: "1.8em",
-                boxShadow: `0px 0px 10px 5px ${
-                  TypeColours[p.types?.[0]]
-                } , 0px 0px 0px 0px #ffffff`,
-              },
-            }}
-            variant="elevation"
-            raised
-          >
-            <Image
+        {isLoading ? (
+          <div style={{ top: "50%", position: "relative" }}>
+            <CircularProgress color="warning" />
+          </div>
+        ) : (
+          !!pokedexLength &&
+          mappedPokedex?.map((p, index) => (
+            <Card
               key={index}
-              src={p.image}
-              alt="image"
-              onClick={() => onOpen(index)}
-            />
-          </Card>
-        ))}
+              sx={{
+                height: 200,
+                width: 200,
+                padding: "2rem",
+                margin: "1rem",
+                backgroundColor: Theme.lightBg,
+                borderRadius: "15px",
+                boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
+                transition: "all 0.8s !important",
+                ":hover": {
+                  padding: "1.8em",
+                  boxShadow: `0px 0px 10px 5px ${
+                    TypeColours[p.types?.[0]]
+                  } , 0px 0px 0px 0px #ffffff`,
+                },
+              }}
+              variant="elevation"
+              raised
+            >
+              <Image
+                hasPokemon={!!hasPokemon.includes(p.name)}
+                key={index}
+                src={p.image}
+                alt="image!"
+                onClick={() => onOpen(index)}
+              />
+            </Card>
+          ))
+        )}
       </Images>
       <PokedexModal
         pokemon={pokemon}
