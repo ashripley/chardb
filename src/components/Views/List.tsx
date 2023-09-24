@@ -398,7 +398,7 @@ export const ListView = ({
                     >
                       <StarOutlineIcon />
                     </Tooltip>
-                  ) : (
+                  ) : pokemon.attribute === "special" ? (
                     <Tooltip
                       title="Special"
                       TransitionComponent={Fade}
@@ -406,6 +406,8 @@ export const ListView = ({
                     >
                       <StarIcon />
                     </Tooltip>
+                  ) : (
+                    <></>
                   )}
                 </Attribute>
               )}

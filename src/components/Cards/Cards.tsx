@@ -1,6 +1,6 @@
 import { Paper, Slide, TablePagination } from "@mui/material"
 import styled from "styled-components"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { PokemonCard } from "./PokemonCard"
 import { Loading } from "../Skeleton"
 import { Theme } from "../../Theme"
@@ -41,6 +41,14 @@ export const Cards = ({
   const [cards, setCards] = useState<Record<string, any>[]>([])
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(25)
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    })
+  }, [page])
 
   const handleChangePage = (
     //@ts-ignore
