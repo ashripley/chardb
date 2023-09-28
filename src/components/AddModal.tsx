@@ -187,7 +187,14 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
   const onClick = async () => {
     setIsLoading(true)
 
-    await AddCardMutation(name, type, set, year, quantity, attribute)
+    await AddCardMutation(
+      name.toLowerCase(),
+      type.toLowerCase(),
+      set.toLowerCase(),
+      year,
+      quantity,
+      attribute
+    )
 
     setTimeout(() => {
       setIsLoading(false)

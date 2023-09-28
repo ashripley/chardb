@@ -254,9 +254,9 @@ export const ListView = ({
   const onSubmit = async () => {
     await UpdateCard(
       pokemon.cardId,
-      name.length ? name : pokemon.name,
-      type.length ? type : pokemon.type,
-      set.length ? set : pokemon.set,
+      name.length ? name.toLowerCase() : pokemon.name,
+      type.length ? type.toLowerCase() : pokemon.type,
+      set.length ? set.toLowerCase() : pokemon.set,
       year.length ? year : pokemon.year,
       quantity.length ? quantity : pokemon.quantity ?? "",
       attribute.length ? attribute : pokemon.attribute ?? ""
