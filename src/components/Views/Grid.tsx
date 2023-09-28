@@ -17,7 +17,7 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import StarOutlineIcon from "@mui/icons-material/StarOutline"
 import StarIcon from "@mui/icons-material/Star"
 import { deleteDoc, doc } from "firebase/firestore"
@@ -74,6 +74,7 @@ const Image = styled.div<{
       : props.isCardHovered
       ? "40%"
       : "60%"};
+  width: 100%;
   display: flex;
   align-items: center;
   transition: all 1s ease;
@@ -141,8 +142,11 @@ const Attribute = styled.div`
 
 const CardWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  // flex-direction: column;
   justify-content: center;
+  width: 100%;
+  height: 100%;
+  align-items: center;
 `
 
 const ActionRow = styled.div`
@@ -191,6 +195,18 @@ export const GridView = ({
   const [editAlert, setEditAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
+  const [height, setHeight] = useState(0)
+  const [width, setWidth] = useState(0)
+
+  const ref = useRef(null)
+
+  useEffect(() => {
+    // @ts-ignore
+    !!ref.current && setHeight(ref.current.clientHeight)
+    // @ts-ignore
+    !!ref.current && setWidth(ref.current.clientWidth)
+    console.log("height", height)
+  })
 
   const mouseEnter = () => {
     setIsEvolutionsHovered(true)
@@ -305,6 +321,7 @@ export const GridView = ({
           onMouseLeave={() => onCardLeave()}
         >
           <Image
+            ref={ref}
             editView={cardView.view === View.EDIT}
             isCardHovered={isCardHovered}
             attribute={pokemon.attribute === ("" || "standard")}
@@ -312,8 +329,8 @@ export const GridView = ({
             <CardWrapper>
               <Card
                 sx={{
-                  width: 200,
-                  height: 200,
+                  width: "50%",
+                  height: "50%",
                   borderRadius: 100,
                   display: "flex",
                   alignItems: "center",
@@ -324,9 +341,10 @@ export const GridView = ({
                   boxShadow: `${Theme.lightBg} 0px 0px 10px 0px !important`,
 
                   ":hover": {
-                    width: "400px !important",
-                    height: "300px !important",
+                    width: `${width}px !important`,
+                    height: `${height}px !important`,
                     boxShadow: "none",
+                    borderRadius: "15px !important",
                   },
                 }}
                 className="card-image"

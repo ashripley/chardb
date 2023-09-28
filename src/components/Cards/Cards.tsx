@@ -1,6 +1,6 @@
 import { Paper, Slide, TablePagination } from "@mui/material"
 import styled from "styled-components"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { PokemonCard } from "./PokemonCard"
 import { Loading } from "../Skeleton"
 import { Theme } from "../../Theme"
