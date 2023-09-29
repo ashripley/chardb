@@ -16,7 +16,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-    <img width="554" alt="Screenshot 2023-09-29 at 1 29 45 pm" src="https://github.com/ashripley/chardb/assets/84573770/03df5b1b-31d4-477b-b302-953f04e33937" alt="Logo" width="100" height="220">
+<img width="554" alt="Screenshot 2023-09-29 at 1 29 45 pm" src="https://github.com/ashripley/chardb/assets/84573770/d81bcaa5-dfaa-442c-9958-c023b56ec953">
 
   <h3 align="center">chardb</h3>
 
@@ -115,43 +115,54 @@ Here are a few screenshots on the UI for chardb!
 <br />
 Home
 <br />
-<img width="1707" alt="Home" src="https://github.com/ashripley/chardb/assets/84573770/5f46c5c8-33cf-459b-9fd2-d40773728efd">
+<img width="1707" alt="Home" src="https://github.com/ashripley/chardb/assets/84573770/28b6937e-0671-48f0-9bbc-4d374159d156">
+
 <br />
 Menu
 <br />
-<img width="1706" alt="Menu" src="https://github.com/ashripley/chardb/assets/84573770/d5c40571-9f5b-4f36-abee-ab5470bd92cb">
+<img width="1706" alt="Menu" src="https://github.com/ashripley/chardb/assets/84573770/6fea3ae2-7d63-4412-87cd-7736f741b244">
+
+
 <br />
 Info
 <br />
-<img width="1705" alt="Info" src="https://github.com/ashripley/chardb/assets/84573770/3902c603-da81-4703-b816-329c11cb4144">
+<img width="1705" alt="Info" src="https://github.com/ashripley/chardb/assets/84573770/7f1698ef-02f5-48a9-a9ab-818fd7eaf5ce">
+
 <br />
 Collections Grid
 <br />
-<img width="1705" alt="Collections-Grid" src="https://github.com/ashripley/chardb/assets/84573770/610622c7-ab15-4a7e-ae16-a988479fa31c">
+<img width="1705" alt="Collections-Grid" src="https://github.com/ashripley/chardb/assets/84573770/f0e163cc-eade-446d-a898-430b875e9224">
+
 <br />
 Collections Grid Card
 <br />
-<img width="427" alt="Grid-Card" src="https://github.com/ashripley/chardb/assets/84573770/a22c49b3-b53a-4395-a03f-829fdafd95bd">
+<img width="427" alt="Grid-Card" src="https://github.com/ashripley/chardb/assets/84573770/83dc43b3-1b40-4ed7-bfba-70e616349ae5">
+
 <br />
 Collections Grid Card Edit
 <br />
-<img width="401" alt="Grid-Card-Edit" src="https://github.com/ashripley/chardb/assets/84573770/4baad691-938c-4a56-bb9b-7c22187168a8">
+<img width="401" alt="Grid-Card-Edit" src="https://github.com/ashripley/chardb/assets/84573770/fb991724-c2a6-417c-9a00-b66a4e709bc1">
+
 <br />
 Add Modal
 <br />
-<img width="1694" alt="Add-Modal" src="https://github.com/ashripley/chardb/assets/84573770/7b27149b-e8e3-4ff3-b2fc-380bb7fad04d">
+<img width="1694" alt="Add-Modal" src="https://github.com/ashripley/chardb/assets/84573770/0160b601-ab70-408f-9cfa-8eb005baf186">
+
 <br />
 Collections List
 <br />
-<img width="1703" alt="Collections-List" src="https://github.com/ashripley/chardb/assets/84573770/4f632f10-8a94-49c8-afa5-440961451401">
+<img width="1703" alt="Collections-List" src="https://github.com/ashripley/chardb/assets/84573770/570d25a6-0c30-45ac-a147-043f572ff9e9">
+
 <br />
 Pokedex
 <br />
-<img width="1701" alt="Pokedex" src="https://github.com/ashripley/chardb/assets/84573770/588f08cb-4668-4dea-89ca-5944de22e757">
+<img width="1701" alt="Pokedex" src="https://github.com/ashripley/chardb/assets/84573770/1a96f0a4-3e2d-4db0-bf5a-c25bcde18ed3">
+
 <br />
 Pokedex Modal
 <br />
-<img width="1696" alt="Pokedex-Modal" src="https://github.com/ashripley/chardb/assets/84573770/7d7dd376-3f0b-4190-8fba-5de18342983c">
+<img width="1696" alt="Pokedex-Modal" src="https://github.com/ashripley/chardb/assets/84573770/e8c8d6c1-02de-4e11-a4d3-d7853e613996">
+
 <br />
 
 _For more examples, please refer to the [Documentation](https://example.com)_
