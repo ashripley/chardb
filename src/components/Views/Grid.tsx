@@ -30,7 +30,7 @@ import DoneIcon from "@mui/icons-material/Done"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { editIconProps, readIconProps } from "./List"
 import { Theme } from "../../Theme"
-import { upperCaseFirst } from "../helpers"
+import { typeColours, upperCaseFirst } from "../helpers"
 
 interface Props {
   cardIndex: number
@@ -182,21 +182,23 @@ export const GridView = ({
   isLoading,
   isCardDeleted,
 }: Props) => {
-  const [cardView, setCardView] = useState<Record<string, any>>({
-    view: View.READ,
-  })
   const [isEvolutionsHovered, setIsEvolutionsHovered] = useState<boolean>(false)
-  const [name, setName] = useState("")
-  const [type, setType] = useState("")
-  const [set, setSet] = useState("")
-  const [year, setYear] = useState("")
-  const [quantity, setQuantity] = useState("")
-  const [attribute, setAttribute] = useState("")
   const [editAlert, setEditAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
   const [height, setHeight] = useState(0)
   const [width, setWidth] = useState(0)
+  const [fields, setFields] = useState<Record<string, any>>({
+    name: "",
+    type: "",
+    set: "",
+    year: "",
+    quantity: "",
+    attribute: "",
+  })
+  const [cardView, setCardView] = useState<Record<string, any>>({
+    view: View.READ,
+  })
 
   const ref = useRef(null)
 
@@ -205,7 +207,6 @@ export const GridView = ({
     !!ref.current && setHeight(ref.current.clientHeight)
     // @ts-ignore
     !!ref.current && setWidth(ref.current.clientWidth)
-    console.log("height", height)
   })
 
   const mouseEnter = () => {
@@ -250,14 +251,19 @@ export const GridView = ({
   }
 
   const onSubmit = async () => {
+    setFields({
+      ...fields,
+    })
+
     await UpdateCard(
       pokemon.cardId,
-      name.length ? name.toLowerCase() : pokemon.name,
-      type.length ? type.toLowerCase() : pokemon.type,
-      set.length ? set.toLowerCase() : pokemon.set,
-      year.length ? year : pokemon.year,
-      quantity.length ? quantity : pokemon.quantity ?? "",
-      attribute.length ? attribute : pokemon.attribute ?? ""
+      fields.name?.toLowerCase() || pokemon.name,
+      fields.type?.toLowerCase() || pokemon.type,
+      fields.set?.toLowerCase() || pokemon.set,
+      fields.year || pokemon.year,
+      fields.quantity || pokemon.quantity,
+      fields.attribute || pokemon.attribute,
+      typeColours[fields.type.toLowerCase()] ?? pokemon.colour
     )
 
     setOpen(true)
@@ -265,19 +271,22 @@ export const GridView = ({
 
     setCardView({ view: View.READ })
     clearFields()
+    // window.location.reload()
   }
 
   const clearFields = () => {
-    setName("")
-    setType("")
-    setSet("")
-    setYear("")
-    setQuantity("")
-    setAttribute("")
+    setFields({
+      name: "",
+      type: "",
+      set: "",
+      year: "",
+      quantity: "",
+      attribute: "",
+    })
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAttribute((event.target as HTMLInputElement).value)
+    setFields({ attribute: (event.target as HTMLInputElement).value })
   }
 
   const evolutions =
@@ -443,8 +452,8 @@ export const GridView = ({
                 <TextField
                   id="standard"
                   autoFocus
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={fields.name}
+                  onChange={(e) => setFields({ name: e.target.value })}
                   placeholder={pokemon.name}
                   variant="outlined"
                   style={{ width: "80%", margin: 5 }}
@@ -467,13 +476,13 @@ export const GridView = ({
               ) : (
                 <TextField
                   id="standard"
-                  value={type}
+                  value={fields.type}
                   placeholder={pokemon.type}
                   variant="outlined"
                   style={{ width: "80%", margin: 5 }}
                   sx={{ borderRadius: 15 }}
                   color="warning"
-                  onChange={(e) => setType(e.target.value)}
+                  onChange={(e) => setFields({ type: e.target.value })}
                   InputProps={{
                     sx: {
                       borderRadius: "15px !important",
@@ -492,13 +501,13 @@ export const GridView = ({
               ) : (
                 <TextField
                   id="standard"
-                  value={set}
+                  value={fields.set}
                   placeholder={pokemon.set}
                   variant="outlined"
                   style={{ width: "80%", margin: 5 }}
                   sx={{ borderRadius: 15 }}
                   color="warning"
-                  onChange={(e) => setSet(e.target.value)}
+                  onChange={(e) => setFields({ set: e.target.value })}
                   InputProps={{
                     sx: {
                       borderRadius: "15px !important",
@@ -516,13 +525,13 @@ export const GridView = ({
               ) : (
                 <TextField
                   id="standard"
-                  value={year}
+                  value={fields.year}
                   placeholder={pokemon.year}
                   variant="outlined"
                   style={{ width: "80%", margin: 5 }}
                   sx={{ borderRadius: 15 }}
                   color="warning"
-                  onChange={(e) => setYear(e.target.value)}
+                  onChange={(e) => setFields({ year: e.target.value })}
                   InputProps={{
                     sx: {
                       borderRadius: "15px !important",
@@ -539,13 +548,13 @@ export const GridView = ({
                   </Icon>
                   <TextField
                     id="standard"
-                    value={quantity}
+                    value={fields.quantity}
                     placeholder={pokemon.quantity}
                     variant="outlined"
                     type="number"
                     style={{ width: "80%", margin: 5 }}
                     color="warning"
-                    onChange={(e) => setQuantity(e.target.value)}
+                    onChange={(e) => setFields({ quantity: e.target.value })}
                     InputProps={{
                       sx: {
                         borderRadius: "15px !important",
@@ -555,7 +564,7 @@ export const GridView = ({
                 </Row>
                 <StyledRadioGroup
                   defaultValue={
-                    pokemon.attribute ? pokemon.attribute : attribute
+                    pokemon.attribute ? pokemon.attribute : fields.attribute
                   }
                   row
                   onChange={handleChange}

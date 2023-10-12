@@ -32,7 +32,7 @@ import ClearIcon from "@mui/icons-material/Clear"
 import StarOutlineIcon from "@mui/icons-material/StarOutline"
 import StarIcon from "@mui/icons-material/Star"
 import { Theme } from "../../Theme"
-import { upperCaseFirst } from "../helpers"
+import { typeColours, upperCaseFirst } from "../helpers"
 
 interface Props {
   cardIndex: number
@@ -200,12 +200,14 @@ export const ListView = ({
   const [cardView, setCardView] = useState<Record<string, any>>({
     view: View.READ,
   })
-  const [name, setName] = useState("")
-  const [type, setType] = useState("")
-  const [set, setSet] = useState("")
-  const [year, setYear] = useState("")
-  const [quantity, setQuantity] = useState("")
-  const [attribute, setAttribute] = useState("")
+  const [fields, setFields] = useState<Record<string, any>>({
+    name: "",
+    type: "",
+    set: "",
+    year: "",
+    quantity: "",
+    attribute: "",
+  })
   const [isEvolutionsHovered, setIsEvolutionsHovered] = useState<boolean>(false)
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
   const [alert, setAlert] = useState<string>("")
@@ -254,12 +256,13 @@ export const ListView = ({
   const onSubmit = async () => {
     await UpdateCard(
       pokemon.cardId,
-      name.length ? name.toLowerCase() : pokemon.name,
-      type.length ? type.toLowerCase() : pokemon.type,
-      set.length ? set.toLowerCase() : pokemon.set,
-      year.length ? year : pokemon.year,
-      quantity.length ? quantity : pokemon.quantity ?? "",
-      attribute.length ? attribute : pokemon.attribute ?? ""
+      fields.name?.toLowerCase() || pokemon.name,
+      fields.type?.toLowerCase() || pokemon.type,
+      fields.set?.toLowerCase() || pokemon.set,
+      fields.year || pokemon.year,
+      fields.quantity || pokemon.quantity,
+      fields.attribute || pokemon.attribute,
+      typeColours[fields.type.toLowerCase()] ?? pokemon.colour
     )
 
     setOpen(true)
@@ -270,16 +273,18 @@ export const ListView = ({
   }
 
   const clearFields = () => {
-    setName("")
-    setType("")
-    setSet("")
-    setYear("")
-    setQuantity("")
-    setAttribute("")
+    setFields({
+      name: "",
+      type: "",
+      set: "",
+      year: "",
+      quantity: "",
+      attribute: "",
+    })
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAttribute((event.target as HTMLInputElement).value)
+    setFields({ attribute: (event.target as HTMLInputElement).value })
   }
 
   const evolutions =
@@ -432,8 +437,8 @@ export const ListView = ({
                   <TextField
                     id="standard"
                     autoFocus
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={fields.name}
+                    onChange={(e) => setFields({ name: e.target.value })}
                     placeholder={pokemon.name}
                     variant="outlined"
                     style={{ width: "80%", margin: 5 }}
@@ -456,13 +461,13 @@ export const ListView = ({
                 ) : (
                   <TextField
                     id="standard"
-                    value={type}
+                    value={fields.type}
                     placeholder={pokemon.type}
                     variant="outlined"
                     style={{ width: "80%", margin: 5 }}
                     sx={{ borderRadius: 15 }}
                     color="warning"
-                    onChange={(e) => setType(e.target.value)}
+                    onChange={(e) => setFields({ type: e.target.value })}
                     InputProps={{
                       sx: {
                         borderRadius: "15px !important",
@@ -481,13 +486,13 @@ export const ListView = ({
                 ) : (
                   <TextField
                     id="standard"
-                    value={set}
+                    value={fields.set}
                     placeholder={pokemon.set}
                     variant="outlined"
                     style={{ width: "80%", margin: 5 }}
                     sx={{ borderRadius: 15 }}
                     color="warning"
-                    onChange={(e) => setSet(e.target.value)}
+                    onChange={(e) => setFields({ set: e.target.value })}
                     InputProps={{
                       sx: {
                         borderRadius: "15px !important",
@@ -505,13 +510,13 @@ export const ListView = ({
                 ) : (
                   <TextField
                     id="standard"
-                    value={year}
+                    value={fields.year}
                     placeholder={pokemon.year}
                     variant="outlined"
                     style={{ width: "80%", margin: 5 }}
                     sx={{ borderRadius: 15 }}
                     color="warning"
-                    onChange={(e) => setYear(e.target.value)}
+                    onChange={(e) => setFields({ year: e.target.value })}
                     InputProps={{
                       sx: {
                         borderRadius: "15px !important",
@@ -528,13 +533,13 @@ export const ListView = ({
                     </IconWrapper>
                     <TextField
                       id="standard"
-                      value={quantity}
+                      value={fields.quantity}
                       placeholder={pokemon.quantity}
                       variant="outlined"
                       type="number"
                       style={{ width: "80%", margin: 5 }}
                       color="warning"
-                      onChange={(e) => setQuantity(e.target.value)}
+                      onChange={(e) => setFields({ quantity: e.target.value })}
                       InputProps={{
                         sx: {
                           borderRadius: "15px !important",
@@ -544,7 +549,7 @@ export const ListView = ({
                   </Column>
                   <StyledRadioGroup
                     defaultValue={
-                      pokemon.attribute ? pokemon.attribute : attribute
+                      pokemon.attribute ? pokemon.attribute : fields.attribute
                     }
                     onChange={handleChange}
                   >

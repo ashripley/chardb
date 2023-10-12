@@ -125,6 +125,7 @@ const style = {
 }
 
 export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
+  console.log("pokemon", pokemon)
   const [open, setOpen] = React.useState(false)
 
   const { name, sprites, types, abilities, id, height, weight } = pokemon ?? ""

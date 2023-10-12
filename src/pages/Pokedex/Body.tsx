@@ -93,24 +93,58 @@ export const PokedexBody = () => {
   const [pokemon, setPokemon] = useState<Record<string, any>>({})
   const [hasPokemon, setHasPokemon] = useState<string[]>([])
   const [generation, setGeneration] = useState<Record<string, any>>({})
-  const [mappedPokedex, setMappedPokedex] = useState<Record<string, any>[]>([
-    {},
-  ])
+
+  const fetchPokemon = async (start: number, range: number) => {
+    setIsLoading(true)
+    let pokedex: Record<string, any>[] = [{}]
+
+    for (var i = start; i <= range; i++) {
+      await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`)
+        .then((response) => response.json())
+        .then((data) => {
+          pokedex.push({
+            name: data.name,
+            id: data.id,
+            height: data.height,
+            weight: data.weight,
+            types: data.types?.map(
+              (type: Record<string, any>) => type.type.name
+            ),
+            abilities: data.abilities?.map(
+              (ability: Record<string, any>) => ability.ability.name
+            ),
+            sprites: {
+              front: data.sprites.front_default,
+              back: data.sprites.back_default,
+            },
+            colour: TypeColours[pokemon?.types?.[0]] ?? "#a8a878",
+            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`,
+          })
+        })
+    }
+    pokedex.shift()
+
+    const cards = await AllCards()
+
+    const cardFilter = cards.map((p) => p.name)
+
+    setHasPokemon(cardFilter)
+
+    setPokedex(pokedex)
+    setIsLoading(false)
+    return pokedex
+  }
 
   useEffect(() => {
-    const res: Record<string, any>[] =
-      generation.value == 1
-        ? pokedex.filter((p: Record<string, any>) => p.id <= 151)
-        : generation.value == 2
-        ? pokedex.filter((p: Record<string, any>) => p.id > 152 && p.id <= 251)
-        : generation.value == 3
-        ? pokedex.filter((p: Record<string, any>) => p.id > 251 && p.id <= 386)
-        : generation.value == 4
-        ? pokedex.filter((p: Record<string, any>) => p.id > 386 && p.id <= 493)
-        : pokedex
-
-    console.log("res", res)
-    setMappedPokedex(res)
+    if (generation.value == 1) {
+      fetchPokemon(1, 151)
+    } else if (generation.value == 2) {
+      fetchPokemon(152, 251)
+    } else if (generation.value == 3) {
+      fetchPokemon(153, 386)
+    } else if (generation.value == 4) {
+      fetchPokemon(387, 493)
+    }
   }, [generation])
 
   const onClose = () => setIsModalOpen(!isModalOpen)
@@ -125,53 +159,13 @@ export const PokedexBody = () => {
         return (a = b)
       }, {})
 
+    console.log("pokedex", pokedex)
+    console.log("tempPokemon", tempPokemon)
     setPokemon(tempPokemon)
   }
 
   useEffect(() => {
-    const fetchPokemon = async () => {
-      setIsLoading(true)
-      let pokedex: Record<string, any>[] = [{}]
-
-      for (var i = 1; i <= 493; i++) {
-        await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`)
-          .then((response) => response.json())
-          .then((data) => {
-            pokedex.push({
-              name: data.name,
-              id: data.id,
-              height: data.height,
-              weight: data.weight,
-              types: data.types?.map(
-                (type: Record<string, any>) => type.type.name
-              ),
-              abilities: data.abilities?.map(
-                (ability: Record<string, any>) => ability.ability.name
-              ),
-              sprites: {
-                front: data.sprites.front_default,
-                back: data.sprites.back_default,
-              },
-              colour: TypeColours[pokemon?.types?.[0]] ?? "#a8a878",
-              image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`,
-            })
-          })
-      }
-      pokedex.shift()
-
-      const cards = await AllCards()
-
-      const cardFilter = cards.map((p) => p.name)
-
-      setHasPokemon(cardFilter)
-
-      setPokedex(pokedex)
-      setMappedPokedex(pokedex)
-      setIsLoading(false)
-      return pokedex
-    }
-
-    fetchPokemon()
+    fetchPokemon(1, 151)
   }, [])
 
   const pokedexLength = pokedex.reduce(
@@ -241,9 +235,9 @@ export const PokedexBody = () => {
                       },
                     }}
                   >
-                    <MenuItem value="">
+                    {/* <MenuItem value="">
                       <b style={{ color: Theme.primaryText }}>All</b>
-                    </MenuItem>
+                    </MenuItem> */}
                     {["1", "2", "3", "4"].map((gen, index) => (
                       <MenuItem
                         key={index}
@@ -267,8 +261,7 @@ export const PokedexBody = () => {
             <CircularProgress color="warning" />
           </div>
         ) : (
-          !!pokedexLength &&
-          mappedPokedex?.map((p, index) => (
+          pokedex.map((p, index) => (
             <Card
               key={index}
               sx={{

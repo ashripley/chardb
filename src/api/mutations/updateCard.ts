@@ -8,7 +8,8 @@ export const UpdateCard = async (
   set: string,
   year: string,
   quantity: string,
-  attribute: string
+  attribute: string,
+  colour: string
 ) => {
   const docRef = doc(firestore, "cards", cardId)
 
@@ -21,6 +22,7 @@ export const UpdateCard = async (
     year,
     quantity,
     attribute,
+    colour,
   }
 
   updateDoc(docRef, data)
