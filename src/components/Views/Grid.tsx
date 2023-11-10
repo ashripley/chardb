@@ -134,10 +134,14 @@ const Data = styled.div`
 
 const Attribute = styled.div`
   display: flex;
-  color: ${Theme.lightBg};
+  align-items: center;
   height: 75%;
   width: 25px;
   margin-right: -25px;
+
+  div svg path {
+    color: ${Theme.primaryText};
+  }
 `
 
 const CardWrapper = styled.div`
@@ -393,29 +397,6 @@ export const GridView = ({
                 )}
               </Card>
             </CardWrapper>
-            {!!pokemon.attribute && (
-              <Attribute>
-                {pokemon.attribute === "holo" ? (
-                  <Tooltip
-                    title={"Holographic"}
-                    TransitionComponent={Fade}
-                    TransitionProps={{ timeout: 600 }}
-                  >
-                    <StarOutlineIcon />
-                  </Tooltip>
-                ) : pokemon.attribute === "special" ? (
-                  <Tooltip
-                    title={"Special"}
-                    TransitionComponent={Fade}
-                    TransitionProps={{ timeout: 600 }}
-                  >
-                    <StarIcon />
-                  </Tooltip>
-                ) : (
-                  <></>
-                )}
-              </Attribute>
-            )}
           </Image>
           <Details
             editView={cardView.view === View.EDIT}
@@ -508,7 +489,32 @@ export const GridView = ({
                 <TagIcon />
               </Icon>
               {cardView.view === View.READ ? (
-                <Data>{pokemon.year || ""}</Data>
+                <>
+                  <Data>{pokemon.year || ""}</Data>
+                  {!!pokemon.attribute && (
+                    <Attribute>
+                      {pokemon.attribute === "holo" ? (
+                        <Tooltip
+                          title={"Holographic"}
+                          TransitionComponent={Fade}
+                          TransitionProps={{ timeout: 600 }}
+                        >
+                          <StarOutlineIcon />
+                        </Tooltip>
+                      ) : pokemon.attribute === "special" ? (
+                        <Tooltip
+                          title={"Special"}
+                          TransitionComponent={Fade}
+                          TransitionProps={{ timeout: 600 }}
+                        >
+                          <StarIcon />
+                        </Tooltip>
+                      ) : (
+                        <></>
+                      )}
+                    </Attribute>
+                  )}
+                </>
               ) : (
                 <TextField
                   id="standard"

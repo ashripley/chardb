@@ -2,7 +2,6 @@ import styled from "styled-components"
 import { CollectionsBody } from "./Body"
 import { Header } from "../Header"
 import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
-import { Particle } from "../../components/Particle"
 
 interface Props {
   menuAction: string
@@ -26,7 +25,6 @@ export const Collections = ({ menuAction, isOpen }: Props) => {
 
   return (
     <Container>
-      {/* <Particle /> */}
       <Header menuAction={menuAction} isOpen={onClick} />
       <CollectionsBody />
     </Container>
