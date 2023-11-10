@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal"
 import Fade from "@mui/material/Fade"
 import styled from "styled-components"
 import { Theme, TypeColours } from "../Theme"
-import { Divider } from "@mui/material"
+import { Divider, Grow } from "@mui/material"
 
 interface Props {
   pokemon: Record<string, any>
@@ -125,10 +125,9 @@ const style = {
 }
 
 export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
-  console.log("pokemon", pokemon)
   const [open, setOpen] = React.useState(false)
 
-  const { name, sprites, types, abilities, id, height, weight } = pokemon ?? ""
+  const { name, image, types, abilities, id, height, weight } = pokemon ?? ""
 
   React.useEffect(() => {
     setOpen(openModal)
@@ -138,6 +137,12 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
     setOpen(false)
     closeModal(false)
   }
+
+  const evolutions = [
+    pokemon?.evolutionChain?.first?.image,
+    pokemon?.evolutionChain?.second?.image,
+    pokemon?.evolutionChain?.third?.image,
+  ]
 
   return (
     <>
@@ -175,10 +180,10 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
                 <Image>
                   <img
                     alt={`"${name}"`}
-                    src={sprites?.front ?? ""}
+                    src={image ?? ""}
                     style={{
-                      width: 200,
-                      height: 200,
+                      width: 250,
+                      height: 250,
                       zIndex: 100,
                       position: "absolute",
                     }}
@@ -217,6 +222,29 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
                   <Value>{weight}</Value>
                 </Row>
               </Details>
+              {evolutions.map(
+                (image, index) =>
+                  !!image && (
+                    <Grow
+                      in={true}
+                      unmountOnExit
+                      style={{ transformOrigin: "1 1 1" }}
+                      {...(true ? { timeout: 1000 } : {})}
+                    >
+                      <img
+                        key={index}
+                        alt={`"${pokemon.name}"`}
+                        src={image}
+                        style={{
+                          width: 100,
+                          height: 100,
+                          padding: 0,
+                          zIndex: 100,
+                        }}
+                      />
+                    </Grow>
+                  )
+              )}
             </Container>
           </Box>
         </Fade>

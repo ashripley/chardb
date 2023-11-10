@@ -61,10 +61,6 @@ export const AddCardMutation = async (
   const secondEvolution = chain.chain.evolves_to?.[0]?.species
   const thirdEvolution = chain.chain.evolves_to?.[0]?.evolves_to?.[0]?.species
 
-  console.log("firstEvolution", firstEvolution)
-  console.log("secondEvolution", secondEvolution)
-  console.log("thirdEvolution", thirdEvolution)
-
   const evolutionChainObj = {
     first: {
       id: getImageId(firstEvolution.url),

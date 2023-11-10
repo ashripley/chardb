@@ -59,7 +59,7 @@ const Wrapper = styled.div<{
       : props.isLoading
       ? "0px"
       : "600px"};
-  transition: all 1s ease;
+  transition: all 0.5s ease;
 `
 
 const Image = styled.div<{

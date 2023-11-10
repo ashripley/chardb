@@ -118,7 +118,10 @@ export const PokedexBody = () => {
               back: data.sprites.back_default,
             },
             colour: TypeColours[pokemon?.types?.[0]] ?? "#a8a878",
-            image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${data.id}.png`,
+            image: `https://img.pokemondb.net/sprites/home/normal/${data.name}.png`,
+            // firstEvolution: data.chain.chain.species,
+            // secondEvolution: data.chain.chain.evolves_to?.[0]?.species,
+            // thirdEvolution: data.chain.chain.evolves_to?.[0]?.evolves_to?.[0]?.species
           })
         })
     }
@@ -131,6 +134,7 @@ export const PokedexBody = () => {
     setHasPokemon(cardFilter)
 
     setPokedex(pokedex)
+    console.log("pokedex", pokedex)
     setIsLoading(false)
     return pokedex
   }
@@ -159,8 +163,6 @@ export const PokedexBody = () => {
         return (a = b)
       }, {})
 
-    console.log("pokedex", pokedex)
-    console.log("tempPokemon", tempPokemon)
     setPokemon(tempPokemon)
   }
 
@@ -271,10 +273,10 @@ export const PokedexBody = () => {
                 margin: "1rem",
                 backgroundColor: Theme.lightBg,
                 borderRadius: "15px",
-                boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
+                boxShadow: "rgba(0, 0, 0, 0.4) 0px 40px 90px",
                 transition: "all 0.8s !important",
                 ":hover": {
-                  padding: "1.8em",
+                  // padding: "1.8em",
                   boxShadow: `0px 0px 10px 5px ${
                     TypeColours[p.types?.[0]]
                   } , 0px 0px 0px 0px #ffffff`,
