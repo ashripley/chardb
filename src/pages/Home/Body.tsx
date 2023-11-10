@@ -95,6 +95,12 @@ export const HomeBody = ({ menuOption }: Props) => {
           <Wrapper>
             <Title>
               <span style={{ color: "darkorange", fontWeight: 800 }}>char</span>
+              <a href="https://pokemondb.net/pokedex/charmander">
+                <img
+                  src="https://img.pokemondb.net/sprites/home/normal/charmander.png"
+                  alt="Charmander"
+                />
+              </a>
               <span style={{ color: Theme.primaryText }}>db</span>
             </Title>
             <SubTitle>

@@ -125,7 +125,7 @@ export const Cards = ({
           nextIconButtonProps={{ color: "warning" }}
           sx={{
             height: 100,
-            backgroundColor: Theme.darkBg,
+            // backgroundColor: Theme.darkBg,
             color: Theme.primaryText,
             borderBottom: "none",
             width: "100%",

@@ -26,7 +26,7 @@ export const Collections = ({ menuAction, isOpen }: Props) => {
 
   return (
     <Container>
-      <Particle />
+      {/* <Particle /> */}
       <Header menuAction={menuAction} isOpen={onClick} />
       <CollectionsBody />
     </Container>

@@ -61,33 +61,33 @@ export const AddCardMutation = async (
   const secondEvolution = chain.chain.evolves_to?.[0]?.species
   const thirdEvolution = chain.chain.evolves_to?.[0]?.evolves_to?.[0]?.species
 
+  console.log("firstEvolution", firstEvolution)
+  console.log("secondEvolution", secondEvolution)
+  console.log("thirdEvolution", thirdEvolution)
+
   const evolutionChainObj = {
     first: {
       id: getImageId(firstEvolution.url),
       name: firstEvolution.name ?? "",
       url: firstEvolution.url ?? "",
-      image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getImageId(
-        firstEvolution.url
-      )}.png`,
+      image: firstEvolution.name
+        ? `https://img.pokemondb.net/sprites/home/normal/${firstEvolution.name}.png`
+        : "",
     },
     second: {
       id: getImageId(secondEvolution?.url) ?? "",
       name: secondEvolution?.name ?? "",
       url: secondEvolution?.url ?? "",
-      image: getImageId(secondEvolution?.url)
-        ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getImageId(
-            secondEvolution.url
-          )}.png`
+      image: secondEvolution.name
+        ? `https://img.pokemondb.net/sprites/home/normal/${secondEvolution.name}.png`
         : "",
     },
     third: {
       id: getImageId(thirdEvolution?.url) ?? "",
       name: thirdEvolution?.name ?? "",
       url: thirdEvolution?.url ?? "",
-      image: getImageId(thirdEvolution?.url)
-        ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getImageId(
-            thirdEvolution.url
-          )}.png`
+      image: thirdEvolution.name
+        ? `https://img.pokemondb.net/sprites/home/normal/${thirdEvolution.name}.png`
         : "",
     },
   }
@@ -128,7 +128,7 @@ export const AddCardMutation = async (
     quantity,
     attribute,
     url: {
-      front: pokemon.sprites.front_default,
+      front: `https://img.pokemondb.net/sprites/home/normal/${name}.png`,
       back: pokemon.sprites.back_default,
     },
   })

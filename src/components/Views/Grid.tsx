@@ -49,7 +49,7 @@ const Wrapper = styled.div<{
   editView: boolean
   isLoading: boolean
 }>`
-  width: 22%;
+  width: 370px;
   padding: 20px 20px;
   height: ${(props) =>
     !!props.isCardHovered && !!props.editView
@@ -73,7 +73,7 @@ const Image = styled.div<{
       ? "30%"
       : props.isCardHovered
       ? "40%"
-      : "60%"};
+      : "45%"};
   width: 100%;
   display: flex;
   align-items: center;
@@ -84,7 +84,7 @@ const Image = styled.div<{
     flex-direction: column;
     `}
   justify-content: center;
-  border-radius: 30px;
+  border-radius: 20px;
 
   & :hover {
     border-radius: 45px !important;
@@ -97,7 +97,7 @@ const Details = styled.div<{ isCardHovered: boolean; editView: boolean }>`
       ? "60%"
       : props.isCardHovered
       ? "50%"
-      : "40%"};
+      : "55%"};
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -186,8 +186,6 @@ export const GridView = ({
   const [editAlert, setEditAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
-  const [height, setHeight] = useState(0)
-  const [width, setWidth] = useState(0)
   const [fields, setFields] = useState<Record<string, any>>({
     name: "",
     type: "",
@@ -201,13 +199,6 @@ export const GridView = ({
   })
 
   const ref = useRef(null)
-
-  useEffect(() => {
-    // @ts-ignore
-    !!ref.current && setHeight(ref.current.clientHeight)
-    // @ts-ignore
-    !!ref.current && setWidth(ref.current.clientWidth)
-  })
 
   const mouseEnter = () => {
     setIsEvolutionsHovered(true)
@@ -314,14 +305,11 @@ export const GridView = ({
             backgroundColor: Theme.lightBg,
             borderRadius: "30px",
             height: "100%",
-            transition: "all 0.8s !important",
+            transition: "all 1.5s !important",
+            border: "8px solid white",
             ":hover": {
-              boxShadow: `${pokemon.colour} 0px 2px 4px 0px, ${pokemon.colour} 0px 0px 26px 0px`,
-              padding: "0.5em",
-              ".card-image": {
-                height: 180,
-                width: 180,
-              },
+              boxShadow: `${pokemon.colour} 0px 2px 35px 0px, ${pokemon.colour} 0px 0px 40px 0px`,
+              borderRadius: 50,
             },
           }}
           variant="elevation"
@@ -338,22 +326,21 @@ export const GridView = ({
             <CardWrapper>
               <Card
                 sx={{
-                  width: "50%",
-                  height: "50%",
-                  borderRadius: 100,
+                  width: 200,
+                  height: 200,
+                  borderRadius: "100px !important",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   backgroundColor: `${Theme.lightBg} !important`,
                   opacity: "revert",
-                  transition: "all 1.8s !important",
-                  boxShadow: `${Theme.lightBg} 0px 0px 10px 0px !important`,
+                  transition: "all 0.8s !important",
+                  boxShadow: `${Theme.lightBg} 0px 0px 20px 0px !important`,
 
                   ":hover": {
-                    width: `${width}px !important`,
-                    height: `${height}px !important`,
+                    width: "360px !important",
+                    height: "350px !important",
                     boxShadow: "none",
-                    borderRadius: "15px !important",
                   },
                 }}
                 className="card-image"
@@ -364,7 +351,7 @@ export const GridView = ({
                   <Grow
                     in={true}
                     unmountOnExit
-                    {...(true ? { timeout: 1500 } : {})}
+                    {...(true ? { timeout: 1000 } : {})}
                   >
                     <img
                       alt={`"${pokemon.name}"`}
@@ -386,15 +373,15 @@ export const GridView = ({
                             in={true}
                             unmountOnExit
                             style={{ transformOrigin: "1 1 1" }}
-                            {...(true ? { timeout: 1500 } : {})}
+                            {...(true ? { timeout: 1000 } : {})}
                           >
                             <img
                               key={index}
                               alt={`"${pokemon.name}"`}
                               src={image || null}
                               style={{
-                                width: 120,
-                                height: 120,
+                                width: 100,
+                                height: 100,
                                 padding: 0,
                                 zIndex: 100,
                               }}
