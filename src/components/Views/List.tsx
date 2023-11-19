@@ -59,10 +59,10 @@ const Image = styled.div`
   align-items: center;
   justify-content: center;
   background: ${Theme.card};
-  border-radius: 30px;
+  border-radius: 25px;
 
   & :hover {
-    border-radius: 30px;
+    border-radius: 25px;
   }
 `
 
@@ -142,7 +142,7 @@ const ActionColumn = styled.div`
   justify-content: space-evenly;
   flex-direction: column;
   background: #0f1a1b;
-  border-radius: 30px;
+  border-radius: 25px;
   transition: all 1s ease;
 `
 
@@ -175,8 +175,8 @@ export const readIconProps = {
   background: "transparent",
   color: Theme.lightBg,
   transition: "all 0.3s !important",
+  padding: "0.5em",
   ":hover": {
-    padding: "0.5em",
     boxShadow: `0px 10px 30px ${Theme.primaryText}`,
   },
 }
@@ -185,8 +185,8 @@ export const editIconProps = {
   borderRadius: 100,
   color: Theme.lightBg,
   transition: "all 0.3s !important",
+  padding: "0.5em",
   ":hover": {
-    padding: "0.5em",
     boxShadow: `0px 10px 30px ${Theme.primaryText}`,
   },
 }

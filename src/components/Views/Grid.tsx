@@ -136,8 +136,9 @@ const Attribute = styled.div`
   display: flex;
   align-items: center;
   height: 75%;
-  width: 25px;
+  width: 50px;
   margin-right: -25px;
+  margin-left: -25px;
 
   div svg path {
     color: ${Theme.primaryText};
@@ -301,7 +302,7 @@ export const GridView = ({
       <Grow
         in={true}
         style={{ transformOrigin: "1 1 1" }}
-        {...(true ? { timeout: 1000 } : {})}
+        {...(true ? { timeout: 1 } : {})}
       >
         <Card
           sx={{
@@ -327,6 +328,17 @@ export const GridView = ({
             isCardHovered={isCardHovered}
             attribute={pokemon.attribute === ("" || "standard")}
           >
+            {/* <div
+              style={{
+                color: "white",
+                alignItems: "bottom",
+                display: "flex",
+                width: "100%",
+              }}
+            >
+              {pokemon.quantity}
+            </div> */}
+
             <CardWrapper>
               <Card
                 sx={{

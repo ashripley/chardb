@@ -274,9 +274,9 @@ export const PokedexBody = () => {
                 backgroundColor: Theme.lightBg,
                 borderRadius: "15px",
                 boxShadow: "rgba(0, 0, 0, 0.4) 0px 40px 90px",
-                transition: "all 0.8s !important",
+                transition: "all 0.5s !important",
+                border: "8px solid white",
                 ":hover": {
-                  // padding: "1.8em",
                   boxShadow: `0px 0px 10px 5px ${
                     TypeColours[p.types?.[0]]
                   } , 0px 0px 0px 0px #ffffff`,

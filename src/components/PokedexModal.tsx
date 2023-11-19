@@ -182,8 +182,8 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
                     alt={`"${name}"`}
                     src={image ?? ""}
                     style={{
-                      width: 250,
-                      height: 250,
+                      width: 200,
+                      height: 200,
                       zIndex: 100,
                       position: "absolute",
                     }}
