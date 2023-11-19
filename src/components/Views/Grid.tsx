@@ -152,6 +152,7 @@ const CardWrapper = styled.div`
   width: 100%;
   height: 100%;
   align-items: center;
+  margin-right: -35px;
 `
 
 const ActionRow = styled.div`
@@ -179,6 +180,20 @@ const StyledRadioGroup = styled(RadioGroup)`
 const Evolutions = styled.div`
   display: flex;
   justify-content: space-around;
+`
+
+const Quantity = styled.div`
+  color: ${Theme.lightBg};
+  align-items: flex-end;
+  display: flex;
+  height: 100%;
+  width: 10px;
+  margin-right: 25px;
+  margin-bottom: 25px;
+  font-weight: 300 !important;
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+    source-sans-pro, sans-serif;
 `
 
 export const GridView = ({
@@ -299,342 +314,326 @@ export const GridView = ({
       isCardHovered={isCardHovered}
       key={`grid-${cardIndex}`}
     >
-      <Grow
-        in={true}
-        style={{ transformOrigin: "1 1 1" }}
-        {...(true ? { timeout: 1 } : {})}
+      <Card
+        sx={{
+          minWidth: 275,
+          backgroundColor: Theme.lightBg,
+          borderRadius: "30px",
+          height: "100%",
+          transition: "all 1.5s !important",
+          border: "8px solid white",
+          ":hover": {
+            boxShadow: `${pokemon.colour} 0px 2px 35px 0px, ${pokemon.colour} 0px 0px 40px 0px`,
+            borderRadius: 50,
+          },
+        }}
+        variant="elevation"
+        raised
+        onMouseEnter={() => onCardEnter()}
+        onMouseLeave={() => onCardLeave()}
       >
-        <Card
-          sx={{
-            minWidth: 275,
-            backgroundColor: Theme.lightBg,
-            borderRadius: "30px",
-            height: "100%",
-            transition: "all 1.5s !important",
-            border: "8px solid white",
-            ":hover": {
-              boxShadow: `${pokemon.colour} 0px 2px 35px 0px, ${pokemon.colour} 0px 0px 40px 0px`,
-              borderRadius: 50,
-            },
-          }}
-          variant="elevation"
-          raised
-          onMouseEnter={() => onCardEnter()}
-          onMouseLeave={() => onCardLeave()}
+        <Image
+          ref={ref}
+          editView={cardView.view === View.EDIT}
+          isCardHovered={isCardHovered}
+          attribute={pokemon.attribute === ("" || "standard")}
         >
-          <Image
-            ref={ref}
-            editView={cardView.view === View.EDIT}
-            isCardHovered={isCardHovered}
-            attribute={pokemon.attribute === ("" || "standard")}
-          >
-            {/* <div
-              style={{
-                color: "white",
-                alignItems: "bottom",
+          <CardWrapper>
+            <Card
+              sx={{
+                width: 200,
+                height: 200,
+                borderRadius: "100px !important",
                 display: "flex",
-                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: `${Theme.lightBg} !important`,
+                opacity: "revert",
+                transition: "all 0.8s !important",
+                boxShadow: `${Theme.lightBg} 0px 0px 20px 0px !important`,
+
+                ":hover": {
+                  width: "360px !important",
+                  height: "350px !important",
+                  boxShadow: "none",
+                },
               }}
+              className="card-image"
+              onMouseEnter={() => mouseEnter()}
+              onMouseLeave={() => mouseLeave()}
             >
-              {pokemon.quantity}
-            </div> */}
-
-            <CardWrapper>
-              <Card
-                sx={{
-                  width: 200,
-                  height: 200,
-                  borderRadius: "100px !important",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: `${Theme.lightBg} !important`,
-                  opacity: "revert",
-                  transition: "all 0.8s !important",
-                  boxShadow: `${Theme.lightBg} 0px 0px 20px 0px !important`,
-
-                  ":hover": {
-                    width: "360px !important",
-                    height: "350px !important",
-                    boxShadow: "none",
-                  },
-                }}
-                className="card-image"
-                onMouseEnter={() => mouseEnter()}
-                onMouseLeave={() => mouseLeave()}
-              >
-                {!isEvolutionsHovered ? (
-                  <Grow
-                    in={true}
-                    unmountOnExit
-                    {...(true ? { timeout: 1000 } : {})}
-                  >
-                    <img
-                      alt={`"${pokemon.name}"`}
-                      src={pokemon.url.front ?? InsertPhotoOutlinedIcon}
-                      style={{
-                        width: 130,
-                        height: 130,
-                        zIndex: 100,
-                        position: "absolute",
-                      }}
-                    />
-                  </Grow>
-                ) : (
-                  <Evolutions>
-                    {evolutions.map(
-                      (image, index) =>
-                        !!image && (
-                          <Grow
-                            in={true}
-                            unmountOnExit
-                            style={{ transformOrigin: "1 1 1" }}
-                            {...(true ? { timeout: 1000 } : {})}
-                          >
-                            <img
-                              key={index}
-                              alt={`"${pokemon.name}"`}
-                              src={image || null}
-                              style={{
-                                width: 100,
-                                height: 100,
-                                padding: 0,
-                                zIndex: 100,
-                              }}
-                            />
-                          </Grow>
-                        )
-                    )}
-                  </Evolutions>
-                )}
-              </Card>
-            </CardWrapper>
-          </Image>
-          <Details
-            editView={cardView.view === View.EDIT}
-            isCardHovered={isCardHovered}
-          >
-            {cardView.view === View.READ && (
-              <Row>
-                <Icon>
-                  <TagIcon />
-                </Icon>
-                <Data>{pokemon.id || ""}</Data>
-              </Row>
-            )}
-            <Row>
-              <Icon>
-                <PermIdentityOutlinedIcon />
-              </Icon>
-              {cardView.view === View.READ ? (
-                <Data>{pokemon.name || ""}</Data>
+              {!isEvolutionsHovered ? (
+                <Grow
+                  in={true}
+                  unmountOnExit
+                  {...(true ? { timeout: 1000 } : {})}
+                >
+                  <img
+                    alt={`"${pokemon.name}"`}
+                    src={pokemon.url.front ?? InsertPhotoOutlinedIcon}
+                    style={{
+                      width: 130,
+                      height: 130,
+                      zIndex: 100,
+                      position: "absolute",
+                    }}
+                  />
+                </Grow>
               ) : (
-                <TextField
-                  id="standard"
-                  autoFocus
-                  value={fields.name}
-                  onChange={(e) => setFields({ name: e.target.value })}
-                  placeholder={pokemon.name}
-                  variant="outlined"
-                  style={{ width: "80%", margin: 5 }}
-                  sx={{ borderRadius: 15 }}
-                  color="warning"
-                  InputProps={{
-                    sx: {
-                      borderRadius: "15px !important",
-                    },
-                  }}
-                />
+                <Evolutions>
+                  {evolutions.map(
+                    (image, index) =>
+                      !!image && (
+                        <Grow
+                          in={true}
+                          unmountOnExit
+                          style={{ transformOrigin: "1 1 1" }}
+                          {...(true ? { timeout: 1000 } : {})}
+                        >
+                          <img
+                            key={index}
+                            alt={`"${pokemon.name}"`}
+                            src={image || null}
+                            style={{
+                              width: 100,
+                              height: 100,
+                              padding: 0,
+                              zIndex: 100,
+                            }}
+                          />
+                        </Grow>
+                      )
+                  )}
+                </Evolutions>
               )}
-            </Row>
-            <Row>
-              <Icon>
-                <CatchingPokemonTwoToneIcon />
-              </Icon>
-              {cardView.view === View.READ ? (
-                <Data>{pokemon.type || ""}</Data>
-              ) : (
-                <TextField
-                  id="standard"
-                  value={fields.type}
-                  placeholder={pokemon.type}
-                  variant="outlined"
-                  style={{ width: "80%", margin: 5 }}
-                  sx={{ borderRadius: 15 }}
-                  color="warning"
-                  onChange={(e) => setFields({ type: e.target.value })}
-                  InputProps={{
-                    sx: {
-                      borderRadius: "15px !important",
-                      borderColor: "red",
-                    },
-                  }}
-                />
-              )}
-            </Row>
-            <Row>
-              <Icon>
-                <FeaturedPlayListOutlinedIcon />
-              </Icon>
-              {cardView.view === View.READ ? (
-                <Data>{pokemon.set || ""}</Data>
-              ) : (
-                <TextField
-                  id="standard"
-                  value={fields.set}
-                  placeholder={pokemon.set}
-                  variant="outlined"
-                  style={{ width: "80%", margin: 5 }}
-                  sx={{ borderRadius: 15 }}
-                  color="warning"
-                  onChange={(e) => setFields({ set: e.target.value })}
-                  InputProps={{
-                    sx: {
-                      borderRadius: "15px !important",
-                    },
-                  }}
-                />
-              )}
-            </Row>
+            </Card>
+          </CardWrapper>
+          <Quantity>{pokemon.quantity}</Quantity>
+        </Image>
+        <Details
+          editView={cardView.view === View.EDIT}
+          isCardHovered={isCardHovered}
+        >
+          {cardView.view === View.READ && (
             <Row>
               <Icon>
                 <TagIcon />
               </Icon>
-              {cardView.view === View.READ ? (
-                <>
-                  <Data>{pokemon.year || ""}</Data>
-                  {!!pokemon.attribute && (
-                    <Attribute>
-                      {pokemon.attribute === "holo" ? (
-                        <Tooltip
-                          title={"Holographic"}
-                          TransitionComponent={Fade}
-                          TransitionProps={{ timeout: 600 }}
-                        >
-                          <StarOutlineIcon />
-                        </Tooltip>
-                      ) : pokemon.attribute === "special" ? (
-                        <Tooltip
-                          title={"Special"}
-                          TransitionComponent={Fade}
-                          TransitionProps={{ timeout: 600 }}
-                        >
-                          <StarIcon />
-                        </Tooltip>
-                      ) : (
-                        <></>
-                      )}
-                    </Attribute>
-                  )}
-                </>
-              ) : (
+              <Data>{pokemon.id || ""}</Data>
+            </Row>
+          )}
+          <Row>
+            <Icon>
+              <PermIdentityOutlinedIcon />
+            </Icon>
+            {cardView.view === View.READ ? (
+              <Data>{pokemon.name || ""}</Data>
+            ) : (
+              <TextField
+                id="standard"
+                autoFocus
+                value={fields.name}
+                onChange={(e) => setFields({ name: e.target.value })}
+                placeholder={pokemon.name}
+                variant="outlined"
+                style={{ width: "80%", margin: 5 }}
+                sx={{ borderRadius: 15 }}
+                color="warning"
+                InputProps={{
+                  sx: {
+                    borderRadius: "15px !important",
+                  },
+                }}
+              />
+            )}
+          </Row>
+          <Row>
+            <Icon>
+              <CatchingPokemonTwoToneIcon />
+            </Icon>
+            {cardView.view === View.READ ? (
+              <Data>{pokemon.type || ""}</Data>
+            ) : (
+              <TextField
+                id="standard"
+                value={fields.type}
+                placeholder={pokemon.type}
+                variant="outlined"
+                style={{ width: "80%", margin: 5 }}
+                sx={{ borderRadius: 15 }}
+                color="warning"
+                onChange={(e) => setFields({ type: e.target.value })}
+                InputProps={{
+                  sx: {
+                    borderRadius: "15px !important",
+                    borderColor: "red",
+                  },
+                }}
+              />
+            )}
+          </Row>
+          <Row>
+            <Icon>
+              <FeaturedPlayListOutlinedIcon />
+            </Icon>
+            {cardView.view === View.READ ? (
+              <Data>{pokemon.set || ""}</Data>
+            ) : (
+              <TextField
+                id="standard"
+                value={fields.set}
+                placeholder={pokemon.set}
+                variant="outlined"
+                style={{ width: "80%", margin: 5 }}
+                sx={{ borderRadius: 15 }}
+                color="warning"
+                onChange={(e) => setFields({ set: e.target.value })}
+                InputProps={{
+                  sx: {
+                    borderRadius: "15px !important",
+                  },
+                }}
+              />
+            )}
+          </Row>
+          <Row>
+            <Icon>
+              <TagIcon />
+            </Icon>
+            {cardView.view === View.READ ? (
+              <>
+                <Data>{pokemon.year || ""}</Data>
+                {!!pokemon.attribute && (
+                  <Attribute>
+                    {pokemon.attribute === "holo" ? (
+                      <Tooltip
+                        title={"Holographic"}
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                      >
+                        <StarOutlineIcon />
+                      </Tooltip>
+                    ) : pokemon.attribute === "special" ? (
+                      <Tooltip
+                        title={"Special"}
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                      >
+                        <StarIcon />
+                      </Tooltip>
+                    ) : (
+                      <></>
+                    )}
+                  </Attribute>
+                )}
+              </>
+            ) : (
+              <TextField
+                id="standard"
+                value={fields.year}
+                placeholder={pokemon.year}
+                variant="outlined"
+                style={{ width: "80%", margin: 5 }}
+                sx={{ borderRadius: 15 }}
+                color="warning"
+                onChange={(e) => setFields({ year: e.target.value })}
+                InputProps={{
+                  sx: {
+                    borderRadius: "15px !important",
+                  },
+                }}
+              />
+            )}
+          </Row>
+          {cardView.view === View.EDIT && (
+            <>
+              <Row>
+                <Icon>
+                  <PlaylistAddOutlinedIcon />
+                </Icon>
                 <TextField
                   id="standard"
-                  value={fields.year}
-                  placeholder={pokemon.year}
+                  value={fields.quantity}
+                  placeholder={pokemon.quantity}
                   variant="outlined"
+                  type="number"
                   style={{ width: "80%", margin: 5 }}
-                  sx={{ borderRadius: 15 }}
                   color="warning"
-                  onChange={(e) => setFields({ year: e.target.value })}
+                  onChange={(e) => setFields({ quantity: e.target.value })}
                   InputProps={{
                     sx: {
                       borderRadius: "15px !important",
                     },
                   }}
                 />
-              )}
-            </Row>
-            {cardView.view === View.EDIT && (
-              <>
-                <Row>
-                  <Icon>
-                    <PlaylistAddOutlinedIcon />
-                  </Icon>
-                  <TextField
-                    id="standard"
-                    value={fields.quantity}
-                    placeholder={pokemon.quantity}
-                    variant="outlined"
-                    type="number"
-                    style={{ width: "80%", margin: 5 }}
-                    color="warning"
-                    onChange={(e) => setFields({ quantity: e.target.value })}
-                    InputProps={{
-                      sx: {
-                        borderRadius: "15px !important",
-                      },
-                    }}
-                  />
-                </Row>
-                <StyledRadioGroup
-                  defaultValue={
-                    pokemon.attribute ? pokemon.attribute : fields.attribute
-                  }
-                  row
-                  onChange={handleChange}
-                >
-                  {["Normal", "Holo", "Special"].map((label, index) => (
-                    <FormControlLabel
-                      key={index}
-                      value={label.toLowerCase()}
-                      control={<Radio color="warning" />}
-                      label={label}
-                      sx={{ height: 35 }}
-                    />
-                  ))}
-                </StyledRadioGroup>
-              </>
-            )}
-          </Details>
-          <Grow
-            in={isCardHovered}
-            style={{ transformOrigin: "1 1 1" }}
-            {...(true ? { timeout: 1000 } : {})}
-          >
-            <ActionRow>
-              <Button
-                sx={{ borderRadius: 50 }}
-                onClick={() =>
-                  cardView.view === View.READ
-                    ? onEdit()
-                    : cardView.view === View.EDIT
-                    ? onSubmit()
-                    : null
+              </Row>
+              <StyledRadioGroup
+                defaultValue={
+                  pokemon.attribute ? pokemon.attribute : fields.attribute
                 }
+                row
+                onChange={handleChange}
               >
-                {cardView.view === View.READ ? (
-                  <EditIcon sx={{ ...readIconProps }} />
-                ) : (
-                  <DoneIcon sx={{ ...readIconProps }} />
-                )}
-              </Button>
-              <Button sx={{ borderRadius: 50 }}>
-                {cardView.view === View.READ ? (
-                  <DeleteIcon
-                    sx={{ ...editIconProps }}
-                    onClick={() => onDelete()}
+                {["Normal", "Holo", "Special"].map((label, index) => (
+                  <FormControlLabel
+                    key={index}
+                    value={label.toLowerCase()}
+                    control={<Radio color="warning" />}
+                    label={label}
+                    sx={{ height: 35 }}
                   />
-                ) : (
-                  <ClearIcon
-                    sx={{ ...editIconProps }}
-                    onClick={() => onClear()}
-                  />
-                )}
-              </Button>
-            </ActionRow>
-          </Grow>
-          <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert
-              onClose={handleClose}
-              severity="success"
-              sx={{ width: "100%" }}
+                ))}
+              </StyledRadioGroup>
+            </>
+          )}
+        </Details>
+        <Grow
+          in={isCardHovered}
+          style={{ transformOrigin: "1 1 1" }}
+          {...(true ? { timeout: 1000 } : {})}
+        >
+          <ActionRow>
+            <Button
+              sx={{ borderRadius: 50 }}
+              onClick={() =>
+                cardView.view === View.READ
+                  ? onEdit()
+                  : cardView.view === View.EDIT
+                  ? onSubmit()
+                  : null
+              }
             >
-              {editAlert}
-            </Alert>
-          </Snackbar>
-        </Card>
-      </Grow>
+              {cardView.view === View.READ ? (
+                <EditIcon sx={{ ...readIconProps }} />
+              ) : (
+                <DoneIcon sx={{ ...readIconProps }} />
+              )}
+            </Button>
+            <Button sx={{ borderRadius: 50 }}>
+              {cardView.view === View.READ ? (
+                <DeleteIcon
+                  sx={{ ...editIconProps }}
+                  onClick={() => onDelete()}
+                />
+              ) : (
+                <ClearIcon
+                  sx={{ ...editIconProps }}
+                  onClick={() => onClear()}
+                />
+              )}
+            </Button>
+          </ActionRow>
+        </Grow>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert
+            onClose={handleClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            {editAlert}
+          </Alert>
+        </Snackbar>
+      </Card>
     </Wrapper>
   )
 }

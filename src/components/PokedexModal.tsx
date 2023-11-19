@@ -5,7 +5,8 @@ import Modal from "@mui/material/Modal"
 import Fade from "@mui/material/Fade"
 import styled from "styled-components"
 import { Theme, TypeColours } from "../Theme"
-import { Divider, Grow } from "@mui/material"
+import { Button, Divider, Grow } from "@mui/material"
+import ClearIcon from "@mui/icons-material/Clear"
 
 interface Props {
   pokemon: Record<string, any>
@@ -50,8 +51,7 @@ const Label = styled.div`
   color: ${Theme.primaryText};
   font-size: 30px;
   justify-content: center;
-  padding: 20px 0px;
-  padding-top: 0px;
+  paddingBottom: 30px;
   text-transform: capitalize;
   height: 20%;
 }
@@ -112,6 +112,25 @@ const Descriptions = styled(Value)`
   padding: 0px;
 `
 
+const StyledButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  width: 40px;
+  height: 60px;
+`
+
+const Actions = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`
+
+const Evolutions = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+`
+
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -122,6 +141,14 @@ const style = {
   bgcolor: Theme.lightBg,
   borderRadius: "15px",
   p: 4,
+}
+
+const closeIconProps = {
+  width: 40,
+  height: 40,
+  color: Theme.primaryText,
+  display: "flex",
+  justifyContent: "flex-end",
 }
 
 export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
@@ -138,11 +165,12 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
     closeModal(false)
   }
 
-  const evolutions = [
-    pokemon?.evolutionChain?.first?.image,
-    pokemon?.evolutionChain?.second?.image,
-    pokemon?.evolutionChain?.third?.image,
-  ]
+  const evolutions =
+    [
+      pokemon?.evolutionChain?.first?.image ?? pokemon.url?.front,
+      pokemon?.evolutionChain?.second?.image ?? null,
+      pokemon?.evolutionChain?.third?.image ?? null,
+    ] ?? null
 
   return (
     <>
@@ -176,6 +204,27 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
             }}
           >
             <Container>
+              <Actions>
+                <Evolutions>
+                  {evolutions.map(
+                    (image, index) =>
+                      !!image && (
+                        <img
+                          key={index}
+                          src={image || null}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            padding: 0,
+                          }}
+                        />
+                      )
+                  )}
+                </Evolutions>
+                <StyledButton sx={{ borderRadius: 50 }}>
+                  <ClearIcon sx={{ ...closeIconProps }} onClick={handleClose} />
+                </StyledButton>
+              </Actions>
               <Header>
                 <Image>
                   <img
@@ -186,6 +235,7 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
                       height: 200,
                       zIndex: 100,
                       position: "absolute",
+                      paddingBottom: 20,
                     }}
                   />
                 </Image>
@@ -222,29 +272,6 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
                   <Value>{weight}</Value>
                 </Row>
               </Details>
-              {evolutions.map(
-                (image, index) =>
-                  !!image && (
-                    <Grow
-                      in={true}
-                      unmountOnExit
-                      style={{ transformOrigin: "1 1 1" }}
-                      {...(true ? { timeout: 1000 } : {})}
-                    >
-                      <img
-                        key={index}
-                        alt={`"${pokemon.name}"`}
-                        src={image}
-                        style={{
-                          width: 100,
-                          height: 100,
-                          padding: 0,
-                          zIndex: 100,
-                        }}
-                      />
-                    </Grow>
-                  )
-              )}
             </Container>
           </Box>
         </Fade>

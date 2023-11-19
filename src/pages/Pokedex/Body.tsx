@@ -15,6 +15,7 @@ import { PokedexModal } from "../../components/PokedexModal"
 import { Loading } from "../../components/Skeleton"
 import Spinner from "../../components/Spinner"
 import { AllCards } from "../../api/queries/allCards"
+import axios from "axios"
 
 const Container = styled.div`
   max-height: 100%;
@@ -101,7 +102,78 @@ export const PokedexBody = () => {
     for (var i = start; i <= range; i++) {
       await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`)
         .then((response) => response.json())
-        .then((data) => {
+        .then(async (data) => {
+          // fetch evolution chain url from pokeapi
+          const fetchEvolutionChainUrl = async (pokemon: string) => {
+            const response = await axios.get(
+              `https://pokeapi.co/api/v2/pokemon-species/${pokemon}`
+            )
+
+            const chainUrl = await response.data.evolution_chain
+
+            console.log("chainUrl", chainUrl)
+            return chainUrl
+          }
+
+          const chainUrl = await fetchEvolutionChainUrl(data.name)
+
+          // fetch evolution chain from pokeapi
+          const fetchEvolutionChain = async () => {
+            const response = await axios.get(`${chainUrl.url}`)
+
+            console.log("response.data", response.data)
+
+            return response.data
+          }
+
+          const chain = await fetchEvolutionChain()
+
+          console.log("chain", chain)
+          // Getting id for displaying evolved Pokemon url
+          // INPUT 'str' example: 'https://pokeapi.co/api/v2/pokemon-species/121/'
+          // OUTPUT: 'str' id example: '121'
+          const getImageId = (urlStr?: string) => {
+            if (!urlStr) return null
+
+            let regex = /[^v]\d/ // looking for a number that doesn't with a 'v' before it,
+            let searchIdx = urlStr.search(regex) // gives index position
+            // grabbing the numbers inbetween the forward slashes
+            let evoId = urlStr.slice(searchIdx + 1, -1)
+            return evoId
+          }
+
+          const firstEvolution = chain.chain.species
+          const secondEvolution = chain.chain.evolves_to?.[0]?.species
+          const thirdEvolution =
+            chain.chain.evolves_to?.[0]?.evolves_to?.[0]?.species
+
+          const evolutionChainObj = {
+            first: {
+              id: getImageId(firstEvolution.url),
+              name: firstEvolution.name ?? "",
+              url: firstEvolution.url ?? "",
+              image: firstEvolution.name
+                ? `https://img.pokemondb.net/sprites/home/normal/${firstEvolution.name}.png`
+                : "",
+            },
+            second: {
+              id: getImageId(secondEvolution?.url) ?? "",
+              name: secondEvolution?.name ?? "",
+              url: secondEvolution?.url ?? "",
+              image: secondEvolution?.name
+                ? `https://img.pokemondb.net/sprites/home/normal/${secondEvolution.name}.png`
+                : "",
+            },
+            third: {
+              id: getImageId(thirdEvolution?.url) ?? "",
+              name: thirdEvolution?.name ?? "",
+              url: thirdEvolution?.url ?? "",
+              image: thirdEvolution?.name
+                ? `https://img.pokemondb.net/sprites/home/normal/${thirdEvolution.name}.png`
+                : "",
+            },
+          }
+
           pokedex.push({
             name: data.name,
             id: data.id,
@@ -119,9 +191,7 @@ export const PokedexBody = () => {
             },
             colour: TypeColours[pokemon?.types?.[0]] ?? "#a8a878",
             image: `https://img.pokemondb.net/sprites/home/normal/${data.name}.png`,
-            // firstEvolution: data.chain.chain.species,
-            // secondEvolution: data.chain.chain.evolves_to?.[0]?.species,
-            // thirdEvolution: data.chain.chain.evolves_to?.[0]?.evolves_to?.[0]?.species
+            evolutionChain: { ...evolutionChainObj },
           })
         })
     }
