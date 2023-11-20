@@ -282,7 +282,6 @@ export const GridView = ({
 
     setCardView({ view: View.READ })
     clearFields()
-    // window.location.reload()
   }
 
   const clearFields = () => {

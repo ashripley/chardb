@@ -40,7 +40,7 @@ export const Cards = ({
 }: Props) => {
   const [cards, setCards] = useState<Record<string, any>[]>([])
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(25)
+  const [rowsPerPage, setRowsPerPage] = useState(50)
 
   useEffect(() => {
     window.scrollTo({
@@ -117,7 +117,7 @@ export const Cards = ({
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          rowsPerPageOptions={[25, 50, 100, 1000]}
+          rowsPerPageOptions={[50, 100, 1000]}
           labelRowsPerPage={<span>Rows:</span>}
           backIconButtonProps={{
             color: "warning",
