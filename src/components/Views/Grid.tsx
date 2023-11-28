@@ -2,14 +2,12 @@ import {
   Alert,
   Button,
   Card,
-  Fade,
   FormControlLabel,
   Grow,
   Radio,
   RadioGroup,
   Snackbar,
   TextField,
-  Tooltip,
 } from "@mui/material"
 import styled from "styled-components"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
@@ -17,9 +15,7 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
 import TagIcon from "@mui/icons-material/Tag"
-import { useEffect, useRef, useState } from "react"
-import StarOutlineIcon from "@mui/icons-material/StarOutline"
-import StarIcon from "@mui/icons-material/Star"
+import { useRef, useState } from "react"
 import { deleteDoc, doc } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
 import { UpdateCard } from "../../api/mutations/updateCard"
@@ -31,6 +27,7 @@ import DeleteIcon from "@mui/icons-material/Delete"
 import { editIconProps, readIconProps } from "./List"
 import { Theme } from "../../Theme"
 import { typeColours, upperCaseFirst } from "../helpers"
+import Brightness1OutlinedIcon from "@mui/icons-material/Brightness1Outlined"
 
 interface Props {
   cardIndex: number
@@ -63,7 +60,6 @@ const Wrapper = styled.div<{
 `
 
 const Image = styled.div<{
-  attribute: boolean
   isCardHovered: boolean
   editView: boolean
 }>`
@@ -78,11 +74,6 @@ const Image = styled.div<{
   display: flex;
   align-items: center;
   transition: all 1s ease;
-  ${(props) =>
-    !!props.attribute &&
-    `
-    flex-direction: column;
-    `}
   justify-content: center;
   border-radius: 20px;
 
@@ -130,19 +121,6 @@ const Data = styled.div`
     source-sans-pro, sans-serif;
   text-transform: capitalize;
   color: ${Theme.primaryText};
-`
-
-const Attribute = styled.div`
-  display: flex;
-  align-items: center;
-  height: 75%;
-  width: 50px;
-  margin-right: -25px;
-  margin-left: -25px;
-
-  div svg path {
-    color: ${Theme.primaryText};
-  }
 `
 
 const CardWrapper = styled.div`
@@ -274,7 +252,7 @@ export const GridView = ({
       fields.year || pokemon.year,
       fields.quantity || pokemon.quantity,
       fields.attribute || pokemon.attribute,
-      typeColours[fields.type.toLowerCase()] ?? pokemon.colour
+      typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
     )
 
     setOpen(true)
@@ -293,6 +271,13 @@ export const GridView = ({
       quantity: "",
       attribute: "",
     })
+  }
+
+  const attributeColour: Record<string, any> = {
+    standard: Theme.primaryText,
+    "standard holographic": Theme.standardHolographic,
+    "reverse holographic": Theme.reverseHolographic,
+    special: Theme.special,
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -323,7 +308,7 @@ export const GridView = ({
           border: "8px solid white",
           ":hover": {
             boxShadow: `${pokemon.colour} 0px 2px 35px 0px, ${pokemon.colour} 0px 0px 40px 0px`,
-            borderRadius: 50,
+            borderRadius: 25,
           },
         }}
         variant="elevation"
@@ -335,7 +320,6 @@ export const GridView = ({
           ref={ref}
           editView={cardView.view === View.EDIT}
           isCardHovered={isCardHovered}
-          attribute={pokemon.attribute === ("" || "standard")}
         >
           <CardWrapper>
             <Card
@@ -349,12 +333,14 @@ export const GridView = ({
                 backgroundColor: `${Theme.lightBg} !important`,
                 opacity: "revert",
                 transition: "all 0.8s !important",
-                boxShadow: `${Theme.lightBg} 0px 0px 20px 0px !important`,
+                boxShadow: `${
+                  attributeColour[pokemon.attribute] ?? Theme.lightBg
+                } 0px 0px 20px 0px !important`,
 
                 ":hover": {
                   width: "360px !important",
                   height: "350px !important",
-                  boxShadow: "none",
+                  boxShadow: "none !important",
                 },
               }}
               className="card-image"
@@ -495,37 +481,20 @@ export const GridView = ({
               />
             )}
           </Row>
+          {cardView.view === View.READ && (
+            <Row>
+              <Icon>
+                <Brightness1OutlinedIcon />
+              </Icon>
+              <Data>{pokemon.attribute || ""}</Data>
+            </Row>
+          )}
           <Row>
             <Icon>
               <TagIcon />
             </Icon>
             {cardView.view === View.READ ? (
-              <>
-                <Data>{pokemon.year || ""}</Data>
-                {!!pokemon.attribute && (
-                  <Attribute>
-                    {pokemon.attribute === "holo" ? (
-                      <Tooltip
-                        title={"Holographic"}
-                        TransitionComponent={Fade}
-                        TransitionProps={{ timeout: 600 }}
-                      >
-                        <StarOutlineIcon />
-                      </Tooltip>
-                    ) : pokemon.attribute === "special" ? (
-                      <Tooltip
-                        title={"Special"}
-                        TransitionComponent={Fade}
-                        TransitionProps={{ timeout: 600 }}
-                      >
-                        <StarIcon />
-                      </Tooltip>
-                    ) : (
-                      <></>
-                    )}
-                  </Attribute>
-                )}
-              </>
+              <Data>{pokemon.year || ""}</Data>
             ) : (
               <TextField
                 id="standard"
@@ -573,7 +542,12 @@ export const GridView = ({
                 row
                 onChange={handleChange}
               >
-                {["Normal", "Holo", "Special"].map((label, index) => (
+                {[
+                  "Standard",
+                  "Standard Holographic",
+                  "Reverse Holographic",
+                  "Special",
+                ].map((label, index) => (
                   <FormControlLabel
                     key={index}
                     value={label.toLowerCase()}

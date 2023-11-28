@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal"
 import Fade from "@mui/material/Fade"
 import styled from "styled-components"
 import { Theme, TypeColours } from "../Theme"
-import { Button, Divider, Grow } from "@mui/material"
+import { Button, Divider } from "@mui/material"
 import ClearIcon from "@mui/icons-material/Clear"
 
 interface Props {
@@ -152,6 +152,7 @@ const closeIconProps = {
 }
 
 export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
+  console.log("pokemon", pokemon)
   const [open, setOpen] = React.useState(false)
 
   const { name, image, types, abilities, id, height, weight } = pokemon ?? ""

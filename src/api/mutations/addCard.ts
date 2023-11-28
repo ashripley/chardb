@@ -18,13 +18,10 @@ export const AddCardMutation = async (
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${pokemon}`
     )
-    console.log("response", response)
     return response.data
   }
 
   const pokemon = await fetchPokemon(name)
-
-  console.log("pokemon", pokemon)
 
   // fetch evolution chain url from pokeapi
   const fetchEvolutionChainUrl = async (pokemon: string) => {
@@ -34,7 +31,6 @@ export const AddCardMutation = async (
 
     const chainUrl = await response.data.evolution_chain
 
-    console.log("chainUrl", chainUrl)
     return chainUrl
   }
 
@@ -44,14 +40,11 @@ export const AddCardMutation = async (
   const fetchEvolutionChain = async () => {
     const response = await axios.get(`${chainUrl.url}`)
 
-    console.log("response.data", response.data)
-
     return response.data
   }
 
   const chain = await fetchEvolutionChain()
 
-  console.log("chain", chain)
   // Getting id for displaying evolved Pokemon url
   // INPUT 'str' example: 'https://pokeapi.co/api/v2/pokemon-species/121/'
   // OUTPUT: 'str' id example: '121'

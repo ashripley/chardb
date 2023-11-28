@@ -12,8 +12,6 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Theme, TypeColours } from "../../Theme"
 import { PokedexModal } from "../../components/PokedexModal"
-import { Loading } from "../../components/Skeleton"
-import Spinner from "../../components/Spinner"
 import { AllCards } from "../../api/queries/allCards"
 import axios from "axios"
 
@@ -111,7 +109,6 @@ export const PokedexBody = () => {
 
             const chainUrl = await response.data.evolution_chain
 
-            console.log("chainUrl", chainUrl)
             return chainUrl
           }
 
@@ -121,14 +118,11 @@ export const PokedexBody = () => {
           const fetchEvolutionChain = async () => {
             const response = await axios.get(`${chainUrl.url}`)
 
-            console.log("response.data", response.data)
-
             return response.data
           }
 
           const chain = await fetchEvolutionChain()
 
-          console.log("chain", chain)
           // Getting id for displaying evolved Pokemon url
           // INPUT 'str' example: 'https://pokeapi.co/api/v2/pokemon-species/121/'
           // OUTPUT: 'str' id example: '121'
@@ -204,7 +198,6 @@ export const PokedexBody = () => {
     setHasPokemon(cardFilter)
 
     setPokedex(pokedex)
-    console.log("pokedex", pokedex)
     setIsLoading(false)
     return pokedex
   }
@@ -227,6 +220,9 @@ export const PokedexBody = () => {
     index++
     setIsModalOpen(!isModalOpen)
 
+    console.log("pokedex", pokedex)
+    console.log("index", index)
+
     const tempPokemon: Record<string, any> = pokedex
       .filter((p: Record<string, any>) => p.id === index)
       .reduce(function (a, b) {
@@ -239,11 +235,6 @@ export const PokedexBody = () => {
   useEffect(() => {
     fetchPokemon(1, 151)
   }, [])
-
-  const pokedexLength = pokedex.reduce(
-    (a, obj) => a + Object.keys(obj).length,
-    0
-  )
 
   return (
     <Container>
@@ -307,9 +298,6 @@ export const PokedexBody = () => {
                       },
                     }}
                   >
-                    {/* <MenuItem value="">
-                      <b style={{ color: Theme.primaryText }}>All</b>
-                    </MenuItem> */}
                     {["1", "2", "3", "4"].map((gen, index) => (
                       <MenuItem
                         key={index}

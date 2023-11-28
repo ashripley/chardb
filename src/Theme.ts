@@ -5,6 +5,9 @@ export const Theme = {
   charAccent: "#ff8c00", // dark orange
   success: "#2f7d31", // mui green
   card: "#333333", // background of card
+  standardHolographic: "#EE4B2B",
+  reverseHolographic: "#0096FF",
+  special: "#CFB53B",
 }
 
 export const TypeColours: Record<string, any> = {

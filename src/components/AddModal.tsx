@@ -122,9 +122,10 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "80%",
   height: "35%",
+  border: "8px solid white",
   bgcolor: Theme.lightBg,
-  boxShadow: "rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px",
-  borderRadius: "15px",
+  boxShadow: `${Theme.lightBg} 0px 0px 2px 0px !important`,
+  borderRadius: "35px",
   p: 4,
 }
 
@@ -335,7 +336,12 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                   onChange={handleChange}
                   row
                 >
-                  {["Normal", "Holo", "Special"].map((label, index) => (
+                  {[
+                    "Standard",
+                    "Standard Holographic",
+                    "Reverse Holographic",
+                    "Special",
+                  ].map((label, index) => (
                     <FormControlLabel
                       key={index}
                       value={label.toLowerCase()}
