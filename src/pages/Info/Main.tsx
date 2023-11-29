@@ -42,7 +42,7 @@ const Text = styled.span`
     source-sans-pro, sans-serif;
 `
 
-export const InfoBody = () => {
+export const Main = () => {
   return (
     <Content>
       <HeaderText>

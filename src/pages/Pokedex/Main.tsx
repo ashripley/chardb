@@ -10,7 +10,7 @@ import {
 } from "@mui/material"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Theme, TypeColours } from "../../Theme"
+import { Theme } from "../../Theme"
 import { PokedexModal } from "../../components/PokedexModal"
 import { AllCards } from "../../api/queries/allCards"
 import axios from "axios"
@@ -85,7 +85,7 @@ const NameField = styled.div`
   justify-content: flex-start;
 `
 
-export const PokedexBody = () => {
+export const Main = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [pokedex, setPokedex] = useState<Record<string, any>[]>([{}])
@@ -106,7 +106,7 @@ export const PokedexBody = () => {
       border: "8px solid white",
       ":hover": {
         boxShadow: `0px 0px 10px 5px ${
-          TypeColours[p.types?.[0]]
+          Theme.typeColours[p.types?.[0]]
         } , 0px 0px 0px 0px #ffffff`,
       },
     }
@@ -217,7 +217,7 @@ export const PokedexBody = () => {
               front: data.sprites.front_default,
               back: data.sprites.back_default,
             },
-            colour: TypeColours[pokemon?.types?.[0]] ?? "#a8a878",
+            colour: Theme.typeColours[pokemon?.types?.[0]] ?? "#a8a878",
             image: `https://img.pokemondb.net/sprites/home/normal/${data.name}.png`,
             evolutionChain: { ...evolutionChainObj },
           })

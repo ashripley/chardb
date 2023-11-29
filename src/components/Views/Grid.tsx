@@ -12,7 +12,7 @@ import { deleteDoc, doc } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { Theme } from "../../Theme"
-import { View, typeColours, upperCaseFirst } from "../helpers"
+import { View } from "../../helpers/view"
 import { GridImage } from "../Grid/GridImage"
 import { Actions } from "../Grid/Actions"
 import { Snackbar } from "../Grid/Snackbar"
@@ -24,6 +24,7 @@ import attribute from "../../assets/icons/attribute.png"
 import setNumber from "../../assets/icons/setNumber.png"
 import id from "../../assets/icons/id.png"
 import quantity from "../../assets/icons/quantity.png"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 
 interface Props {
   cardIndex: number
@@ -240,7 +241,7 @@ export const GridView = ({
       fields.year || pokemon.year,
       fields.quantity || pokemon.quantity,
       fields.attribute || pokemon.attribute,
-      typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
+      Theme.typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
     )
 
     setOpen(true)

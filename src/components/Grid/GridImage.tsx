@@ -4,7 +4,7 @@ import { Theme } from "../../Theme"
 import { Card, Grow, Tooltip } from "@mui/material"
 import { AttributeBadge } from "./AttributeBadge"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
-import { View } from "../helpers"
+import { View } from "../../helpers/view"
 
 interface Props {
   isEvolutionsHovered: boolean

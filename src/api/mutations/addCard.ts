@@ -2,6 +2,7 @@ import { doc, setDoc } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
 import axios from "axios"
 import { v4 as uuidv4 } from "uuid"
+import { Theme } from "../../Theme"
 
 export const AddCardMutation = async (
   name: string,
@@ -89,28 +90,7 @@ export const AddCardMutation = async (
     },
   }
 
-  const typeColours: Record<string, any> = {
-    normal: "#a8a878",
-    fire: "#f08030",
-    water: "#6790f0",
-    grass: "#78c84f",
-    electric: "#f9cf30",
-    ice: "#98d8d8",
-    fighting: "#c03028",
-    poison: "#9f40a0",
-    ground: "#e0c068",
-    flying: "#a890f0",
-    psychic: "#f85888",
-    bug: "#a8b720",
-    rock: "#b8a039",
-    ghost: "#705898",
-    dragon: "#7038f8",
-    dark: "#705848",
-    steel: "#b8b8d0",
-    fairy: "#f0b6bc",
-  }
-
-  const colour = typeColours[type] ?? "#a8a878"
+  const colour = Theme.typeColours[type] ?? "#a8a878"
 
   await setDoc(doc(firestore, "cards", uniqueId), {
     cardId: uniqueId,

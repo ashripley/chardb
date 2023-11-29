@@ -24,7 +24,7 @@ import WindowIcon from "@mui/icons-material/Window"
 import ListIcon from "@mui/icons-material/List"
 import { Theme } from "../../Theme"
 
-const Main = styled.div``
+const Wrap = styled.div``
 
 const Root = styled.div`
   display: flex;
@@ -103,7 +103,7 @@ const Chips = styled.div`
   align-items: center;
 `
 
-export const CardsBody = () => {
+export const Main = () => {
   const [name, setName] = useState("")
   const [error, setError] = useState(false)
   const [showAddCard, setShowAddCard] = useState(false)
@@ -180,7 +180,7 @@ export const CardsBody = () => {
   }
 
   return (
-    <Main>
+    <Wrap>
       <Root>
         <Header>
           <Grow
@@ -399,7 +399,7 @@ export const CardsBody = () => {
         </Header>
       </Root>
       <AddModal openModal={showAddCard} closeModal={onAddClose} />
-      <Container>
+      <Wrap>
         {showCard && (
           <Cards
             view={viewToggle}
@@ -409,7 +409,7 @@ export const CardsBody = () => {
             isLoading={isLoading}
           />
         )}
-      </Container>
-    </Main>
+      </Wrap>
+    </Wrap>
   )
 }

@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Header } from "../Header"
-import { InfoBody } from "./Body"
+import { Main } from "./Main"
 import { Theme } from "../../Theme"
 import blob from "../../assets/icons/blob.svg"
 
@@ -28,7 +28,7 @@ export const Info = ({ menuAction, isOpen }: Props) => {
   return (
     <Container>
       <Header menuAction={menuAction} isOpen={onClick} />
-      <InfoBody />
+      <Main />
     </Container>
   )
 }

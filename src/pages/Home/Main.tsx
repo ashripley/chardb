@@ -79,7 +79,7 @@ const StyledButton = styled(Button)`
   }
 `
 
-export const HomeBody = ({ menuOption }: Props) => {
+export const Main = ({ menuOption }: Props) => {
   const onClick = () => {
     menuOption("Cards")
   }

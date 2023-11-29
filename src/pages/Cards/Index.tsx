@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { CardsBody } from "./Body"
+import { Main } from "./Main"
 import { Header } from "../Header"
 import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
 
@@ -26,7 +26,7 @@ export const Cards = ({ menuAction, isOpen }: Props) => {
   return (
     <Container>
       <Header menuAction={menuAction} isOpen={onClick} />
-      <CardsBody />
+      <Main />
     </Container>
   )
 }

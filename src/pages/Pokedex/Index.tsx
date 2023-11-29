@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Header } from "../Header"
-import { PokedexBody } from "./Body"
+import { Main } from "./Main"
 import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
 
 interface Props {
@@ -25,7 +25,7 @@ export const Pokedex = ({ menuAction, isOpen }: Props) => {
   return (
     <Container>
       <Header menuAction={menuAction} isOpen={onClick} />
-      <PokedexBody />
+      <Main />
     </Container>
   )
 }

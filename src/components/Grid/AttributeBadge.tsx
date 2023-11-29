@@ -1,7 +1,7 @@
 import { Badge, Tooltip } from "@mui/material"
 import styled from "styled-components"
 import { Theme } from "../../Theme"
-import { attributeColour, upperCaseFirst } from "../helpers"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 
 interface Props {
   isEvolutionsHovered: boolean
@@ -47,6 +47,13 @@ export const AttributeBadge = ({
   isEvolutionsHovered,
   isGridCard,
 }: Props) => {
+  const attributeColour: Record<string, any> = {
+    standard: Theme.primaryText,
+    "standard holographic": Theme.standardHolographic,
+    "reverse holographic": Theme.reverseHolographic,
+    special: Theme.special,
+  }
+
   return (
     <Wrapper isGridCard={isGridCard}>
       <Tooltip title={upperCaseFirst(pokemon.attribute)} placement="top">

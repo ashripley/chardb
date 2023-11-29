@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
-import { HomeBody } from "./Body"
+import { Main } from "./Main"
 import { Header } from "../Header"
 
 interface Props {
@@ -30,7 +30,7 @@ export const Home = ({ isOpen, menuAction, passMenuActionLabel }: Props) => {
   return (
     <Container>
       <Header menuAction={menuAction} isOpen={onClick} />
-      <HomeBody menuOption={MenuAction} />
+      <Main menuOption={MenuAction} />
     </Container>
   )
 }

@@ -4,10 +4,10 @@ import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 import Fade from "@mui/material/Fade"
 import styled from "styled-components"
-import { Theme, TypeColours } from "../Theme"
+import { Theme } from "../Theme"
 import { Button, Divider } from "@mui/material"
 import ClearIcon from "@mui/icons-material/Clear"
-import { upperCaseFirst } from "./helpers"
+import { upperCaseFirst } from "../helpers/upperCaseFirst"
 
 interface Props {
   pokemon: Record<string, any>
@@ -208,7 +208,7 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
             sx={{
               ...style,
               boxShadow: `0px 0px 10px 5px ${
-                TypeColours[pokemon.types?.[0]]
+                Theme.typeColours[pokemon.types?.[0]]
               } , 0px 0px 0px 0px #ffffff !important`,
             }}
           >
