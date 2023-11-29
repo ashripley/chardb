@@ -1,3 +1,5 @@
+import { Theme } from "../Theme"
+
 export const upperCaseFirst = (str: string) => {
   return str.charAt(0).toUpperCase() + str.substring(1)
 }
@@ -21,4 +23,11 @@ export const typeColours: Record<string, any> = {
   dark: "#705848",
   steel: "#b8b8d0",
   fairy: "#f0b6bc",
+}
+
+export const attributeColour: Record<string, any> = {
+  standard: Theme.primaryText,
+  "standard holographic": Theme.standardHolographic,
+  "reverse holographic": Theme.reverseHolographic,
+  special: Theme.special,
 }
