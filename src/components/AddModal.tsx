@@ -147,22 +147,32 @@ const inputProps = {
 
 export const AddModal = ({ openModal, closeModal }: Props) => {
   const [open, setOpen] = React.useState(false)
-  const [name, setName] = React.useState("")
-  const [type, setType] = useState("")
-  const [set, setSet] = useState("")
-  const [year, setYear] = useState("")
-  const [quantity, setQuantity] = useState("")
-  const [attribute, setAttribute] = useState("")
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [icon, setIcon] = useState("add")
   const [alert, setAlert] = useState("add")
   const [toastOpen, setToastOpen] = useState(false)
+  const [fields, setFields] = useState<Record<string, any>>({
+    name: "",
+    type: "",
+    set: "",
+    year: "",
+    quantity: "",
+    attribute: "",
+  })
 
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
 
+  const fieldsToMap = {
+    name: { value: fields.name, icon: <PermIdentityOutlinedIcon /> },
+    type: { value: fields.type, icon: <CatchingPokemonTwoToneIcon /> },
+    set: { value: fields.set, icon: <FeaturedPlayListOutlinedIcon /> },
+    year: { value: fields.year, icon: <TagIcon /> },
+    quantity: { value: fields.quantity, icon: <PlaylistAddOutlinedIcon /> },
+  }
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAttribute((event.target as HTMLInputElement).value)
+    setFields({ attribute: (event.target as HTMLInputElement).value })
   }
 
   const handleClose = () => {
@@ -189,12 +199,12 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
     setIsLoading(true)
 
     await AddCardMutation(
-      name.toLowerCase(),
-      type.toLowerCase(),
-      set.toLowerCase(),
-      year,
-      quantity,
-      attribute
+      fields.name.toLowerCase(),
+      fields.type.toLowerCase(),
+      fields.set.toLowerCase(),
+      fields.year,
+      fields.quantity,
+      fields.attribute
     )
 
     setTimeout(() => {
@@ -204,16 +214,18 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
     }, 1500)
 
     setToastOpen(true)
-    setAlert(`${upperCaseFirst(name)} Added!`)
+    setAlert(`${upperCaseFirst(fields.name)} Added!`)
   }
 
   const clearFields = () => {
-    setName("")
-    setType("")
-    setSet("")
-    setYear("")
-    setQuantity("")
-    setAttribute("")
+    setFields({
+      name: "",
+      type: "",
+      set: "",
+      year: "",
+      quantity: "",
+      attribute: "",
+    })
   }
 
   return (
@@ -241,98 +253,28 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
             <Container>
               <div>
                 <Details>
-                  <Column>
-                    <IconWrapper>
-                      <PermIdentityOutlinedIcon />
-                    </IconWrapper>
-                    <Data>
-                      <TextField
-                        id="standard"
-                        value={name}
-                        label={"Name"}
-                        variant="outlined"
-                        style={{ width: "100%", margin: 5 }}
-                        color="warning"
-                        onChange={(e) => setName(e.target.value)}
-                        InputProps={inputProps}
-                      />
-                    </Data>
-                  </Column>
-                  <Column>
-                    <IconWrapper>
-                      <CatchingPokemonTwoToneIcon />
-                    </IconWrapper>
-                    <Data>
-                      <TextField
-                        id="standard"
-                        value={type}
-                        label={"Type"}
-                        variant="outlined"
-                        style={{ width: "100%", margin: 5 }}
-                        color="warning"
-                        onChange={(e) => setType(e.target.value)}
-                        InputProps={inputProps}
-                      />
-                    </Data>
-                  </Column>
-                  <Column>
-                    <IconWrapper>
-                      <FeaturedPlayListOutlinedIcon />
-                    </IconWrapper>
-                    <Data>
-                      <TextField
-                        id="standard"
-                        value={set}
-                        label={"Set"}
-                        variant="outlined"
-                        style={{ width: "100%", margin: 5 }}
-                        color="warning"
-                        onChange={(e) => setSet(e.target.value)}
-                        InputProps={inputProps}
-                      />
-                    </Data>
-                  </Column>
-                  <Column>
-                    <IconWrapper>
-                      <TagIcon />
-                    </IconWrapper>
-                    <Data>
-                      <TextField
-                        id="standard"
-                        value={year}
-                        label={"Year"}
-                        type="number"
-                        variant="outlined"
-                        style={{ width: "100%", margin: 5 }}
-                        color="warning"
-                        onChange={(e) => setYear(e.target.value)}
-                        InputProps={inputProps}
-                      />
-                    </Data>
-                  </Column>
-                  <Column>
-                    <IconWrapper>
-                      <PlaylistAddOutlinedIcon />
-                    </IconWrapper>
-                    <Data>
-                      <TextField
-                        id="standard"
-                        value={quantity}
-                        label={"Quantity"}
-                        variant="outlined"
-                        type="number"
-                        style={{ width: "100%", margin: 5 }}
-                        color="warning"
-                        onChange={(e) => setQuantity(e.target.value)}
-                        InputProps={inputProps}
-                      />
-                    </Data>
-                  </Column>
+                  {Object.entries(fieldsToMap).map(([k, v], index) => (
+                    <Column key={index}>
+                      <IconWrapper>{v.icon ?? <></>}</IconWrapper>
+                      <Data>
+                        <TextField
+                          id="standard"
+                          value={v.value}
+                          label={upperCaseFirst(k)}
+                          variant="outlined"
+                          color="warning"
+                          style={{ width: "100%", margin: 5 }}
+                          InputProps={inputProps}
+                          onChange={(e) => setFields({ [k]: e.target.value })}
+                        />
+                      </Data>
+                    </Column>
+                  ))}
                 </Details>
                 <StyledRadioGroup
                   aria-labelledby="controlled-radio-buttons-group"
                   name="controlled-radio-buttons-group"
-                  value={attribute}
+                  value={fields.attribute}
                   onChange={handleChange}
                   row
                 >

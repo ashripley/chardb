@@ -103,13 +103,13 @@ const Chips = styled.div`
   align-items: center;
 `
 
-export const CollectionsBody = () => {
+export const CardsBody = () => {
   const [name, setName] = useState("")
   const [error, setError] = useState(false)
   const [showAddCard, setShowAddCard] = useState(false)
   const [showCard, setShowCard] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [icon, setIcon] = useState<string>("collections")
+  const [icon, setIcon] = useState<string>("cards")
   const [data, setData] = useState([{}])
   const [viewToggle, setViewToggle] = useState(true)
   const [category, setCategory] = useState<Record<string, any>>({})
@@ -138,12 +138,12 @@ export const CollectionsBody = () => {
   const handleError = () => {
     setName("")
     setError(false)
-    setIcon("collections")
+    setIcon("cards")
   }
 
   const handleRefresh = () => {
     setName("")
-    setIcon("collections")
+    setIcon("cards")
     setShowCard(false)
     setData([])
   }
@@ -304,7 +304,7 @@ export const CollectionsBody = () => {
                             borderColor: "#e3e4db",
                           }}
                           onClick={async () => {
-                            icon === "collections"
+                            icon === "cards"
                               ? Query()
                               : icon === "error"
                               ? handleError()

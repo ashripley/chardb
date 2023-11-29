@@ -5,23 +5,26 @@ import {
   RadioGroup,
   Skeleton,
   TextField,
+  Tooltip,
 } from "@mui/material"
 import styled from "styled-components"
-import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
-import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
-import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
-import TagIcon from "@mui/icons-material/Tag"
 import { useState } from "react"
 import { deleteDoc, doc } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
 import { UpdateCard } from "../../api/mutations/updateCard"
-import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
 import { Theme } from "../../Theme"
-import { typeColours, upperCaseFirst } from "../helpers"
-import Brightness1OutlinedIcon from "@mui/icons-material/Brightness1Outlined"
+import { View, typeColours, upperCaseFirst } from "../helpers"
 import { ListImage } from "../List/ListImage"
 import { ListActions } from "../List/ListActions"
 import { Snackbar } from "../Grid/Snackbar"
+import set from "../../assets/icons/set.png"
+import pokemonName from "../../assets/icons/pokemonName.png"
+import pokemonType from "../../assets/icons/pokemonType.png"
+import year from "../../assets/icons/year.png"
+import attribute from "../../assets/icons/attribute.png"
+import setNumber from "../../assets/icons/setNumber.png"
+import id from "../../assets/icons/id.png"
+import quantity from "../../assets/icons/quantity.png"
 
 interface Props {
   cardIndex: number
@@ -30,11 +33,7 @@ interface Props {
   isCardDeleted: (isDeleted: boolean) => void
 }
 
-enum View {
-  READ = "read",
-  EDIT = "edit",
-}
-
+//#region Styled Components
 const Wrapper = styled.div`
   width: 90%;
   padding: 20px 30px;
@@ -91,7 +90,15 @@ const StyledRadioGroup = styled(RadioGroup)`
     source-sans-pro, sans-serif;
 `
 
-export const readIconProps = {
+const Icon = styled.div`
+  display: flex;
+  width: 15%;
+  justify-content: center;
+  color: #333333;
+`
+//#endregion
+
+export const readIconStyles = {
   height: 30,
   width: 30,
   borderRadius: 100,
@@ -104,7 +111,7 @@ export const readIconProps = {
   },
 }
 
-export const editIconProps = {
+export const editIconStyles = {
   borderRadius: 100,
   color: Theme.lightBg,
   transition: "all 0.3s !important",
@@ -120,6 +127,7 @@ export const ListView = ({
   isLoading,
   isCardDeleted,
 }: Props) => {
+  //#region State
   const [cardView, setCardView] = useState<Record<string, any>>({
     view: View.READ,
   })
@@ -127,6 +135,7 @@ export const ListView = ({
     name: "",
     type: "",
     set: "",
+    setNumber: "",
     year: "",
     quantity: "",
     attribute: "",
@@ -135,23 +144,33 @@ export const ListView = ({
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
   const [alert, setAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
+  //#endregion
 
   const isEditView = cardView.view === View.EDIT
 
+  const image = (src: string) => {
+    return (
+      <Icon>
+        <img src={src} alt="menu" style={{ width: 25, height: 25 }} />
+      </Icon>
+    )
+  }
+
   const fieldsToMap = {
-    ...(!isEditView && { id: { value: pokemon.id, icon: <TagIcon /> } }),
-    name: { value: fields.name, icon: <PermIdentityOutlinedIcon /> },
-    type: { value: fields.type, icon: <CatchingPokemonTwoToneIcon /> },
-    set: { value: fields.set, icon: <FeaturedPlayListOutlinedIcon /> },
-    year: { value: fields.year, icon: <TagIcon /> },
+    ...(!isEditView && { id: { value: pokemon.id, icon: image(id) } }),
+    name: { value: fields.name, icon: image(pokemonName) },
+    type: { value: fields.type, icon: image(pokemonType) },
+    set: { value: fields.set, icon: image(set) },
+    setNumber: { value: fields.setNumber, icon: image(setNumber) },
+    year: { value: fields.year, icon: image(year) },
     ...(!isEditView && {
       attribute: {
         value: pokemon.attribute,
-        icon: <Brightness1OutlinedIcon />,
+        icon: image(attribute),
       },
     }),
     ...(isEditView && {
-      quantity: { value: pokemon.quantity, icon: <PlaylistAddOutlinedIcon /> },
+      quantity: { value: pokemon.quantity, icon: image(quantity) },
     }),
   }
 
@@ -231,6 +250,7 @@ export const ListView = ({
       fields.name?.toLowerCase() || pokemon.name,
       fields.type?.toLowerCase() || pokemon.type,
       fields.set?.toLowerCase() || pokemon.set,
+      fields.setNumber || pokemon.setNumber,
       fields.year || pokemon.year,
       fields.quantity || pokemon.quantity,
       fields.attribute || pokemon.attribute,
@@ -249,6 +269,7 @@ export const ListView = ({
       name: "",
       type: "",
       set: "",
+      setNumber: "",
       year: "",
       quantity: "",
       attribute: "",
@@ -285,7 +306,9 @@ export const ListView = ({
           <Details isHovered={isCardHovered}>
             {Object.entries(fieldsToMap).map(([k, v], index) => (
               <Column key={index}>
-                <IconWrapper>{v.icon ?? <></>}</IconWrapper>
+                <Tooltip title={upperCaseFirst(k)} placement="top-start">
+                  <Icon>{v.icon ?? <></>}</Icon>
+                </Tooltip>
                 {!isEditView ? (
                   <Data>{pokemon[k] || ""}</Data>
                 ) : (

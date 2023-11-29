@@ -5,7 +5,7 @@ import ClearIcon from "@mui/icons-material/Clear"
 import EditIcon from "@mui/icons-material/Edit"
 import DoneIcon from "@mui/icons-material/Done"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { editIconProps, readIconProps } from "../Views/List"
+import { editIconStyles, readIconStyles } from "../Views/List"
 
 interface Props {
   isCardHovered: boolean
@@ -49,20 +49,20 @@ export const Actions = ({
           }
         >
           {!isEditView ? (
-            <EditIcon sx={{ ...readIconProps }} />
+            <EditIcon sx={{ ...readIconStyles }} />
           ) : (
-            <DoneIcon sx={{ ...readIconProps }} />
+            <DoneIcon sx={{ ...readIconStyles }} />
           )}
         </Button>
         <Button sx={{ borderRadius: 50 }}>
           {!isEditView ? (
             <DeleteIcon
-              sx={{ ...editIconProps }}
+              sx={{ ...editIconStyles }}
               onClick={() => handleDelete()}
             />
           ) : (
             <ClearIcon
-              sx={{ ...editIconProps }}
+              sx={{ ...editIconStyles }}
               onClick={() => handleClear()}
             />
           )}

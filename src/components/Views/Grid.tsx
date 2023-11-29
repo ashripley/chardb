@@ -4,6 +4,7 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Tooltip,
 } from "@mui/material"
 import styled from "styled-components"
 import { useRef, useState } from "react"
@@ -13,14 +14,16 @@ import { UpdateCard } from "../../api/mutations/updateCard"
 import { Theme } from "../../Theme"
 import { View, typeColours, upperCaseFirst } from "../helpers"
 import { GridImage } from "../Grid/GridImage"
-import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
-import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
-import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
-import TagIcon from "@mui/icons-material/Tag"
-import Brightness1OutlinedIcon from "@mui/icons-material/Brightness1Outlined"
-import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
 import { Actions } from "../Grid/Actions"
 import { Snackbar } from "../Grid/Snackbar"
+import set from "../../assets/icons/set.png"
+import pokemonName from "../../assets/icons/pokemonName.png"
+import pokemonType from "../../assets/icons/pokemonType.png"
+import year from "../../assets/icons/year.png"
+import attribute from "../../assets/icons/attribute.png"
+import setNumber from "../../assets/icons/setNumber.png"
+import id from "../../assets/icons/id.png"
+import quantity from "../../assets/icons/quantity.png"
 
 interface Props {
   cardIndex: number
@@ -46,17 +49,6 @@ const Wrapper = styled.div<{
       ? "0px"
       : "600px"};
   transition: all 0.5s ease;
-`
-
-const ActionRow = styled.div`
-  width: 100%;
-  height: 10%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #333333;
-  border-radius: 30px;
-  transition: all 1s ease;
 `
 
 const Row = styled.div`
@@ -131,6 +123,7 @@ export const GridView = ({
     name: "",
     type: "",
     set: "",
+    setNumber: "",
     year: "",
     attribute: "",
     quantity: "",
@@ -141,20 +134,29 @@ export const GridView = ({
 
   const isEditView = cardView.view === View.EDIT
 
+  const image = (src: string) => {
+    return (
+      <Icon isEditView={isEditView}>
+        <img src={src} alt="menu" style={{ width: 25, height: 25 }} />
+      </Icon>
+    )
+  }
+
   const fieldsToMap = {
-    ...(!isEditView && { id: { value: pokemon.id, icon: <TagIcon /> } }),
-    name: { value: fields.name, icon: <PermIdentityOutlinedIcon /> },
-    type: { value: fields.type, icon: <CatchingPokemonTwoToneIcon /> },
-    set: { value: fields.set, icon: <FeaturedPlayListOutlinedIcon /> },
-    year: { value: fields.year, icon: <TagIcon /> },
+    ...(!isEditView && { id: { value: pokemon.id, icon: image(id) } }),
+    name: { value: fields.name, icon: image(pokemonName) },
+    type: { value: fields.type, icon: image(pokemonType) },
+    set: { value: fields.set, icon: image(set) },
+    setNumber: { value: fields.setNumber, icon: image(setNumber) },
+    year: { value: fields.year, icon: image(year) },
     ...(!isEditView && {
       attribute: {
         value: pokemon.attribute,
-        icon: <Brightness1OutlinedIcon />,
+        icon: image(attribute),
       },
     }),
     ...(isEditView && {
-      quantity: { value: pokemon.quantity, icon: <PlaylistAddOutlinedIcon /> },
+      quantity: { value: pokemon.quantity, icon: image(quantity) },
     }),
   }
 
@@ -234,6 +236,7 @@ export const GridView = ({
       fields.name?.toLowerCase() || pokemon.name,
       fields.type?.toLowerCase() || pokemon.type,
       fields.set?.toLowerCase() || pokemon.set,
+      fields.setNumber || pokemon.setNumber,
       fields.year || pokemon.year,
       fields.quantity || pokemon.quantity,
       fields.attribute || pokemon.attribute,
@@ -284,7 +287,9 @@ export const GridView = ({
         <Details editView={isEditView} isCardHovered={isCardHovered}>
           {Object.entries(fieldsToMap).map(([k, v], index) => (
             <Row key={index}>
-              <Icon isEditView={isEditView}>{v.icon ?? <></>}</Icon>
+              <Tooltip title={upperCaseFirst(k)} placement="top-start">
+                <Icon isEditView={isEditView}>{v.icon ?? <></>}</Icon>
+              </Tooltip>
               {!isEditView ? (
                 <Data>{pokemon[k] || ""}</Data>
               ) : (

@@ -93,6 +93,40 @@ export const PokedexBody = () => {
   const [hasPokemon, setHasPokemon] = useState<string[]>([])
   const [generation, setGeneration] = useState<Record<string, any>>({})
 
+  const cardStyles = (p: Record<string, any>) => {
+    return {
+      height: 200,
+      width: 200,
+      padding: "2rem",
+      margin: "1rem",
+      backgroundColor: Theme.lightBg,
+      borderRadius: "15px",
+      boxShadow: "rgba(0, 0, 0, 0.4) 0px 40px 90px",
+      transition: "all 0.5s !important",
+      border: "8px solid white",
+      ":hover": {
+        boxShadow: `0px 0px 10px 5px ${
+          TypeColours[p.types?.[0]]
+        } , 0px 0px 0px 0px #ffffff`,
+      },
+    }
+  }
+
+  const selectStyles = {
+    borderRadius: "15px 35px 35px 15px",
+    width: "100%",
+    fieldset: {
+      borderColor: "#e3e4db",
+    },
+    color: Theme.primaryText,
+
+    "&:hover": {
+      fieldset: {
+        borderColor: "#ed6d03 !important",
+      },
+    },
+  }
+
   const fetchPokemon = async (start: number, range: number) => {
     setIsLoading(true)
     let pokedex: Record<string, any>[] = [{}]
@@ -283,20 +317,7 @@ export const PokedexBody = () => {
                         value: e.target.value,
                       })
                     }
-                    sx={{
-                      borderRadius: "15px 35px 35px 15px",
-                      width: "100%",
-                      fieldset: {
-                        borderColor: "#e3e4db",
-                      },
-                      color: Theme.primaryText,
-
-                      "&:hover": {
-                        fieldset: {
-                          borderColor: "#ed6d03 !important",
-                        },
-                      },
-                    }}
+                    sx={selectStyles}
                   >
                     {["1", "2", "3", "4"].map((gen, index) => (
                       <MenuItem
@@ -322,27 +343,7 @@ export const PokedexBody = () => {
           </div>
         ) : (
           pokedex.map((p, index) => (
-            <Card
-              key={index}
-              sx={{
-                height: 200,
-                width: 200,
-                padding: "2rem",
-                margin: "1rem",
-                backgroundColor: Theme.lightBg,
-                borderRadius: "15px",
-                boxShadow: "rgba(0, 0, 0, 0.4) 0px 40px 90px",
-                transition: "all 0.5s !important",
-                border: "8px solid white",
-                ":hover": {
-                  boxShadow: `0px 0px 10px 5px ${
-                    TypeColours[p.types?.[0]]
-                  } , 0px 0px 0px 0px #ffffff`,
-                },
-              }}
-              variant="elevation"
-              raised
-            >
+            <Card key={index} sx={cardStyles(p)} variant="elevation" raised>
               <Image
                 hasPokemon={!!hasPokemon.includes(p.name)}
                 key={index}

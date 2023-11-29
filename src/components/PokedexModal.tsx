@@ -7,6 +7,7 @@ import styled from "styled-components"
 import { Theme, TypeColours } from "../Theme"
 import { Button, Divider } from "@mui/material"
 import ClearIcon from "@mui/icons-material/Clear"
+import { upperCaseFirst } from "./helpers"
 
 interface Props {
   pokemon: Record<string, any>
@@ -173,6 +174,13 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
       pokemon?.evolutionChain?.third?.image ?? null,
     ] ?? null
 
+  const genericRow = (label: string, val: any) => (
+    <Row>
+      <Key>{upperCaseFirst(label)}:</Key>
+      <Value>{val}</Value>
+    </Row>
+  )
+
   return (
     <>
       <Modal
@@ -244,10 +252,7 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
               </Header>
               <Divider orientation="horizontal" />
               <Details>
-                <Row>
-                  <Key>id:</Key>
-                  <Value>{id}</Value>
-                </Row>
+                {genericRow("id", id)}
                 <Row>
                   <Key>Type:</Key>
                   <Descriptions>
@@ -264,14 +269,8 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
                     ))}
                   </Descriptions>
                 </Row>
-                <Row>
-                  <Key>Height:</Key>
-                  <Value>{height}</Value>
-                </Row>
-                <Row>
-                  <Key>Weight:</Key>
-                  <Value>{weight}</Value>
-                </Row>
+                {genericRow("height", height)}
+                {genericRow("weight", weight)}
               </Details>
             </Container>
           </Box>

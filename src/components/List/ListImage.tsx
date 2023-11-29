@@ -48,6 +48,27 @@ export const ListImage = ({
   mouseEnter,
   mouseLeave,
 }: Props) => {
+  const cardStyles = {
+    width: 120,
+    height: 120,
+    maxWidth: 300,
+    borderRadius: "100px",
+    display: "flex",
+    backgroundColor: Theme.lightBg,
+    alignItems: "center",
+    justifyContent: "center",
+    opacity: "revert",
+    transition: "all 1.5s !important",
+    boxShadow: `${Theme.lightBg} 0px 0px 10px 0px`,
+    ":hover": {
+      width: 300,
+      maxWidth: 300,
+      height: "100%",
+      boxShadow: "none",
+      borderRadius: "10px",
+    },
+  }
+
   const evolutions =
     [
       pokemon?.evolutionChain?.first?.image ?? pokemon.url.front,
@@ -59,26 +80,7 @@ export const ListImage = ({
     <Main ref={ref}>
       <Wrapper hasAttribute={pokemon.attribute}>
         <Card
-          sx={{
-            width: 120,
-            height: 120,
-            maxWidth: 300,
-            borderRadius: "100px",
-            display: "flex",
-            backgroundColor: Theme.lightBg,
-            alignItems: "center",
-            justifyContent: "center",
-            opacity: "revert",
-            transition: "all 1.5s !important",
-            boxShadow: `${Theme.lightBg} 0px 0px 10px 0px`,
-            ":hover": {
-              width: 300,
-              maxWidth: 300,
-              height: "100%",
-              boxShadow: "none",
-              borderRadius: "10px",
-            },
-          }}
+          sx={cardStyles}
           className="card-image"
           onMouseEnter={() => mouseEnter()}
           onMouseLeave={() => mouseLeave()}

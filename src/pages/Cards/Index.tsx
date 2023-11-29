@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { CollectionsBody } from "./Body"
+import { CardsBody } from "./Body"
 import { Header } from "../Header"
 import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
 
@@ -18,7 +18,7 @@ const Container = styled.div`
   background-position: center;
 `
 
-export const Collections = ({ menuAction, isOpen }: Props) => {
+export const Cards = ({ menuAction, isOpen }: Props) => {
   const onClick = (clicked: boolean) => {
     isOpen(clicked)
   }
@@ -26,7 +26,7 @@ export const Collections = ({ menuAction, isOpen }: Props) => {
   return (
     <Container>
       <Header menuAction={menuAction} isOpen={onClick} />
-      <CollectionsBody />
+      <CardsBody />
     </Container>
   )
 }

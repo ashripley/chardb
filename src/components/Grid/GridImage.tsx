@@ -58,6 +58,25 @@ export const GridImage = ({
   mouseEnter,
   mouseLeave,
 }: Props) => {
+  const cardStyles = {
+    width: 200,
+    height: 200,
+    borderRadius: "100px !important",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: `${Theme.lightBg} !important`,
+    opacity: "revert",
+    transition: "all 0.8s !important",
+    boxShadow: `${Theme.lightBg} 0px 0px 20px 0px !important`,
+
+    ":hover": {
+      width: "360px !important",
+      height: "350px !important",
+      boxShadow: "none !important",
+    },
+  }
+
   const evolutions =
     [
       pokemon?.evolutionChain?.first?.image ?? pokemon.url.front,
@@ -69,24 +88,7 @@ export const GridImage = ({
     <Image ref={ref} isEditView={isEditView} isCardHovered={isCardHovered}>
       <CardWrapper hasAttribute={pokemon.attribute}>
         <Card
-          sx={{
-            width: 200,
-            height: 200,
-            borderRadius: "100px !important",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: `${Theme.lightBg} !important`,
-            opacity: "revert",
-            transition: "all 0.8s !important",
-            boxShadow: `${Theme.lightBg} 0px 0px 20px 0px !important`,
-
-            ":hover": {
-              width: "360px !important",
-              height: "350px !important",
-              boxShadow: "none !important",
-            },
-          }}
+          sx={cardStyles}
           className="card-image"
           onMouseEnter={() => mouseEnter()}
           onMouseLeave={() => mouseLeave()}

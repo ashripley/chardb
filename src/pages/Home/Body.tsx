@@ -81,7 +81,7 @@ const StyledButton = styled(Button)`
 
 export const HomeBody = ({ menuOption }: Props) => {
   const onClick = () => {
-    menuOption("Collections")
+    menuOption("Cards")
   }
 
   return (
@@ -116,7 +116,7 @@ export const HomeBody = ({ menuOption }: Props) => {
                 onClick={() => onClick()}
                 sx={{ color: Theme.primaryText }}
               >
-                Collections
+                Cards
               </StyledButton>
             </StyledEngineProvider>
           </ButtonWrapper>

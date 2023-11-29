@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Home } from "./Home/Index"
-import { Collections } from "./Collections/Index"
+import { Cards } from "./Cards/Index"
 import { Menu } from "./Menu/Menu"
 import { Pokedex } from "./Pokedex/Index"
 import { Info } from "./Info/Index"
@@ -32,8 +32,8 @@ export const Index = () => {
           passMenuActionLabel={MenuAction}
           isOpen={onClick}
         />
-      ) : page === "Collections" ? (
-        <Collections
+      ) : page === "Cards" ? (
+        <Cards
           menuAction={page}
           passMenuActionLabel={MenuAction}
           isOpen={onClick}

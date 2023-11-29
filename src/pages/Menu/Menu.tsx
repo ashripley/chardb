@@ -2,10 +2,9 @@ import * as React from "react"
 import Drawer from "@mui/material/Drawer"
 import List from "@mui/material/List"
 import styled from "styled-components"
-import { Button, Card, IconButton } from "@mui/material"
+import { Button, IconButton } from "@mui/material"
 import flame from "../../assets/icons/flame.png"
 import CloseIcon from "@mui/icons-material/Close"
-import menuWallpaper from "../../assets/icons/menuWallpaper.png"
 import { Theme } from "../../Theme"
 
 interface Props {
@@ -126,6 +125,43 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
     onClose()
   }
 
+  const iconButtonStyles = {
+    background: Theme.lightBg,
+    borderTopLeftRadius: "45% 50%",
+    borderTopRightRadius: "95% 60%",
+    borderBottomLeftRadius: "45% 70%",
+    borderBottomRightRadius: "95% 60%",
+    boxShadow:
+      "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+    padding: "10px",
+    transition: "all 1s !important",
+    ":hover": {
+      background: "white",
+      boxShadow: `0px 0px 20px 0px #ff8c00 , 0px 0px 20px 0px #ffffff`,
+    },
+  }
+
+  const buttonStyles = {
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#e3e4db",
+    color: Theme.primaryText,
+    padding: "30px",
+    borderRadius: "35px",
+    fontSize: "18px",
+    boxShadow:
+      "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
+    transition: "all 1s ease",
+    fontFamily:
+      "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif",
+    ":hover": {
+      backgroundColor: "darkorange !important",
+      opacity: "0.8",
+      boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
+      color: "#e3e4db !important",
+    },
+  }
+
   return (
     <>
       <Drawer
@@ -146,23 +182,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
             <TitleWrapper>
               <FlameWrapper>
                 <FlameContainer>
-                  <IconButton
-                    sx={{
-                      background: Theme.lightBg,
-                      borderTopLeftRadius: "45% 50%",
-                      borderTopRightRadius: "95% 60%",
-                      borderBottomLeftRadius: "45% 70%",
-                      borderBottomRightRadius: "95% 60%",
-                      boxShadow:
-                        "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
-                      padding: "10px",
-                      transition: "all 1s !important",
-                      ":hover": {
-                        background: "white",
-                        boxShadow: `0px 0px 20px 0px #ff8c00 , 0px 0px 20px 0px #ffffff`,
-                      },
-                    }}
-                  >
+                  <IconButton sx={iconButtonStyles}>
                     <img
                       src={flame}
                       alt="menu"
@@ -201,42 +221,21 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
           </HeaderWrapper>
           <Body>
             <StyledList>
-              {["Info", "Collections", "Pokedex", "Home"].map(
-                (label, index) => (
-                  <div
+              {["Cards", "Pokedex", "Info", "Home"].map((label, index) => (
+                <div
+                  key={index}
+                  style={{ maxWidth: "100%", width: "100%", padding: 20 }}
+                >
+                  <Button
                     key={index}
-                    style={{ maxWidth: "100%", width: "100%", padding: 20 }}
+                    variant="contained"
+                    onClick={() => onClick(label)}
+                    sx={buttonStyles}
                   >
-                    <Button
-                      key={index}
-                      variant="contained"
-                      onClick={() => onClick(label)}
-                      sx={{
-                        width: "100%",
-                        height: "100%",
-                        backgroundColor: "#e3e4db",
-                        color: Theme.primaryText,
-                        padding: "30px",
-                        borderRadius: "35px",
-                        fontSize: "18px",
-                        boxShadow:
-                          "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
-                        transition: "all 1s ease",
-                        fontFamily:
-                          "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif",
-                        ":hover": {
-                          backgroundColor: "darkorange !important",
-                          opacity: "0.8",
-                          boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
-                          color: "#e3e4db !important",
-                        },
-                      }}
-                    >
-                      {label}
-                    </Button>
-                  </div>
-                )
-              )}
+                    {label}
+                  </Button>
+                </div>
+              ))}
             </StyledList>
           </Body>
         </Container>

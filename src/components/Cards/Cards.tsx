@@ -42,6 +42,17 @@ export const Cards = ({
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50)
 
+  const paginationStyles = {
+    height: 100,
+    color: Theme.primaryText,
+    borderBottom: "none",
+    width: "100%",
+    display: "flex",
+    justifyContent: "flex-end",
+    fontFamily:
+      "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
+  }
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -123,16 +134,7 @@ export const Cards = ({
             color: "warning",
           }}
           nextIconButtonProps={{ color: "warning" }}
-          sx={{
-            height: 100,
-            color: Theme.primaryText,
-            borderBottom: "none",
-            width: "100%",
-            display: "flex",
-            justifyContent: "flex-end",
-            fontFamily:
-              "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
-          }}
+          sx={{ ...paginationStyles }}
           size="medium"
         />
       </Container>
