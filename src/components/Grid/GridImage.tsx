@@ -4,11 +4,12 @@ import { Theme } from "../../Theme"
 import { Card, Grow, Tooltip } from "@mui/material"
 import { AttributeBadge } from "./AttributeBadge"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
+import { View } from "../helpers"
 
 interface Props {
   isEvolutionsHovered: boolean
   pokemon: Record<string, any>
-  ref: any
+  ref?: any
   isCardHovered: boolean
   isEditView: boolean
   mouseEnter: () => void
@@ -17,15 +18,11 @@ interface Props {
 
 const Image = styled.div<{
   isCardHovered: boolean
-  editView: boolean
+  isEditView: boolean
 }>`
   background: ${Theme.card};
-  height: ${(props) =>
-    !!props.isCardHovered && !!props.editView
-      ? "30%"
-      : props.isCardHovered
-      ? "40%"
-      : "45%"};
+  height: ${({ isCardHovered, isEditView }) =>
+    !!isCardHovered && !!isEditView ? "30%" : isCardHovered ? "40%" : "45%"};
   width: 100%;
   display: flex;
   align-items: center;
@@ -52,21 +49,7 @@ const Evolutions = styled.div`
   justify-content: space-around;
 `
 
-const Quantity = styled.div`
-  color: ${Theme.lightBg};
-  align-items: flex-end;
-  display: flex;
-  height: 100%;
-  width: 10px;
-  margin-right: 25px;
-  margin-bottom: 25px;
-  font-weight: 300 !important;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
-`
-
-export const CardImage = ({
+export const GridImage = ({
   pokemon,
   isEvolutionsHovered,
   ref,
@@ -83,7 +66,7 @@ export const CardImage = ({
     ] ?? pokemon.url.front
 
   return (
-    <Image ref={ref} editView={isEditView} isCardHovered={isCardHovered}>
+    <Image ref={ref} isEditView={isEditView} isCardHovered={isCardHovered}>
       <CardWrapper hasAttribute={pokemon.attribute}>
         <Card
           sx={{
@@ -151,14 +134,12 @@ export const CardImage = ({
         </Card>
       </CardWrapper>
       {pokemon?.attribute && (
-        <Tooltip title={pokemon.attribute.toUpperCase()} placement="top">
-          <AttributeBadge
-            pokemon={pokemon}
-            isEvolutionsHovered={isEvolutionsHovered}
-          />
-        </Tooltip>
+        <AttributeBadge
+          isGridCard
+          pokemon={pokemon}
+          isEvolutionsHovered={isEvolutionsHovered}
+        />
       )}
-      <Quantity>{pokemon.quantity}</Quantity>
     </Image>
   )
 }

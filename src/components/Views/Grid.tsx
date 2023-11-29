@@ -11,8 +11,8 @@ import { deleteDoc, doc } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { Theme } from "../../Theme"
-import { typeColours, upperCaseFirst } from "../helpers"
-import { CardImage } from "../Grid/CardImage"
+import { View, typeColours, upperCaseFirst } from "../helpers"
+import { GridImage } from "../Grid/GridImage"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
@@ -27,11 +27,6 @@ interface Props {
   pokemon: Record<string, any>
   isLoading: boolean
   isCardDeleted: (isDeleted: boolean) => void
-}
-
-enum View {
-  READ = "read",
-  EDIT = "edit",
 }
 
 //#region Styled Components
@@ -277,7 +272,7 @@ export const GridView = ({
         onMouseEnter={onCardEnter}
         onMouseLeave={onCardLeave}
       >
-        <CardImage
+        <GridImage
           isCardHovered={isCardHovered}
           isEditView={isEditView}
           isEvolutionsHovered={isEvolutionsHovered}

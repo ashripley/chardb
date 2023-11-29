@@ -31,3 +31,8 @@ export const attributeColour: Record<string, any> = {
   "reverse holographic": Theme.reverseHolographic,
   special: Theme.special,
 }
+
+export enum View {
+  READ = "read",
+  EDIT = "edit",
+}

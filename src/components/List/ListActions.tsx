@@ -1,4 +1,4 @@
-import { Button, Grow } from "@mui/material"
+import { Button, Grow, Slide } from "@mui/material"
 import React from "react"
 import styled from "styled-components"
 import ClearIcon from "@mui/icons-material/Clear"
@@ -17,17 +17,20 @@ interface Props {
 }
 
 const Wrapper = styled.div`
-  width: 100%;
-  height: 10%;
+  width: 100px;
+  max-width: 100px;
+  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: #333333;
-  border-radius: 30px;
+  justify-content: space-evenly;
+  flex-direction: column;
+  background: #0f1a1b;
+  border-radius: 25px;
   transition: all 1s ease;
+  margin-left: 10px;
 `
 
-export const Actions = ({
+export const ListActions = ({
   isCardHovered,
   isEditView,
   handleClear,
@@ -36,8 +39,9 @@ export const Actions = ({
   handleSubmit,
 }: Props) => {
   return (
-    <Grow
+    <Slide
       in={isCardHovered}
+      direction="left"
       style={{ transformOrigin: "1 1 1" }}
       {...(true ? { timeout: 1000 } : {})}
     >
@@ -68,6 +72,6 @@ export const Actions = ({
           )}
         </Button>
       </Wrapper>
-    </Grow>
+    </Slide>
   )
 }
