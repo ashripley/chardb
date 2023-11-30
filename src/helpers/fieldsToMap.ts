@@ -10,13 +10,15 @@ import { IconImageMap } from "../components/IconImageMap"
 
 export const fieldsToMap = (
   isEditView: boolean,
-  pokemon: Record<string, any>,
-  fields: Record<string, any>
+  fields: Record<string, any>,
+  isAddModal: boolean,
+  pokemon?: Record<string, any>
 ) => {
   return {
-    ...(!isEditView && {
-      id: { label: "Id", value: pokemon.id, icon: IconImageMap(id) },
-    }),
+    ...(!isEditView &&
+      !isAddModal && {
+        id: { label: "Id", value: pokemon?.id, icon: IconImageMap(id) },
+      }),
     name: {
       label: "Name",
       value: fields.name,
@@ -34,14 +36,15 @@ export const fieldsToMap = (
       icon: IconImageMap(setNumber),
     },
     year: { label: "Year", value: fields.year, icon: IconImageMap(year) },
-    ...(!isEditView && {
-      attribute: {
-        label: "Attribute",
-        value: pokemon.attribute,
-        icon: IconImageMap(attribute),
-      },
-    }),
-    ...(isEditView && {
+    ...(!isEditView &&
+      !isAddModal && {
+        attribute: {
+          label: "Attribute",
+          value: pokemon?.attribute,
+          icon: IconImageMap(attribute),
+        },
+      }),
+    ...((isEditView || isAddModal) && {
       quantity: {
         label: "Quantity",
         value: fields.quantity,

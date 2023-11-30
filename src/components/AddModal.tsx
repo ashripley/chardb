@@ -29,6 +29,8 @@ import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
 import CloseIcon from "@mui/icons-material/Close"
 import { Theme } from "../Theme"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
+import { fieldsToMap } from "../helpers/fieldsToMap"
+import { omit } from "../helpers/omit"
 
 interface Props {
   openModal: boolean
@@ -155,24 +157,20 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
     name: "",
     type: "",
     set: "",
+    setNumber: "",
     year: "",
-    quantity: "",
     attribute: "",
+    quantity: "",
   })
 
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
 
-  const fieldsToMap = {
-    name: { value: fields.name, icon: <PermIdentityOutlinedIcon /> },
-    type: { value: fields.type, icon: <CatchingPokemonTwoToneIcon /> },
-    set: { value: fields.set, icon: <FeaturedPlayListOutlinedIcon /> },
-    year: { value: fields.year, icon: <TagIcon /> },
-    quantity: { value: fields.quantity, icon: <PlaylistAddOutlinedIcon /> },
-  }
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFields({ attribute: (event.target as HTMLInputElement).value })
+    setFields({
+      attribute: (event.target as HTMLInputElement).value,
+      ...omit("attribute", fields),
+    })
   }
 
   const handleClose = () => {
@@ -199,12 +197,13 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
     setIsLoading(true)
 
     await AddCardMutation(
-      fields.name.toLowerCase(),
-      fields.type.toLowerCase(),
-      fields.set.toLowerCase(),
-      fields.year,
-      fields.quantity,
-      fields.attribute
+      fields.name?.toLowerCase() ?? "",
+      fields.type?.toLowerCase() ?? "",
+      fields.set?.toLowerCase() ?? "",
+      fields.setNumber ?? "",
+      fields.year ?? "",
+      fields.quantity ?? "",
+      fields.attribute ?? ""
     )
 
     setTimeout(() => {
@@ -214,7 +213,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
     }, 1500)
 
     setToastOpen(true)
-    setAlert(`${upperCaseFirst(fields.name)} Added!`)
+    setAlert(`${upperCaseFirst(fields.name)} Added`)
   }
 
   const clearFields = () => {
@@ -253,27 +252,32 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
             <Container>
               <div>
                 <Details>
-                  {Object.entries(fieldsToMap).map(([k, v], index) => (
-                    <Column key={index}>
-                      <IconWrapper>{v.icon ?? <></>}</IconWrapper>
-                      <Data>
-                        <TextField
-                          id="standard"
-                          value={v.value}
-                          label={upperCaseFirst(k)}
-                          variant="outlined"
-                          color="warning"
-                          style={{ width: "100%", margin: 5 }}
-                          InputProps={inputProps}
-                          onChange={(e) => setFields({ [k]: e.target.value })}
-                        />
-                      </Data>
-                    </Column>
-                  ))}
+                  {Object.entries(fieldsToMap(false, fields, true)).map(
+                    ([k, v], index) => (
+                      <Column key={index}>
+                        <IconWrapper>{v.icon ?? <></>}</IconWrapper>
+                        <Data>
+                          <TextField
+                            id="standard"
+                            value={v.value}
+                            label={v.label}
+                            variant="outlined"
+                            color="warning"
+                            style={{ width: "100%", margin: 5 }}
+                            InputProps={inputProps}
+                            onChange={(e) => {
+                              setFields({
+                                [k]: e.target.value,
+                                ...omit(k, fields),
+                              })
+                            }}
+                          />
+                        </Data>
+                      </Column>
+                    )
+                  )}
                 </Details>
                 <StyledRadioGroup
-                  aria-labelledby="controlled-radio-buttons-group"
-                  name="controlled-radio-buttons-group"
                   value={fields.attribute}
                   onChange={handleChange}
                   row

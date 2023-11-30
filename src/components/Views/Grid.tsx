@@ -18,12 +18,13 @@ import { Actions } from "../Grid/Actions"
 import { Snackbar } from "../Grid/Snackbar"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
+import { omit } from "../../helpers/omit"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
   isLoading: boolean
-  isCardDeleted: (isDeleted: boolean) => void
+  isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
 //#region Styled Components
@@ -176,16 +177,19 @@ export const GridView = ({
   }
 
   const handleDelete = async () => {
-    await deleteDoc(doc(firestore, "cards", pokemon.cardId))
-    isCardDeleted(true)
+    // await deleteDoc(doc(firestore, "cards", pokemon.cardId))
+    isCardDeleted(true, pokemon)
   }
 
   const handleClear = async () => {
     setCardView({ view: View.READ })
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFields({ attribute: (e.target as HTMLInputElement).value })
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFields({
+      attribute: (event.target as HTMLInputElement).value,
+      ...omit("attribute", fields),
+    })
   }
 
   const handleSubmit = async () => {
@@ -255,7 +259,7 @@ export const GridView = ({
           ref={ref}
         />
         <Details isEditView={isEditView} isCardHovered={isCardHovered}>
-          {Object.entries(fieldsToMap(isEditView, pokemon, fields)).map(
+          {Object.entries(fieldsToMap(isEditView, fields, false, pokemon)).map(
             ([k, v], index) => (
               <Row key={index}>
                 <Tooltip title={v.label} placement="top-start">
@@ -272,7 +276,12 @@ export const GridView = ({
                     color="warning"
                     style={{ width: "80%", margin: 5 }}
                     sx={{ borderRadius: 15 }}
-                    onChange={(e) => setFields({ [k]: e.target.value })}
+                    onChange={(e) => {
+                      setFields({
+                        [k]: e.target.value,
+                        ...omit(k, fields),
+                      })
+                    }}
                     InputProps={{
                       sx: {
                         borderRadius: "15px !important",

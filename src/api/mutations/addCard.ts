@@ -8,6 +8,7 @@ export const AddCardMutation = async (
   name: string,
   type: string,
   set: string,
+  setNumber: string,
   year: string,
   quantity: string,
   attribute: string
@@ -16,6 +17,7 @@ export const AddCardMutation = async (
 
   // fetch pokemon blob from pokeapi
   const fetchPokemon = async (pokemon: string) => {
+    console.log("pokemon", pokemon)
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${pokemon}`
     )
@@ -39,7 +41,7 @@ export const AddCardMutation = async (
 
   // fetch evolution chain from pokeapi
   const fetchEvolutionChain = async () => {
-    const response = await axios.get(`${chainUrl.url}`)
+    const response = await axios.get(`${chainUrl?.url}`)
 
     return response.data
   }
@@ -100,6 +102,7 @@ export const AddCardMutation = async (
     name,
     type,
     set,
+    setNumber,
     year,
     colour,
     quantity,

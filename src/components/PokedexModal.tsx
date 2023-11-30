@@ -153,7 +153,6 @@ const closeIconProps = {
 }
 
 export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
-  console.log("pokemon", pokemon)
   const [open, setOpen] = React.useState(false)
 
   const { name, image, types, abilities, id, height, weight } = pokemon ?? ""

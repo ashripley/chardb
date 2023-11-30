@@ -6,6 +6,7 @@ import { Button, IconButton } from "@mui/material"
 import flame from "../../assets/icons/flame.png"
 import CloseIcon from "@mui/icons-material/Close"
 import { Theme } from "../../Theme"
+import { useEffect } from "react"
 
 interface Props {
   isOpen: boolean
@@ -116,7 +117,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
     drawerToggle(false, true)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     setState(isOpen)
   }, [isOpen])
 

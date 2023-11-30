@@ -23,6 +23,9 @@ import { AddModal } from "../../components/AddModal"
 import WindowIcon from "@mui/icons-material/Window"
 import ListIcon from "@mui/icons-material/List"
 import { Theme } from "../../Theme"
+import { ConfirmationModal } from "../../components/ConfirmationModal"
+import { deleteDoc, doc } from "firebase/firestore"
+import { firestore } from "../../services/firebase"
 
 const Wrap = styled.div``
 
@@ -109,6 +112,10 @@ export const Main = () => {
   const [showAddCard, setShowAddCard] = useState(false)
   const [showCard, setShowCard] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false)
+  const [pokemonToBeDeleted, setPokemonToBeDeleted] = useState<
+    Record<string, any>
+  >({})
   const [icon, setIcon] = useState<string>("cards")
   const [data, setData] = useState([{}])
   const [viewToggle, setViewToggle] = useState(true)
@@ -163,11 +170,20 @@ export const Main = () => {
     Query()
   }, [])
 
-  const isDeleted = async (hasChanged: boolean) => {
+  const isDeleted = (hasChanged: boolean, pokemon: Record<string, any>) => {
     if (hasChanged) {
+      setShowConfirmationModal(!showConfirmationModal)
+      setPokemonToBeDeleted(pokemon)
+    }
+  }
+
+  const handleDelete = async (isReadyForDeletion: boolean) => {
+    if (isReadyForDeletion) {
+      await deleteDoc(doc(firestore, "cards", pokemonToBeDeleted.cardId))
       const cards = await AllCards()
 
       setData([...cards])
+      setShowConfirmationModal(false)
     }
   }
 
@@ -399,6 +415,12 @@ export const Main = () => {
         </Header>
       </Root>
       <AddModal openModal={showAddCard} closeModal={onAddClose} />
+      <ConfirmationModal
+        isDeleted={handleDelete}
+        pokemon={pokemonToBeDeleted}
+        openModal={showConfirmationModal}
+        closeModal={onAddClose}
+      />
       <Wrap>
         {showCard && (
           <Cards

@@ -7,7 +7,7 @@ interface Props {
   pokemon: Record<string, any>
   view: boolean
   isLoading: boolean
-  isCardDeleted: (isDeleted: boolean) => void
+  isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
 export const PokemonCard = ({
@@ -19,8 +19,8 @@ export const PokemonCard = ({
 }: Props) => {
   const [gridView, setGridView] = useState(view)
 
-  const onDelete = (hasChanged: boolean) => {
-    isCardDeleted(hasChanged)
+  const onDelete = (hasChanged: boolean, pokemon: Record<string, any>) => {
+    isCardDeleted(hasChanged, pokemon)
   }
 
   useEffect(() => {

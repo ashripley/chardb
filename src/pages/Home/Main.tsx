@@ -116,7 +116,7 @@ export const Main = ({ menuOption }: Props) => {
                 onClick={() => onClick()}
                 sx={{ color: Theme.primaryText }}
               >
-                Cards
+                View Cards
               </StyledButton>
             </StyledEngineProvider>
           </ButtonWrapper>

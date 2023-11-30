@@ -27,12 +27,13 @@ import id from "../../assets/icons/id.png"
 import quantity from "../../assets/icons/quantity.png"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
+import { omit } from "../../helpers/omit"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
   isLoading: boolean
-  isCardDeleted: (isDeleted: boolean) => void
+  isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
 //#region Styled Components
@@ -201,8 +202,7 @@ export const ListView = ({
   }
 
   const handleDelete = async () => {
-    await deleteDoc(doc(firestore, "cards", pokemon.cardId))
-    isCardDeleted(true)
+    isCardDeleted(true, pokemon)
   }
 
   const handleClear = async () => {
@@ -257,7 +257,10 @@ export const ListView = ({
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFields({ attribute: (event.target as HTMLInputElement).value })
+    setFields({
+      attribute: (event.target as HTMLInputElement).value,
+      ...omit("attribute", fields),
+    })
   }
 
   return (
@@ -284,30 +287,35 @@ export const ListView = ({
             pokemon={pokemon}
           />
           <Details isHovered={isCardHovered}>
-            {Object.entries(fieldsToMap(isEditView, pokemon, fields)).map(
-              ([k, v], index) => (
-                <Column key={index}>
-                  <Tooltip title={v.label} placement="top-start">
-                    <Icon>{v.icon ?? <></>}</Icon>
-                  </Tooltip>
-                  {!isEditView ? (
-                    <Data>{pokemon[k] || ""}</Data>
-                  ) : (
-                    <TextField
-                      id="standard"
-                      value={v.value}
-                      placeholder={upperCaseFirst(pokemon[k])}
-                      variant="outlined"
-                      color="warning"
-                      style={{ width: "80%", margin: 5 }}
-                      sx={{ borderRadius: 15 }}
-                      onChange={(e) => setFields({ [k]: e.target.value })}
-                      InputProps={{ ...textFieldStyles }}
-                    />
-                  )}
-                </Column>
-              )
-            )}
+            {Object.entries(
+              fieldsToMap(isEditView, fields, false, pokemon)
+            ).map(([k, v], index) => (
+              <Column key={index}>
+                <Tooltip title={v.label} placement="top-start">
+                  <Icon>{v.icon ?? <></>}</Icon>
+                </Tooltip>
+                {!isEditView ? (
+                  <Data>{pokemon[k] || ""}</Data>
+                ) : (
+                  <TextField
+                    id="standard"
+                    value={v.value}
+                    placeholder={upperCaseFirst(pokemon[k])}
+                    variant="outlined"
+                    color="warning"
+                    style={{ width: "80%", margin: 5 }}
+                    sx={{ borderRadius: 15 }}
+                    onChange={(e) => {
+                      setFields({
+                        [k]: e.target.value,
+                        ...omit(k, fields),
+                      })
+                    }}
+                    InputProps={{ ...textFieldStyles }}
+                  />
+                )}
+              </Column>
+            ))}
             {isEditView && (
               <StyledRadioGroup
                 defaultValue={

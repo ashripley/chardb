@@ -10,7 +10,7 @@ interface Props {
   mounted: boolean
   isLoading: boolean
   view: boolean
-  isCardDeleted: (hasChanged: boolean) => void
+  isCardDeleted: (hasChanged: boolean, pokemon: Record<string, any>) => void
 }
 
 const Container = styled.div`
@@ -86,8 +86,8 @@ export const Cards = ({
     setCards(filteredCards)
   }, [pokemon])
 
-  const isDeleted = (hasChanged: boolean) => {
-    isCardDeleted(hasChanged)
+  const isDeleted = (hasChanged: boolean, pokemon: Record<string, any>) => {
+    isCardDeleted(hasChanged, pokemon)
   }
 
   return (

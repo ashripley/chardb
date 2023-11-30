@@ -254,9 +254,6 @@ export const Main = () => {
     index++
     setIsModalOpen(!isModalOpen)
 
-    console.log("pokedex", pokedex)
-    console.log("index", index)
-
     const tempPokemon: Record<string, any> = pokedex
       .filter((p: Record<string, any>) => p.id === index)
       .reduce(function (a, b) {
