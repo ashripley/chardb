@@ -26,6 +26,7 @@ import setNumber from "../../assets/icons/setNumber.png"
 import id from "../../assets/icons/id.png"
 import quantity from "../../assets/icons/quantity.png"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
+import { fieldsToMap } from "../../helpers/fieldsToMap"
 
 interface Props {
   cardIndex: number
@@ -149,32 +150,6 @@ export const ListView = ({
 
   const isEditView = cardView.view === View.EDIT
 
-  const image = (src: string) => {
-    return (
-      <Icon>
-        <img src={src} alt="menu" style={{ width: 25, height: 25 }} />
-      </Icon>
-    )
-  }
-
-  const fieldsToMap = {
-    ...(!isEditView && { id: { value: pokemon.id, icon: image(id) } }),
-    name: { value: fields.name, icon: image(pokemonName) },
-    type: { value: fields.type, icon: image(pokemonType) },
-    set: { value: fields.set, icon: image(set) },
-    setNumber: { value: fields.setNumber, icon: image(setNumber) },
-    year: { value: fields.year, icon: image(year) },
-    ...(!isEditView && {
-      attribute: {
-        value: pokemon.attribute,
-        icon: image(attribute),
-      },
-    }),
-    ...(isEditView && {
-      quantity: { value: pokemon.quantity, icon: image(quantity) },
-    }),
-  }
-
   const cardStyles = {
     width: "100%",
     borderRadius: "30px",
@@ -182,9 +157,9 @@ export const ListView = ({
     display: "flex",
     transition: "all 0.8s !important",
     backgroundColor: Theme.lightBg,
+    border: "8px solid white",
     ":hover": {
-      boxShadow: `${pokemon.colour} 0px 2px 4px 0px, ${pokemon.colour} 0px 0px 26px 0px`,
-      padding: "0.5em",
+      boxShadow: `${pokemon.colour} 0px 2px 35px 0px, ${pokemon.colour} 0px 0px 40px 0px`,
     },
   }
 
@@ -218,7 +193,7 @@ export const ListView = ({
   }
 
   const onCardLeave = () => {
-    setIsCardHovered(false)
+    !isEditView && setIsCardHovered(false)
   }
 
   const handleEdit = () => {
@@ -259,7 +234,11 @@ export const ListView = ({
     )
 
     setOpen(true)
-    setAlert(`Fields for ${upperCaseFirst(pokemon.name)} have been updated`)
+    setAlert(
+      `Fields for ${upperCaseFirst(
+        pokemon.name
+      )} have been updated! Please refresh for results`
+    )
 
     setCardView({ view: View.READ })
     clearFields()
@@ -305,28 +284,30 @@ export const ListView = ({
             pokemon={pokemon}
           />
           <Details isHovered={isCardHovered}>
-            {Object.entries(fieldsToMap).map(([k, v], index) => (
-              <Column key={index}>
-                <Tooltip title={upperCaseFirst(k)} placement="top-start">
-                  <Icon>{v.icon ?? <></>}</Icon>
-                </Tooltip>
-                {!isEditView ? (
-                  <Data>{pokemon[k] || ""}</Data>
-                ) : (
-                  <TextField
-                    id="standard"
-                    value={v.value}
-                    placeholder={upperCaseFirst(pokemon[k])}
-                    variant="outlined"
-                    color="warning"
-                    style={{ width: "80%", margin: 5 }}
-                    sx={{ borderRadius: 15 }}
-                    onChange={(e) => setFields({ [k]: e.target.value })}
-                    InputProps={{ ...textFieldStyles }}
-                  />
-                )}
-              </Column>
-            ))}
+            {Object.entries(fieldsToMap(isEditView, pokemon, fields)).map(
+              ([k, v], index) => (
+                <Column key={index}>
+                  <Tooltip title={v.label} placement="top-start">
+                    <Icon>{v.icon ?? <></>}</Icon>
+                  </Tooltip>
+                  {!isEditView ? (
+                    <Data>{pokemon[k] || ""}</Data>
+                  ) : (
+                    <TextField
+                      id="standard"
+                      value={v.value}
+                      placeholder={upperCaseFirst(pokemon[k])}
+                      variant="outlined"
+                      color="warning"
+                      style={{ width: "80%", margin: 5 }}
+                      sx={{ borderRadius: 15 }}
+                      onChange={(e) => setFields({ [k]: e.target.value })}
+                      InputProps={{ ...textFieldStyles }}
+                    />
+                  )}
+                </Column>
+              )
+            )}
             {isEditView && (
               <StyledRadioGroup
                 defaultValue={

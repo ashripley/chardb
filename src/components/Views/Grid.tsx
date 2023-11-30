@@ -16,15 +16,8 @@ import { View } from "../../helpers/view"
 import { GridImage } from "../Grid/GridImage"
 import { Actions } from "../Grid/Actions"
 import { Snackbar } from "../Grid/Snackbar"
-import set from "../../assets/icons/set.png"
-import pokemonName from "../../assets/icons/pokemonName.png"
-import pokemonType from "../../assets/icons/pokemonType.png"
-import year from "../../assets/icons/year.png"
-import attribute from "../../assets/icons/attribute.png"
-import setNumber from "../../assets/icons/setNumber.png"
-import id from "../../assets/icons/id.png"
-import quantity from "../../assets/icons/quantity.png"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
+import { fieldsToMap } from "../../helpers/fieldsToMap"
 
 interface Props {
   cardIndex: number
@@ -36,17 +29,17 @@ interface Props {
 //#region Styled Components
 const Wrapper = styled.div<{
   isCardHovered: boolean
-  editView: boolean
+  isEditView: boolean
   isLoading: boolean
 }>`
   width: 370px;
   padding: 20px 20px;
-  height: ${(props) =>
-    !!props.isCardHovered && !!props.editView
+  height: ${({ isEditView, isCardHovered, isLoading }) =>
+    isEditView
       ? "800px"
-      : !!props.isCardHovered
+      : isCardHovered
       ? "700px"
-      : props.isLoading
+      : isLoading
       ? "0px"
       : "600px"};
   transition: all 0.5s ease;
@@ -79,13 +72,9 @@ const Data = styled.div`
   color: ${Theme.primaryText};
 `
 
-const Details = styled.div<{ isCardHovered: boolean; editView: boolean }>`
-  height: ${(props) =>
-    !!props.isCardHovered && !!props.editView
-      ? "60%"
-      : props.isCardHovered
-      ? "50%"
-      : "55%"};
+const Details = styled.div<{ isCardHovered: boolean; isEditView: boolean }>`
+  height: ${({ isEditView, isCardHovered }) =>
+    isEditView ? "60%" : isCardHovered ? "50%" : "55%"};
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -135,33 +124,12 @@ export const GridView = ({
 
   const isEditView = cardView.view === View.EDIT
 
-  const image = (src: string) => {
-    return (
-      <Icon isEditView={isEditView}>
-        <img src={src} alt="menu" style={{ width: 25, height: 25 }} />
-      </Icon>
-    )
-  }
-
-  const fieldsToMap = {
-    ...(!isEditView && { id: { value: pokemon.id, icon: image(id) } }),
-    name: { value: fields.name, icon: image(pokemonName) },
-    type: { value: fields.type, icon: image(pokemonType) },
-    set: { value: fields.set, icon: image(set) },
-    setNumber: { value: fields.setNumber, icon: image(setNumber) },
-    year: { value: fields.year, icon: image(year) },
-    ...(!isEditView && {
-      attribute: {
-        value: pokemon.attribute,
-        icon: image(attribute),
-      },
-    }),
-    ...(isEditView && {
-      quantity: { value: pokemon.quantity, icon: image(quantity) },
-    }),
-  }
-
   //#region styles
+
+  const shadowStyle = {
+    boxShadow: `${pokemon.colour} 0px 2px 35px 0px, ${pokemon.colour} 0px 0px 40px 0px`,
+    borderRadius: 25,
+  }
 
   const cardStyles = {
     minWidth: 275,
@@ -170,10 +138,8 @@ export const GridView = ({
     height: "100%",
     transition: "all 1.5s !important",
     border: "8px solid white",
-    ":hover": {
-      boxShadow: `${pokemon.colour} 0px 2px 35px 0px, ${pokemon.colour} 0px 0px 40px 0px`,
-      borderRadius: 25,
-    },
+    ...(isEditView && { borderRadius: 25 }),
+    ":hover": { ...shadowStyle },
   }
 
   //#endregion
@@ -191,8 +157,7 @@ export const GridView = ({
   }
 
   const onCardLeave = () => {
-    setIsCardHovered(false)
-    setCardView({ view: View.READ })
+    !isEditView && setIsCardHovered(false)
   }
 
   const handleClose = (
@@ -245,7 +210,11 @@ export const GridView = ({
     )
 
     setOpen(true)
-    setEditAlert(`Fields for ${upperCaseFirst(pokemon.name)} have been updated`)
+    setEditAlert(
+      `Fields for ${upperCaseFirst(
+        pokemon.name
+      )} have been updated! Please refresh for results`
+    )
 
     setCardView({ view: View.READ })
     clearFields()
@@ -265,7 +234,7 @@ export const GridView = ({
   return (
     <Wrapper
       isLoading={isLoading}
-      editView={isEditView}
+      isEditView={isEditView}
       isCardHovered={isCardHovered}
       key={`grid-${cardIndex}`}
     >
@@ -285,44 +254,46 @@ export const GridView = ({
           pokemon={pokemon}
           ref={ref}
         />
-        <Details editView={isEditView} isCardHovered={isCardHovered}>
-          {Object.entries(fieldsToMap).map(([k, v], index) => (
-            <Row key={index}>
-              <Tooltip title={upperCaseFirst(k)} placement="top-start">
-                <Icon isEditView={isEditView}>{v.icon ?? <></>}</Icon>
-              </Tooltip>
-              {!isEditView ? (
-                <Data>{pokemon[k] || ""}</Data>
-              ) : (
-                <TextField
-                  id="standard"
-                  value={v.value}
-                  placeholder={upperCaseFirst(pokemon[k])}
-                  variant="outlined"
-                  color="warning"
-                  style={{ width: "80%", margin: 5 }}
-                  sx={{ borderRadius: 15 }}
-                  onChange={(e) => setFields({ [k]: e.target.value })}
-                  InputProps={{
-                    sx: {
-                      borderRadius: "15px !important",
-                      fieldset: {
-                        border: `2px solid ${Theme.darkBg}`,
-                      },
-                      input: { color: Theme.primaryText },
-
-                      "&:hover": {
+        <Details isEditView={isEditView} isCardHovered={isCardHovered}>
+          {Object.entries(fieldsToMap(isEditView, pokemon, fields)).map(
+            ([k, v], index) => (
+              <Row key={index}>
+                <Tooltip title={v.label} placement="top-start">
+                  <Icon isEditView={isEditView}>{v.icon ?? <></>}</Icon>
+                </Tooltip>
+                {!isEditView ? (
+                  <Data>{pokemon[k] || ""}</Data>
+                ) : (
+                  <TextField
+                    id="standard"
+                    value={v.value}
+                    placeholder={upperCaseFirst(pokemon[k])}
+                    variant="outlined"
+                    color="warning"
+                    style={{ width: "80%", margin: 5 }}
+                    sx={{ borderRadius: 15 }}
+                    onChange={(e) => setFields({ [k]: e.target.value })}
+                    InputProps={{
+                      sx: {
+                        borderRadius: "15px !important",
                         fieldset: {
-                          borderColor: `${Theme.charAccent} !important`,
-                          borderWidth: 2,
+                          border: `2px solid ${Theme.darkBg}`,
+                        },
+                        input: { color: Theme.primaryText },
+
+                        "&:hover": {
+                          fieldset: {
+                            borderColor: `${Theme.charAccent} !important`,
+                            borderWidth: 2,
+                          },
                         },
                       },
-                    },
-                  }}
-                />
-              )}
-            </Row>
-          ))}
+                    }}
+                  />
+                )}
+              </Row>
+            )
+          )}
           {isEditView && (
             <StyledRadioGroup
               defaultValue={

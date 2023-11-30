@@ -23,7 +23,7 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   background: #333333;
-  border-radius: 30px;
+  border-radius: 20px;
   transition: all 1s ease;
 `
 
@@ -37,7 +37,7 @@ export const Actions = ({
 }: Props) => {
   return (
     <Grow
-      in={isCardHovered}
+      in={isCardHovered || isEditView}
       style={{ transformOrigin: "1 1 1" }}
       {...(true ? { timeout: 1000 } : {})}
     >
