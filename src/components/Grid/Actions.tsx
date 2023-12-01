@@ -56,15 +56,9 @@ export const Actions = ({
         </Button>
         <Button sx={{ borderRadius: 50 }}>
           {!isEditView ? (
-            <DeleteIcon
-              sx={{ ...editIconStyles }}
-              onClick={() => handleDelete()}
-            />
+            <DeleteIcon sx={{ ...editIconStyles }} onClick={handleDelete} />
           ) : (
-            <ClearIcon
-              sx={{ ...editIconStyles }}
-              onClick={() => handleClear()}
-            />
+            <ClearIcon sx={{ ...editIconStyles }} onClick={handleClear} />
           )}
         </Button>
       </Wrapper>

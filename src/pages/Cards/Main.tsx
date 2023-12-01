@@ -419,7 +419,6 @@ export const Main = () => {
         isDeleted={handleDelete}
         pokemon={pokemonToBeDeleted}
         openModal={showConfirmationModal}
-        closeModal={onAddClose}
       />
       <Wrap>
         {showCard && (

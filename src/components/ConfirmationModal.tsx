@@ -13,7 +13,6 @@ import { useEffect, useState } from "react"
 interface Props {
   openModal: boolean
   pokemon: Record<string, any>
-  closeModal: (isClosed: boolean) => void
   isDeleted: (isDeleted: boolean) => void
 }
 
@@ -110,19 +109,14 @@ const style = {
   p: 4,
 }
 
-export const ConfirmationModal = ({
-  openModal,
-  pokemon,
-  closeModal,
-  isDeleted,
-}: Props) => {
+export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
   const [open, setOpen] = useState(false)
   const [isReadyForDeletion, setIsReadyForDeletion] = useState<boolean>(false)
   const [alert, setAlert] = useState<string>("")
 
   const handleClose = () => {
     setOpen(false)
-    closeModal(false)
+    // closeModal(true)
   }
 
   useEffect(() => {
@@ -132,6 +126,17 @@ export const ConfirmationModal = ({
   useEffect(() => {
     if (isReadyForDeletion) isDeleted(isReadyForDeletion)
   }, [isReadyForDeletion])
+
+  const toastClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return
+    }
+
+    setIsReadyForDeletion(false)
+  }
 
   const Header = () => (
     <HWrapper>
@@ -247,8 +252,12 @@ export const ConfirmationModal = ({
           </Box>
         </Fade>
       </Modal>
-      <Snackbar open={isReadyForDeletion} autoHideDuration={6000}>
-        <Alert severity="success" sx={{ width: "100%" }}>
+      <Snackbar
+        open={isReadyForDeletion}
+        autoHideDuration={5000}
+        onClose={toastClose}
+      >
+        <Alert onClose={toastClose} severity="success" sx={{ width: "100%" }}>
           {alert}
         </Alert>
       </Snackbar>
