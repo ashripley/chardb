@@ -42,6 +42,22 @@ const Text = styled.span`
     source-sans-pro, sans-serif;
 `
 
+const Dragonite = styled.img`
+  position: relative;
+  bottom: 15%;
+  left: 75%;
+  width: 150px;
+  height: 150px;
+`
+
+const Squirtle = styled.img`
+  position: relative;
+  top: 60%;
+  right: 35%;
+  width: 150px;
+  height: 150px;
+`
+
 export const Main = () => {
   return (
     <Content>
@@ -57,6 +73,12 @@ export const Main = () => {
         </span>
       </HeaderText>
       <Body>
+        <a href="https://pokemondb.net/pokedex/dragonite">
+          <Dragonite
+            src="https://img.pokemondb.net/sprites/home/normal/dragonite.png"
+            alt="dragonite"
+          />
+        </a>
         <Text>
           Welcome to chardb! Chardb is a place to store your nostalgia.
           <br />
@@ -82,6 +104,12 @@ export const Main = () => {
           So what are you waiting for? Add in your collection, and watch chardb
           bring your cards to life!
         </Text>
+        <a href="https://pokemondb.net/pokedex/squirtle">
+          <Squirtle
+            src="https://img.pokemondb.net/sprites/home/normal/squirtle.png"
+            alt="squirtle"
+          />
+        </a>
       </Body>
     </Content>
   )
