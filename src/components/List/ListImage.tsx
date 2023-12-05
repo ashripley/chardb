@@ -58,7 +58,7 @@ export const ListImage = ({
     alignItems: "center",
     justifyContent: "center",
     opacity: "revert",
-    transition: "all 1.5s !important",
+    transition: "all 0.8s !important",
     boxShadow: `${Theme.lightBg} 0px 0px 10px 0px`,
     ":hover": {
       width: 300,

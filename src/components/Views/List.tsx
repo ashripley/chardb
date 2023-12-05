@@ -50,7 +50,7 @@ const Details = styled.div<{ isHovered: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  transition: 2s ease-out;
+  transition: 0.5s ease-out;
   ${({ isHovered }) => isHovered && `margin-right: 50px;`}
 `
 
