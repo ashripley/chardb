@@ -3,7 +3,6 @@ import styled from "styled-components"
 import { useEffect, useMemo, useState } from "react"
 import { PokemonCard } from "./PokemonCard"
 import { Loading } from "../Skeleton"
-import { Theme } from "../../Theme"
 
 interface Props {
   pokemon: Record<string, any>[]

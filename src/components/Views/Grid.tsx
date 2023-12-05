@@ -8,8 +8,6 @@ import {
 } from "@mui/material"
 import styled from "styled-components"
 import { useRef, useState } from "react"
-import { deleteDoc, doc } from "firebase/firestore"
-import { firestore } from "../../services/firebase"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { Theme } from "../../Theme"
 import { View } from "../../helpers/view"
@@ -177,7 +175,6 @@ export const GridView = ({
   }
 
   const handleDelete = async () => {
-    // await deleteDoc(doc(firestore, "cards", pokemon.cardId))
     isCardDeleted(true, pokemon)
   }
 
