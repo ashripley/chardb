@@ -56,6 +56,7 @@ const FlameWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 150px;
 `
 
 const FlameContainer = styled.div`

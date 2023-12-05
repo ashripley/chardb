@@ -25,7 +25,19 @@ const StyledHeader = styled.div`
   display: flex;
   width: 100%;
   padding: 0px;
-  justify-content: space-around;
+  justify-content: space-between;
+`
+
+const LeftWrapper = styled.div`
+  display: flex;
+  width: 10%;
+  justify-content: space-between;
+`
+
+const RightWrapper = styled.div`
+  display: flex;
+  width: 10%;
+  justify-content: flex-end;
 `
 
 const IconWrapper = styled(Card)`
@@ -39,7 +51,8 @@ const IconWrapper = styled(Card)`
 const MenuWrapper = styled.div`
   display: flex;
   max-width: 100%;
-  width: 5%;
+  width: 30%;
+  min-width: 100px;
   justify-content: center;
   align-items: inherit;
 `
@@ -49,7 +62,7 @@ const HeaderText = styled.div`
   font-size: 1.5rem;
   justify-content: flex-start;
   align-items: center;
-  width: 90%;
+  width: 60%;
   display: flex;
   margin: 0;
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
@@ -83,58 +96,62 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                 <StyledHeader
                   style={{ display: "flex", width: "100%", padding: 0 }}
                 >
-                  <MenuWrapper>
-                    <IconWrapper
+                  <LeftWrapper>
+                    <MenuWrapper>
+                      <IconWrapper
+                        sx={{
+                          backgroundColor: Theme.lightBg,
+                          transition: "all 0.5s !important",
+                          ":hover": {
+                            background: Theme.lightBg,
+                            boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
+                          },
+                        }}
+                      >
+                        <img
+                          src={flame}
+                          alt="menu"
+                          style={{ width: 30, height: 30, padding: 5 }}
+                        />
+                      </IconWrapper>
+                    </MenuWrapper>
+                    <HeaderText>
+                      <span
+                        className="char"
+                        style={{ color: "darkorange", fontWeight: 800 }}
+                      >
+                        char
+                      </span>
+                      <span className="db" style={{ color: Theme.primaryText }}>
+                        db
+                      </span>
+                    </HeaderText>
+                  </LeftWrapper>
+                  <RightWrapper>
+                    <IconButton
+                      size="large"
+                      edge="start"
+                      color="inherit"
+                      aria-label="menu"
                       sx={{
-                        backgroundColor: Theme.lightBg,
+                        mr: 2,
                         transition: "all 0.5s !important",
                         ":hover": {
                           background: Theme.lightBg,
                           boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
                         },
                       }}
+                      style={{ width: 50, height: 50, margin: 0 }}
+                      onClick={() => onClick(!isClicked)}
                     >
-                      <img
-                        src={flame}
-                        alt="menu"
-                        style={{ width: 30, height: 30, padding: 5 }}
+                      <MenuIcon
+                        style={{
+                          filter:
+                            "brightness(0) saturate(100%) invert(36%) sepia(8%) saturate(8%) hue-rotate(332deg) brightness(90%) contrast(88%)",
+                        }}
                       />
-                    </IconWrapper>
-                  </MenuWrapper>
-                  <HeaderText>
-                    <span
-                      className="char"
-                      style={{ color: "darkorange", fontWeight: 800 }}
-                    >
-                      char
-                    </span>
-                    <span className="db" style={{ color: Theme.primaryText }}>
-                      db
-                    </span>
-                  </HeaderText>
-                  <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="menu"
-                    sx={{
-                      mr: 2,
-                      transition: "all 0.5s !important",
-                      ":hover": {
-                        background: Theme.lightBg,
-                        boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
-                      },
-                    }}
-                    style={{ width: 50, height: 50, margin: 0 }}
-                    onClick={() => onClick(!isClicked)}
-                  >
-                    <MenuIcon
-                      style={{
-                        filter:
-                          "brightness(0) saturate(100%) invert(36%) sepia(8%) saturate(8%) hue-rotate(332deg) brightness(90%) contrast(88%)",
-                      }}
-                    />
-                  </IconButton>
+                    </IconButton>
+                  </RightWrapper>
                 </StyledHeader>
               </Container>
             </Toolbar>
