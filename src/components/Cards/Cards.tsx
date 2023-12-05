@@ -46,7 +46,7 @@ export const Cards = ({
   const [cards, setCards] = useState<Record<string, any>[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1)
 
-  const itemsPerPage = 10
+  const itemsPerPage = 50
 
   const paginatedCards = cards.slice(
     (currentPage - 1) * itemsPerPage,
