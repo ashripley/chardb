@@ -74,7 +74,6 @@ const Image = styled.img<{ hasPokemon: boolean }>`
 const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 20px;
 `
 
 export const Main = () => {
@@ -161,23 +160,6 @@ export const Main = () => {
       behavior: "smooth",
     })
   }, [currentPage])
-
-  console.log(
-    "pokedex filter",
-    pokedex.filter(
-      (p: Record<string, any>) => p.name?.includes(pokedexName) || null
-    )
-  )
-
-  console.log(
-    "paginatedPokemon.filter",
-    pokedex.filter(
-      (p: Record<string, any>) =>
-        (pokedexName !== "" && p.name?.includes(pokedexName)) || null
-    ) ?? paginatedPokemon
-  )
-
-  console.log("pokedexName: ", pokedexName)
 
   return (
     <Container>
@@ -274,6 +256,7 @@ export const Main = () => {
           page={currentPage}
           onChange={(event, value) => setCurrentPage(value)}
           color="standard"
+          style={{ margin: 50, marginTop: 80 }}
         />
       </PaginationWrapper>
       {/* <PokedexModal

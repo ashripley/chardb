@@ -1,4 +1,4 @@
-import { Paper, Slide, TablePagination } from "@mui/material"
+import { Pagination, Paper, Slide } from "@mui/material"
 import styled from "styled-components"
 import { useEffect, useState } from "react"
 import { PokemonCard } from "./PokemonCard"
@@ -31,6 +31,11 @@ const StyledPaper = styled(Paper)`
   flex-wrap: wrap;
 `
 
+const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
 export const Cards = ({
   pokemon,
   mounted,
@@ -39,19 +44,14 @@ export const Cards = ({
   isCardDeleted,
 }: Props) => {
   const [cards, setCards] = useState<Record<string, any>[]>([])
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(50)
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
-  const paginationStyles = {
-    height: 100,
-    color: Theme.primaryText,
-    borderBottom: "none",
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-end",
-    fontFamily:
-      "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
-  }
+  const itemsPerPage = 10
+
+  const paginatedCards = cards.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
 
   useEffect(() => {
     window.scrollTo({
@@ -59,22 +59,7 @@ export const Cards = ({
       left: 0,
       behavior: "smooth",
     })
-  }, [page])
-
-  const handleChangePage = (
-    //@ts-ignore
-    event: MouseEvent<HTMLButtonElement, MouseEvent> | null,
-    newPage: number
-  ) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(1)
-  }
+  }, [currentPage])
 
   useEffect(() => {
     const cardIds = pokemon.map(({ cardId }) => cardId)
@@ -104,13 +89,7 @@ export const Cards = ({
               padding: 0,
             }}
           >
-            {(rowsPerPage > 1
-              ? cards.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : cards
-            ).map((poke, index) => (
+            {(paginatedCards || cards).map((poke, index) => (
               <PokemonCard
                 key={index}
                 isCardDeleted={isDeleted}
@@ -122,21 +101,15 @@ export const Cards = ({
             ))}
           </StyledPaper>
         )}
-        <TablePagination
-          count={cards.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          rowsPerPageOptions={[50, 100, 1000]}
-          labelRowsPerPage={<span>Rows:</span>}
-          backIconButtonProps={{
-            color: "warning",
-          }}
-          nextIconButtonProps={{ color: "warning" }}
-          sx={{ ...paginationStyles }}
-          size="medium"
-        />
+        <PaginationWrapper>
+          <Pagination
+            count={Math.ceil(cards.length / itemsPerPage)}
+            page={currentPage}
+            onChange={(event, value) => setCurrentPage(value)}
+            color="standard"
+            style={{ margin: 50 }}
+          />
+        </PaginationWrapper>
       </Container>
     </Slide>
   )
