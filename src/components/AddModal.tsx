@@ -221,6 +221,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
       name: "",
       type: "",
       set: "",
+      setNumber: "",
       year: "",
       quantity: "",
       attribute: "",

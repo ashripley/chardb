@@ -14,6 +14,8 @@ import { Theme } from "../../Theme"
 import { PokedexModal } from "../../components/PokedexModal"
 import { AllCards } from "../../api/queries/allCards"
 import axios from "axios"
+import { IconImageMap } from "../../components/IconImageMap"
+import tick from "../../assets/icons/tick.png"
 
 const Container = styled.div`
   max-height: 100%;
@@ -68,7 +70,7 @@ const Image = styled.img<{ hasPokemon: boolean }>`
   height: 150px;
   width: 150px;
   padding: 20px;
-  ${(props) => !props.hasPokemon && `filter: brightness(0.1); opacity: 0.9;`};
+  ${({ hasPokemon }) => hasPokemon && `margin-top: -25px`}
 `
 
 const Fields = styled.div`
@@ -341,6 +343,7 @@ export const Main = () => {
         ) : (
           pokedex.map((p, index) => (
             <Card key={index} sx={cardStyles(p)} variant="elevation" raised>
+              {!!hasPokemon.includes(p.name) && IconImageMap(tick, true)}
               <Image
                 hasPokemon={!!hasPokemon.includes(p.name)}
                 key={index}

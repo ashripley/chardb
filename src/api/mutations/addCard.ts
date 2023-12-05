@@ -17,7 +17,6 @@ export const AddCardMutation = async (
 
   // fetch pokemon blob from pokeapi
   const fetchPokemon = async (pokemon: string) => {
-    console.log("pokemon", pokemon)
     const response = await axios.get(
       `https://pokeapi.co/api/v2/pokemon/${pokemon}`
     )
