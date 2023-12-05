@@ -1,21 +1,21 @@
 import {
   Card,
   CircularProgress,
-  FormControl,
+  Fade,
   Grow,
-  InputLabel,
-  MenuItem,
+  Pagination,
   Paper,
-  Select,
+  TextField,
+  Tooltip,
 } from "@mui/material"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
 import { Theme } from "../../Theme"
-import { PokedexModal } from "../../components/PokedexModal"
 import { AllCards } from "../../api/queries/allCards"
 import axios from "axios"
 import { IconImageMap } from "../../components/IconImageMap"
 import tick from "../../assets/icons/tick.png"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 
 const Container = styled.div`
   max-height: 100%;
@@ -45,10 +45,8 @@ const Header = styled.div`
   font-size: 30px;
   justify-content: center;
   padding: 30px 0px;
-  width: 90%;
-  right: 6%;
-  position: relative;
-}
+  width: 100%;
+  margin-right: -320px;
 `
 
 const StyledPaper = styled(Paper)`
@@ -62,7 +60,7 @@ const Images = styled.div`
   max-width: 100%;
   height: auto;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
 `
 
 const Image = styled.img<{ hasPokemon: boolean }>`
@@ -73,27 +71,21 @@ const Image = styled.img<{ hasPokemon: boolean }>`
   ${({ hasPokemon }) => hasPokemon && `margin-top: -25px`}
 `
 
-const Fields = styled.div`
-  width: 10%;
-  margin-left: 35px;
-`
-
-const NameField = styled.div`
+const PaginationWrapper = styled.div`
   display: flex;
   justify-content: center;
-  width: 100% !important;
-  position: relative;
-  z-index: 3;
-  justify-content: flex-start;
+  margin: 20px;
 `
 
 export const Main = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [pokedex, setPokedex] = useState<Record<string, any>[]>([{}])
-  const [pokemon, setPokemon] = useState<Record<string, any>>({})
   const [hasPokemon, setHasPokemon] = useState<string[]>([])
-  const [generation, setGeneration] = useState<Record<string, any>>({})
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [pokedexName, setPokedexName] = useState<string>("")
+
+  const itemsPerPage = 50
 
   const cardStyles = (p: Record<string, any>) => {
     return {
@@ -114,118 +106,34 @@ export const Main = () => {
     }
   }
 
-  const selectStyles = {
-    borderRadius: "15px 35px 35px 15px",
-    width: "100%",
-    fieldset: {
-      borderColor: "#e3e4db",
-    },
-    color: Theme.primaryText,
-
-    "&:hover": {
-      fieldset: {
-        borderColor: "#ed6d03 !important",
-      },
-    },
-  }
-
-  const fetchPokemon = async (start: number, range: number) => {
+  const fetchAllPokemon = useCallback(async () => {
     setIsLoading(true)
-    let pokedex: Record<string, any>[] = [{}]
+    let allPokemon: Record<string, any>[] = []
 
-    for (var i = start; i <= range; i++) {
-      await fetch(`https://pokeapi.co/api/v2/pokemon/${i}`)
-        .then((response) => response.json())
-        .then(async (data) => {
-          // fetch evolution chain url from pokeapi
-          const fetchEvolutionChainUrl = async (pokemon: string) => {
-            const response = await axios.get(
-              `https://pokeapi.co/api/v2/pokemon-species/${pokemon}`
-            )
+    try {
+      const response = await axios.get(
+        "https://pokeapi.co/api/v2/pokemon?limit=493"
+      )
+      const { results } = response.data
+      const pokemonDetailsPromises = results.map((results: any) =>
+        axios.get(results.url)
+      )
 
-            const chainUrl = await response.data.evolution_chain
+      const pokemonDetails = await Promise.all(pokemonDetailsPromises)
 
-            return chainUrl
-          }
+      allPokemon = pokemonDetails.map((data: any) => {
+        const { name, types } = data.data
 
-          const chainUrl = await fetchEvolutionChainUrl(data.name)
-
-          // fetch evolution chain from pokeapi
-          const fetchEvolutionChain = async () => {
-            const response = await axios.get(`${chainUrl.url}`)
-
-            return response.data
-          }
-
-          const chain = await fetchEvolutionChain()
-
-          // Getting id for displaying evolved Pokemon url
-          // INPUT 'str' example: 'https://pokeapi.co/api/v2/pokemon-species/121/'
-          // OUTPUT: 'str' id example: '121'
-          const getImageId = (urlStr?: string) => {
-            if (!urlStr) return null
-
-            let regex = /[^v]\d/ // looking for a number that doesn't with a 'v' before it,
-            let searchIdx = urlStr.search(regex) // gives index position
-            // grabbing the numbers inbetween the forward slashes
-            let evoId = urlStr.slice(searchIdx + 1, -1)
-            return evoId
-          }
-
-          const firstEvolution = chain.chain.species
-          const secondEvolution = chain.chain.evolves_to?.[0]?.species
-          const thirdEvolution =
-            chain.chain.evolves_to?.[0]?.evolves_to?.[0]?.species
-
-          const evolutionChainObj = {
-            first: {
-              id: getImageId(firstEvolution.url),
-              name: firstEvolution.name ?? "",
-              url: firstEvolution.url ?? "",
-              image: firstEvolution.name
-                ? `https://img.pokemondb.net/sprites/home/normal/${firstEvolution.name}.png`
-                : "",
-            },
-            second: {
-              id: getImageId(secondEvolution?.url) ?? "",
-              name: secondEvolution?.name ?? "",
-              url: secondEvolution?.url ?? "",
-              image: secondEvolution?.name
-                ? `https://img.pokemondb.net/sprites/home/normal/${secondEvolution.name}.png`
-                : "",
-            },
-            third: {
-              id: getImageId(thirdEvolution?.url) ?? "",
-              name: thirdEvolution?.name ?? "",
-              url: thirdEvolution?.url ?? "",
-              image: thirdEvolution?.name
-                ? `https://img.pokemondb.net/sprites/home/normal/${thirdEvolution.name}.png`
-                : "",
-            },
-          }
-
-          pokedex.push({
-            name: data.name,
-            id: data.id,
-            height: data.height,
-            weight: data.weight,
-            types: data.types?.map(
-              (type: Record<string, any>) => type.type.name
-            ),
-            abilities: data.abilities?.map(
-              (ability: Record<string, any>) => ability.ability.name
-            ),
-            sprites: {
-              front: data.sprites.front_default,
-              back: data.sprites.back_default,
-            },
-            colour: Theme.typeColours[pokemon?.types?.[0]] ?? "#a8a878",
-            image: `https://img.pokemondb.net/sprites/home/normal/${data.name}.png`,
-            evolutionChain: { ...evolutionChainObj },
-          })
-        })
+        return {
+          name,
+          types: types.map((type: Record<string, any>) => type.type.name),
+          colour: Theme.typeColours[types?.[0]] ?? "#a8a878",
+          image: `https://img.pokemondb.net/sprites/home/normal/${name}.png`,
+        }
+      })
+    } catch (error) {
+      console.error("Error fetching pokemon data:", error)
     }
-    pokedex.shift()
 
     const cards = await AllCards()
 
@@ -233,41 +141,43 @@ export const Main = () => {
 
     setHasPokemon(cardFilter)
 
-    setPokedex(pokedex)
+    setPokedex(allPokemon)
     setIsLoading(false)
-    return pokedex
-  }
-
-  useEffect(() => {
-    if (generation.value == 1) {
-      fetchPokemon(1, 151)
-    } else if (generation.value == 2) {
-      fetchPokemon(152, 251)
-    } else if (generation.value == 3) {
-      fetchPokemon(153, 386)
-    } else if (generation.value == 4) {
-      fetchPokemon(387, 493)
-    }
-  }, [generation])
-
-  const onClose = () => setIsModalOpen(!isModalOpen)
-
-  const onOpen = async (index: number) => {
-    index++
-    setIsModalOpen(!isModalOpen)
-
-    const tempPokemon: Record<string, any> = pokedex
-      .filter((p: Record<string, any>) => p.id === index)
-      .reduce(function (a, b) {
-        return (a = b)
-      }, {})
-
-    setPokemon(tempPokemon)
-  }
-
-  useEffect(() => {
-    fetchPokemon(1, 151)
   }, [])
+
+  const paginatedPokemon = pokedex.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
+  useEffect(() => {
+    fetchAllPokemon()
+  }, [])
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    })
+  }, [currentPage])
+
+  console.log(
+    "pokedex filter",
+    pokedex.filter(
+      (p: Record<string, any>) => p.name?.includes(pokedexName) || null
+    )
+  )
+
+  console.log(
+    "paginatedPokemon.filter",
+    pokedex.filter(
+      (p: Record<string, any>) =>
+        (pokedexName !== "" && p.name?.includes(pokedexName)) || null
+    ) ?? paginatedPokemon
+  )
+
+  console.log("pokedexName: ", pokedexName)
 
   return (
     <Container>
@@ -289,49 +199,34 @@ export const Main = () => {
                 "rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px",
               display: "flex",
               alignItems: "center",
-
-              "&:hover": {
-                padding: "0.2rem",
-              },
             }}
           >
-            <Fields>
-              <NameField>
-                <FormControl
-                  sx={{
-                    borderRadius: "15px !important",
-                    width: "100%",
-                  }}
-                >
-                  <InputLabel color="warning">{"Generation"}</InputLabel>
-                  <Select
-                    id="standard"
-                    variant="outlined"
-                    value={generation.value}
-                    label={"Generation"}
-                    color="warning"
-                    onChange={(e) =>
-                      setGeneration({
-                        key: "generation",
-                        value: e.target.value,
-                      })
-                    }
-                    sx={selectStyles}
-                  >
-                    {["1", "2", "3", "4"].map((gen, index) => (
-                      <MenuItem
-                        key={index}
-                        value={gen}
-                        sx={{ color: Theme.primaryText }}
-                      >
-                        {gen}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </NameField>
-            </Fields>
             <Header>Pokédex</Header>
+            <TextField
+              id="standard"
+              value={pokedexName}
+              label={"Search"}
+              variant="outlined"
+              style={{ width: 300, margin: 20 }}
+              color={"warning"}
+              onChange={(e) => setPokedexName(e.target.value)}
+              // error={error}
+              InputProps={{
+                sx: {
+                  borderRadius: "15px !important",
+                  fieldset: {
+                    borderColor: "#e3e4db",
+                  },
+                  input: { color: Theme.primaryText },
+
+                  "&:hover": {
+                    fieldset: {
+                      borderColor: "#ed6d03 !important",
+                    },
+                  },
+                },
+              }}
+            />
           </StyledPaper>
         </Grow>
       </Wrapper>
@@ -341,25 +236,51 @@ export const Main = () => {
             <CircularProgress color="warning" />
           </div>
         ) : (
-          pokedex.map((p, index) => (
+          (pokedexName !== ""
+            ? pokedex.filter((p: Record<string, any>) =>
+                p.name?.includes(pokedexName)
+              )
+            : paginatedPokemon
+          ).map((p, index) => (
             <Card key={index} sx={cardStyles(p)} variant="elevation" raised>
               {!!hasPokemon.includes(p.name) && IconImageMap(tick, true)}
-              <Image
-                hasPokemon={!!hasPokemon.includes(p.name)}
-                key={index}
-                src={p.image}
-                alt="image!"
-                onClick={() => onOpen(index)}
-              />
+              <Tooltip
+                title={upperCaseFirst(p.name)}
+                placement="bottom"
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      fontSize: "1rem",
+                    },
+                  },
+                }}
+              >
+                <Image
+                  hasPokemon={!!hasPokemon.includes(p.name)}
+                  key={index}
+                  src={p.image}
+                  alt="image!"
+                />
+              </Tooltip>
             </Card>
           ))
         )}
       </Images>
-      <PokedexModal
+      <PaginationWrapper>
+        <Pagination
+          count={Math.ceil(pokedex.length / itemsPerPage)}
+          page={currentPage}
+          onChange={(event, value) => setCurrentPage(value)}
+          color="standard"
+        />
+      </PaginationWrapper>
+      {/* <PokedexModal
         pokemon={pokemon}
         openModal={isModalOpen}
         closeModal={onClose}
-      />
+      /> */}
     </Container>
   )
 }
