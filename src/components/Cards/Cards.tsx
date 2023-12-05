@@ -1,6 +1,6 @@
 import { Pagination, Paper, Slide } from "@mui/material"
 import styled from "styled-components"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { PokemonCard } from "./PokemonCard"
 import { Loading } from "../Skeleton"
 import { Theme } from "../../Theme"
@@ -43,14 +43,17 @@ export const Cards = ({
   view,
   isCardDeleted,
 }: Props) => {
-  const [cards, setCards] = useState<Record<string, any>[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1)
 
   const itemsPerPage = 50
 
-  const paginatedCards = cards.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+  const paginatedCards = useMemo(
+    () =>
+      pokemon.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      ),
+    [pokemon, currentPage, itemsPerPage]
   )
 
   useEffect(() => {
@@ -61,14 +64,13 @@ export const Cards = ({
     })
   }, [currentPage])
 
-  useEffect(() => {
-    const cardIds = pokemon.map(({ cardId }) => cardId)
-    const filteredCards = pokemon
-      .filter(({ cardId }, index) => !cardIds.includes(cardId, index + 1))
-      .filter((f) => f.cardId !== "")
-      .sort((a, b) => a.id - b.id)
-
-    setCards(filteredCards)
+  const filteredCards = useMemo(() => {
+    // const cardIds = new Set(pokemon.map(({ cardId }) => cardId))
+    return (
+      pokemon
+        // .filter(({ cardId }) => cardId && cardIds.has(cardId))
+        .sort((a, b) => a.id - b.id)
+    )
   }, [pokemon])
 
   const isDeleted = (hasChanged: boolean, pokemon: Record<string, any>) => {
@@ -89,7 +91,7 @@ export const Cards = ({
               padding: 0,
             }}
           >
-            {(paginatedCards || cards).map((poke, index) => (
+            {paginatedCards.map((poke, index) => (
               <PokemonCard
                 key={index}
                 isCardDeleted={isDeleted}
@@ -103,7 +105,7 @@ export const Cards = ({
         )}
         <PaginationWrapper>
           <Pagination
-            count={Math.ceil(cards.length / itemsPerPage)}
+            count={Math.ceil(filteredCards.length / itemsPerPage)}
             page={currentPage}
             onChange={(event, value) => setCurrentPage(value)}
             color="standard"
