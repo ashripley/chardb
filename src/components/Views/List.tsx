@@ -9,22 +9,12 @@ import {
 } from "@mui/material"
 import styled from "styled-components"
 import { useState } from "react"
-import { deleteDoc, doc } from "firebase/firestore"
-import { firestore } from "../../services/firebase"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { Theme } from "../../Theme"
 import { View } from "../../helpers/view"
 import { ListImage } from "../List/ListImage"
 import { ListActions } from "../List/ListActions"
 import { Snackbar } from "../Grid/Snackbar"
-import set from "../../assets/icons/set.png"
-import pokemonName from "../../assets/icons/pokemonName.png"
-import pokemonType from "../../assets/icons/pokemonType.png"
-import year from "../../assets/icons/year.png"
-import attribute from "../../assets/icons/attribute.png"
-import setNumber from "../../assets/icons/setNumber.png"
-import id from "../../assets/icons/id.png"
-import quantity from "../../assets/icons/quantity.png"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
@@ -61,13 +51,6 @@ const Column = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-`
-
-const IconWrapper = styled.div`
-  display: flex;
-  width: 15%;
-  justify-content: center;
-  color: ${Theme.primaryText};
 `
 
 const Data = styled.div`
