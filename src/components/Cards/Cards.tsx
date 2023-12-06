@@ -46,9 +46,16 @@ export const Cards = ({
 
   const itemsPerPage = 50
 
+  const filteredCards = useMemo(() => {
+    const cardIds = new Set(pokemon.map(({ cardId }) => cardId))
+    return pokemon
+      .filter(({ cardId }) => cardId && cardIds.has(cardId))
+      .sort((a, b) => a.id - b.id)
+  }, [pokemon])
+
   const paginatedCards = useMemo(
     () =>
-      pokemon.slice(
+      filteredCards.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
       ),
@@ -62,15 +69,6 @@ export const Cards = ({
       behavior: "smooth",
     })
   }, [currentPage])
-
-  const filteredCards = useMemo(() => {
-    // const cardIds = new Set(pokemon.map(({ cardId }) => cardId))
-    return (
-      pokemon
-        // .filter(({ cardId }) => cardId && cardIds.has(cardId))
-        .sort((a, b) => a.id - b.id)
-    )
-  }, [pokemon])
 
   const isDeleted = (hasChanged: boolean, pokemon: Record<string, any>) => {
     isCardDeleted(hasChanged, pokemon)
