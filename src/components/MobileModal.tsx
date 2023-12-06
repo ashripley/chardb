@@ -61,7 +61,7 @@ export const MobileModal = () => {
         <Box sx={style}>
           <Container>
             <Text>
-              Ooops! Mobile detected. This web app is only modified for Desktop.
+              Oops! Mobile detected. This web app is only modified for Desktop.
             </Text>
           </Container>
         </Box>
