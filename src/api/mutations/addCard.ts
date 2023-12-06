@@ -91,7 +91,7 @@ export const AddCardMutation = async (
     },
   }
 
-  const colour = Theme.typeColours[type] ?? "#a8a878"
+  const colour = Theme.typeColours[type] ?? Theme.typeColours.normal
 
   await setDoc(doc(firestore, "cards", uniqueId), {
     cardId: uniqueId,

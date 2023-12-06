@@ -22,7 +22,7 @@ const Container = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   flex-direction: column;
-  background-color: #e3e4db;
+  background-color: ${Theme.darkBg};
   z-index: 1;
 `
 
@@ -33,7 +33,7 @@ const HeaderWrapper = styled.div`
   box-sizing: border-box;
   padding: 30px;
   justify-content: space-around;
-  background-color: #e3e4db;
+  background-color: ${Theme.darkBg};
 `
 
 const StyledDrawer = styled(Drawer)`
@@ -85,9 +85,7 @@ const HeaderText = styled.div`
   display: flex;
   margin: 0;
   padding: 10px;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
 `
 
 const Body = styled.div`

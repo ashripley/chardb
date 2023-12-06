@@ -78,9 +78,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   background: ${Theme.lightBg};
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
 `
 
 const Buttons = styled.div`

@@ -47,9 +47,7 @@ const Label = styled.div`
   display: flex;
   width: 100%;
   font-weight: 800;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
   color: ${Theme.primaryText};
   font-size: 30px;
   justify-content: center;
@@ -82,9 +80,7 @@ const Key = styled.div`
   width: 20%;
   min-width: 20%;
   font-weight: 800;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-  Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-  source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
   color: ${Theme.primaryText};
   font-size: 18px;
   justify-content: flex-start;
@@ -97,9 +93,7 @@ const Value = styled.div`
   display: flex;
   width: auto;
   font-weight: 800;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-  Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-  source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
   color: ${Theme.primaryText};
   font-size: 18px;
   justify-content: flex-start;

@@ -2,6 +2,7 @@ import styled from "styled-components"
 import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
 import { Main } from "./Main"
 import { Header } from "../Header"
+import { useCallback } from "react"
 
 interface Props {
   menuAction: string
@@ -19,9 +20,12 @@ const Container = styled.div`
   background-size: 100vw 100vh;
 `
 export const Home = ({ isOpen, menuAction, passMenuActionLabel }: Props) => {
-  const onClick = (clicked: boolean) => {
-    isOpen(clicked)
-  }
+  const onClick = useCallback(
+    (clicked: boolean) => {
+      isOpen(clicked)
+    },
+    [isOpen]
+  )
 
   const MenuAction = (label?: string) => {
     passMenuActionLabel(label || "")

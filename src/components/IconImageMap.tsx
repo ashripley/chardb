@@ -1,10 +1,11 @@
 import styled from "styled-components"
+import { Theme } from "../Theme"
 
 const Icon = styled.div<{ isPokedex: boolean }>`
   display: flex;
   width: ${({ isPokedex }) => (isPokedex ? "100%" : "15%")};
   justify-content: ${({ isPokedex }) => (isPokedex ? "flex-end" : "center")};
-  color: #333333;
+  color: ${Theme.card};
 `
 
 export const IconImageMap = (src: string, isPokedex: boolean) => (

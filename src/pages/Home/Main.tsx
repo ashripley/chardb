@@ -1,6 +1,7 @@
 import { Button, Grow, StyledEngineProvider } from "@mui/material"
 import styled from "styled-components"
 import { Theme } from "../../Theme"
+import { memo, useCallback, useMemo } from "react"
 
 interface Props {
   menuOption: (label?: string) => void
@@ -8,13 +9,11 @@ interface Props {
 
 const Root = styled.div`
   display: flex;
-  max-width: 100%;
-  max-height: 80%;
-  height: 80%;
-  width: 100%;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-evenly;
+  max-height: 80%;
+  height: 80%;
 `
 
 const Wrapper = styled.div`
@@ -29,9 +28,7 @@ const Title = styled.h1`
   max-width: 100%;
   width: 100%;
   height: 80%;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
 `
 
 const SubTitle = styled.h3`
@@ -41,9 +38,7 @@ const SubTitle = styled.h3`
   display: flex;
   justify-content: center;
   height: 20%;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
   font-weight: 100;
 `
 
@@ -60,10 +55,8 @@ const ButtonWrapper = styled.div`
 
 const StyledButton = styled(Button)`
   border-radius: 15px;
-  background-color: #e3e4db;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  background-color: ${Theme.darkBg};
+  font-family: ${Theme.fontFamily};
   font-size: 16px;
   width: 14rem;
   padding: 15px;
@@ -75,22 +68,18 @@ const StyledButton = styled(Button)`
   &:hover {
     background-color: ${Theme.charAccent} !important;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
-    color: #e3e4db !important;
+    color: ${Theme.darkBg} !important;
   }
 `
 
-export const Main = ({ menuOption }: Props) => {
-  const onClick = () => {
+export const Main = memo(({ menuOption }: Props) => {
+  const onClick = useCallback(() => {
     menuOption("Cards")
-  }
+  }, [menuOption])
 
   return (
     <>
-      <Grow
-        in={true}
-        style={{ transformOrigin: "1 1 1" }}
-        {...(true ? { timeout: 1000 } : { timeout: 1000 })}
-      >
+      <Grow in={true} style={{ transformOrigin: "1 1 1" }} timeout={1000}>
         <Root>
           <Wrapper>
             <Title>
@@ -126,4 +115,4 @@ export const Main = ({ menuOption }: Props) => {
       </Grow>
     </>
   )
-}
+})

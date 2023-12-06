@@ -72,9 +72,7 @@ const Data = styled.div`
   font-weight: 800;
   justify-content: center;
   align-items: center;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
   text-transform: capitalize;
   padding: 10px 0px;
 `
@@ -112,9 +110,7 @@ const StyledRadioGroup = styled(RadioGroup)`
   margin: 5px;
   color: ${Theme.primaryText};
   font-weight: 300 !important;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
 `
 
 const style = {
@@ -135,13 +131,13 @@ const inputProps = {
   sx: {
     borderRadius: "15px !important",
     fieldset: {
-      borderColor: "#e3e4db",
+      borderColor: Theme.darkBg,
     },
     input: { color: Theme.primaryText },
 
     "&:hover": {
       fieldset: {
-        borderColor: "#ed6d03 !important",
+        borderColor: `${Theme.charAccent} !important`,
       },
     },
   },

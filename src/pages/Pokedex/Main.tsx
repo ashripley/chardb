@@ -38,9 +38,7 @@ const Wrapper = styled.div`
 const Header = styled.div`
   display: flex;
   font-weight: 800;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
   color: ${Theme.primaryText};
   font-size: 30px;
   justify-content: center;
@@ -197,13 +195,13 @@ export const Main = () => {
                 sx: {
                   borderRadius: "15px !important",
                   fieldset: {
-                    borderColor: "#e3e4db",
+                    borderColor: Theme.darkBg,
                   },
                   input: { color: Theme.primaryText },
 
                   "&:hover": {
                     fieldset: {
-                      borderColor: "#ed6d03 !important",
+                      borderColor: "#ff8c00 !important",
                     },
                   },
                 },

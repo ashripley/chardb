@@ -254,13 +254,13 @@ export const Main = () => {
                         sx={{
                           borderRadius: "15px 35px 35px 15px",
                           fieldset: {
-                            borderColor: "#e3e4db",
+                            borderColor: Theme.darkBg,
                           },
                           color: Theme.primaryText,
 
                           "&:hover": {
                             fieldset: {
-                              borderColor: "#ed6d03 !important",
+                              borderColor: "#ff8c00 !important",
                             },
                           },
                         }}
@@ -295,13 +295,13 @@ export const Main = () => {
                           sx: {
                             borderRadius: "15px !important",
                             fieldset: {
-                              borderColor: "#e3e4db",
+                              borderColor: Theme.darkBg,
                             },
                             input: { color: Theme.primaryText },
 
                             "&:hover": {
                               fieldset: {
-                                borderColor: "#ed6d03 !important",
+                                borderColor: "#ff8c00 !important",
                               },
                             },
                           },
@@ -318,7 +318,7 @@ export const Main = () => {
                             width: "45%",
                             height: "100%",
                             borderRadius: 15,
-                            borderColor: "#e3e4db",
+                            borderColor: Theme.darkBg,
                           }}
                           onClick={handleAdd}
                         >
@@ -332,7 +332,7 @@ export const Main = () => {
                             width: "45%",
                             height: "100%",
                             borderRadius: 15,
-                            borderColor: "#e3e4db",
+                            borderColor: Theme.darkBg,
                           }}
                           onClick={handleRefresh}
                         >
@@ -353,7 +353,7 @@ export const Main = () => {
                             fontSize="small"
                             style={{
                               color: `${
-                                !viewToggle ? Theme.primaryText : "#ed6d03"
+                                !viewToggle ? Theme.primaryText : "#ff8c00"
                               }`,
                             }}
                           />
@@ -361,12 +361,11 @@ export const Main = () => {
                         sx={{
                           padding: "15px 5px",
                           borderRadius: "15px",
-                          borderColor: "#e3e4db",
+                          borderColor: Theme.darkBg,
                           color: `${
-                            !viewToggle ? Theme.primaryText : "#ed6d03"
+                            !viewToggle ? Theme.primaryText : "#ff8c00"
                           }`,
-                          fontFamily:
-                            "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
+                          fontFamily: Theme.fontFamily,
                         }}
                         variant={viewToggle ? "filled" : "outlined"}
                       />
@@ -378,7 +377,7 @@ export const Main = () => {
                             fontSize="small"
                             style={{
                               color: `${
-                                viewToggle ? Theme.primaryText : "#ed6d03"
+                                viewToggle ? Theme.primaryText : "#ff8c00"
                               }`,
                             }}
                           />
@@ -386,12 +385,11 @@ export const Main = () => {
                         sx={{
                           padding: "15px 5px",
                           borderRadius: "15px",
-                          borderColor: "#e3e4db",
+                          borderColor: Theme.darkBg,
                           color: `${
-                            viewToggle ? Theme.primaryText : "#ed6d03"
+                            viewToggle ? Theme.primaryText : "#ff8c00"
                           }`,
-                          fontFamily:
-                            "ui-rounded,'Hiragino Maru Gothic ProN',Quicksand,Comfortaa,Manjari,'Arial Rounded MT','Arial Rounded MT Bold',Calibri,source-sans-pro,sans-serif",
+                          fontFamily: Theme.fontFamily,
                         }}
                         variant={!viewToggle ? "filled" : "outlined"}
                       />

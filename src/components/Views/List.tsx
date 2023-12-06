@@ -58,9 +58,7 @@ const Data = styled.div`
   font-weight: 800;
   justify-content: center;
   align-items: center;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
   text-transform: capitalize;
   padding: 10px 0px;
   color: ${Theme.primaryText};
@@ -72,16 +70,14 @@ const StyledRadioGroup = styled(RadioGroup)`
   width: 100%;
   margin: 5px;
   font-weight: 300 !important;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
 `
 
 const Icon = styled.div`
   display: flex;
   width: 15%;
   justify-content: center;
-  color: #333333;
+  color: ${Theme.card};
 `
 //#endregion
 

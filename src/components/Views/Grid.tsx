@@ -57,16 +57,14 @@ const Icon = styled.div<{ isEditView: boolean }>`
   width: 15%;
   justify-content: ${({ isEditView }) =>
     isEditView ? "center" : "flex-start"};
-  color: #333333;
+  color: ${Theme.card};
 `
 
 const Data = styled.div`
   display: flex;
   width: 60%;
   font-weight: 800;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
   text-transform: capitalize;
   color: ${Theme.primaryText};
 `
@@ -88,9 +86,7 @@ const StyledRadioGroup = styled(RadioGroup)`
   width: 100%;
   margin: 5px;
   font-weight: 300 !important;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
 `
 //#endregion
 

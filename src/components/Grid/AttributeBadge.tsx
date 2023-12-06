@@ -37,9 +37,7 @@ const Quantity = styled.div<{ isGridCard: boolean }>`
   position: relative;
   top: ${({ isGridCard }) => (isGridCard ? "91%" : "87%")};
   font-weight: 300 !important;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
 `
 
 export const AttributeBadge = ({

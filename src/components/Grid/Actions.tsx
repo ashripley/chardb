@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit"
 import DoneIcon from "@mui/icons-material/Done"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { editIconStyles, readIconStyles } from "../Views/List"
+import { Theme } from "../../Theme"
 
 interface Props {
   isCardHovered: boolean
@@ -22,7 +23,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #333333;
+  background: ${Theme.card};
   border-radius: 30px;
   transition: all 1s ease;
 `

@@ -73,9 +73,7 @@ const HeaderText = styled.div`
   width: 60%;
   display: flex;
   margin: 0;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
 `
 
 export const Header = memo(({ isOpen }: Props) => {
