@@ -46,7 +46,7 @@ const Details = styled.div<{ isHovered: boolean }>`
 
 const Column = styled.div`
   width: 100%;
-  height: 15%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,7 +55,6 @@ const Column = styled.div`
 
 const Data = styled.div`
   display: flex;
-  width: 100%;
   font-weight: 800;
   justify-content: center;
   align-items: center;
@@ -65,6 +64,8 @@ const Data = styled.div`
   text-transform: capitalize;
   padding: 10px 0px;
   color: ${Theme.primaryText};
+
+  font-size: 0.9em;
 `
 
 const StyledRadioGroup = styled(RadioGroup)`
@@ -278,7 +279,7 @@ export const ListView = ({
                   <Icon>{v.icon ?? <></>}</Icon>
                 </Tooltip>
                 {!isEditView ? (
-                  <Data>{pokemon[k] || ""}</Data>
+                  <Data>{pokemon[k] || "N/A"}</Data>
                 ) : (
                   <TextField
                     id="standard"
