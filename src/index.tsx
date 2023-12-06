@@ -4,14 +4,17 @@ import reportWebVitals from "./reportWebVitals"
 import "./index.css"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { Index } from "./pages/Index"
+import { MobileModal } from "./components/MobileModal"
 
 const queryClient = new QueryClient()
+
+const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient} contextSharing={true}>
-      <Index />
+      {isMobile ? <MobileModal /> : <Index />}
     </QueryClientProvider>
   </React.StrictMode>
 )
