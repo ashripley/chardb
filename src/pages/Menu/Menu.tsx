@@ -6,7 +6,7 @@ import { Button, IconButton } from "@mui/material"
 import flame from "../../assets/icons/flame.png"
 import CloseIcon from "@mui/icons-material/Close"
 import { Theme } from "../../Theme"
-import { useEffect } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 interface Props {
   isOpen: boolean
@@ -34,6 +34,14 @@ const HeaderWrapper = styled.div`
   padding: 30px;
   justify-content: space-around;
   background-color: #e3e4db;
+`
+
+const StyledDrawer = styled(Drawer)`
+  .MuiDrawer-paper {
+    width: 100%;
+    height: 100%;
+    color: white;
+  }
 `
 
 const TitleWrapper = styled.div`
@@ -110,74 +118,69 @@ const StyledList = styled(List)`
   flex-direction: column;
 `
 
-export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
-  const [state, setState] = React.useState(false)
+const buttonStyles = {
+  width: "100%",
+  height: "100%",
+  backgroundColor: Theme.darkBg,
+  color: Theme.primaryText,
+  padding: "30px",
+  borderRadius: "35px",
+  fontSize: "18px",
+  boxShadow:
+    "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
+  transition: "all 1s ease",
+  fontFamily: Theme.fontFamily,
+  ":hover": {
+    backgroundColor: `${Theme.charAccent} !important`,
+    opacity: "0.8",
+    boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
+    color: `${Theme.darkBg} !important`,
+  },
+}
 
-  const onClose = () => {
+const iconButtonStyles = {
+  background: Theme.lightBg,
+  borderTopLeftRadius: "45% 50%",
+  borderTopRightRadius: "95% 60%",
+  borderBottomLeftRadius: "45% 70%",
+  borderBottomRightRadius: "95% 60%",
+  boxShadow:
+    "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+  padding: "10px",
+  transition: "all 1s !important",
+  ":hover": {
+    background: "#fff",
+    boxShadow: `0px 0px 20px 0px ${Theme.charAccent} , 0px 0px 20px 0px #ffffff`,
+  },
+}
+
+export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
+  const [state, setState] = useState(false)
+
+  const onClose = useCallback(() => {
     setState(false)
     drawerToggle(false, true)
-  }
+  }, [drawerToggle])
+
+  const onClick = useCallback(
+    (label: string) => {
+      menuOption(label)
+      onClose()
+    },
+    [menuOption, onClose]
+  )
 
   useEffect(() => {
     setState(isOpen)
   }, [isOpen])
 
-  const onClick = (label: string) => {
-    menuOption(label)
-    onClose()
-  }
-
-  const iconButtonStyles = {
-    background: Theme.lightBg,
-    borderTopLeftRadius: "45% 50%",
-    borderTopRightRadius: "95% 60%",
-    borderBottomLeftRadius: "45% 70%",
-    borderBottomRightRadius: "95% 60%",
-    boxShadow:
-      "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
-    padding: "10px",
-    transition: "all 1s !important",
-    ":hover": {
-      background: "white",
-      boxShadow: `0px 0px 20px 0px #ff8c00 , 0px 0px 20px 0px #ffffff`,
-    },
-  }
-
-  const buttonStyles = {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#e3e4db",
-    color: Theme.primaryText,
-    padding: "30px",
-    borderRadius: "35px",
-    fontSize: "18px",
-    boxShadow:
-      "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
-    transition: "all 1s ease",
-    fontFamily:
-      "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif",
-    ":hover": {
-      backgroundColor: "darkorange !important",
-      opacity: "0.8",
-      boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
-      color: "#e3e4db !important",
-    },
-  }
-
   return (
     <>
-      <Drawer
+      <StyledDrawer
         anchor={"bottom"}
         open={state}
-        onClose={() => onClose()}
+        onClose={onClose}
         variant="temporary"
-        PaperProps={{
-          sx: {
-            width: "100%",
-            height: "100%",
-            color: "white",
-          },
-        }}
       >
         <Container>
           <HeaderWrapper>
@@ -196,7 +199,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
               <HeaderText>
                 <span
                   className="char"
-                  style={{ color: "darkorange", fontWeight: 800 }}
+                  style={{ color: Theme.charAccent, fontWeight: 800 }}
                 >
                   char
                 </span>
@@ -213,7 +216,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
                   transition: "all 1s !important",
                   ":hover": {
                     background: Theme.lightBg,
-                    boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
+                    boxShadow: `0px 0px 10px 0px ${Theme.charAccent} , 0px 0px 10px 0px #ffffff`,
                   },
                 }}
               >
@@ -241,7 +244,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
             </StyledList>
           </Body>
         </Container>
-      </Drawer>
+      </StyledDrawer>
     </>
   )
 }

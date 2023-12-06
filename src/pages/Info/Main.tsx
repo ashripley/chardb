@@ -8,7 +8,7 @@ const Content = styled.div`
   justify-content: space-between;
 `
 
-const HeaderText = styled.div`
+const HeaderText = styled.h1`
   display: flex;
   height: 20%;
   font-size: 5.5rem;
@@ -18,9 +18,9 @@ const HeaderText = styled.div`
   display: flex;
   margin: 0;
   padding: 10px;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
+  color: ${Theme.charAccent};
+  font-weight: 800;
 `
 
 const Body = styled.div`
@@ -37,44 +37,32 @@ const Text = styled.span`
   display: flex;
   width: 60%;
   justify-content: center;
-  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
-    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
-    source-sans-pro, sans-serif;
+  font-family: ${Theme.fontFamily};
 `
 
-const Dragonite = styled.img`
-  position: relative;
-  bottom: 15%;
-  left: 75%;
+const PokemonImage = styled.img<{ pokemon: string }>`
   width: 150px;
   height: 150px;
-`
-
-const Squirtle = styled.img`
   position: relative;
-  top: 60%;
-  right: 35%;
-  width: 150px;
-  height: 150px;
+  ${({ pokemon }) =>
+    pokemon === "dragonite"
+      ? `bottom: 15%; left: 75%;`
+      : `top: 60%; right: 35%;`}
 `
 
 export const Main = () => {
   return (
     <Content>
       <HeaderText>
-        <span
-          className="char"
-          style={{ color: Theme.charAccent, fontWeight: 800 }}
-        >
-          char
-        </span>
+        <span className="char">char</span>
         <span className="db" style={{ color: Theme.primaryText }}>
           db
         </span>
       </HeaderText>
       <Body>
         <a href="https://pokemondb.net/pokedex/dragonite">
-          <Dragonite
+          <PokemonImage
+            pokemon="dragonite"
             src="https://img.pokemondb.net/sprites/home/normal/dragonite.png"
             alt="dragonite"
           />
@@ -105,7 +93,8 @@ export const Main = () => {
           bring your cards to life!
         </Text>
         <a href="https://pokemondb.net/pokedex/squirtle">
-          <Squirtle
+          <PokemonImage
+            pokemon="squirtle"
             src="https://img.pokemondb.net/sprites/home/normal/squirtle.png"
             alt="squirtle"
           />

@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { memo, useState } from "react"
 import styled from "styled-components"
 import flame from "../assets/icons/flame.png"
 import { AppBar, Box, Card, IconButton, Toolbar } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { Theme } from "../Theme"
+import React from "react"
 
 interface Props {
   isOpen: (isClicked: boolean) => void
@@ -19,6 +20,13 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 30px;
+`
+
+const StyledAppBar = styled(AppBar)`
+  background: transparent !important;
+  justify-content: center;
+  height: 100%;
+  border-bottom: none !important;
 `
 
 const StyledHeader = styled.div`
@@ -70,32 +78,17 @@ const HeaderText = styled.div`
     source-sans-pro, sans-serif;
 `
 
-export const Header = ({ isOpen, menuAction }: Props) => {
-  const [isClicked, setIsClicked] = useState(false)
-
-  const onClick = (clicked: boolean) => {
-    isOpen(clicked)
-  }
+export const Header = memo(({ isOpen }: Props) => {
+  const [isClicked] = useState(false)
 
   return (
     <>
       <div style={{ height: "15%" }}>
         <Box sx={{ height: "100%" }}>
-          <AppBar
-            position="static"
-            variant="outlined"
-            style={{
-              background: "transparent",
-              justifyContent: "center",
-              height: "100%",
-              borderBottom: "none",
-            }}
-          >
+          <StyledAppBar position="static" variant="outlined">
             <Toolbar style={{ padding: 0 }}>
               <Container>
-                <StyledHeader
-                  style={{ display: "flex", width: "100%", padding: 0 }}
-                >
+                <StyledHeader>
                   <LeftWrapper>
                     <MenuWrapper>
                       <IconWrapper
@@ -104,7 +97,7 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                           transition: "all 0.5s !important",
                           ":hover": {
                             background: Theme.lightBg,
-                            boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
+                            boxShadow: `0px 0px 10px 0px ${Theme.charAccent} , 0px 0px 10px 0px #ffffff`,
                           },
                         }}
                       >
@@ -118,7 +111,7 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                     <HeaderText>
                       <span
                         className="char"
-                        style={{ color: "darkorange", fontWeight: 800 }}
+                        style={{ color: Theme.charAccent, fontWeight: 800 }}
                       >
                         char
                       </span>
@@ -138,11 +131,11 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                         transition: "all 0.5s !important",
                         ":hover": {
                           background: Theme.lightBg,
-                          boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
+                          boxShadow: `0px 0px 10px 0px ${Theme.charAccent} , 0px 0px 10px 0px #ffffff`,
                         },
                       }}
                       style={{ width: 50, height: 50, margin: 0 }}
-                      onClick={() => onClick(!isClicked)}
+                      onClick={() => isOpen(!isClicked)}
                     >
                       <MenuIcon
                         style={{
@@ -155,9 +148,9 @@ export const Header = ({ isOpen, menuAction }: Props) => {
                 </StyledHeader>
               </Container>
             </Toolbar>
-          </AppBar>
+          </StyledAppBar>
         </Box>
       </div>
     </>
   )
-}
+})

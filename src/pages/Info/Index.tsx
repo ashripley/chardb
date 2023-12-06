@@ -3,6 +3,7 @@ import { Header } from "../Header"
 import { Main } from "./Main"
 import { Theme } from "../../Theme"
 import blob from "../../assets/icons/blob.svg"
+import React, { memo, useCallback } from "react"
 
 interface Props {
   menuAction: string
@@ -20,10 +21,13 @@ const Container = styled.div`
   background-attachment: fixed;
   background-position: center;
 `
-export const Info = ({ menuAction, isOpen }: Props) => {
-  const onClick = (clicked: boolean) => {
-    isOpen(clicked)
-  }
+export const Info = memo(({ menuAction, isOpen }: Props) => {
+  const onClick = useCallback(
+    (clicked: boolean) => {
+      isOpen(clicked)
+    },
+    [isOpen]
+  )
 
   return (
     <Container>
@@ -31,4 +35,4 @@ export const Info = ({ menuAction, isOpen }: Props) => {
       <Main />
     </Container>
   )
-}
+})

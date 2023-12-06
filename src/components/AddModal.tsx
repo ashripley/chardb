@@ -17,7 +17,7 @@ import {
   TextField,
 } from "@mui/material"
 import styled from "styled-components"
-import { useState } from "react"
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react"
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
 import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
@@ -148,7 +148,7 @@ const inputProps = {
 }
 
 export const AddModal = ({ openModal, closeModal }: Props) => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [icon, setIcon] = useState("add")
   const [alert, setAlert] = useState("add")
@@ -166,7 +166,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFields({
       attribute: (event.target as HTMLInputElement).value,
       ...omit("attribute", fields),
@@ -178,14 +178,11 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
     closeModal(false)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     setOpen(openModal)
   }, [openModal])
 
-  const toastClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const toastClose = (event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return
     }

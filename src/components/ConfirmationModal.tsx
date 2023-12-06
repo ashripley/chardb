@@ -8,7 +8,7 @@ import styled from "styled-components"
 import CloseIcon from "@mui/icons-material/Close"
 import { Theme } from "../Theme"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
-import { useEffect, useState } from "react"
+import { SyntheticEvent, useEffect, useState } from "react"
 
 interface Props {
   openModal: boolean
@@ -127,10 +127,7 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
     if (isReadyForDeletion) isDeleted(isReadyForDeletion)
   }, [isReadyForDeletion])
 
-  const toastClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const toastClose = (event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return
     }
@@ -154,7 +151,7 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
             transition: "all 0.5s !important",
             ":hover": {
               background: Theme.lightBg,
-              boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
+              boxShadow: `0px 0px 10px 0px ${Theme.charAccent} , 0px 0px 10px 0px #ffffff`,
               cursor: "pointer",
             },
           }}

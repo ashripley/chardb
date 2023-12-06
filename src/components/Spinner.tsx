@@ -2,6 +2,7 @@ import * as React from "react"
 import Backdrop from "@mui/material/Backdrop"
 import CircularProgress from "@mui/material/CircularProgress"
 import styled from "styled-components"
+import { useState } from "react"
 
 const Container = styled.div`
   position: absolute;
@@ -9,7 +10,7 @@ const Container = styled.div`
 `
 
 export default function SimpleBackdrop() {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const handleClose = () => {
     setOpen(false)
   }

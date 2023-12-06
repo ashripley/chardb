@@ -73,7 +73,7 @@ const StyledButton = styled(Button)`
   transition: all 1s ease;
 
   &:hover {
-    background-color: darkorange !important;
+    background-color: ${Theme.charAccent} !important;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
     color: #e3e4db !important;
   }
@@ -94,7 +94,9 @@ export const Main = ({ menuOption }: Props) => {
         <Root>
           <Wrapper>
             <Title>
-              <span style={{ color: "darkorange", fontWeight: 800 }}>char</span>
+              <span style={{ color: Theme.charAccent, fontWeight: 800 }}>
+                char
+              </span>
               <a href="https://pokemondb.net/pokedex/charmander">
                 <img
                   src="https://img.pokemondb.net/sprites/home/normal/charmander.png"

@@ -8,6 +8,7 @@ import { Theme } from "../Theme"
 import { Button, Divider } from "@mui/material"
 import ClearIcon from "@mui/icons-material/Clear"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
+import { useEffect, useState } from "react"
 
 interface Props {
   pokemon: Record<string, any>
@@ -153,11 +154,11 @@ const closeIconProps = {
 }
 
 export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
 
   const { name, image, types, abilities, id, height, weight } = pokemon ?? ""
 
-  React.useEffect(() => {
+  useEffect(() => {
     setOpen(openModal)
   }, [openModal])
 

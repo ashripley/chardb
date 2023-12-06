@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "@mui/material"
 import styled from "styled-components"
-import { useState } from "react"
+import { ChangeEvent, SyntheticEvent, useState } from "react"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { Theme } from "../../Theme"
 import { View } from "../../helpers/view"
@@ -193,10 +193,7 @@ export const ListView = ({
     setCardView({ view: View.READ })
   }
 
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return
     }
@@ -240,7 +237,7 @@ export const ListView = ({
     })
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFields({
       attribute: (event.target as HTMLInputElement).value,
       ...omit("attribute", fields),

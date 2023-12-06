@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from "@mui/material"
 import styled from "styled-components"
-import { useRef, useState } from "react"
+import { ChangeEvent, SyntheticEvent, useRef, useState } from "react"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { Theme } from "../../Theme"
 import { View } from "../../helpers/view"
@@ -159,10 +159,7 @@ export const GridView = ({
     !isEditView && setIsCardHovered(false)
   }
 
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
       return
     }
@@ -182,7 +179,7 @@ export const GridView = ({
     setCardView({ view: View.READ })
   }
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFields({
       attribute: (event.target as HTMLInputElement).value,
       ...omit("attribute", fields),
