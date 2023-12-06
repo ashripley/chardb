@@ -59,6 +59,11 @@ const TextFieldWrapper = styled.div`
   width: 50%;
   display: flex;
   justify-content: center;
+
+  @media only screen and (max-width: 600px) {
+    min-width: 200px;
+    margin: 10px;
+  }
 `
 
 const Fields = styled.div`
@@ -72,6 +77,7 @@ const NameField = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 `
 
 const Buttons = styled.div`
@@ -79,6 +85,12 @@ const Buttons = styled.div`
   width: 15%;
   display: flex;
   justify-content: flex-start;
+
+  @media only screen and (max-width: 600px) {
+    min-width: 200px;
+    margin: 10px;
+    height: 50px;
+  }
 `
 
 const Actions = styled.div`
@@ -93,6 +105,18 @@ const Chips = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+
+  @media only screen and (max-width: 600px) {
+    min-width: 200px;
+    margin: 10px;
+    height: 50px;
+  }
+`
+
+const StyledForm = styled(FormControl)`
+  @media only screen and (max-width: 600px) {
+    margin: 10px !important;
+  }
 `
 
 export const Main = () => {
@@ -202,8 +226,12 @@ export const Main = () => {
               <Wrapper>
                 <Fields>
                   <NameField>
-                    <FormControl
-                      sx={{ borderRadius: "15px !important", width: "15%" }}
+                    <StyledForm
+                      sx={{
+                        borderRadius: "15px !important",
+                        width: "15%",
+                        minWidth: 200,
+                      }}
                     >
                       <InputLabel color="warning">{"Category"}</InputLabel>
                       <Select
@@ -245,7 +273,7 @@ export const Main = () => {
                           </MenuItem>
                         ))}
                       </Select>
-                    </FormControl>
+                    </StyledForm>
                     <TextFieldWrapper>
                       <TextField
                         id="standard"
