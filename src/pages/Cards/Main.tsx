@@ -190,9 +190,6 @@ export const Main = () => {
     }
   }
 
-  // empty func for handleElse condition
-  const handleElse = () => {}
-
   // Function to toggle between grid and list view
   const onViewChange = () => {
     setViewToggle((prev) => !prev)
