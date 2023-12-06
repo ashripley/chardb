@@ -1,75 +1,38 @@
 import React from "react"
 import { Skeleton } from "@mui/material"
 
-interface Props {
-  view: boolean
-}
+export const LoadingSkeleton = () => {
+  const commonSkeletonStyles = {
+    sx: { borderRadius: 15 },
+  }
 
-export const Loading = ({ view }: Props) => {
-  return view ? (
+  const renderSkeletons = (
+    count: number,
+    variant: "text" | "rectangular" | "rounded" | "circular" | undefined
+  ) => {
+    const skeletons = []
+    for (let i = 0; i < count; i++) {
+      skeletons.push(
+        <Skeleton
+          key={i}
+          width="20%"
+          height={600}
+          variant={variant}
+          {...commonSkeletonStyles}
+        />
+      )
+    }
+    return skeletons
+  }
+
+  return (
     <div
       style={{
         display: "flex",
-        justifyContent: "space-between",
-        padding: "20px 20px",
+        justifyContent: "space-evenly",
       }}
     >
-      <Skeleton
-        variant="rounded"
-        width="22%"
-        height={600}
-        sx={{ borderRadius: 15 }}
-      />
-      <Skeleton
-        variant="rounded"
-        width="22%"
-        height={600}
-        sx={{ borderRadius: 15 }}
-      />
-      <Skeleton
-        variant="rounded"
-        width="22%"
-        height={600}
-        sx={{ borderRadius: 15 }}
-      />
-      <Skeleton
-        variant="rounded"
-        width="22%"
-        height={600}
-        sx={{ borderRadius: 15 }}
-      />
-    </div>
-  ) : (
-    <div
-      style={{
-        display: "block",
-        justifyContent: "center",
-      }}
-    >
-      <Skeleton
-        variant="rounded"
-        width="100%"
-        height={150}
-        sx={{ borderRadius: 15, marginBottom: 5, marginTop: 5 }}
-      />
-      <Skeleton
-        variant="rounded"
-        width="100%"
-        height={150}
-        sx={{ borderRadius: 15, marginBottom: 5 }}
-      />
-      <Skeleton
-        variant="rounded"
-        width="100%"
-        height={150}
-        sx={{ borderRadius: 15, marginBottom: 5 }}
-      />
-      <Skeleton
-        variant="rounded"
-        width="100%"
-        height={150}
-        sx={{ borderRadius: 15, marginBottom: 5 }}
-      />
+      {renderSkeletons(4, "rectangular")}
     </div>
   )
 }

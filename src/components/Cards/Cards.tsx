@@ -2,7 +2,7 @@ import { Pagination, Paper, Slide } from "@mui/material"
 import styled from "styled-components"
 import { useEffect, useMemo, useState } from "react"
 import { PokemonCard } from "./PokemonCard"
-import { Loading } from "../Skeleton"
+import { LoadingSkeleton } from "../Skeleton"
 
 interface Props {
   pokemon: Record<string, any>[]
@@ -79,8 +79,8 @@ export const Cards = ({
   return (
     <Slide direction="up" in={mounted} mountOnEnter unmountOnExit>
       <Container>
-        {isLoading ? (
-          <Loading view={view} />
+        {!isLoading ? (
+          <LoadingSkeleton />
         ) : (
           <StyledPaper
             elevation={0}

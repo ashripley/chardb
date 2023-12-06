@@ -2,6 +2,7 @@ import styled from "styled-components"
 import { Main } from "./Main"
 import { Header } from "../Header"
 import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
+import { useCallback } from "react"
 
 interface Props {
   menuAction: string
@@ -19,9 +20,12 @@ const Container = styled.div`
 `
 
 export const Cards = ({ menuAction, isOpen }: Props) => {
-  const onClick = (clicked: boolean) => {
-    isOpen(clicked)
-  }
+  const onClick = useCallback(
+    (clicked: boolean) => {
+      isOpen(clicked)
+    },
+    [isOpen]
+  )
 
   return (
     <Container>
