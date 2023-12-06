@@ -17,7 +17,7 @@ const Text = styled.div`
   display: flex;
   justify-content: center;
   background: ${Theme.lightBg};
-  font-weight: 800;
+  font-weight: 500;
   align-items: center;
 `
 
@@ -39,8 +39,8 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "400px",
-  height: "300px",
+  width: "50%",
+  height: "30%",
   border: "8px solid white",
   bgcolor: Theme.lightBg,
   boxShadow: `${Theme.lightBg} 0px 0px 2px 0px !important`,
