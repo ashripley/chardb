@@ -34,6 +34,19 @@ const Container = styled.div`
     source-sans-pro, sans-serif;
 `
 
+const ImageWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`
+
+const PokemonImage = styled.img`
+  width: 100px;
+  height: 100px;
+  position: relative;
+  display: flex;
+`
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -60,6 +73,12 @@ export const MobileModal = () => {
       >
         <Box sx={style}>
           <Container>
+            <ImageWrapper>
+              <PokemonImage
+                src="https://img.pokemondb.net/sprites/home/normal/snorlax.png"
+                alt="snorlax"
+              />
+            </ImageWrapper>
             <Text>
               Oops! Mobile detected. This web app is only modified for Desktop.
             </Text>
