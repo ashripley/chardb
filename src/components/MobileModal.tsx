@@ -19,6 +19,7 @@ const Text = styled.div`
   background: ${Theme.lightBg};
   font-weight: 500;
   align-items: center;
+  text-align: center;
 `
 
 const Container = styled.div`
