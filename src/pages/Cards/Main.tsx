@@ -237,6 +237,14 @@ export const Main = () => {
                         value={field.key}
                         label={"Category"}
                         color="warning"
+                        MenuProps={{
+                          PaperProps: {
+                            sx: {
+                              backgroundColor: Theme.lightBg,
+                              borderRadius: 3,
+                            },
+                          },
+                        }}
                         onChange={(e) => {
                           setField({
                             key: e.target.value,
