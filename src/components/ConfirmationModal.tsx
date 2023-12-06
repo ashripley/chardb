@@ -8,7 +8,7 @@ import styled from "styled-components"
 import CloseIcon from "@mui/icons-material/Close"
 import { Theme } from "../Theme"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
-import { SyntheticEvent, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 interface Props {
   openModal: boolean
@@ -78,7 +78,9 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-between;
   background: ${Theme.lightBg};
-  font-family: ${Theme.fontFamily};
+  font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
+    Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
+    source-sans-pro, sans-serif;
 `
 
 const Buttons = styled.div`
@@ -125,7 +127,10 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
     if (isReadyForDeletion) isDeleted(isReadyForDeletion)
   }, [isReadyForDeletion])
 
-  const toastClose = (event?: SyntheticEvent | Event, reason?: string) => {
+  const toastClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
     if (reason === "clickaway") {
       return
     }
@@ -149,7 +154,7 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
             transition: "all 0.5s !important",
             ":hover": {
               background: Theme.lightBg,
-              boxShadow: `0px 0px 10px 0px ${Theme.charAccent} , 0px 0px 10px 0px #ffffff`,
+              boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
               cursor: "pointer",
             },
           }}

@@ -79,7 +79,7 @@ export const Cards = ({
   return (
     <Slide direction="up" in={mounted} mountOnEnter unmountOnExit>
       <Container>
-        {!isLoading ? (
+        {isLoading ? (
           <LoadingSkeleton />
         ) : (
           <StyledPaper

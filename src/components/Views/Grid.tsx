@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from "@mui/material"
 import styled from "styled-components"
-import { ChangeEvent, SyntheticEvent, useRef, useState } from "react"
+import { ChangeEvent, SyntheticEvent, useMemo, useRef, useState } from "react"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { Theme } from "../../Theme"
 import { View } from "../../helpers/view"
@@ -121,21 +121,27 @@ export const GridView = ({
 
   //#region styles
 
-  const shadowStyle = {
-    boxShadow: `${pokemon.colour} 0px 2px 35px 0px, ${pokemon.colour} 0px 0px 40px 0px`,
-    borderRadius: 25,
-  }
+  const shadowStyle = useMemo(
+    () => ({
+      boxShadow: `${pokemon.colour} 0px 2px 35px 0px, ${pokemon.colour} 0px 0px 40px 0px`,
+      borderRadius: 25,
+    }),
+    [pokemon.colour]
+  )
 
-  const cardStyles = {
-    minWidth: 275,
-    backgroundColor: Theme.lightBg,
-    borderRadius: "30px",
-    height: "100%",
-    transition: "all 1.5s !important",
-    border: "8px solid white",
-    ...(isEditView && { borderRadius: 25 }),
-    ":hover": { ...shadowStyle },
-  }
+  const cardStyles = useMemo(
+    () => ({
+      minWidth: 275,
+      backgroundColor: Theme.lightBg,
+      borderRadius: "30px",
+      height: "100%",
+      transition: "all 1.5s !important",
+      border: "8px solid white",
+      ...(isEditView && { borderRadius: 25 }),
+      ":hover": { ...shadowStyle },
+    }),
+    [isEditView, shadowStyle]
+  )
 
   //#endregion
 
