@@ -1,11 +1,11 @@
-import setIcon from "../assets/icons/set.png"
+import attributeIcon from "../assets/icons/attribute.png"
+import idIcon from "../assets/icons/id.png"
 import pokemonNameIcon from "../assets/icons/pokemonName.png"
 import pokemonTypeIcon from "../assets/icons/pokemonType.png"
-import yearIcon from "../assets/icons/year.png"
-import attributeIcon from "../assets/icons/attribute.png"
-import setNumberIcon from "../assets/icons/setNumber.png"
-import idIcon from "../assets/icons/id.png"
 import quantityIcon from "../assets/icons/quantity.png"
+import setIcon from "../assets/icons/set.png"
+import setNumberIcon from "../assets/icons/setNumber.png"
+import yearIcon from "../assets/icons/year.png"
 import { IconImageMap } from "../components/IconImageMap"
 
 export const icons: Record<string, any> = {

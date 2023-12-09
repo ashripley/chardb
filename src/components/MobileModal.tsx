@@ -2,13 +2,13 @@ import Backdrop from "@mui/material/Backdrop"
 import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 import styled from "styled-components"
-import { Theme } from "../Theme"
+import { theme } from "../theme"
 
 const Wrapper = styled.div`
   height: 50%;
   width: 50%;
   display: flex;
-  border: 1px solid ${Theme.darkBg};
+  border: 1px solid ${theme.darkBg};
 `
 
 const Text = styled.div`
@@ -16,7 +16,7 @@ const Text = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
-  background: ${Theme.lightBg};
+  background: ${theme.lightBg};
   font-weight: 500;
   align-items: center;
   text-align: center;
@@ -56,8 +56,8 @@ const style = {
   width: "50%",
   height: "30%",
   border: "8px solid white",
-  bgcolor: Theme.lightBg,
-  boxShadow: `${Theme.lightBg} 0px 0px 2px 0px !important`,
+  bgcolor: theme.lightBg,
+  boxShadow: `${theme.lightBg} 0px 0px 2px 0px !important`,
   borderRadius: "25px",
   p: 4,
 }

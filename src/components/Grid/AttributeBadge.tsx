@@ -1,6 +1,6 @@
 import { Badge, Tooltip } from "@mui/material"
 import styled from "styled-components"
-import { Theme } from "../../Theme"
+import { theme } from "../../theme"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 
 interface Props {
@@ -29,7 +29,7 @@ const StyledBadge = styled(Badge)`
 `
 
 const Quantity = styled.div<{ isGridCard: boolean }>`
-  color: ${Theme.lightBg};
+  color: ${theme.lightBg};
   align-items: flex-start;
   display: flex;
   height: 100%;
@@ -37,7 +37,7 @@ const Quantity = styled.div<{ isGridCard: boolean }>`
   position: relative;
   top: ${({ isGridCard }) => (isGridCard ? "91%" : "87%")};
   font-weight: 300 !important;
-  font-family: ${Theme.fontFamily};
+  font-family: ${theme.fontFamily};
 `
 
 export const AttributeBadge = ({
@@ -45,14 +45,6 @@ export const AttributeBadge = ({
   isEvolutionsHovered,
   isGridCard,
 }: Props) => {
-  const attributeColour: Record<string, any> = {
-    standard: Theme.primaryText,
-    "standard holographic": Theme.standardHolographic,
-    "reverse holographic": Theme.reverseHolographic,
-    special: Theme.special,
-    gold: Theme.gold,
-  }
-
   return (
     <Wrapper isGridCard={isGridCard}>
       <Tooltip title={upperCaseFirst(pokemon.attribute)} placement="top">
@@ -61,11 +53,11 @@ export const AttributeBadge = ({
           sx={{
             "& .MuiBadge-dot": {
               color: isEvolutionsHovered
-                ? Theme.lightBg
-                : attributeColour[pokemon.attribute] ?? "#c0c0c0",
+                ? theme.lightBg
+                : theme.attributeColour[pokemon.attribute] ?? theme.lightBg,
               backgroundColor: isEvolutionsHovered
-                ? Theme.lightBg
-                : attributeColour[pokemon.attribute] ?? "#c0c0c0",
+                ? theme.lightBg
+                : theme.attributeColour[pokemon.attribute] ?? theme.lightBg,
             },
           }}
         />

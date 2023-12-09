@@ -1,13 +1,7 @@
-import {
-  Card,
-  RadioGroup,
-  Skeleton,
-  TextField,
-  Tooltip
-} from "@mui/material"
+import { Card, RadioGroup, Skeleton, TextField, Tooltip } from "@mui/material"
 import { ChangeEvent, SyntheticEvent, useState } from "react"
 import styled from "styled-components"
-import { Theme } from "../../Theme"
+import { theme } from "../../theme"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
@@ -57,10 +51,10 @@ const Data = styled.div`
   font-weight: 800;
   justify-content: center;
   align-items: center;
-  font-family: ${Theme.fontFamily};
+  font-family: ${theme.fontFamily};
   text-transform: capitalize;
   padding: 10px 0px;
-  color: ${Theme.primaryText};
+  color: ${theme.primaryText};
 
   font-size: 0.9em;
 `
@@ -69,14 +63,14 @@ const StyledRadioGroup = styled(RadioGroup)`
   width: 100%;
   margin: 5px;
   font-weight: 300 !important;
-  font-family: ${Theme.fontFamily};
+  font-family: ${theme.fontFamily};
 `
 
 const Icon = styled.div`
   display: flex;
   width: 15%;
   justify-content: center;
-  color: ${Theme.card};
+  color: ${theme.card};
 `
 //#endregion
 
@@ -85,21 +79,21 @@ export const readIconStyles = {
   width: 30,
   borderRadius: 100,
   background: "transparent",
-  color: Theme.lightBg,
+  color: theme.lightBg,
   transition: "all 0.3s !important",
   padding: "0.5em",
   ":hover": {
-    boxShadow: `0px 10px 30px ${Theme.primaryText}`,
+    boxShadow: `0px 10px 30px ${theme.primaryText}`,
   },
 }
 
 export const editIconStyles = {
   borderRadius: 100,
-  color: Theme.lightBg,
+  color: theme.lightBg,
   transition: "all 0.3s !important",
   padding: "0.5em",
   ":hover": {
-    boxShadow: `0px 10px 30px ${Theme.primaryText}`,
+    boxShadow: `0px 10px 30px ${theme.primaryText}`,
   },
 }
 
@@ -136,7 +130,7 @@ export const ListView = ({
     height: "100%",
     display: "flex",
     transition: "all 0.8s !important",
-    backgroundColor: Theme.lightBg,
+    backgroundColor: theme.lightBg,
     border: "8px solid white",
     ":hover": {
       boxShadow: `${pokemon.colour} 0px 2px 35px 0px, ${pokemon.colour} 0px 0px 40px 0px`,
@@ -147,13 +141,13 @@ export const ListView = ({
     sx: {
       borderRadius: "15px !important",
       fieldset: {
-        border: `2px solid ${Theme.darkBg}`,
+        border: `2px solid ${theme.darkBg}`,
       },
-      input: { color: Theme.primaryText },
+      input: { color: theme.primaryText },
 
       "&:hover": {
         fieldset: {
-          borderColor: `${Theme.charAccent} !important`,
+          borderColor: `${theme.charAccent} !important`,
           borderWidth: 2,
         },
       },
@@ -206,7 +200,7 @@ export const ListView = ({
       fields.year || pokemon.year,
       fields.quantity || pokemon.quantity,
       fields.attribute?.toLowerCase() || pokemon.attribute,
-      Theme.typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
+      theme.typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
     )
 
     setOpen(true)

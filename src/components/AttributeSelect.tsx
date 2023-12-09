@@ -6,7 +6,7 @@ import {
   Select,
 } from "@mui/material"
 import styled from "styled-components"
-import { Theme } from "../Theme"
+import { theme } from "../theme"
 import { attributes } from "../config"
 
 interface Props {
@@ -44,7 +44,7 @@ export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
           MenuProps={{
             PaperProps: {
               sx: {
-                backgroundColor: Theme.lightBg,
+                backgroundColor: theme.lightBg,
                 borderRadius: 3,
               },
             },
@@ -54,9 +54,9 @@ export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
           sx={{
             borderRadius: "15px",
             fieldset: {
-              borderColor: Theme.darkBg,
+              borderColor: theme.darkBg,
             },
-            color: Theme.primaryText,
+            color: theme.primaryText,
             justifyContent: "center",
 
             "&:hover": {
@@ -67,13 +67,13 @@ export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
           }}
         >
           <MenuItem value="">
-            <b style={{ color: Theme.primaryText }}>Attribute</b>
+            <b style={{ color: theme.primaryText }}>Attribute</b>
           </MenuItem>
           {attributes.map((attribute, index) => (
             <MenuItem
               key={index}
               value={attribute}
-              sx={{ color: Theme.primaryText }}
+              sx={{ color: theme.primaryText }}
             >
               {attribute}
             </MenuItem>

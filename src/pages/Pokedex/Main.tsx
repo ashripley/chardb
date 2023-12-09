@@ -11,7 +11,7 @@ import {
 import axios from "axios"
 import { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
-import { Theme } from "../../Theme"
+import { theme } from "../../theme"
 import { AllCards } from "../../api/queries/allCards"
 import tick from "../../assets/icons/tick.png"
 import { IconImageMap } from "../../components/IconImageMap"
@@ -38,8 +38,8 @@ const Wrapper = styled.div`
 const Header = styled.div`
   display: flex;
   font-weight: 800;
-  font-family: ${Theme.fontFamily};
-  color: ${Theme.primaryText};
+  font-family: ${theme.fontFamily};
+  color: ${theme.primaryText};
   font-size: 30px;
   justify-content: center;
   padding: 30px 0px;
@@ -90,14 +90,14 @@ export const Main = () => {
       width: 200,
       padding: "2rem",
       margin: "1rem",
-      backgroundColor: Theme.lightBg,
+      backgroundColor: theme.lightBg,
       borderRadius: "15px",
       boxShadow: "rgba(0, 0, 0, 0.4) 0px 40px 90px",
       transition: "all 0.5s !important",
       border: "8px solid white",
       ":hover": {
         boxShadow: `0px 0px 10px 5px ${
-          Theme.typeColours[p.types?.[0]]
+          theme.typeColours[p.types?.[0]]
         } , 0px 0px 0px 0px #ffffff`,
       },
     }
@@ -124,7 +124,7 @@ export const Main = () => {
         return {
           name,
           types: types.map((type: Record<string, any>) => type.type.name),
-          colour: Theme.typeColours[types?.[0]] ?? "#a8a878",
+          colour: theme.typeColours[types?.[0]] ?? "#a8a878",
           image: `https://img.pokemondb.net/sprites/home/normal/${name}.png`,
         }
       })
@@ -171,7 +171,7 @@ export const Main = () => {
             variant="outlined"
             sx={{
               height: "15%",
-              backgroundColor: Theme.lightBg,
+              backgroundColor: theme.lightBg,
               border: "none",
               borderRadius: "15px",
               transition: "all 1s ease !important",
@@ -195,9 +195,9 @@ export const Main = () => {
                 sx: {
                   borderRadius: "15px !important",
                   fieldset: {
-                    borderColor: Theme.darkBg,
+                    borderColor: theme.darkBg,
                   },
-                  input: { color: Theme.primaryText },
+                  input: { color: theme.primaryText },
 
                   "&:hover": {
                     fieldset: {

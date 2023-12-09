@@ -2,7 +2,7 @@ import MenuIcon from "@mui/icons-material/Menu"
 import { AppBar, Box, Card, IconButton, Toolbar } from "@mui/material"
 import { memo, useState } from "react"
 import styled from "styled-components"
-import { Theme } from "../Theme"
+import { theme } from "../theme"
 import flame from "../assets/icons/flame.png"
 
 interface Props {
@@ -72,7 +72,7 @@ const HeaderText = styled.div`
   width: 60%;
   display: flex;
   margin: 0;
-  font-family: ${Theme.fontFamily};
+  font-family: ${theme.fontFamily};
 `
 
 export const Header = memo(({ isOpen }: Props) => {
@@ -90,11 +90,11 @@ export const Header = memo(({ isOpen }: Props) => {
                     <MenuWrapper>
                       <IconWrapper
                         sx={{
-                          backgroundColor: Theme.lightBg,
+                          backgroundColor: theme.lightBg,
                           transition: "all 0.5s !important",
                           ":hover": {
-                            background: Theme.lightBg,
-                            boxShadow: `0px 0px 10px 0px ${Theme.charAccent} , 0px 0px 10px 0px #ffffff`,
+                            background: theme.lightBg,
+                            boxShadow: `0px 0px 10px 0px ${theme.charAccent} , 0px 0px 10px 0px #ffffff`,
                           },
                         }}
                       >
@@ -108,11 +108,11 @@ export const Header = memo(({ isOpen }: Props) => {
                     <HeaderText>
                       <span
                         className="char"
-                        style={{ color: Theme.charAccent, fontWeight: 800 }}
+                        style={{ color: theme.charAccent, fontWeight: 800 }}
                       >
                         char
                       </span>
-                      <span className="db" style={{ color: Theme.primaryText }}>
+                      <span className="db" style={{ color: theme.primaryText }}>
                         db
                       </span>
                     </HeaderText>
@@ -127,8 +127,8 @@ export const Header = memo(({ isOpen }: Props) => {
                         mr: 2,
                         transition: "all 0.5s !important",
                         ":hover": {
-                          background: Theme.lightBg,
-                          boxShadow: `0px 0px 10px 0px ${Theme.charAccent} , 0px 0px 10px 0px #ffffff`,
+                          background: theme.lightBg,
+                          boxShadow: `0px 0px 10px 0px ${theme.charAccent} , 0px 0px 10px 0px #ffffff`,
                         },
                       }}
                       style={{ width: 50, height: 50, margin: 0 }}

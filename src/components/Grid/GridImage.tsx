@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { Theme } from "../../Theme"
+import { theme } from "../../theme"
 import { Card, Grow } from "@mui/material"
 import { AttributeBadge } from "./AttributeBadge"
 import pokemonTrainer from "../../assets/icons/pokemon-trainer.svg"
@@ -20,7 +20,7 @@ const Image = styled.div<{
   isCardHovered: boolean
   isEditView: boolean
 }>`
-  background: ${Theme.card};
+  background: ${theme.card};
   height: ${({ isCardHovered, isEditView }) =>
     !!isCardHovered && !!isEditView ? "30%" : isCardHovered ? "40%" : "45%"};
   width: 100%;
@@ -85,10 +85,14 @@ export const GridImage = ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: `${Theme.lightBg} !important`,
+    backgroundColor: `${theme.lightBg} !important`,
     opacity: "revert",
     transition: "all 0.8s !important",
-    boxShadow: `${Theme.lightBg} 0px 0px 20px 0px !important`,
+    boxShadow: `${
+      pokemon.attribute === "energy"
+        ? theme.typeColours[pokemon.type]
+        : theme.attributeColour[pokemon.attribute] || theme.lightBg
+    } 0px 0px 20px 0px !important`,
 
     ":hover": {
       width: "360px !important",

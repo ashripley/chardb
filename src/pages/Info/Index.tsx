@@ -1,6 +1,6 @@
 import { memo, useCallback } from "react"
 import styled from "styled-components"
-import { Theme } from "../../Theme"
+import { theme } from "../../theme"
 import blob from "../../assets/icons/blob.svg"
 import { Header } from "../Header"
 import { Main } from "./Main"
@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Container = styled.div`
-  background-color: ${Theme.darkBg} !important;
+  background-color: ${theme.darkBg} !important;
   background: url(${blob});
   background-size: auto;
   min-height: 100vh;

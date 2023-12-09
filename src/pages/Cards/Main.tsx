@@ -17,13 +17,13 @@ import {
 import { deleteDoc, doc } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
-import { Theme } from "../../Theme"
 import { AllCards } from "../../api/queries/allCards"
 import { AddModal } from "../../components/AddModal"
 import { Cards } from "../../components/Cards/Cards"
 import { ConfirmationModal } from "../../components/ConfirmationModal"
 import { SortToggleButton } from "../../components/SortDropdownButton"
 import { firestore } from "../../services/firebase"
+import { theme } from "../../theme"
 
 const Wrap = styled.div``
 
@@ -219,7 +219,7 @@ export const Main = () => {
             <StyledPaper
               variant="outlined"
               sx={{
-                backgroundColor: Theme.lightBg,
+                backgroundColor: theme.lightBg,
                 border: "none",
                 borderRadius: "15px",
                 transition: "all 1s ease !important",
@@ -247,7 +247,7 @@ export const Main = () => {
                         MenuProps={{
                           PaperProps: {
                             sx: {
-                              backgroundColor: Theme.lightBg,
+                              backgroundColor: theme.lightBg,
                               borderRadius: 3,
                             },
                           },
@@ -261,9 +261,9 @@ export const Main = () => {
                         sx={{
                           borderRadius: "15px 35px 35px 15px",
                           fieldset: {
-                            borderColor: Theme.darkBg,
+                            borderColor: theme.darkBg,
                           },
-                          color: Theme.primaryText,
+                          color: theme.primaryText,
 
                           "&:hover": {
                             fieldset: {
@@ -273,13 +273,13 @@ export const Main = () => {
                         }}
                       >
                         <MenuItem value="">
-                          <b style={{ color: Theme.primaryText }}>None</b>
+                          <b style={{ color: theme.primaryText }}>None</b>
                         </MenuItem>
                         {categories.map((category, index) => (
                           <MenuItem
                             key={index}
                             value={category}
-                            sx={{ color: Theme.primaryText }}
+                            sx={{ color: theme.primaryText }}
                           >
                             {category}
                           </MenuItem>
@@ -302,9 +302,9 @@ export const Main = () => {
                           sx: {
                             borderRadius: "15px !important",
                             fieldset: {
-                              borderColor: Theme.darkBg,
+                              borderColor: theme.darkBg,
                             },
-                            input: { color: Theme.primaryText },
+                            input: { color: theme.primaryText },
 
                             "&:hover": {
                               fieldset: {
@@ -325,7 +325,7 @@ export const Main = () => {
                             width: "45%",
                             height: "100%",
                             borderRadius: 15,
-                            borderColor: Theme.darkBg,
+                            borderColor: theme.darkBg,
                           }}
                           onClick={handleAdd}
                         >
@@ -339,7 +339,7 @@ export const Main = () => {
                             width: "45%",
                             height: "100%",
                             borderRadius: 15,
-                            borderColor: Theme.darkBg,
+                            borderColor: theme.darkBg,
                           }}
                           onClick={handleRefresh}
                         >
@@ -364,7 +364,7 @@ export const Main = () => {
                             fontSize="small"
                             style={{
                               color: `${
-                                !viewToggle ? Theme.primaryText : "#ff8c00"
+                                !viewToggle ? theme.primaryText : "#ff8c00"
                               }`,
                             }}
                           />
@@ -372,11 +372,11 @@ export const Main = () => {
                         sx={{
                           padding: "15px 5px",
                           borderRadius: "15px",
-                          borderColor: Theme.darkBg,
+                          borderColor: theme.darkBg,
                           color: `${
-                            !viewToggle ? Theme.primaryText : "#ff8c00"
+                            !viewToggle ? theme.primaryText : "#ff8c00"
                           }`,
-                          fontFamily: Theme.fontFamily,
+                          fontFamily: theme.fontFamily,
                         }}
                         variant={viewToggle ? "filled" : "outlined"}
                       />
@@ -388,7 +388,7 @@ export const Main = () => {
                             fontSize="small"
                             style={{
                               color: `${
-                                viewToggle ? Theme.primaryText : "#ff8c00"
+                                viewToggle ? theme.primaryText : "#ff8c00"
                               }`,
                             }}
                           />
@@ -396,11 +396,11 @@ export const Main = () => {
                         sx={{
                           padding: "15px 5px",
                           borderRadius: "15px",
-                          borderColor: Theme.darkBg,
+                          borderColor: theme.darkBg,
                           color: `${
-                            viewToggle ? Theme.primaryText : "#ff8c00"
+                            viewToggle ? theme.primaryText : "#ff8c00"
                           }`,
-                          fontFamily: Theme.fontFamily,
+                          fontFamily: theme.fontFamily,
                         }}
                         variant={!viewToggle ? "filled" : "outlined"}
                       />

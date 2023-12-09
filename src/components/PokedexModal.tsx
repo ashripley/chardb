@@ -6,7 +6,7 @@ import Fade from "@mui/material/Fade"
 import Modal from "@mui/material/Modal"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Theme } from "../Theme"
+import { theme } from "../theme"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
 
 interface Props {
@@ -23,7 +23,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  background: ${Theme.lightBg};
+  background: ${theme.lightBg};
 `
 
 const Header = styled.div`
@@ -46,8 +46,8 @@ const Label = styled.div`
   display: flex;
   width: 100%;
   font-weight: 800;
-  font-family: ${Theme.fontFamily};
-  color: ${Theme.primaryText};
+  font-family: ${theme.fontFamily};
+  color: ${theme.primaryText};
   font-size: 30px;
   justify-content: center;
   paddingBottom: 30px;
@@ -79,8 +79,8 @@ const Key = styled.div`
   width: 20%;
   min-width: 20%;
   font-weight: 800;
-  font-family: ${Theme.fontFamily};
-  color: ${Theme.primaryText};
+  font-family: ${theme.fontFamily};
+  color: ${theme.primaryText};
   font-size: 18px;
   justify-content: flex-start;
   padding: 10px 0px;
@@ -92,8 +92,8 @@ const Value = styled.div`
   display: flex;
   width: auto;
   font-weight: 800;
-  font-family: ${Theme.fontFamily};
-  color: ${Theme.primaryText};
+  font-family: ${theme.fontFamily};
+  color: ${theme.primaryText};
   font-size: 18px;
   justify-content: flex-start;
   padding: 10px 0px;
@@ -133,7 +133,7 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "40%",
   height: "80%",
-  bgcolor: Theme.lightBg,
+  bgcolor: theme.lightBg,
   borderRadius: "15px",
   p: 4,
 }
@@ -141,7 +141,7 @@ const style = {
 const closeIconProps = {
   width: 40,
   height: 40,
-  color: Theme.primaryText,
+  color: theme.primaryText,
   display: "flex",
   justifyContent: "flex-end",
 }
@@ -201,7 +201,7 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
             sx={{
               ...style,
               boxShadow: `0px 0px 10px 5px ${
-                Theme.typeColours[pokemon.types?.[0]]
+                theme.typeColours[pokemon.types?.[0]]
               } , 0px 0px 0px 0px #ffffff !important`,
             }}
           >

@@ -4,7 +4,7 @@ import Drawer from "@mui/material/Drawer"
 import List from "@mui/material/List"
 import { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
-import { Theme } from "../../Theme"
+import { theme } from "../../theme"
 import flame from "../../assets/icons/flame.png"
 
 interface Props {
@@ -21,7 +21,7 @@ const Container = styled.div`
   justify-content: space-between;
   flex-wrap: wrap;
   flex-direction: column;
-  background-color: ${Theme.darkBg};
+  background-color: ${theme.darkBg};
   z-index: 1;
 `
 
@@ -32,7 +32,7 @@ const HeaderWrapper = styled.div`
   box-sizing: border-box;
   padding: 30px;
   justify-content: space-around;
-  background-color: ${Theme.darkBg};
+  background-color: ${theme.darkBg};
 `
 
 const StyledDrawer = styled(Drawer)`
@@ -84,7 +84,7 @@ const HeaderText = styled.div`
   display: flex;
   margin: 0;
   padding: 10px;
-  font-family: ${Theme.fontFamily};
+  font-family: ${theme.fontFamily};
 `
 
 const Body = styled.div`
@@ -95,7 +95,7 @@ const Body = styled.div`
   justify-items: center;
   align-items: center;
   justify-content: center;
-  background-color: ${Theme.lightBg};
+  background-color: ${theme.lightBg};
 
   border-top-left-radius: 45% 50%;
   border-top-right-radius: 95% 60%;
@@ -118,25 +118,25 @@ const StyledList = styled(List)`
 const buttonStyles = {
   width: "100%",
   height: "100%",
-  backgroundColor: Theme.darkBg,
-  color: Theme.primaryText,
+  backgroundColor: theme.darkBg,
+  color: theme.primaryText,
   padding: "30px",
   borderRadius: "35px",
   fontSize: "18px",
   boxShadow:
     "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
   transition: "all 1s ease",
-  fontFamily: Theme.fontFamily,
+  fontFamily: theme.fontFamily,
   ":hover": {
-    backgroundColor: `${Theme.charAccent} !important`,
+    backgroundColor: `${theme.charAccent} !important`,
     opacity: "0.8",
     boxShadow: "rgba(0, 0, 0, 0.4) 0px 30px 90px",
-    color: `${Theme.darkBg} !important`,
+    color: `${theme.darkBg} !important`,
   },
 }
 
 const iconButtonStyles = {
-  background: Theme.lightBg,
+  background: theme.lightBg,
   borderTopLeftRadius: "45% 50%",
   borderTopRightRadius: "95% 60%",
   borderBottomLeftRadius: "45% 70%",
@@ -147,7 +147,7 @@ const iconButtonStyles = {
   transition: "all 1s !important",
   ":hover": {
     background: "#fff",
-    boxShadow: `0px 0px 20px 0px ${Theme.charAccent} , 0px 0px 20px 0px #ffffff`,
+    boxShadow: `0px 0px 20px 0px ${theme.charAccent} , 0px 0px 20px 0px #ffffff`,
   },
 }
 
@@ -196,11 +196,11 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
               <HeaderText>
                 <span
                   className="char"
-                  style={{ color: Theme.charAccent, fontWeight: 800 }}
+                  style={{ color: theme.charAccent, fontWeight: 800 }}
                 >
                   char
                 </span>
-                <span className="db" style={{ color: Theme.primaryText }}>
+                <span className="db" style={{ color: theme.primaryText }}>
                   db
                 </span>
               </HeaderText>
@@ -208,12 +208,12 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
             <IconWrapper>
               <IconButton
                 onClick={() => onClose()}
-                style={{ color: Theme.primaryText }}
+                style={{ color: theme.primaryText }}
                 sx={{
                   transition: "all 1s !important",
                   ":hover": {
-                    background: Theme.lightBg,
-                    boxShadow: `0px 0px 10px 0px ${Theme.charAccent} , 0px 0px 10px 0px #ffffff`,
+                    background: theme.lightBg,
+                    boxShadow: `0px 0px 10px 0px ${theme.charAccent} , 0px 0px 10px 0px #ffffff`,
                   },
                 }}
               >

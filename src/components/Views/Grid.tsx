@@ -1,7 +1,7 @@
 import { Card, RadioGroup, TextField, Tooltip } from "@mui/material"
 import { ChangeEvent, SyntheticEvent, useMemo, useRef, useState } from "react"
 import styled from "styled-components"
-import { Theme } from "../../Theme"
+import { theme } from "../../theme"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
@@ -52,16 +52,16 @@ const Icon = styled.div<{ isEditView: boolean }>`
   width: 15%;
   justify-content: ${({ isEditView }) =>
     isEditView ? "center" : "flex-start"};
-  color: ${Theme.card};
+  color: ${theme.card};
 `
 
 const Data = styled.div`
   display: flex;
   width: 60%;
   font-weight: 800;
-  font-family: ${Theme.fontFamily};
+  font-family: ${theme.fontFamily};
   text-transform: capitalize;
-  color: ${Theme.primaryText};
+  color: ${theme.primaryText};
 `
 
 const Details = styled.div<{ isCardHovered: boolean; isEditView: boolean }>`
@@ -73,15 +73,6 @@ const Details = styled.div<{ isCardHovered: boolean; isEditView: boolean }>`
   justify-content: space-evenly;
   position: relative;
   transition: all 1s ease;
-`
-
-const StyledRadioGroup = styled(RadioGroup)`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 5px;
-  font-weight: 300 !important;
-  font-family: ${Theme.fontFamily};
 `
 //#endregion
 
@@ -127,11 +118,11 @@ export const GridView = ({
   const cardStyles = useMemo(
     () => ({
       minWidth: 275,
-      backgroundColor: Theme.lightBg,
+      backgroundColor: theme.lightBg,
       borderRadius: "30px",
       height: "100%",
       transition: "all 1.5s !important",
-      border: "8px solid white",
+      border: `8px solid white`,
       ...(isEditView && { borderRadius: 25 }),
       ":hover": { ...shadowStyle },
     }),
@@ -202,7 +193,7 @@ export const GridView = ({
       fields.year || pokemon.year,
       fields.quantity || pokemon.quantity,
       fields.attribute?.toLowerCase() || pokemon.attribute,
-      Theme.typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
+      theme.typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
     )
 
     setOpen(true)
@@ -284,13 +275,13 @@ export const GridView = ({
                     sx: {
                       borderRadius: "15px !important",
                       fieldset: {
-                        border: `2px solid ${Theme.darkBg}`,
+                        border: `2px solid ${theme.darkBg}`,
                       },
-                      input: { color: Theme.primaryText },
+                      input: { color: theme.primaryText },
 
                       "&:hover": {
                         fieldset: {
-                          borderColor: `${Theme.charAccent} !important`,
+                          borderColor: `${theme.charAccent} !important`,
                           borderWidth: 2,
                         },
                       },

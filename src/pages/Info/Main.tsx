@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { Theme } from "../../Theme"
+import { theme } from "../../theme"
 
 const Content = styled.div`
   display: flex;
@@ -18,8 +18,8 @@ const HeaderText = styled.h1`
   display: flex;
   margin: 0;
   padding: 10px;
-  font-family: ${Theme.fontFamily};
-  color: ${Theme.charAccent};
+  font-family: ${theme.fontFamily};
+  color: ${theme.charAccent};
   font-weight: 800;
 `
 
@@ -31,13 +31,13 @@ const Body = styled.div`
 `
 
 const Text = styled.span`
-  color: ${Theme.primaryText};
+  color: ${theme.primaryText};
   text-align: center;
   font-size: 1.3rem;
   display: flex;
   width: 60%;
   justify-content: center;
-  font-family: ${Theme.fontFamily};
+  font-family: ${theme.fontFamily};
 `
 
 const PokemonImage = styled.img<{ pokemon: string }>`
@@ -55,7 +55,7 @@ export const Main = () => {
     <Content>
       <HeaderText>
         <span className="char">char</span>
-        <span className="db" style={{ color: Theme.primaryText }}>
+        <span className="db" style={{ color: theme.primaryText }}>
           db
         </span>
       </HeaderText>

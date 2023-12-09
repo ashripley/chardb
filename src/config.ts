@@ -1,4 +1,4 @@
-import { Theme } from "./Theme"
+import { theme } from "./theme"
 
 export const sets = {
   "151": 398,
@@ -20,10 +20,3 @@ export const attributes = [
   "Gold",
   "Metal",
 ]
-
-export const attributeColour: Record<string, any> = {
-  standard: Theme.primaryText,
-  "standard holographic": Theme.standardHolographic,
-  "reverse holographic": Theme.reverseHolographic,
-  special: Theme.special,
-}

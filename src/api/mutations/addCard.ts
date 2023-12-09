@@ -1,7 +1,7 @@
 import axios from "axios"
 import { doc, setDoc } from "firebase/firestore"
 import { v4 as uuidv4 } from "uuid"
-import { Theme } from "../../Theme"
+import { theme } from "../../theme"
 import { firestore } from "../../services/firebase"
 
 export const AddCardMutation = async (
@@ -14,7 +14,7 @@ export const AddCardMutation = async (
   attribute: string
 ) => {
   const uniqueId = uuidv4()
-  const colour = Theme.typeColours[type] ?? Theme.typeColours.normal
+  const colour = theme.typeColours[type] ?? theme.typeColours.normal
 
   console.log("attribute", attribute)
 
@@ -125,7 +125,7 @@ export const AddCardMutation = async (
       set,
       setNumber,
       year,
-      colour: attribute === "trainer" ? Theme.typeColours.normal : colour,
+      colour: attribute === "trainer" ? theme.typeColours.normal : colour,
       quantity,
       attribute,
       url: {

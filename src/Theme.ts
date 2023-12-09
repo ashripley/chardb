@@ -1,13 +1,10 @@
-export const Theme: Record<string, any> = {
+export const theme: Record<string, any> = {
   primaryText: "#595959", // dimgray
   lightBg: "#eeefeb", // light part of home wallpaper
   darkBg: "#e3e4db", // dark part of home wallpaper
   charAccent: "#ff8c00", // dark orange
   success: "#2f7d31", // mui green
   card: "#333333", // background of card
-  standardHolographic: "#EE4B2B",
-  reverseHolographic: "#0096FF",
-  gold: "FFD700",
   fontFamily:
     "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif",
   special: "#CFB53B",
@@ -30,5 +27,12 @@ export const Theme: Record<string, any> = {
     dark: "#705848",
     steel: "#b8b8d0",
     fairy: "#f0b6bc",
+  },
+  attributeColour: {
+    standard: "#eeefeb",
+    "standard holographic": "#EE4B2B",
+    "reverse holographic": "#0096FF",
+    special: "#FFD700",
+    gold: "#FFD700",
   },
 }

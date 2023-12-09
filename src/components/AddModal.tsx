@@ -13,7 +13,7 @@ import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { collection } from "firebase/firestore"
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react"
 import styled from "styled-components"
-import { Theme } from "../Theme"
+import { theme } from "../theme"
 import { AddCardMutation } from "../api/mutations/addCard"
 import { fieldsToMap } from "../helpers/fieldsToMap"
 import { omit } from "../helpers/omit"
@@ -34,7 +34,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  background: ${Theme.lightBg};
+  background: ${theme.lightBg};
 `
 
 const Details = styled.div`
@@ -63,7 +63,7 @@ const Data = styled.div`
   font-weight: 800;
   justify-content: center;
   align-items: center;
-  font-family: ${Theme.fontFamily};
+  font-family: ${theme.fontFamily};
   text-transform: capitalize;
 `
 
@@ -71,7 +71,7 @@ const IconWrapper = styled.div`
   display: flex;
   width: 5%;
   justify-content: flex-start;
-  color: ${Theme.primaryText};
+  color: ${theme.primaryText};
 `
 
 const Buttons = styled.div`
@@ -97,8 +97,8 @@ const Header = styled.h1`
   display: flex;
   width: 100%;
   justify-content: center;
-  font-family: ${Theme.fontFamily};
-  color: ${Theme.primaryText};
+  font-family: ${theme.fontFamily};
+  color: ${theme.primaryText};
   margin-bottom: 20px;
 `
 
@@ -114,8 +114,8 @@ const style = {
   maxHeight: 800,
   minHeight: 700,
   border: "8px solid white",
-  bgcolor: Theme.lightBg,
-  boxShadow: `${Theme.lightBg} 0px 0px 2px 0px !important`,
+  bgcolor: theme.lightBg,
+  boxShadow: `${theme.lightBg} 0px 0px 2px 0px !important`,
   borderRadius: "35px",
   p: 4,
 }
@@ -125,13 +125,13 @@ const inputProps = {
     borderRadius: "15px !important",
     minWidth: 150,
     fieldset: {
-      borderColor: Theme.darkBg,
+      borderColor: theme.darkBg,
     },
-    input: { color: Theme.primaryText },
+    input: { color: theme.primaryText },
 
     "&:hover": {
       fieldset: {
-        borderColor: `${Theme.charAccent} !important`,
+        borderColor: `${theme.charAccent} !important`,
       },
     },
   },
@@ -291,7 +291,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                       width: "80%",
                       borderRadius: 15,
                       height: "100%",
-                      borderColor: Theme.darkBg,
+                      borderColor: theme.darkBg,
                     }}
                     onClick={() => onClick()}
                   >
@@ -311,7 +311,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                       width: "80%",
                       borderRadius: 15,
                       height: "100%",
-                      borderColor: Theme.darkBg,
+                      borderColor: theme.darkBg,
                     }}
                     onClick={handleClose}
                   >

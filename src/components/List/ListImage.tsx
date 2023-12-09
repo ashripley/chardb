@@ -1,7 +1,7 @@
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import { Card, Grow, Tooltip } from "@mui/material"
 import styled from "styled-components"
-import { Theme } from "../../Theme"
+import { theme } from "../../theme"
 import pokemonTrainer from "../../assets/icons/pokemon-trainer.svg"
 import { energyImageMap } from "../../helpers/trainerImageMap"
 import { AttributeBadge } from "../Grid/AttributeBadge"
@@ -22,7 +22,7 @@ const Main = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${Theme.card};
+  background: ${theme.card};
   border-radius: 25px;
 
   & :hover {
@@ -57,12 +57,16 @@ export const ListImage = ({
     maxWidth: 300,
     borderRadius: "100px",
     display: "flex",
-    backgroundColor: Theme.lightBg,
+    backgroundColor: theme.lightBg,
     alignItems: "center",
     justifyContent: "center",
     opacity: "revert",
     transition: "all 0.8s !important",
-    boxShadow: `${Theme.lightBg} 0px 0px 10px 0px`,
+    boxShadow: `${
+      pokemon.attribute === "energy"
+        ? theme.typeColours[pokemon.type]
+        : theme.attributeColour[pokemon.attribute] || theme.lightBg
+    } 0px 0px 20px 0px !important`,
     ":hover": {
       width: 300,
       maxWidth: 300,

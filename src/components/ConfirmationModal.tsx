@@ -7,7 +7,7 @@ import Modal from "@mui/material/Modal"
 import * as React from "react"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { Theme } from "../Theme"
+import { theme } from "../theme"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
 
 interface Props {
@@ -21,7 +21,7 @@ const HWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-evenly;
-  background: ${Theme.lightBg};
+  background: ${theme.lightBg};
 `
 
 const HTitle = styled.h2`
@@ -29,7 +29,7 @@ const HTitle = styled.h2`
   width: 80%;
   display: flex;
   justify-content: flex-start;
-  background: ${Theme.lightBg};
+  background: ${theme.lightBg};
   align-items: center;
   font-weight: 800;
   font-size: 1.5rem;
@@ -41,7 +41,7 @@ const Exit = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background: ${Theme.lightBg};
+  background: ${theme.lightBg};
 `
 
 const BWrapper = styled.div`
@@ -50,7 +50,7 @@ const BWrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
-  background: ${Theme.lightBg};
+  background: ${theme.lightBg};
 `
 
 const FWrapper = styled.div`
@@ -58,14 +58,14 @@ const FWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
-  background: ${Theme.lightBg};
+  background: ${theme.lightBg};
 `
 
 const Text = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  background: ${Theme.lightBg};
+  background: ${theme.lightBg};
   font-weight: 100;
 `
 
@@ -77,7 +77,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: ${Theme.lightBg};
+  background: ${theme.lightBg};
   font-family: ui-rounded, "Hiragino Maru Gothic ProN", Quicksand, Comfortaa,
     Manjari, "Arial Rounded MT", "Arial Rounded MT Bold", Calibri,
     source-sans-pro, sans-serif;
@@ -103,8 +103,8 @@ const style = {
   width: "400px",
   height: "300px",
   border: "8px solid white",
-  bgcolor: Theme.lightBg,
-  boxShadow: `${Theme.lightBg} 0px 0px 2px 0px !important`,
+  bgcolor: theme.lightBg,
+  boxShadow: `${theme.lightBg} 0px 0px 2px 0px !important`,
   borderRadius: "35px",
   p: 4,
 }
@@ -153,7 +153,7 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
           sx={{
             transition: "all 0.5s !important",
             ":hover": {
-              background: Theme.lightBg,
+              background: theme.lightBg,
               boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
               cursor: "pointer",
             },
@@ -188,8 +188,8 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
             width: "120px",
             borderRadius: 15,
             height: "50px",
-            borderColor: Theme.darkBg,
-            color: Theme.darkBg,
+            borderColor: theme.darkBg,
+            color: theme.darkBg,
             backgroundColor: "green",
           }}
           sx={{
@@ -213,7 +213,7 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
             width: "120px",
             borderRadius: 15,
             height: "50px",
-            borderColor: Theme.darkBg,
+            borderColor: theme.darkBg,
             marginLeft: 10,
           }}
           onClick={handleClose}
