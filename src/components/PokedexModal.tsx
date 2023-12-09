@@ -1,14 +1,13 @@
-import * as React from "react"
+import ClearIcon from "@mui/icons-material/Clear"
+import { Button, Divider } from "@mui/material"
 import Backdrop from "@mui/material/Backdrop"
 import Box from "@mui/material/Box"
-import Modal from "@mui/material/Modal"
 import Fade from "@mui/material/Fade"
+import Modal from "@mui/material/Modal"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { Theme } from "../Theme"
-import { Button, Divider } from "@mui/material"
-import ClearIcon from "@mui/icons-material/Clear"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
-import { useEffect, useState } from "react"
 
 interface Props {
   pokemon: Record<string, any>

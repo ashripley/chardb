@@ -1,24 +1,17 @@
-import {
-  Card,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  TextField,
-  Tooltip,
-} from "@mui/material"
-import styled from "styled-components"
+import { Card, RadioGroup, TextField, Tooltip } from "@mui/material"
 import { ChangeEvent, SyntheticEvent, useMemo, useRef, useState } from "react"
-import { UpdateCard } from "../../api/mutations/updateCard"
+import styled from "styled-components"
 import { Theme } from "../../Theme"
-import { View } from "../../helpers/view"
-import { GridImage } from "../Grid/GridImage"
-import { Actions } from "../Grid/Actions"
-import { Snackbar } from "../Grid/Snackbar"
-import { upperCaseFirst } from "../../helpers/upperCaseFirst"
+import { UpdateCard } from "../../api/mutations/updateCard"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
-import { AttributeSelect } from "../AttributeSelect"
 import { energyImageMap } from "../../helpers/trainerImageMap"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
+import { View } from "../../helpers/view"
+import { AttributeSelect } from "../AttributeSelect"
+import { Actions } from "../Grid/Actions"
+import { GridImage } from "../Grid/GridImage"
+import { Snackbar } from "../Grid/Snackbar"
 
 interface Props {
   cardIndex: number

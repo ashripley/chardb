@@ -1,10 +1,9 @@
+import MenuIcon from "@mui/icons-material/Menu"
+import { AppBar, Box, Card, IconButton, Toolbar } from "@mui/material"
 import { memo, useState } from "react"
 import styled from "styled-components"
-import flame from "../assets/icons/flame.png"
-import { AppBar, Box, Card, IconButton, Toolbar } from "@mui/material"
-import MenuIcon from "@mui/icons-material/Menu"
 import { Theme } from "../Theme"
-import React from "react"
+import flame from "../assets/icons/flame.png"
 
 interface Props {
   isOpen: (isClicked: boolean) => void

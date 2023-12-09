@@ -1,42 +1,24 @@
-import * as React from "react"
-import Backdrop from "@mui/material/Backdrop"
-import Box from "@mui/material/Box"
-import Modal from "@mui/material/Modal"
-import Fade from "@mui/material/Fade"
-import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
-import { collection } from "firebase/firestore"
-import { firestore } from "../services/firebase"
 import {
   Alert,
   Button,
   CircularProgress,
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Radio,
-  RadioGroup,
-  Select,
   Snackbar,
   TextField,
 } from "@mui/material"
-import styled from "styled-components"
+import Backdrop from "@mui/material/Backdrop"
+import Box from "@mui/material/Box"
+import Fade from "@mui/material/Fade"
+import Modal from "@mui/material/Modal"
+import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
+import { collection } from "firebase/firestore"
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react"
-import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined"
-import CatchingPokemonTwoToneIcon from "@mui/icons-material/CatchingPokemonTwoTone"
-import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined"
-import TagIcon from "@mui/icons-material/Tag"
-import AddIcon from "@mui/icons-material/Add"
-import DoneIcon from "@mui/icons-material/Done"
-import { AddCardMutation } from "../api/mutations/addCard"
-import PlaylistAddOutlinedIcon from "@mui/icons-material/PlaylistAddOutlined"
-import CloseIcon from "@mui/icons-material/Close"
+import styled from "styled-components"
 import { Theme } from "../Theme"
-import { upperCaseFirst } from "../helpers/upperCaseFirst"
+import { AddCardMutation } from "../api/mutations/addCard"
 import { fieldsToMap } from "../helpers/fieldsToMap"
 import { omit } from "../helpers/omit"
-import { attributes } from "../config"
+import { upperCaseFirst } from "../helpers/upperCaseFirst"
+import { firestore } from "../services/firebase"
 import { AttributeSelect } from "./AttributeSelect"
 
 interface Props {

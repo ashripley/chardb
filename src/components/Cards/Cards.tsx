@@ -1,8 +1,8 @@
 import { Pagination, Paper, Slide } from "@mui/material"
-import styled from "styled-components"
 import { useEffect, useMemo, useState } from "react"
-import { PokemonCard } from "./PokemonCard"
+import styled from "styled-components"
 import { LoadingSkeleton } from "../Skeleton"
+import { PokemonCard } from "./PokemonCard"
 
 interface Props {
   pokemon: Record<string, any>[]

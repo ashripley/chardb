@@ -8,7 +8,6 @@ import {
 import styled from "styled-components"
 import { Theme } from "../Theme"
 import { attributes } from "../config"
-import { ChangeEvent } from "react"
 
 interface Props {
   fields: Record<string, any>

@@ -1,10 +1,8 @@
-import { doc, setDoc } from "firebase/firestore"
-import { firestore } from "../../services/firebase"
 import axios from "axios"
+import { doc, setDoc } from "firebase/firestore"
 import { v4 as uuidv4 } from "uuid"
 import { Theme } from "../../Theme"
-import pokemonTrainer from "../../assets/icons/pokemon-trainer.svg"
-import { energyImageMap } from "../../helpers/trainerImageMap"
+import { firestore } from "../../services/firebase"
 
 export const AddCardMutation = async (
   name: string,

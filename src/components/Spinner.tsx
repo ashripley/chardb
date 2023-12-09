@@ -1,8 +1,7 @@
-import * as React from "react"
 import Backdrop from "@mui/material/Backdrop"
 import CircularProgress from "@mui/material/CircularProgress"
-import styled from "styled-components"
 import { useState } from "react"
+import styled from "styled-components"
 
 const Container = styled.div`
   position: absolute;

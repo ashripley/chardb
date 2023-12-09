@@ -1,12 +1,11 @@
-import { Button, Grow } from "@mui/material"
-import React from "react"
-import styled from "styled-components"
 import ClearIcon from "@mui/icons-material/Clear"
-import EditIcon from "@mui/icons-material/Edit"
-import DoneIcon from "@mui/icons-material/Done"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { editIconStyles, readIconStyles } from "../Views/List"
+import DoneIcon from "@mui/icons-material/Done"
+import EditIcon from "@mui/icons-material/Edit"
+import { Button, Grow } from "@mui/material"
+import styled from "styled-components"
 import { Theme } from "../../Theme"
+import { editIconStyles, readIconStyles } from "../Views/List"
 
 interface Props {
   isCardHovered: boolean

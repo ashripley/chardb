@@ -1,8 +1,8 @@
+import { useCallback } from "react"
 import styled from "styled-components"
 import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
-import { Main } from "./Main"
 import { Header } from "../Header"
-import { useCallback } from "react"
+import { Main } from "./Main"
 
 interface Props {
   menuAction: string

@@ -1,7 +1,7 @@
 import { Button, Grow, StyledEngineProvider } from "@mui/material"
+import { memo, useCallback } from "react"
 import styled from "styled-components"
 import { Theme } from "../../Theme"
-import { memo, useCallback, useMemo } from "react"
 
 interface Props {
   menuOption: (label?: string) => void

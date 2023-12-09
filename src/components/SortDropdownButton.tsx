@@ -1,11 +1,10 @@
-import * as React from "react"
+import { Tooltip } from "@mui/material"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
-import { IconImageMap } from "./IconImageMap"
+import * as React from "react"
 import { icons } from "../helpers/fieldsToMap"
-import { useEffect } from "react"
-import { Tooltip } from "@mui/material"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
+import { IconImageMap } from "./IconImageMap"
 
 interface Props {
   sortView: (view: string) => void

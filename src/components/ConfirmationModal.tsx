@@ -1,14 +1,14 @@
-import * as React from "react"
+import CloseIcon from "@mui/icons-material/Close"
+import { Alert, Button, Snackbar } from "@mui/material"
 import Backdrop from "@mui/material/Backdrop"
 import Box from "@mui/material/Box"
-import Modal from "@mui/material/Modal"
 import Fade from "@mui/material/Fade"
-import { Alert, Button, Snackbar } from "@mui/material"
+import Modal from "@mui/material/Modal"
+import * as React from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
-import CloseIcon from "@mui/icons-material/Close"
 import { Theme } from "../Theme"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
-import { useEffect, useState } from "react"
 
 interface Props {
   openModal: boolean

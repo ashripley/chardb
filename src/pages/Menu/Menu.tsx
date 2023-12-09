@@ -1,12 +1,11 @@
-import * as React from "react"
+import CloseIcon from "@mui/icons-material/Close"
+import { Button, IconButton } from "@mui/material"
 import Drawer from "@mui/material/Drawer"
 import List from "@mui/material/List"
-import styled from "styled-components"
-import { Button, IconButton } from "@mui/material"
-import flame from "../../assets/icons/flame.png"
-import CloseIcon from "@mui/icons-material/Close"
-import { Theme } from "../../Theme"
 import { useCallback, useEffect, useState } from "react"
+import styled from "styled-components"
+import { Theme } from "../../Theme"
+import flame from "../../assets/icons/flame.png"
 
 interface Props {
   isOpen: boolean

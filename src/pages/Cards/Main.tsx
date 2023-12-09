@@ -1,3 +1,7 @@
+import AddIcon from "@mui/icons-material/Add"
+import ListIcon from "@mui/icons-material/List"
+import RefreshIcon from "@mui/icons-material/Refresh"
+import WindowIcon from "@mui/icons-material/Window"
 import {
   Button,
   Chip,
@@ -10,20 +14,16 @@ import {
   Select,
   TextField,
 } from "@mui/material"
+import { deleteDoc, doc } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
-import AddIcon from "@mui/icons-material/Add"
-import { AllCards } from "../../api/queries/allCards"
-import { Cards } from "../../components/Cards/Cards"
-import { AddModal } from "../../components/AddModal"
-import WindowIcon from "@mui/icons-material/Window"
-import ListIcon from "@mui/icons-material/List"
 import { Theme } from "../../Theme"
+import { AllCards } from "../../api/queries/allCards"
+import { AddModal } from "../../components/AddModal"
+import { Cards } from "../../components/Cards/Cards"
 import { ConfirmationModal } from "../../components/ConfirmationModal"
-import { deleteDoc, doc } from "firebase/firestore"
-import { firestore } from "../../services/firebase"
-import RefreshIcon from "@mui/icons-material/Refresh"
 import { SortToggleButton } from "../../components/SortDropdownButton"
+import { firestore } from "../../services/firebase"
 
 const Wrap = styled.div``
 

@@ -1,9 +1,9 @@
+import { memo, useCallback } from "react"
 import styled from "styled-components"
-import { Header } from "../Header"
-import { Main } from "./Main"
 import { Theme } from "../../Theme"
 import blob from "../../assets/icons/blob.svg"
-import React, { memo, useCallback } from "react"
+import { Header } from "../Header"
+import { Main } from "./Main"
 
 interface Props {
   menuAction: string

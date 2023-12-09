@@ -1,10 +1,10 @@
+import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
+import { Card, Grow, Tooltip } from "@mui/material"
 import styled from "styled-components"
 import { Theme } from "../../Theme"
-import { Card, Grow, Tooltip } from "@mui/material"
-import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
-import { AttributeBadge } from "../Grid/AttributeBadge"
-import { energyImageMap } from "../../helpers/trainerImageMap"
 import pokemonTrainer from "../../assets/icons/pokemon-trainer.svg"
+import { energyImageMap } from "../../helpers/trainerImageMap"
+import { AttributeBadge } from "../Grid/AttributeBadge"
 import { nonPokemonImage } from "../Grid/GridImage"
 
 interface Props {
