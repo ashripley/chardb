@@ -9,6 +9,7 @@ interface Props {
   mounted: boolean
   isLoading: boolean
   view: boolean
+  sortView: string
   isCardDeleted: (hasChanged: boolean, pokemon: Record<string, any>) => void
 }
 
@@ -40,6 +41,7 @@ export const Cards = ({
   mounted,
   isLoading,
   view,
+  sortView,
   isCardDeleted,
 }: Props) => {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -50,8 +52,14 @@ export const Cards = ({
     const cardIds = new Set(pokemon.map(({ cardId }) => cardId))
     return pokemon
       .filter(({ cardId }) => cardId && cardIds.has(cardId))
-      .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
-  }, [pokemon])
+      .sort((a, b) => {
+        return a[sortView || "id"] < b[sortView || "id"]
+          ? -1
+          : a[sortView || "id"] > b[sortView || "id"]
+          ? 1
+          : 0
+      })
+  }, [pokemon, sortView])
 
   const paginatedCards = useMemo(
     () =>
@@ -59,7 +67,7 @@ export const Cards = ({
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
       ),
-    [pokemon, currentPage, itemsPerPage]
+    [pokemon, currentPage, itemsPerPage, sortView]
   )
 
   useEffect(() => {

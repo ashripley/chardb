@@ -23,6 +23,7 @@ import { ConfirmationModal } from "../../components/ConfirmationModal"
 import { deleteDoc, doc } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
 import RefreshIcon from "@mui/icons-material/Refresh"
+import { SortToggleButton } from "../../components/SortDropdownButton"
 
 const Wrap = styled.div``
 
@@ -56,7 +57,7 @@ const Wrapper = styled.div`
 `
 
 const TextFieldWrapper = styled.div`
-  width: 50%;
+  width: auto;
   display: flex;
   justify-content: center;
 
@@ -124,6 +125,7 @@ export const Main = () => {
   const [error, setError] = useState(false)
   const [showAddCard, setShowAddCard] = useState(false)
   const [showCard, setShowCard] = useState(false)
+  const [sortToggleView, setSortToggleView] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [pokemonToBeDeleted, setPokemonToBeDeleted] = useState<
@@ -137,6 +139,11 @@ export const Main = () => {
   })
 
   const categories = ["Name", "Type", "Set", "Year", "Attribute"]
+
+  const sortView = (view: string) => {
+    console.log("view", view)
+    setSortToggleView(view)
+  }
 
   // Function to fetch data
   const fetchData = useCallback(async () => {
@@ -285,7 +292,7 @@ export const Main = () => {
                         value={field.value}
                         label={`Search ${field.key || "All Cards"}...`}
                         variant="outlined"
-                        style={{ width: "100%" }}
+                        style={{ width: "auto", minWidth: 400 }}
                         color={"warning"}
                         onChange={(e) =>
                           setField({ key: field.key, value: e.target.value })
@@ -344,6 +351,10 @@ export const Main = () => {
                         </Button>
                       </Actions>
                     </Buttons>
+                    <SortToggleButton
+                      sortView={sortView}
+                      view={sortToggleView}
+                    />
                     <Chips>
                       <Chip
                         label="GRID"
@@ -412,6 +423,7 @@ export const Main = () => {
           <Cards
             view={viewToggle}
             isCardDeleted={isDeleted}
+            sortView={sortToggleView}
             pokemon={
               field.value !== ""
                 ? data.filter((p: Record<string, any>) =>

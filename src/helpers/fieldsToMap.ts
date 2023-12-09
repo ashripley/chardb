@@ -8,6 +8,17 @@ import idIcon from "../assets/icons/id.png"
 import quantityIcon from "../assets/icons/quantity.png"
 import { IconImageMap } from "../components/IconImageMap"
 
+export const icons: Record<string, any> = {
+  id: idIcon,
+  name: pokemonNameIcon,
+  type: pokemonTypeIcon,
+  set: setIcon,
+  setNumber: setNumberIcon,
+  year: yearIcon,
+  attribute: attributeIcon,
+  quantity: quantityIcon,
+}
+
 export const fieldsToMap = (
   isEditView: boolean,
   fields: Record<string, any>,
@@ -15,17 +26,6 @@ export const fieldsToMap = (
   pokemon?: Record<string, any>,
   omitId?: boolean
 ) => {
-  const icons = {
-    id: idIcon,
-    name: pokemonNameIcon,
-    type: pokemonTypeIcon,
-    set: setIcon,
-    setNumber: setNumberIcon,
-    year: yearIcon,
-    attribute: attributeIcon,
-    quantity: quantityIcon,
-  }
-
   return {
     ...(omitId &&
       !isEditView &&
