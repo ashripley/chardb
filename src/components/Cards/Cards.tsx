@@ -50,7 +50,7 @@ export const Cards = ({
     const cardIds = new Set(pokemon.map(({ cardId }) => cardId))
     return pokemon
       .filter(({ cardId }) => cardId && cardIds.has(cardId))
-      .sort((a, b) => a.id - b.id)
+      .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))
   }, [pokemon])
 
   const paginatedCards = useMemo(

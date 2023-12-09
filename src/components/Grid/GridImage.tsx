@@ -1,10 +1,10 @@
-import React from "react"
 import styled from "styled-components"
 import { Theme } from "../../Theme"
-import { Card, Grow, Tooltip } from "@mui/material"
+import { Card, Grow } from "@mui/material"
 import { AttributeBadge } from "./AttributeBadge"
+import pokemonTrainer from "../../assets/icons/pokemon-trainer.svg"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
-import { View } from "../../helpers/view"
+import { energyImageMap } from "../../helpers/trainerImageMap"
 
 interface Props {
   isEvolutionsHovered: boolean
@@ -49,6 +49,26 @@ const Evolutions = styled.div`
   justify-content: space-around;
 `
 
+export const nonPokemonImage = (src: string, pokemon: Record<string, any>) => (
+  <Grow
+    in={true}
+    unmountOnExit
+    style={{ transformOrigin: "1 1 1" }}
+    {...(true ? { timeout: 1000 } : {})}
+  >
+    <img
+      alt={`"${pokemon.attribute}"`}
+      src={src ?? ""}
+      style={{
+        width: 100,
+        height: 100,
+        padding: 0,
+        zIndex: 100,
+      }}
+    />
+  </Grow>
+)
+
 export const GridImage = ({
   pokemon,
   isEvolutionsHovered,
@@ -79,10 +99,10 @@ export const GridImage = ({
 
   const evolutions =
     [
-      pokemon?.evolutionChain?.first?.image ?? pokemon.url.front,
+      pokemon?.evolutionChain?.first?.image ?? pokemon.url?.front,
       pokemon?.evolutionChain?.second?.image ?? null,
       pokemon?.evolutionChain?.third?.image ?? null,
-    ] ?? pokemon.url.front
+    ] ?? pokemon.url?.front
 
   return (
     <Image ref={ref} isEditView={isEditView} isCardHovered={isCardHovered}>
@@ -97,7 +117,13 @@ export const GridImage = ({
             <Grow in={true} unmountOnExit {...(true ? { timeout: 1000 } : {})}>
               <img
                 alt={`"${pokemon.name}"`}
-                src={pokemon.url.front ?? InsertPhotoOutlinedIcon}
+                src={
+                  pokemon.attribute === "trainer"
+                    ? pokemonTrainer
+                    : pokemon.attribute === "energy"
+                    ? energyImageMap(pokemon.type)
+                    : pokemon.url?.front ?? InsertPhotoOutlinedIcon
+                }
                 style={{
                   width: 130,
                   height: 130,
@@ -108,29 +134,33 @@ export const GridImage = ({
             </Grow>
           ) : (
             <Evolutions>
-              {evolutions.map(
-                (image, index) =>
-                  !!image && (
-                    <Grow
-                      in={true}
-                      unmountOnExit
-                      style={{ transformOrigin: "1 1 1" }}
-                      {...(true ? { timeout: 1000 } : {})}
-                    >
-                      <img
-                        key={index}
-                        alt={`"${pokemon.name}"`}
-                        src={image || null}
-                        style={{
-                          width: 100,
-                          height: 100,
-                          padding: 0,
-                          zIndex: 100,
-                        }}
-                      />
-                    </Grow>
-                  )
-              )}
+              {pokemon.attribute === "trainer"
+                ? nonPokemonImage(pokemonTrainer, pokemon)
+                : pokemon.attribute === "energy"
+                ? nonPokemonImage(energyImageMap(pokemon.type), pokemon)
+                : evolutions.map(
+                    (image, index) =>
+                      !!image && (
+                        <Grow
+                          in={true}
+                          unmountOnExit
+                          style={{ transformOrigin: "1 1 1" }}
+                          {...(true ? { timeout: 1000 } : {})}
+                        >
+                          <img
+                            key={index}
+                            alt={`"${pokemon.name}"`}
+                            src={image || null}
+                            style={{
+                              width: 100,
+                              height: 100,
+                              padding: 0,
+                              zIndex: 100,
+                            }}
+                          />
+                        </Grow>
+                      )
+                  )}
             </Evolutions>
           )}
         </Card>

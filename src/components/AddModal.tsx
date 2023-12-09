@@ -10,9 +10,14 @@ import {
   Alert,
   Button,
   CircularProgress,
+  FormControl,
   FormControlLabel,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
   Radio,
   RadioGroup,
+  Select,
   Snackbar,
   TextField,
 } from "@mui/material"
@@ -31,6 +36,8 @@ import { Theme } from "../Theme"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
 import { fieldsToMap } from "../helpers/fieldsToMap"
 import { omit } from "../helpers/omit"
+import { attributes } from "../config"
+import { AttributeSelect } from "./AttributeSelect"
 
 interface Props {
   openModal: boolean
@@ -50,20 +57,22 @@ const Container = styled.div`
 
 const Details = styled.div`
   width: 100%;
-  height: 60%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
   padding-bottom: 20px;
+  gap: 10px;
 `
 
-const Column = styled.div`
-  width: 25%;
-  height: 15%;
+const Row = styled.div`
+  width: 100%;
+  min-width: 100px;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  flex-direction: row;
 `
 
 const Data = styled.div`
@@ -74,43 +83,41 @@ const Data = styled.div`
   align-items: center;
   font-family: ${Theme.fontFamily};
   text-transform: capitalize;
-  padding: 10px 0px;
 `
 
 const IconWrapper = styled.div`
   display: flex;
-  width: 15%;
-  justify-content: center;
+  width: 5%;
+  justify-content: flex-start;
   color: ${Theme.primaryText};
 `
 
 const Buttons = styled.div`
   display: flex;
-  width: 100%;
-  height: 15%;
+  width: auto;
+  height: auto;
+  min-height: 50px;
+  min-width: 150px;
   justify-content: center;
   align-items: center;
 `
 
-const Add = styled.div`
+const ActionButton = styled.div`
   display: flex;
-  width: 20%;
+  width: 100%;
   height: 100%;
   justify-content: space-around;
   align-items: center;
   margin-left: -20px;
 `
 
-const StyledRadioGroup = styled(RadioGroup)`
-  height: 10%;
-  width: 100%;
+const Header = styled.h1`
   display: flex;
+  width: 100%;
   justify-content: center;
-  align-items: center;
-  margin: 5px;
-  color: ${Theme.primaryText};
-  font-weight: 300 !important;
   font-family: ${Theme.fontFamily};
+  color: ${Theme.primaryText};
+  margin-bottom: 20px;
 `
 
 const style = {
@@ -118,8 +125,12 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "80%",
-  height: "35%",
+  width: "40%",
+  maxWidth: 600,
+  minWidth: 400,
+  height: "80%",
+  maxHeight: 800,
+  minHeight: 700,
   border: "8px solid white",
   bgcolor: Theme.lightBg,
   boxShadow: `${Theme.lightBg} 0px 0px 2px 0px !important`,
@@ -130,6 +141,7 @@ const style = {
 const inputProps = {
   sx: {
     borderRadius: "15px !important",
+    minWidth: 150,
     fieldset: {
       borderColor: Theme.darkBg,
     },
@@ -169,6 +181,13 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
     })
   }
 
+  const handleSelectChange = (event: any) => {
+    setFields({
+      attribute: (event.target as HTMLInputElement).value,
+      ...omit("attribute", fields),
+    })
+  }
+
   const handleClose = () => {
     setOpen(false)
     closeModal(false)
@@ -196,7 +215,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
       fields.setNumber ?? "",
       fields.year ?? "",
       fields.quantity ?? "",
-      fields.attribute ?? ""
+      fields.attribute?.toLowerCase() ?? ""
     )
 
     setTimeout(() => {
@@ -245,55 +264,43 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
           <Box sx={style}>
             <Container>
               <div>
+                <Header>Add Card</Header>
                 <Details>
                   {Object.entries(fieldsToMap(false, fields, true)).map(
                     ([k, v], index) => (
-                      <Column key={index}>
+                      <Row key={index}>
                         <IconWrapper>{v.icon ?? <></>}</IconWrapper>
                         <Data>
-                          <TextField
-                            id="standard"
-                            value={v.value}
-                            label={v.label}
-                            variant="outlined"
-                            color="warning"
-                            style={{ width: "100%", margin: 5 }}
-                            InputProps={inputProps}
-                            onChange={(e) => {
-                              setFields({
-                                [k]: e.target.value,
-                                ...omit(k, fields),
-                              })
-                            }}
-                          />
+                          {v.label === "Attribute" ? (
+                            <AttributeSelect
+                              fields={fields}
+                              handleSelectChange={handleSelectChange}
+                            />
+                          ) : (
+                            <TextField
+                              id="standard"
+                              value={v.value}
+                              label={v.label}
+                              variant="outlined"
+                              color="warning"
+                              style={{ width: "100%", margin: 5 }}
+                              InputProps={inputProps}
+                              onChange={(e) => {
+                                setFields({
+                                  [k]: e.target.value,
+                                  ...omit(k, fields),
+                                })
+                              }}
+                            />
+                          )}
                         </Data>
-                      </Column>
+                      </Row>
                     )
                   )}
                 </Details>
-                <StyledRadioGroup
-                  value={fields.attribute}
-                  onChange={handleChange}
-                  row
-                >
-                  {[
-                    "Standard",
-                    "Standard Holographic",
-                    "Reverse Holographic",
-                    "Special",
-                  ].map((label, index) => (
-                    <FormControlLabel
-                      key={index}
-                      value={label.toLowerCase()}
-                      control={<Radio color="warning" />}
-                      label={label}
-                      sx={{ height: 35 }}
-                    />
-                  ))}
-                </StyledRadioGroup>
               </div>
               <Buttons>
-                <Add>
+                <ActionButton>
                   <Button
                     variant="outlined"
                     size="small"
@@ -308,16 +315,12 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                   >
                     {isLoading || mutation.isLoading ? (
                       <CircularProgress color="success" />
-                    ) : icon === "add" ? (
-                      <AddIcon />
-                    ) : icon === "success" ? (
-                      <DoneIcon />
                     ) : (
-                      <></>
+                      "Add"
                     )}
                   </Button>
-                </Add>
-                <Add>
+                </ActionButton>
+                <ActionButton>
                   <Button
                     variant="outlined"
                     size="small"
@@ -330,9 +333,9 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                     }}
                     onClick={handleClose}
                   >
-                    <CloseIcon />
+                    Cancel
                   </Button>
-                </Add>
+                </ActionButton>
               </Buttons>
             </Container>
           </Box>

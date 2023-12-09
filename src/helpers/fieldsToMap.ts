@@ -12,7 +12,8 @@ export const fieldsToMap = (
   isEditView: boolean,
   fields: Record<string, any>,
   isAddModal: boolean,
-  pokemon?: Record<string, any>
+  pokemon?: Record<string, any>,
+  omitId?: boolean
 ) => {
   const icons = {
     id: idIcon,
@@ -26,7 +27,8 @@ export const fieldsToMap = (
   }
 
   return {
-    ...(!isEditView &&
+    ...(omitId &&
+      !isEditView &&
       !isAddModal && {
         id: {
           label: "Id",
@@ -59,14 +61,6 @@ export const fieldsToMap = (
       value: fields.year,
       icon: IconImageMap(icons.year, false),
     },
-    ...(!isEditView &&
-      !isAddModal && {
-        attribute: {
-          label: "Attribute",
-          value: pokemon?.attribute,
-          icon: IconImageMap(icons.attribute, false),
-        },
-      }),
     ...((isEditView || isAddModal) && {
       quantity: {
         label: "Quantity",
@@ -74,5 +68,10 @@ export const fieldsToMap = (
         icon: IconImageMap(icons.quantity, false),
       },
     }),
+    attribute: {
+      label: "Attribute",
+      value: pokemon?.attribute,
+      icon: IconImageMap(icons.attribute, false),
+    },
   }
 }

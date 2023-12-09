@@ -7,6 +7,7 @@ export const Theme: Record<string, any> = {
   card: "#333333", // background of card
   standardHolographic: "#EE4B2B",
   reverseHolographic: "#0096FF",
+  gold: "FFD700",
   fontFamily:
     "ui-rounded, 'Hiragino Maru Gothic ProN', Quicksand, Comfortaa, Manjari, 'Arial Rounded MT', 'Arial Rounded MT Bold', Calibri, source-sans-pro, sans-serif",
   special: "#CFB53B",

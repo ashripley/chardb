@@ -17,6 +17,8 @@ import { Snackbar } from "../Grid/Snackbar"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
+import { AttributeSelect } from "../AttributeSelect"
+import { energyImageMap } from "../../helpers/trainerImageMap"
 
 interface Props {
   cardIndex: number
@@ -171,6 +173,7 @@ export const GridView = ({
 
   const handleEdit = () => {
     setCardView({ view: View.EDIT })
+    console.log("trainerImageMap", energyImageMap("water"))
   }
 
   const handleDelete = async () => {
@@ -205,7 +208,7 @@ export const GridView = ({
       fields.setNumber || pokemon.setNumber,
       fields.year || pokemon.year,
       fields.quantity || pokemon.quantity,
-      fields.attribute || pokemon.attribute,
+      fields.attribute?.toLowerCase() || pokemon.attribute,
       Theme.typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
     )
 
@@ -255,51 +258,56 @@ export const GridView = ({
           ref={ref}
         />
         <Details isEditView={isEditView} isCardHovered={isCardHovered}>
-          {Object.entries(fieldsToMap(isEditView, fields, false, pokemon)).map(
-            ([k, v], index) => (
-              <Row key={index}>
-                <Tooltip title={v.label} placement="top-start">
-                  <Icon isEditView={isEditView}>{v.icon ?? <></>}</Icon>
-                </Tooltip>
-                {!isEditView ? (
-                  <Data>{pokemon[k] || ""}</Data>
-                ) : (
-                  <TextField
-                    id="standard"
-                    value={v.value}
-                    placeholder={upperCaseFirst(pokemon[k])}
-                    variant="outlined"
-                    color="warning"
-                    style={{ width: "80%", margin: 5 }}
-                    sx={{ borderRadius: 15 }}
-                    onChange={(e) => {
-                      setFields({
-                        [k]: e.target.value,
-                        ...omit(k, fields),
-                      })
-                    }}
-                    InputProps={{
-                      sx: {
-                        borderRadius: "15px !important",
-                        fieldset: {
-                          border: `2px solid ${Theme.darkBg}`,
-                        },
-                        input: { color: Theme.primaryText },
+          {Object.entries(
+            fieldsToMap(isEditView, fields, false, pokemon, pokemon.id)
+          ).map(([k, v], index) => (
+            <Row key={index}>
+              <Tooltip title={v.label} placement="top-start">
+                <Icon isEditView={isEditView}>{v.icon ?? <></>}</Icon>
+              </Tooltip>
+              {!isEditView ? (
+                <Data>{pokemon[k] || ""}</Data>
+              ) : v.label === "Attribute" ? (
+                <AttributeSelect
+                  fields={fields}
+                  handleSelectChange={handleChange}
+                />
+              ) : (
+                <TextField
+                  id="standard"
+                  value={v.value}
+                  placeholder={upperCaseFirst(pokemon[k])}
+                  variant="outlined"
+                  color="warning"
+                  style={{ width: "80%", margin: 5 }}
+                  sx={{ borderRadius: 15 }}
+                  onChange={(e) => {
+                    setFields({
+                      [k]: e.target.value,
+                      ...omit(k, fields),
+                    })
+                  }}
+                  InputProps={{
+                    sx: {
+                      borderRadius: "15px !important",
+                      fieldset: {
+                        border: `2px solid ${Theme.darkBg}`,
+                      },
+                      input: { color: Theme.primaryText },
 
-                        "&:hover": {
-                          fieldset: {
-                            borderColor: `${Theme.charAccent} !important`,
-                            borderWidth: 2,
-                          },
+                      "&:hover": {
+                        fieldset: {
+                          borderColor: `${Theme.charAccent} !important`,
+                          borderWidth: 2,
                         },
                       },
-                    }}
-                  />
-                )}
-              </Row>
-            )
-          )}
-          {isEditView && (
+                    },
+                  }}
+                />
+              )}
+            </Row>
+          ))}
+          {/* {isEditView && (
             <StyledRadioGroup
               defaultValue={
                 pokemon.attribute ? pokemon.attribute : fields.attribute
@@ -322,7 +330,7 @@ export const GridView = ({
                 />
               ))}
             </StyledRadioGroup>
-          )}
+          )} */}
         </Details>
         <Actions
           handleClear={handleClear}

@@ -50,6 +50,7 @@ export const AttributeBadge = ({
     "standard holographic": Theme.standardHolographic,
     "reverse holographic": Theme.reverseHolographic,
     special: Theme.special,
+    gold: Theme.gold,
   }
 
   return (
@@ -61,10 +62,10 @@ export const AttributeBadge = ({
             "& .MuiBadge-dot": {
               color: isEvolutionsHovered
                 ? Theme.lightBg
-                : attributeColour[pokemon.attribute],
+                : attributeColour[pokemon.attribute] ?? "#c0c0c0",
               backgroundColor: isEvolutionsHovered
                 ? Theme.lightBg
-                : attributeColour[pokemon.attribute],
+                : attributeColour[pokemon.attribute] ?? "#c0c0c0",
             },
           }}
         />

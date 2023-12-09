@@ -3,6 +3,9 @@ import { Theme } from "../../Theme"
 import { Card, Grow, Tooltip } from "@mui/material"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import { AttributeBadge } from "../Grid/AttributeBadge"
+import { energyImageMap } from "../../helpers/trainerImageMap"
+import pokemonTrainer from "../../assets/icons/pokemon-trainer.svg"
+import { nonPokemonImage } from "../Grid/GridImage"
 
 interface Props {
   isEvolutionsHovered: boolean
@@ -89,7 +92,13 @@ export const ListImage = ({
             <Grow in={true} unmountOnExit {...(true ? { timeout: 1000 } : {})}>
               <img
                 alt={`"${pokemon.name}"`}
-                src={pokemon.url.front ?? InsertPhotoOutlinedIcon}
+                src={
+                  pokemon.attribute === "trainer"
+                    ? pokemonTrainer
+                    : pokemon.attribute === "energy"
+                    ? energyImageMap(pokemon.type)
+                    : pokemon.url.front ?? InsertPhotoOutlinedIcon
+                }
                 style={{
                   width: 100,
                   height: 100,
@@ -98,29 +107,39 @@ export const ListImage = ({
             </Grow>
           ) : (
             <Evolutions>
-              {evolutions.map(
-                (image, index) =>
-                  !!image && (
-                    <Grow
-                      in={true}
-                      unmountOnExit
-                      style={{ transformOrigin: "1 1 1" }}
-                      {...(true ? { timeout: 1000 } : {})}
-                    >
-                      <img
-                        key={index}
-                        alt={`"${pokemon.name}"`}
-                        src={image || null}
-                        style={{
-                          width: 100,
-                          height: 100,
-                          padding: 0,
-                          zIndex: 100,
-                        }}
-                      />
-                    </Grow>
-                  )
-              )}
+              {pokemon.attribute === "trainer"
+                ? nonPokemonImage(pokemonTrainer, pokemon)
+                : pokemon.attribute === "energy"
+                ? nonPokemonImage(energyImageMap(pokemon.type), pokemon)
+                : evolutions.map(
+                    (image, index) =>
+                      !!image && (
+                        <Grow
+                          in={true}
+                          unmountOnExit
+                          style={{ transformOrigin: "1 1 1" }}
+                          {...(true ? { timeout: 1000 } : {})}
+                        >
+                          <img
+                            key={index}
+                            alt={`"${pokemon.name}"`}
+                            src={
+                              pokemon.attribute === "trainer"
+                                ? pokemonTrainer
+                                : pokemon.attribute === "energy"
+                                ? energyImageMap(pokemon.type)
+                                : image || null
+                            }
+                            style={{
+                              width: 100,
+                              height: 100,
+                              padding: 0,
+                              zIndex: 100,
+                            }}
+                          />
+                        </Grow>
+                      )
+                  )}
             </Evolutions>
           )}
         </Card>

@@ -18,6 +18,7 @@ import { Snackbar } from "../Grid/Snackbar"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
+import { AttributeSelect } from "../AttributeSelect"
 
 interface Props {
   cardIndex: number
@@ -206,7 +207,7 @@ export const ListView = ({
       fields.setNumber || pokemon.setNumber,
       fields.year || pokemon.year,
       fields.quantity || pokemon.quantity,
-      fields.attribute || pokemon.attribute,
+      fields.attribute?.toLowerCase() || pokemon.attribute,
       Theme.typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
     )
 
@@ -265,14 +266,19 @@ export const ListView = ({
           />
           <Details isHovered={isCardHovered}>
             {Object.entries(
-              fieldsToMap(isEditView, fields, false, pokemon)
+              fieldsToMap(isEditView, fields, false, pokemon, pokemon.id)
             ).map(([k, v], index) => (
               <Column key={index}>
                 <Tooltip title={v.label} placement="top-start">
                   <Icon>{v.icon ?? <></>}</Icon>
                 </Tooltip>
                 {!isEditView ? (
-                  <Data>{pokemon[k] || "N/A"}</Data>
+                  <Data>{pokemon[k] || ""}</Data>
+                ) : v.label === "Attribute" ? (
+                  <AttributeSelect
+                    fields={fields}
+                    handleSelectChange={handleChange}
+                  />
                 ) : (
                   <TextField
                     id="standard"
@@ -293,7 +299,7 @@ export const ListView = ({
                 )}
               </Column>
             ))}
-            {isEditView && (
+            {/* {isEditView && (
               <StyledRadioGroup
                 defaultValue={
                   pokemon.attribute ? pokemon.attribute : fields.attribute
@@ -319,7 +325,7 @@ export const ListView = ({
                   />
                 ))}
               </StyledRadioGroup>
-            )}
+            )} */}
           </Details>
           <ListActions
             handleClear={handleClear}
