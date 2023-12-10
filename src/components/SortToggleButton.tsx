@@ -1,4 +1,4 @@
-import { Tooltip } from "@mui/material"
+import { Tooltip, styled } from "@mui/material"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import * as React from "react"
@@ -11,6 +11,29 @@ interface Props {
   view: string
 }
 
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  "& .MuiToggleButtonGroup-grouped": {
+    margin: theme.spacing(0.5),
+    border: 0,
+    "&.Mui-disabled": {
+      border: 0,
+    },
+    "&:not(:first-of-type)": {
+      borderRadius: 15,
+    },
+    "&:first-of-type": {
+      borderRadius: 15,
+    },
+  },
+}))
+
+const StyledToggleButton = styled(ToggleButton)`
+  width: auto;
+  height: auto;
+  border-radius: 15px;
+  border: 1px solid rgb(227, 228, 219) !important;
+`
+
 export const SortToggleButton = ({ sortView, view }: Props) => {
   const fields: string[] = ["id", "name", "type", "year", "attribute"]
 
@@ -22,7 +45,7 @@ export const SortToggleButton = ({ sortView, view }: Props) => {
   }
 
   return (
-    <ToggleButtonGroup
+    <StyledToggleButtonGroup
       orientation="horizontal"
       value={view || "id"}
       exclusive
@@ -30,10 +53,11 @@ export const SortToggleButton = ({ sortView, view }: Props) => {
       onChange={handleChange}
       style={{
         height: "auto",
+        gap: 10,
       }}
     >
       {fields.map((field: string, index: number) => (
-        <ToggleButton value={field} key={index} style={{ height: "auto" }}>
+        <StyledToggleButton value={field} key={index}>
           <Tooltip
             title={upperCaseFirst(field)}
             placement="top"
@@ -47,8 +71,8 @@ export const SortToggleButton = ({ sortView, view }: Props) => {
           >
             {IconImageMap(icons[field], false)}
           </Tooltip>
-        </ToggleButton>
+        </StyledToggleButton>
       ))}
-    </ToggleButtonGroup>
+    </StyledToggleButtonGroup>
   )
 }

@@ -33,6 +33,9 @@ const HTitle = styled.h2`
   align-items: center;
   font-weight: 800;
   font-size: 1.5rem;
+  font-family: ${theme.fontFamily};
+  color: ${theme.primaryText};
+  margin-bottom: 20px;
 `
 
 const Exit = styled.div`
@@ -67,6 +70,8 @@ const Text = styled.div`
   justify-content: flex-start;
   background: ${theme.lightBg};
   font-weight: 100;
+  font-family: ${theme.fontFamily};
+  color: ${theme.primaryText};
 `
 
 const Container = styled.div`
@@ -148,6 +153,7 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
             width: 30,
             height: 30,
             borderRadius: 100,
+            color: theme.primaryText,
             padding: 10,
           }}
           sx={{

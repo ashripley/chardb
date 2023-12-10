@@ -6,6 +6,7 @@ import {
   Button,
   Chip,
   CircularProgress,
+  Divider,
   FormControl,
   Grow,
   InputLabel,
@@ -21,9 +22,11 @@ import { AllCards } from "../../api/queries/allCards"
 import { AddModal } from "../../components/AddModal"
 import { Cards } from "../../components/Cards/Cards"
 import { ConfirmationModal } from "../../components/ConfirmationModal"
-import { SortToggleButton } from "../../components/SortDropdownButton"
+import { SortToggleButton } from "../../components/SortToggleButton"
 import { firestore } from "../../services/firebase"
 import { theme } from "../../theme"
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
+import { AnalyticsModal } from "../../components/AnalyticsModal"
 
 const Wrap = styled.div``
 
@@ -83,9 +86,9 @@ const NameField = styled.div`
 
 const Buttons = styled.div`
   max-width: 100%;
-  width: 15%;
+  width: auto;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
 
   @media only screen and (max-width: 600px) {
     min-width: 200px;
@@ -97,15 +100,16 @@ const Buttons = styled.div`
 const Actions = styled.div`
   max-width: 100%;
   display: flex;
-  width: 100%;
-  justify-content: space-between;
+  width: auto;
+  gap: 20px;
 `
 
 const Chips = styled.div`
-  width: 15%;
+  width: auto;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  min-width: 200px;
 
   @media only screen and (max-width: 600px) {
     min-width: 200px;
@@ -127,6 +131,7 @@ export const Main = () => {
   const [showCard, setShowCard] = useState(false)
   const [sortToggleView, setSortToggleView] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false)
   const [showConfirmationModal, setShowConfirmationModal] = useState(false)
   const [pokemonToBeDeleted, setPokemonToBeDeleted] = useState<
     Record<string, any>
@@ -233,7 +238,7 @@ export const Main = () => {
                     <StyledForm
                       sx={{
                         borderRadius: "15px !important",
-                        width: "15%",
+                        width: "auto",
                         minWidth: 200,
                       }}
                     >
@@ -320,10 +325,10 @@ export const Main = () => {
                         <Button
                           variant="outlined"
                           size="small"
-                          color="success"
+                          color="warning"
                           style={{
-                            width: "45%",
-                            height: "100%",
+                            width: "auto",
+                            height: "auto",
                             borderRadius: 15,
                             borderColor: theme.darkBg,
                           }}
@@ -334,10 +339,10 @@ export const Main = () => {
                         <Button
                           variant="outlined"
                           size="small"
-                          color={`primary`}
+                          color="success"
                           style={{
-                            width: "45%",
-                            height: "100%",
+                            width: "auto",
+                            height: "auto",
                             borderRadius: 15,
                             borderColor: theme.darkBg,
                           }}
@@ -349,12 +354,28 @@ export const Main = () => {
                             <RefreshIcon />
                           )}
                         </Button>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          color="primary"
+                          style={{
+                            width: "auto",
+                            height: "auto",
+                            borderRadius: 15,
+                            borderColor: theme.darkBg,
+                          }}
+                          onClick={() => setIsAnalyticsOpen(!isAnalyticsOpen)}
+                        >
+                          <InfoOutlinedIcon />
+                        </Button>
                       </Actions>
                     </Buttons>
+                    <Divider orientation="vertical" flexItem />
                     <SortToggleButton
                       sortView={sortView}
                       view={sortToggleView}
                     />
+                    <Divider orientation="vertical" flexItem />
                     <Chips>
                       <Chip
                         label="GRID"
@@ -418,6 +439,7 @@ export const Main = () => {
         pokemon={pokemonToBeDeleted}
         openModal={showConfirmationModal}
       />
+      <AnalyticsModal openModal={isAnalyticsOpen} />
       <Wrap>
         {showCard && (
           <Cards
