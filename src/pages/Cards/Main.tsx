@@ -207,6 +207,11 @@ export const Main = () => {
     setViewToggle((prev) => !prev)
   }
 
+  // Function to toggle between grid and list view
+  const analyticsToggle = () => {
+    setIsAnalyticsOpen((prev) => !prev)
+  }
+
   // Initial data fetch on component mount
   useEffect(() => {
     fetchData()
@@ -364,7 +369,7 @@ export const Main = () => {
                             borderRadius: 15,
                             borderColor: theme.darkBg,
                           }}
-                          onClick={() => setIsAnalyticsOpen(!isAnalyticsOpen)}
+                          onClick={() => setIsAnalyticsOpen((prev) => !prev)}
                         >
                           <InfoOutlinedIcon />
                         </Button>
@@ -439,7 +444,10 @@ export const Main = () => {
         pokemon={pokemonToBeDeleted}
         openModal={showConfirmationModal}
       />
-      <AnalyticsModal openModal={isAnalyticsOpen} />
+      <AnalyticsModal
+        analyticsToggle={analyticsToggle}
+        isOpen={isAnalyticsOpen}
+      />
       <Wrap>
         {showCard && (
           <Cards

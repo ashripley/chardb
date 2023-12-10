@@ -10,7 +10,8 @@ import { AllCards } from "../api/queries/allCards"
 import { Divider } from "@mui/material"
 
 interface Props {
-  openModal: boolean
+  analyticsToggle: (isOpen: boolean) => void
+  isOpen: boolean
 }
 
 const HWrapper = styled.div`
@@ -111,18 +112,19 @@ const style = {
   p: 4,
 }
 
-export const AnalyticsModal = ({ openModal }: Props) => {
+export const AnalyticsModal = ({ analyticsToggle, isOpen }: Props) => {
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [cards, setCards] = useState<Record<string, any>[] | undefined>()
 
   const handleClose = () => {
+    analyticsToggle(true)
     setOpen(false)
   }
 
   useEffect(() => {
-    setOpen(openModal)
-  }, [openModal])
+    setOpen(isOpen)
+  }, [isOpen])
 
   // Function to fetch data
   const fetchData = useCallback(async () => {
