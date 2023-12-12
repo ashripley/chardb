@@ -49,7 +49,11 @@ const Evolutions = styled.div`
   justify-content: space-around;
 `
 
-export const nonPokemonImage = (src: string, pokemon: Record<string, any>) => (
+export const nonPokemonImage = (
+  src: string,
+  pokemon: Record<string, any>,
+  listView?: boolean
+) => (
   <Grow
     in={true}
     unmountOnExit
@@ -60,8 +64,8 @@ export const nonPokemonImage = (src: string, pokemon: Record<string, any>) => (
       alt={`"${pokemon.attribute}"`}
       src={src ?? ""}
       style={{
-        width: 100,
-        height: 100,
+        width: listView ? 50 : 100,
+        height: listView ? 50 : 100,
         padding: 0,
         zIndex: 100,
       }}

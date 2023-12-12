@@ -29,6 +29,7 @@ const StyledPaper = styled(Paper)`
   padding: 30px;
   display: flex;
   flex-wrap: wrap;
+  gap: 15px;
 `
 
 const PaginationWrapper = styled.div`
