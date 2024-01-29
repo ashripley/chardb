@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react"
 import { GridView } from "../Views/Grid"
 import { ListView } from "../Views/List"
+import { TileView } from "../Views/Tile"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
-  view: boolean
+  view: "Grid" | "List" | "Tile"
   isLoading: boolean
   isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
@@ -17,29 +18,38 @@ export const PokemonCard = ({
   isLoading,
   isCardDeleted,
 }: Props) => {
-  const [gridView, setGridView] = useState(view)
+  const [cardView, setCardView] = useState(view)
 
   const onDelete = (hasChanged: boolean, pokemon: Record<string, any>) => {
     isCardDeleted(hasChanged, pokemon)
   }
 
   useEffect(() => {
-    setGridView(view)
+    setCardView(view)
   }, [view])
 
-  return gridView ? (
+  return cardView === "Tile" ? (
+    <TileView
+      isCardDeleted={onDelete}
+      pokemon={pokemon}
+      cardIndex={cardIndex++}
+      isLoading={isLoading}
+    />
+  ) : cardView === "Grid" ? (
     <GridView
       isCardDeleted={onDelete}
       pokemon={pokemon}
       cardIndex={cardIndex++}
       isLoading={isLoading}
     />
-  ) : (
+  ) : cardView === "List" ? (
     <ListView
       isCardDeleted={onDelete}
       pokemon={pokemon}
       cardIndex={cardIndex++}
       isLoading={isLoading}
     />
+  ) : (
+    <></>
   )
 }

@@ -1,4 +1,5 @@
 import AddIcon from "@mui/icons-material/Add"
+import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined"
 import ListIcon from "@mui/icons-material/List"
 import RefreshIcon from "@mui/icons-material/Refresh"
 import WindowIcon from "@mui/icons-material/Window"
@@ -110,6 +111,7 @@ const Chips = styled.div`
   justify-content: space-evenly;
   align-items: center;
   min-width: 200px;
+  gap: 10px;
 
   @media only screen and (max-width: 600px) {
     min-width: 200px;
@@ -137,7 +139,7 @@ export const Main = () => {
     Record<string, any>
   >({})
   const [data, setData] = useState([{}])
-  const [viewToggle, setViewToggle] = useState(true)
+  const [view, setView] = useState<"Grid" | "List" | "Tile">("Grid")
   const [field, setField] = useState<Record<string, any>>({
     key: "",
     value: "",
@@ -146,7 +148,6 @@ export const Main = () => {
   const categories = ["Name", "Type", "Set", "Year", "Attribute"]
 
   const sortView = (view: string) => {
-    console.log("view", view)
     setSortToggleView(view)
   }
 
@@ -202,9 +203,9 @@ export const Main = () => {
     }
   }
 
-  // Function to toggle between grid and list view
-  const onViewChange = () => {
-    setViewToggle((prev) => !prev)
+  // Function to toggle between grid, tile and list view
+  const onViewChange = (view: "Grid" | "List" | "Tile") => {
+    setView(view)
   }
 
   // Function to toggle between grid and list view
@@ -383,14 +384,38 @@ export const Main = () => {
                     <Divider orientation="vertical" flexItem />
                     <Chips>
                       <Chip
+                        label="TILE"
+                        onClick={() => onViewChange("Tile")}
+                        icon={
+                          <AppsOutlinedIcon
+                            fontSize="small"
+                            style={{
+                              color: `${
+                                view !== "Tile" ? theme.primaryText : "#ff8c00"
+                              }`,
+                            }}
+                          />
+                        }
+                        sx={{
+                          padding: "15px 5px",
+                          borderRadius: "15px",
+                          borderColor: theme.darkBg,
+                          color: `${
+                            view !== "Tile" ? theme.primaryText : "#ff8c00"
+                          }`,
+                          fontFamily: theme.fontFamily,
+                        }}
+                        variant={view === "Tile" ? "filled" : "outlined"}
+                      />
+                      <Chip
                         label="GRID"
-                        onClick={onViewChange}
+                        onClick={() => onViewChange("Grid")}
                         icon={
                           <WindowIcon
                             fontSize="small"
                             style={{
                               color: `${
-                                !viewToggle ? theme.primaryText : "#ff8c00"
+                                view !== "Grid" ? theme.primaryText : "#ff8c00"
                               }`,
                             }}
                           />
@@ -400,21 +425,21 @@ export const Main = () => {
                           borderRadius: "15px",
                           borderColor: theme.darkBg,
                           color: `${
-                            !viewToggle ? theme.primaryText : "#ff8c00"
+                            view !== "Grid" ? theme.primaryText : "#ff8c00"
                           }`,
                           fontFamily: theme.fontFamily,
                         }}
-                        variant={viewToggle ? "filled" : "outlined"}
+                        variant={view === "Grid" ? "filled" : "outlined"}
                       />
                       <Chip
                         label="LIST"
-                        onClick={onViewChange}
+                        onClick={() => onViewChange("List")}
                         icon={
                           <ListIcon
                             fontSize="small"
                             style={{
                               color: `${
-                                viewToggle ? theme.primaryText : "#ff8c00"
+                                view !== "List" ? theme.primaryText : "#ff8c00"
                               }`,
                             }}
                           />
@@ -424,11 +449,11 @@ export const Main = () => {
                           borderRadius: "15px",
                           borderColor: theme.darkBg,
                           color: `${
-                            viewToggle ? theme.primaryText : "#ff8c00"
+                            view !== "List" ? theme.primaryText : "#ff8c00"
                           }`,
                           fontFamily: theme.fontFamily,
                         }}
-                        variant={!viewToggle ? "filled" : "outlined"}
+                        variant={view === "List" ? "filled" : "outlined"}
                       />
                     </Chips>
                   </NameField>
@@ -451,7 +476,7 @@ export const Main = () => {
       <Wrap>
         {showCard && (
           <Cards
-            view={viewToggle}
+            view={view}
             isCardDeleted={isDeleted}
             sortView={sortToggleView}
             pokemon={

@@ -8,7 +8,7 @@ interface Props {
   pokemon: Record<string, any>[]
   mounted: boolean
   isLoading: boolean
-  view: boolean
+  view: "Grid" | "List" | "Tile"
   sortView: string
   isCardDeleted: (hasChanged: boolean, pokemon: Record<string, any>) => void
 }
