@@ -24,7 +24,8 @@ export const fieldsToMap = (
   fields: Record<string, any>,
   isAddModal: boolean,
   pokemon?: Record<string, any>,
-  omitId?: boolean
+  omitId?: boolean,
+  isTileView?: boolean
 ) => {
   return {
     ...(omitId &&
@@ -33,45 +34,45 @@ export const fieldsToMap = (
         id: {
           label: "Id",
           value: pokemon?.id,
-          icon: IconImageMap(icons.id, false),
+          icon: IconImageMap(icons.id, isTileView ?? false),
         },
       }),
     name: {
       label: "Name",
       value: fields.name,
-      icon: IconImageMap(icons.name, false),
+      icon: IconImageMap(icons.name, isTileView ?? false),
     },
     type: {
       label: "Type",
       value: fields.type,
-      icon: IconImageMap(icons.type, false),
+      icon: IconImageMap(icons.type, isTileView ?? false),
     },
     set: {
       label: "Set",
       value: fields.set,
-      icon: IconImageMap(icons.set, false),
+      icon: IconImageMap(icons.set, isTileView ?? false),
     },
     setNumber: {
       label: "Set Number",
       value: fields.setNumber,
-      icon: IconImageMap(icons.setNumber, false),
+      icon: IconImageMap(icons.setNumber, isTileView ?? false),
     },
     year: {
       label: "Year",
       value: fields.year,
-      icon: IconImageMap(icons.year, false),
+      icon: IconImageMap(icons.year, isTileView ?? false),
     },
     ...((isEditView || isAddModal) && {
       quantity: {
         label: "Quantity",
         value: fields.quantity,
-        icon: IconImageMap(icons.quantity, false),
+        icon: IconImageMap(icons.quantity, isTileView ?? false),
       },
     }),
     attribute: {
       label: "Attribute",
       value: pokemon?.attribute,
-      icon: IconImageMap(icons.attribute, false),
+      icon: IconImageMap(icons.attribute, isTileView ?? false),
     },
   }
 }

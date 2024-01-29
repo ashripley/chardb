@@ -52,8 +52,8 @@ export const ListImage = ({
   mouseLeave,
 }: Props) => {
   const cardStyles = {
-    width: 120,
-    height: 120,
+    width: 80,
+    height: 80,
     maxWidth: 300,
     borderRadius: "100px",
     display: "flex",
@@ -71,10 +71,12 @@ export const ListImage = ({
       width: 300,
       maxWidth: 300,
       height: "100%",
-      boxShadow: "none",
+      boxShadow: "none !important",
       borderRadius: "10px",
     },
   }
+
+  const nonPokemon = ["trainer", "energy"]
 
   const evolutions =
     [
@@ -104,17 +106,21 @@ export const ListImage = ({
                     : pokemon.url.front ?? InsertPhotoOutlinedIcon
                 }
                 style={{
-                  width: 100,
-                  height: 100,
+                  width: nonPokemon.some((np) => np === pokemon.attribute)
+                    ? 50
+                    : 60,
+                  height: nonPokemon.some((np) => np === pokemon.attribute)
+                    ? 50
+                    : 60,
                 }}
               />
             </Grow>
           ) : (
             <Evolutions>
               {pokemon.attribute === "trainer"
-                ? nonPokemonImage(pokemonTrainer, pokemon)
+                ? nonPokemonImage(pokemonTrainer, pokemon, true)
                 : pokemon.attribute === "energy"
-                ? nonPokemonImage(energyImageMap(pokemon.type), pokemon)
+                ? nonPokemonImage(energyImageMap(pokemon.type), pokemon, true)
                 : evolutions.map(
                     (image, index) =>
                       !!image && (
@@ -135,8 +141,8 @@ export const ListImage = ({
                                 : image || null
                             }
                             style={{
-                              width: 100,
-                              height: 100,
+                              width: 70,
+                              height: 70,
                               padding: 0,
                               zIndex: 100,
                             }}

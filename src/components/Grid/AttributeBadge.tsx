@@ -35,7 +35,7 @@ const Quantity = styled.div<{ isGridCard: boolean }>`
   height: 100%;
   width: 10px;
   position: relative;
-  top: ${({ isGridCard }) => (isGridCard ? "91%" : "87%")};
+  top: ${({ isGridCard }) => (isGridCard ? "91%" : "82%")};
   font-weight: 300 !important;
   font-family: ${theme.fontFamily};
 `

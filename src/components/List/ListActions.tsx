@@ -6,6 +6,7 @@ import EditIcon from "@mui/icons-material/Edit"
 import DoneIcon from "@mui/icons-material/Done"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { editIconStyles, readIconStyles } from "../Views/List"
+import { omit } from "../../helpers/omit"
 
 interface Props {
   isCardHovered: boolean
@@ -18,8 +19,7 @@ interface Props {
 
 const Wrapper = styled.div`
   width: 100px;
-  max-width: 100px;
-  height: 100%;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -53,9 +53,21 @@ export const ListActions = ({
           }
         >
           {!isEditView ? (
-            <EditIcon sx={{ ...readIconStyles }} />
+            <EditIcon
+              sx={{
+                ...omit(["width", "height"], readIconStyles),
+                width: 20,
+                height: 20,
+              }}
+            />
           ) : (
-            <DoneIcon sx={{ ...readIconStyles }} />
+            <DoneIcon
+              sx={{
+                ...omit(["width", "height"], editIconStyles),
+                width: 20,
+                height: 20,
+              }}
+            />
           )}
         </Button>
         <Button sx={{ borderRadius: 50 }}>

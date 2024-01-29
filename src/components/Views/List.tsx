@@ -22,8 +22,7 @@ interface Props {
 //#region Styled Components
 const Wrapper = styled.div`
   width: 90%;
-  padding: 20px 30px;
-  height: 150px;
+  padding: 0px 30px;
 `
 
 const Details = styled.div<{ isHovered: boolean }>`
@@ -44,6 +43,7 @@ const Column = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  gap: 10px;
 `
 
 const Data = styled.div`
@@ -53,7 +53,6 @@ const Data = styled.div`
   align-items: center;
   font-family: ${theme.fontFamily};
   text-transform: capitalize;
-  padding: 10px 0px;
   color: ${theme.primaryText};
 
   font-size: 0.9em;
@@ -75,24 +74,26 @@ const Icon = styled.div`
 //#endregion
 
 export const readIconStyles = {
-  height: 30,
-  width: 30,
+  height: 25,
+  width: 25,
   borderRadius: 100,
   background: "transparent",
   color: theme.lightBg,
   transition: "all 0.3s !important",
-  padding: "0.5em",
   ":hover": {
-    boxShadow: `0px 10px 30px ${theme.primaryText}`,
+    padding: "10px",
+    boxShadow: `0px 5px 30px ${theme.primaryText}`,
   },
 }
 
 export const editIconStyles = {
+  height: 25,
+  width: 25,
   borderRadius: 100,
   color: theme.lightBg,
   transition: "all 0.3s !important",
-  padding: "0.5em",
   ":hover": {
+    padding: "10px",
     boxShadow: `0px 10px 30px ${theme.primaryText}`,
   },
 }
@@ -127,7 +128,7 @@ export const ListView = ({
   const cardStyles = {
     width: "100%",
     borderRadius: "30px",
-    height: "100%",
+    height: 100,
     display: "flex",
     transition: "all 0.8s !important",
     backgroundColor: theme.lightBg,
@@ -278,7 +279,7 @@ export const ListView = ({
                     placeholder={upperCaseFirst(pokemon[k])}
                     variant="outlined"
                     color="warning"
-                    style={{ width: "80%", margin: 5 }}
+                    style={{ width: "80%", margin: "0px 5px" }}
                     sx={{ borderRadius: 15 }}
                     onChange={(e) => {
                       setFields({
