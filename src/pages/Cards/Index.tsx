@@ -4,12 +4,6 @@ import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
 import { Header } from "../Header"
 import { Main } from "./Main"
 
-interface Props {
-  menuAction: string
-  passMenuActionLabel: (label: string) => void
-  isOpen: (isClicked: boolean) => void
-}
-
 const Container = styled.div`
   background: url(${greyWallpaper});
   background-size: cover;
@@ -19,17 +13,10 @@ const Container = styled.div`
   background-position: center;
 `
 
-export const Cards = ({ menuAction, isOpen }: Props) => {
-  const onClick = useCallback(
-    (clicked: boolean) => {
-      isOpen(clicked)
-    },
-    [isOpen]
-  )
-
+export const Cards = () => {
   return (
     <Container>
-      <Header menuAction={menuAction} isOpen={onClick} />
+      <Header />
       <Main />
     </Container>
   )

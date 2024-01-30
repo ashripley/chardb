@@ -6,13 +6,8 @@ import { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
 import { theme } from "../../theme"
 import flame from "../../assets/icons/flame.png"
-
-interface Props {
-  isOpen: boolean
-  isClosed: boolean
-  menuOption: (label?: string) => void
-  drawerToggle: (isOpen: boolean, isClosed: boolean) => void
-}
+import { useDispatch, useSelector } from "react-redux"
+import { setMenuStatus, setPage } from "../../redux/root"
 
 const Container = styled.div`
   display: flex;
@@ -151,31 +146,32 @@ const iconButtonStyles = {
   },
 }
 
-export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
-  const [state, setState] = useState(false)
+export const Menu = () => {
+  const { page, isMenuOpen } = useSelector((state: any) => state.root)
+  const dispatch = useDispatch()
 
-  const onClose = useCallback(() => {
-    setState(false)
-    drawerToggle(false, true)
-  }, [drawerToggle])
+  const onClose = () => {
+    dispatch(setMenuStatus(false))
+  }
 
   const onClick = useCallback(
     (label: string) => {
-      menuOption(label)
-      onClose()
+      dispatch(setPage(label))
+      dispatch(setMenuStatus(false))
     },
-    [menuOption, onClose]
+    [page, onClose]
   )
 
-  useEffect(() => {
-    setState(isOpen)
-  }, [isOpen])
+  const onHomeMenuClick = () => {
+    dispatch(setPage("Home"))
+    dispatch(setMenuStatus(false))
+  }
 
   return (
     <>
       <StyledDrawer
         anchor={"bottom"}
-        open={state}
+        open={isMenuOpen}
         onClose={onClose}
         variant="temporary"
       >
@@ -189,6 +185,7 @@ export const Menu = ({ isOpen, isClosed, drawerToggle, menuOption }: Props) => {
                       src={flame}
                       alt="menu"
                       style={{ width: 50, height: 50, padding: 10 }}
+                      onClick={onHomeMenuClick}
                     />
                   </IconButton>
                 </FlameContainer>

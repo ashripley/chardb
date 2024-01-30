@@ -1,11 +1,9 @@
 import { Button, Grow, StyledEngineProvider } from "@mui/material"
 import { memo, useCallback } from "react"
 import styled from "styled-components"
+import { useDispatch } from "react-redux"
 import { theme } from "../../theme"
-
-interface Props {
-  menuOption: (label?: string) => void
-}
+import { setPage } from "../../redux/root"
 
 const Root = styled.div`
   display: flex;
@@ -72,10 +70,8 @@ const StyledButton = styled(Button)`
   }
 `
 
-export const Main = memo(({ menuOption }: Props) => {
-  const onClick = useCallback(() => {
-    menuOption("Cards")
-  }, [menuOption])
+export const Main = memo(() => {
+  const dispatch = useDispatch()
 
   return (
     <>
@@ -104,7 +100,7 @@ export const Main = memo(({ menuOption }: Props) => {
             <StyledEngineProvider injectFirst>
               <StyledButton
                 variant="contained"
-                onClick={() => onClick()}
+                onClick={() => dispatch(setPage("Cards"))}
                 sx={{ color: theme.primaryText }}
               >
                 View Cards
