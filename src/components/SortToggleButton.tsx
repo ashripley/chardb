@@ -5,11 +5,10 @@ import * as React from "react"
 import { icons } from "../helpers/fieldsToMap"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
 import { IconImageMap } from "./IconImageMap"
-
-interface Props {
-  sortView: (view: string) => void
-  view: string
-}
+import { FilterViewType, CardViewType } from "../helpers/view"
+import { useDispatch, useSelector } from "react-redux"
+import { setFilterView, setCardView } from "../redux/root"
+import { RootState } from "../redux/store"
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   "& .MuiToggleButtonGroup-grouped": {
@@ -34,23 +33,26 @@ const StyledToggleButton = styled(ToggleButton)`
   border: 1px solid rgb(227, 228, 219) !important;
 `
 
-export const SortToggleButton = ({ sortView, view }: Props) => {
+export const SortToggleButton = () => {
   const fields: string[] = ["id", "name", "type", "year", "attribute"]
+  const { filterView } = useSelector((state: RootState) => state.root)
+  const dispatch = useDispatch()
 
-  const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    nextView: string
-  ) => {
-    sortView(nextView)
-  }
+  // const handleChange = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   nextView: string
+  // ) => {
+  //   console.log("nextView", nextView)
+  //   sortView(nextView)
+  // }
 
   return (
     <StyledToggleButtonGroup
       orientation="horizontal"
-      value={view || "id"}
+      value={filterView || "id"}
       exclusive
       color="warning"
-      onChange={handleChange}
+      onChange={(e, view: FilterViewType) => dispatch(setFilterView(view))}
       style={{
         height: "auto",
         gap: 10,

@@ -3,13 +3,11 @@ import { useEffect, useMemo, useState } from "react"
 import styled from "styled-components"
 import { LoadingSkeleton } from "../Skeleton"
 import { PokemonCard } from "./PokemonCard"
+import { useSelector } from "react-redux"
+import { CardState, RootState } from "../../redux/store"
 
 interface Props {
   pokemon: Record<string, any>[]
-  mounted: boolean
-  isLoading: boolean
-  view: "Grid" | "List" | "Tile"
-  sortView: string
   isCardDeleted: (hasChanged: boolean, pokemon: Record<string, any>) => void
 }
 
@@ -37,15 +35,12 @@ const PaginationWrapper = styled.div`
   justify-content: center;
 `
 
-export const Cards = ({
-  pokemon,
-  mounted,
-  isLoading,
-  view,
-  sortView,
-  isCardDeleted,
-}: Props) => {
+export const Cards = ({ pokemon, isCardDeleted }: Props) => {
   const [currentPage, setCurrentPage] = useState<number>(1)
+  const { filterView, isDataLoading } = useSelector(
+    (state: RootState) => state.root
+  )
+  const { isCardOpen } = useSelector((state: CardState) => state.card)
 
   const itemsPerPage = 50
 
@@ -54,13 +49,13 @@ export const Cards = ({
     return pokemon
       .filter(({ cardId }) => cardId && cardIds.has(cardId))
       .sort((a, b) => {
-        return a[sortView || "id"] < b[sortView || "id"]
+        return a[filterView || "id"] < b[filterView || "id"]
           ? -1
-          : a[sortView || "id"] > b[sortView || "id"]
+          : a[filterView || "id"] > b[filterView || "id"]
           ? 1
           : 0
       })
-  }, [pokemon, sortView])
+  }, [pokemon, filterView])
 
   const paginatedCards = useMemo(
     () =>
@@ -68,7 +63,7 @@ export const Cards = ({
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
       ),
-    [pokemon, currentPage, itemsPerPage, sortView]
+    [pokemon, currentPage, itemsPerPage, filterView]
   )
 
   useEffect(() => {
@@ -84,9 +79,9 @@ export const Cards = ({
   }
 
   return (
-    <Slide direction="up" in={mounted} mountOnEnter unmountOnExit>
+    <Slide direction="up" in={isCardOpen} mountOnEnter unmountOnExit>
       <Container>
-        {isLoading ? (
+        {isDataLoading ? (
           <LoadingSkeleton />
         ) : (
           <StyledPaper
@@ -103,8 +98,6 @@ export const Cards = ({
                 isCardDeleted={isDeleted}
                 pokemon={poke}
                 cardIndex={index}
-                view={view}
-                isLoading={isLoading}
               />
             ))}
           </StyledPaper>

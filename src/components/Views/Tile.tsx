@@ -2,7 +2,7 @@ import { Card, Grow, Icon, Tooltip } from "@mui/material"
 import { useRef, useState } from "react"
 import styled from "styled-components"
 import { theme } from "../../theme"
-import { View } from "../../helpers/view"
+import { ReadOrEditEnum } from "../../helpers/view"
 import { TileImage } from "../Tile/TileImage"
 import ReactCardFlip from "react-card-flip"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
@@ -11,7 +11,6 @@ import { AttributeSelect } from "../AttributeSelect"
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
-  isLoading: boolean
   isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
@@ -73,23 +72,23 @@ const cardStyles = (p: Record<string, any>) => {
     borderRadius: "15px",
     boxShadow: "rgba(0, 0, 0, 0.4) 0px 40px 90px",
     transition: "all 0.5s !important",
-    border: "8px solid white",
     gap: 10,
     padding: 5,
+    border: "8px solid white",
+    ":hover": {
+      boxShadow: `0px 0px 10px 5px ${
+        theme.typeColours[p.type]
+      } , 0px 0px 0px 0px #ffffff`,
+    },
   }
 }
 
-export const TileView = ({
-  pokemon,
-  cardIndex,
-  isLoading,
-  isCardDeleted,
-}: Props) => {
+export const TileView = ({ pokemon, cardIndex, isCardDeleted }: Props) => {
   //#region state
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
   const [isFlipped, setIsFlipped] = useState<boolean>(false)
   const [cardView, setCardView] = useState<Record<string, any>>({
-    view: View.READ,
+    view: ReadOrEditEnum.READ,
   })
   const fields = {
     name: pokemon.name,

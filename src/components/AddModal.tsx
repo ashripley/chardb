@@ -20,11 +20,11 @@ import { omit } from "../helpers/omit"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
 import { firestore } from "../services/firebase"
 import { AttributeSelect } from "./AttributeSelect"
-
-interface Props {
-  openModal: boolean
-  closeModal: (isClosed: boolean) => void
-}
+import { useDispatch, useSelector } from "react-redux"
+import { setCardView } from "../redux/root"
+import { CardViewType } from "../helpers/view"
+import { setHasCardError, setIsAddModalOpen } from "../redux/card"
+import { CardState, RootState } from "../redux/store"
 
 const Container = styled.div`
   max-width: 100%;
@@ -137,8 +137,11 @@ const inputProps = {
   },
 }
 
-export const AddModal = ({ openModal, closeModal }: Props) => {
-  const [open, setOpen] = useState(false)
+export const AddModal = () => {
+  const dispatch = useDispatch()
+  const { isAddModalOpen } = useSelector((state: CardState) => state.card)
+
+  // const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [icon, setIcon] = useState("add")
   const [alert, setAlert] = useState("add")
@@ -169,15 +172,6 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
       ...omit("attribute", fields),
     })
   }
-
-  const handleClose = () => {
-    setOpen(false)
-    closeModal(false)
-  }
-
-  useEffect(() => {
-    setOpen(openModal)
-  }, [openModal])
 
   const toastClose = (event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
@@ -227,8 +221,8 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
+        open={isAddModalOpen}
+        onClose={() => dispatch(setIsAddModalOpen(false))}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         style={{ backdropFilter: "blur(2px)" }}
@@ -242,7 +236,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
           },
         }}
       >
-        <Fade in={open}>
+        <Fade in={isAddModalOpen}>
           <Box sx={style}>
             <Container>
               <div>
@@ -313,7 +307,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                       height: "100%",
                       borderColor: theme.darkBg,
                     }}
-                    onClick={handleClose}
+                    onClick={() => dispatch(setIsAddModalOpen(false))}
                   >
                     Cancel
                   </Button>

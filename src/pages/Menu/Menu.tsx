@@ -8,6 +8,7 @@ import { theme } from "../../theme"
 import flame from "../../assets/icons/flame.png"
 import { useDispatch, useSelector } from "react-redux"
 import { setMenuStatus, setPage } from "../../redux/root"
+import { RootState } from "../../redux/store"
 
 const Container = styled.div`
   display: flex;
@@ -147,20 +148,19 @@ const iconButtonStyles = {
 }
 
 export const Menu = () => {
-  const { page, isMenuOpen } = useSelector((state: any) => state.root)
+  const { isMenuOpen } = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
 
   const onClose = () => {
     dispatch(setMenuStatus(false))
   }
 
-  const onClick = useCallback(
-    (label: string) => {
-      dispatch(setPage(label))
-      dispatch(setMenuStatus(false))
-    },
-    [page, onClose]
-  )
+  const onClick = (label: string) => {
+    console.log("label", label)
+    console.log("isMenuOpen", isMenuOpen)
+    dispatch(setPage(label))
+    dispatch(setMenuStatus(false))
+  }
 
   const onHomeMenuClick = () => {
     dispatch(setPage("Home"))

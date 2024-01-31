@@ -74,6 +74,7 @@ const HeaderText = styled.div`
 
 export const Header = memo(() => {
   const dispatch = useDispatch()
+
   return (
     <>
       <div style={{ height: "15%" }}>

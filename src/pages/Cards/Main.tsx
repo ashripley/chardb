@@ -28,6 +28,22 @@ import { firestore } from "../../services/firebase"
 import { theme } from "../../theme"
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
 import { AnalyticsModal } from "../../components/AnalyticsModal"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  setCardData,
+  setCardField,
+  setCardView,
+  setIsDataLoading,
+} from "../../redux/root"
+import {
+  setHasCardError,
+  setIsAddModalOpen,
+  setIsAnalyticsOpen,
+  setIsCardOpen,
+  setIsConfirmationModalOpen,
+  setPokemonToBeDeleted,
+} from "../../redux/card"
+import { CardState, RootState } from "../../redux/store"
 
 const Wrap = styled.div``
 
@@ -127,90 +143,63 @@ const StyledForm = styled(FormControl)`
 `
 
 export const Main = () => {
-  // State variables
-  const [error, setError] = useState(false)
-  const [showAddCard, setShowAddCard] = useState(false)
-  const [showCard, setShowCard] = useState(false)
-  const [sortToggleView, setSortToggleView] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false)
-  const [showConfirmationModal, setShowConfirmationModal] = useState(false)
-  const [pokemonToBeDeleted, setPokemonToBeDeleted] = useState<
-    Record<string, any>
-  >({})
-  const [data, setData] = useState([{}])
-  const [view, setView] = useState<"Grid" | "List" | "Tile">("Grid")
-  const [field, setField] = useState<Record<string, any>>({
-    key: "",
-    value: "",
-  })
+  const dispatch = useDispatch()
+  const { cardView, cardData, cardField, isDataLoading } = useSelector(
+    (state: RootState) => state.root
+  )
+  const {
+    isAddModalOpen,
+    hasCardError,
+    isCardOpen,
+    isAnalyticsOpen,
+    isConfirmationModalOpen,
+    pokemonToBeDeleted,
+  } = useSelector((state: CardState) => state.card)
 
   const categories = ["Name", "Type", "Set", "Year", "Attribute"]
 
-  const sortView = (view: string) => {
-    setSortToggleView(view)
-  }
-
   // Function to fetch data
   const fetchData = useCallback(async () => {
-    setIsLoading(true)
+    dispatch(setIsDataLoading(true))
 
     try {
       const cards = await AllCards()
 
-      setData(cards || [])
-      setShowCard(true)
+      dispatch(setCardData(cards || []))
+      dispatch(setIsCardOpen(true))
     } catch (error) {
-      setError(true)
+      dispatch(setHasCardError(true))
     } finally {
-      setIsLoading(false)
+      dispatch(setIsDataLoading(false))
     }
   }, [])
 
   // Function to handle refresh
   const handleRefresh = () => {
-    setField({ key: "", value: "" })
+    dispatch(setCardField({ key: "", value: "" }))
     fetchData()
   }
 
   // Function to handle add button click
   const handleAdd = () => {
-    showAddCard ? setShowAddCard(false) : setShowAddCard(true)
+    if (isAddModalOpen) {
+      dispatch(setIsAddModalOpen(false))
+    } else {
+      dispatch(setIsAddModalOpen(true))
+    }
   }
 
   // Callback function when AddModal is closed
-  const onAddClose = (isClosed: boolean) => {
-    !isClosed && setShowAddCard(false)
-    fetchData()
-  }
+  useEffect(() => {
+    if (!isAddModalOpen) fetchData()
+  }, [isAddModalOpen])
 
   // Function to handle card deletion confirmation
   const isDeleted = (hasChanged: boolean, pokemon: Record<string, any>) => {
     if (hasChanged) {
-      setShowConfirmationModal(!showConfirmationModal)
-      setPokemonToBeDeleted(pokemon)
+      dispatch(setIsConfirmationModalOpen(!isConfirmationModalOpen))
+      dispatch(setPokemonToBeDeleted(pokemon))
     }
-  }
-
-  // Function to handle card deletion
-  const handleDelete = async (isReadyForDeletion: boolean) => {
-    if (isReadyForDeletion) {
-      await deleteDoc(doc(firestore, "cards", pokemonToBeDeleted.cardId))
-      const cards = await AllCards()
-
-      setData([...cards])
-      setShowConfirmationModal(false)
-    }
-  }
-
-  // Function to toggle between grid, tile and list view
-  const onViewChange = (view: "Grid" | "List" | "Tile") => {
-    setView(view)
-  }
-
-  // Function to toggle between grid and list view
-  const analyticsToggle = () => {
-    setIsAnalyticsOpen((prev) => !prev)
   }
 
   // Initial data fetch on component mount
@@ -252,7 +241,7 @@ export const Main = () => {
                       <Select
                         id="standard"
                         variant="outlined"
-                        value={field.key}
+                        value={cardField.key}
                         label={"Category"}
                         color="warning"
                         MenuProps={{
@@ -264,10 +253,12 @@ export const Main = () => {
                           },
                         }}
                         onChange={(e) => {
-                          setField({
-                            key: e.target.value,
-                            value: "",
-                          })
+                          dispatch(
+                            setCardField({
+                              key: e.target.value,
+                              value: "",
+                            })
+                          )
                         }}
                         sx={{
                           borderRadius: "15px 35px 35px 15px",
@@ -300,15 +291,20 @@ export const Main = () => {
                     <TextFieldWrapper>
                       <TextField
                         id="standard"
-                        value={field.value}
-                        label={`Search ${field.key || "All Cards"}...`}
+                        value={cardField.value}
+                        label={`Search ${cardField.key || "All Cards"}...`}
                         variant="outlined"
                         style={{ width: "auto", minWidth: 400 }}
                         color={"warning"}
                         onChange={(e) =>
-                          setField({ key: field.key, value: e.target.value })
+                          dispatch(
+                            setCardField({
+                              key: cardField.key,
+                              value: e.target.value,
+                            })
+                          )
                         }
-                        error={error}
+                        error={hasCardError}
                         InputProps={{
                           sx: {
                             borderRadius: "15px !important",
@@ -354,7 +350,7 @@ export const Main = () => {
                           }}
                           onClick={handleRefresh}
                         >
-                          {isLoading === true ? (
+                          {isDataLoading === true ? (
                             <CircularProgress color="warning" />
                           ) : (
                             <RefreshIcon />
@@ -370,28 +366,29 @@ export const Main = () => {
                             borderRadius: 15,
                             borderColor: theme.darkBg,
                           }}
-                          onClick={() => setIsAnalyticsOpen((prev) => !prev)}
+                          onClick={() =>
+                            dispatch(setIsAnalyticsOpen(!isAnalyticsOpen))
+                          }
                         >
                           <InfoOutlinedIcon />
                         </Button>
                       </Actions>
                     </Buttons>
                     <Divider orientation="vertical" flexItem />
-                    <SortToggleButton
-                      sortView={sortView}
-                      view={sortToggleView}
-                    />
+                    <SortToggleButton />
                     <Divider orientation="vertical" flexItem />
                     <Chips>
                       <Chip
                         label="TILE"
-                        onClick={() => onViewChange("Tile")}
+                        onClick={() => dispatch(setCardView("Tile"))}
                         icon={
                           <AppsOutlinedIcon
                             fontSize="small"
                             style={{
                               color: `${
-                                view !== "Tile" ? theme.primaryText : "#ff8c00"
+                                cardView !== "Tile"
+                                  ? theme.primaryText
+                                  : "#ff8c00"
                               }`,
                             }}
                           />
@@ -401,21 +398,23 @@ export const Main = () => {
                           borderRadius: "15px",
                           borderColor: theme.darkBg,
                           color: `${
-                            view !== "Tile" ? theme.primaryText : "#ff8c00"
+                            cardView !== "Tile" ? theme.primaryText : "#ff8c00"
                           }`,
                           fontFamily: theme.fontFamily,
                         }}
-                        variant={view === "Tile" ? "filled" : "outlined"}
+                        variant={cardView === "Tile" ? "filled" : "outlined"}
                       />
                       <Chip
                         label="GRID"
-                        onClick={() => onViewChange("Grid")}
+                        onClick={() => dispatch(setCardView("Grid"))}
                         icon={
                           <WindowIcon
                             fontSize="small"
                             style={{
                               color: `${
-                                view !== "Grid" ? theme.primaryText : "#ff8c00"
+                                cardView !== "Grid"
+                                  ? theme.primaryText
+                                  : "#ff8c00"
                               }`,
                             }}
                           />
@@ -425,21 +424,23 @@ export const Main = () => {
                           borderRadius: "15px",
                           borderColor: theme.darkBg,
                           color: `${
-                            view !== "Grid" ? theme.primaryText : "#ff8c00"
+                            cardView !== "Grid" ? theme.primaryText : "#ff8c00"
                           }`,
                           fontFamily: theme.fontFamily,
                         }}
-                        variant={view === "Grid" ? "filled" : "outlined"}
+                        variant={cardView === "Grid" ? "filled" : "outlined"}
                       />
                       <Chip
                         label="LIST"
-                        onClick={() => onViewChange("List")}
+                        onClick={() => dispatch(setCardView("List"))}
                         icon={
                           <ListIcon
                             fontSize="small"
                             style={{
                               color: `${
-                                view !== "List" ? theme.primaryText : "#ff8c00"
+                                cardView !== "List"
+                                  ? theme.primaryText
+                                  : "#ff8c00"
                               }`,
                             }}
                           />
@@ -449,11 +450,11 @@ export const Main = () => {
                           borderRadius: "15px",
                           borderColor: theme.darkBg,
                           color: `${
-                            view !== "List" ? theme.primaryText : "#ff8c00"
+                            cardView !== "List" ? theme.primaryText : "#ff8c00"
                           }`,
                           fontFamily: theme.fontFamily,
                         }}
-                        variant={view === "List" ? "filled" : "outlined"}
+                        variant={cardView === "List" ? "filled" : "outlined"}
                       />
                     </Chips>
                   </NameField>
@@ -463,31 +464,22 @@ export const Main = () => {
           </Grow>
         </Header>
       </Root>
-      <AddModal openModal={showAddCard} closeModal={onAddClose} />
-      <ConfirmationModal
-        isDeleted={handleDelete}
-        pokemon={pokemonToBeDeleted}
-        openModal={showConfirmationModal}
-      />
-      <AnalyticsModal
-        analyticsToggle={analyticsToggle}
-        isOpen={isAnalyticsOpen}
-      />
+      <AddModal />
+      <ConfirmationModal />
+      <AnalyticsModal />
       <Wrap>
-        {showCard && (
+        {isCardOpen && (
           <Cards
-            view={view}
             isCardDeleted={isDeleted}
-            sortView={sortToggleView}
             pokemon={
-              field.value !== ""
-                ? data.filter((p: Record<string, any>) =>
-                    p[field.key?.toLowerCase() || "name"]?.includes(field.value)
+              cardField.value !== ""
+                ? cardData.filter((p: Record<string, any>) =>
+                    p[cardField.key?.toLowerCase() || "name"]?.includes(
+                      cardField.value
+                    )
                   )
-                : data
+                : cardData
             }
-            mounted={showCard}
-            isLoading={isLoading}
           />
         )}
       </Wrap>

@@ -6,16 +6,17 @@ import { UpdateCard } from "../../api/mutations/updateCard"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
-import { View } from "../../helpers/view"
+import { ReadOrEditEnum } from "../../helpers/view"
 import { AttributeSelect } from "../AttributeSelect"
 import { Snackbar } from "../Grid/Snackbar"
 import { ListActions } from "../List/ListActions"
 import { ListImage } from "../List/ListImage"
+import { RootState } from "../../redux/store"
+import { useDispatch, useSelector } from "react-redux"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
-  isLoading: boolean
   isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
@@ -98,15 +99,10 @@ export const editIconStyles = {
   },
 }
 
-export const ListView = ({
-  pokemon,
-  cardIndex,
-  isLoading,
-  isCardDeleted,
-}: Props) => {
+export const ListView = ({ pokemon, cardIndex, isCardDeleted }: Props) => {
   //#region State
   const [cardView, setCardView] = useState<Record<string, any>>({
-    view: View.READ,
+    view: ReadOrEditEnum.READ,
   })
   const [fields, setFields] = useState<Record<string, any>>({
     name: "",
@@ -123,7 +119,9 @@ export const ListView = ({
   const [open, setOpen] = useState<boolean>(false)
   //#endregion
 
-  const isEditView = cardView.view === View.EDIT
+  const { isDataLoading } = useSelector((state: RootState) => state.root)
+
+  const isEditView = cardView.view === ReadOrEditEnum.EDIT
 
   const cardStyles = {
     width: "100%",
@@ -172,7 +170,7 @@ export const ListView = ({
   }
 
   const handleEdit = () => {
-    setCardView({ view: View.EDIT })
+    setCardView({ view: ReadOrEditEnum.EDIT })
   }
 
   const handleDelete = async () => {
@@ -180,7 +178,7 @@ export const ListView = ({
   }
 
   const handleClear = async () => {
-    setCardView({ view: View.READ })
+    setCardView({ view: ReadOrEditEnum.READ })
   }
 
   const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
@@ -211,7 +209,7 @@ export const ListView = ({
       )} have been updated! Please refresh for results`
     )
 
-    setCardView({ view: View.READ })
+    setCardView({ view: ReadOrEditEnum.READ })
     clearFields()
   }
 
@@ -236,7 +234,7 @@ export const ListView = ({
 
   return (
     <Wrapper key={`list-${cardIndex}`}>
-      {isLoading ? (
+      {isDataLoading ? (
         <Skeleton
           variant="rounded"
           width={"100%"}

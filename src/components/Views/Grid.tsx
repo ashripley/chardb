@@ -7,16 +7,17 @@ import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
 import { energyImageMap } from "../../helpers/trainerImageMap"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
-import { View } from "../../helpers/view"
+import { ReadOrEditEnum } from "../../helpers/view"
 import { AttributeSelect } from "../AttributeSelect"
 import { Actions } from "../Grid/Actions"
 import { GridImage } from "../Grid/GridImage"
 import { Snackbar } from "../Grid/Snackbar"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../../redux/store"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
-  isLoading: boolean
   isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
@@ -76,19 +77,14 @@ const Details = styled.div<{ isCardHovered: boolean; isEditView: boolean }>`
 `
 //#endregion
 
-export const GridView = ({
-  pokemon,
-  cardIndex,
-  isLoading,
-  isCardDeleted,
-}: Props) => {
+export const GridView = ({ pokemon, cardIndex, isCardDeleted }: Props) => {
   //#region state
   const [isEvolutionsHovered, setIsEvolutionsHovered] = useState<boolean>(false)
   const [editAlert, setEditAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
   const [cardView, setCardView] = useState<Record<string, any>>({
-    view: View.READ,
+    view: ReadOrEditEnum.READ,
   })
   const [fields, setFields] = useState<Record<string, any>>({
     name: "",
@@ -100,10 +96,12 @@ export const GridView = ({
     quantity: "",
   })
 
+  const { isDataLoading } = useSelector((state: RootState) => state.root)
+
   const ref = useRef(null)
   //#endregion
 
-  const isEditView = cardView.view === View.EDIT
+  const isEditView = cardView.view === ReadOrEditEnum.EDIT
 
   //#region styles
 
@@ -156,8 +154,7 @@ export const GridView = ({
   }
 
   const handleEdit = () => {
-    setCardView({ view: View.EDIT })
-    console.log("trainerImageMap", energyImageMap("water"))
+    setCardView({ view: ReadOrEditEnum.EDIT })
   }
 
   const handleDelete = async () => {
@@ -165,7 +162,7 @@ export const GridView = ({
   }
 
   const handleClear = async () => {
-    setCardView({ view: View.READ })
+    setCardView({ view: ReadOrEditEnum.READ })
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -203,7 +200,7 @@ export const GridView = ({
       )} have been updated! Please refresh for results`
     )
 
-    setCardView({ view: View.READ })
+    setCardView({ view: ReadOrEditEnum.READ })
     clearFields()
   }
 
@@ -220,7 +217,7 @@ export const GridView = ({
 
   return (
     <Wrapper
-      isLoading={isLoading}
+      isLoading={isDataLoading}
       isEditView={isEditView}
       isCardHovered={isCardHovered}
       key={`grid-${cardIndex}`}

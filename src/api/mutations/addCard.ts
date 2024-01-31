@@ -16,10 +16,7 @@ export const AddCardMutation = async (
   const uniqueId = uuidv4()
   const colour = theme.typeColours[type] ?? theme.typeColours.normal
 
-  console.log("attribute", attribute)
-
   if (!["trainer", "energy"].includes(attribute)) {
-    console.log("test in fetch block")
     // fetch pokemon blob from pokeapi
     const fetchPokemon = async (pokemon: string) => {
       const response = await axios.get(

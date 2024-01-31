@@ -8,11 +8,11 @@ import styled from "styled-components"
 import { theme } from "../theme"
 import { AllCards } from "../api/queries/allCards"
 import { Divider } from "@mui/material"
-
-interface Props {
-  analyticsToggle: (isOpen: boolean) => void
-  isOpen: boolean
-}
+import { setIsAnalyticsOpen } from "../redux/card"
+import { useDispatch, useSelector } from "react-redux"
+import { CardViewType } from "../helpers/view"
+import { setHasCardError } from "../redux/card"
+import { CardState, RootState } from "../redux/store"
 
 const HWrapper = styled.div`
   height: auto;
@@ -112,19 +112,22 @@ const style = {
   p: 4,
 }
 
-export const AnalyticsModal = ({ analyticsToggle, isOpen }: Props) => {
-  const [open, setOpen] = useState(false)
+export const AnalyticsModal = () => {
+  // const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [cards, setCards] = useState<Record<string, any>[] | undefined>()
 
-  const handleClose = () => {
-    analyticsToggle(true)
-    setOpen(false)
-  }
+  const dispatch = useDispatch()
+  const { isAnalyticsOpen } = useSelector((state: CardState) => state.card)
 
-  useEffect(() => {
-    setOpen(isOpen)
-  }, [isOpen])
+  // const handleClose = () => {
+  //   analyticsToggle(true)
+  //   setOpen(false)
+  // }
+
+  // useEffect(() => {
+  //   setOpen(isOpen)
+  // }, [isOpen])
 
   // Function to fetch data
   const fetchData = useCallback(async () => {
@@ -189,7 +192,7 @@ export const AnalyticsModal = ({ analyticsToggle, isOpen }: Props) => {
               cursor: "pointer",
             },
           }}
-          onClick={handleClose}
+          onClick={() => dispatch(setIsAnalyticsOpen(!isAnalyticsOpen))}
         />
       </Exit>
     </HWrapper>
@@ -244,8 +247,8 @@ export const AnalyticsModal = ({ analyticsToggle, isOpen }: Props) => {
   return (
     <div>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={isAnalyticsOpen}
+        onClose={() => dispatch(setIsAnalyticsOpen(!isAnalyticsOpen))}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         style={{ backdropFilter: "blur(4px)" }}
@@ -259,7 +262,7 @@ export const AnalyticsModal = ({ analyticsToggle, isOpen }: Props) => {
           },
         }}
       >
-        <Fade in={open}>
+        <Fade in={isAnalyticsOpen}>
           <Box sx={style}>
             <Container>
               <Header />
