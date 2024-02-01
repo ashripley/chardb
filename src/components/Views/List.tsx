@@ -11,13 +11,16 @@ import { AttributeSelect } from "../AttributeSelect"
 import { Snackbar } from "../Grid/Snackbar"
 import { ListActions } from "../List/ListActions"
 import { ListImage } from "../List/ListImage"
-import { RootState } from "../../redux/store"
+import { CardState, RootState } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
+import {
+  setIsConfirmationModalOpen,
+  setPokemonToBeDeleted,
+} from "../../redux/card"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
-  isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
 //#region Styled Components
@@ -99,7 +102,12 @@ export const editIconStyles = {
   },
 }
 
-export const ListView = ({ pokemon, cardIndex, isCardDeleted }: Props) => {
+export const List = ({ pokemon, cardIndex }: Props) => {
+  const dispatch = useDispatch()
+  const { isConfirmationModalOpen } = useSelector(
+    (state: CardState) => state.card
+  )
+
   //#region State
   const [cardView, setCardView] = useState<Record<string, any>>({
     view: ReadOrEditEnum.READ,
@@ -174,7 +182,8 @@ export const ListView = ({ pokemon, cardIndex, isCardDeleted }: Props) => {
   }
 
   const handleDelete = async () => {
-    isCardDeleted(true, pokemon)
+    dispatch(setIsConfirmationModalOpen(!isConfirmationModalOpen))
+    dispatch(setPokemonToBeDeleted(pokemon))
   }
 
   const handleClear = async () => {

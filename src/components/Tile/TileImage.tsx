@@ -12,8 +12,6 @@ interface Props {
   ref?: any
   isCardHovered: boolean
   isEditView: boolean
-  mouseEnter: () => void
-  mouseLeave: () => void
 }
 
 const Wrapper = styled.div<{
@@ -45,8 +43,6 @@ export const TileImage = ({
   ref,
   isCardHovered,
   isEditView,
-  mouseEnter,
-  mouseLeave,
 }: Props) => {
   const cardStyles = {
     width: 150,
@@ -78,12 +74,7 @@ export const TileImage = ({
   return (
     <Wrapper ref={ref} isEditView={isEditView} isCardHovered={isCardHovered}>
       <CardWrapper>
-        <Card
-          sx={cardStyles}
-          className="card-image"
-          onMouseEnter={() => mouseEnter()}
-          onMouseLeave={() => mouseLeave()}
-        >
+        <Card sx={cardStyles} className="card-image">
           <Grow in={true} unmountOnExit {...(true ? { timeout: 1000 } : {})}>
             <Image
               isCardHovered={isCardHovered}

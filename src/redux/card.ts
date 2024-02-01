@@ -7,6 +7,7 @@ interface StoreState {
   isMainLoading: boolean
   isPokemonCardLoading: boolean
   isAnalyticsOpen: boolean
+  isAnalyticsLoading: boolean
   isConfirmationModalOpen: boolean
   isReadyForDeletion: boolean
   isToastAddModalOpen: boolean
@@ -15,6 +16,7 @@ interface StoreState {
   icon: string
   pokemonToBeDeleted: Record<string, any>
   data: Record<string, any>[]
+  analyticsCardData: Record<string, any>[] | undefined
   fields: Record<string, any>
 }
 
@@ -25,6 +27,7 @@ const initialState: StoreState = {
   isMainLoading: false,
   isPokemonCardLoading: false,
   isAnalyticsOpen: false,
+  isAnalyticsLoading: false,
   isConfirmationModalOpen: false,
   isReadyForDeletion: false,
   isToastAddModalOpen: false,
@@ -32,6 +35,7 @@ const initialState: StoreState = {
   addModalAlert: "add",
   icon: "add",
   pokemonToBeDeleted: {},
+  analyticsCardData: undefined,
   data: [{}],
   fields: {
     name: "",
@@ -66,6 +70,9 @@ export const cardSlice = createSlice({
     setIsAnalyticsOpen: (state, action: PayloadAction<boolean>) => {
       state.isAnalyticsOpen = action.payload
     },
+    setIsAnalyticsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isAnalyticsLoading = action.payload
+    },
     setIsConfirmationModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isConfirmationModalOpen = action.payload
     },
@@ -93,6 +100,12 @@ export const cardSlice = createSlice({
     setData: (state, action: PayloadAction<Record<string, any>[]>) => {
       state.data = action.payload
     },
+    setAnalyticsCardData: (
+      state,
+      action: PayloadAction<Record<string, any>[] | undefined>
+    ) => {
+      state.analyticsCardData = action.payload
+    },
     setFields: (state, action: PayloadAction<Record<string, any>>) => {
       state.fields = action.payload
     },
@@ -106,10 +119,12 @@ export const {
   setIsMainLoading,
   setIsPokemonCardLoading,
   setIsAnalyticsOpen,
+  setIsAnalyticsLoading,
   setIsConfirmationModalOpen,
   setIsReadyForDeletion,
   setIsToastAddModalOpen,
   setConfirmationModalAlert,
+  setAnalyticsCardData,
   setAddModalAlert,
   setIcon,
   setPokemonToBeDeleted,

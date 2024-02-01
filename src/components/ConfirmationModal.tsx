@@ -14,6 +14,7 @@ import { CardViewType } from "../helpers/view"
 import {
   setIsReadyForDeletion,
   setIsConfirmationModalOpen,
+  setConfirmationModalAlert,
 } from "../redux/card"
 import { CardState } from "../redux/store"
 import { deleteDoc, doc } from "firebase/firestore"
@@ -120,13 +121,13 @@ const style = {
 }
 
 export const ConfirmationModal = () => {
-  // const [open, setOpen] = useState(false)
-  // const [isReadyForDeletion, setIsReadyForDeletion] = useState<boolean>(false)
-  const [alert, setAlert] = useState<string>("")
-
   const dispatch = useDispatch()
-  const { isConfirmationModalOpen, pokemonToBeDeleted, isReadyForDeletion } =
-    useSelector((state: CardState) => state.card)
+  const {
+    isConfirmationModalOpen,
+    pokemonToBeDeleted,
+    isReadyForDeletion,
+    confirmationModalAlert,
+  } = useSelector((state: CardState) => state.card)
 
   // Function to handle card deletion
   useEffect(() => {
@@ -217,7 +218,11 @@ export const ConfirmationModal = () => {
           }}
           onClick={() => {
             dispatch(setIsReadyForDeletion(true))
-            setAlert(`${upperCaseFirst(pokemonToBeDeleted.name)} Removed`)
+            dispatch(
+              setConfirmationModalAlert(
+                `${upperCaseFirst(pokemonToBeDeleted.name)} Removed`
+              )
+            )
           }}
         >
           Delete
@@ -279,7 +284,7 @@ export const ConfirmationModal = () => {
         onClose={toastClose}
       >
         <Alert onClose={toastClose} severity="success" sx={{ width: "100%" }}>
-          {alert}
+          {confirmationModalAlert}
         </Alert>
       </Snackbar>
     </div>

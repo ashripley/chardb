@@ -1,17 +1,14 @@
-import { Card, Grow, Icon, Tooltip } from "@mui/material"
+import { Card, Icon } from "@mui/material"
 import { useRef, useState } from "react"
 import styled from "styled-components"
 import { theme } from "../../theme"
-import { ReadOrEditEnum } from "../../helpers/view"
 import { TileImage } from "../Tile/TileImage"
 import ReactCardFlip from "react-card-flip"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
-import { AttributeSelect } from "../AttributeSelect"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
-  isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
 //#region Styled Components
@@ -83,13 +80,10 @@ const cardStyles = (p: Record<string, any>) => {
   }
 }
 
-export const TileView = ({ pokemon, cardIndex, isCardDeleted }: Props) => {
+export const Tile = ({ pokemon, cardIndex }: Props) => {
   //#region state
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
   const [isFlipped, setIsFlipped] = useState<boolean>(false)
-  const [cardView, setCardView] = useState<Record<string, any>>({
-    view: ReadOrEditEnum.READ,
-  })
   const fields = {
     name: pokemon.name,
     type: pokemon.type,
@@ -110,14 +104,6 @@ export const TileView = ({ pokemon, cardIndex, isCardDeleted }: Props) => {
   const ref = useRef(null)
   //#endregion
 
-  const mouseEnter = () => {
-    // setIsEvolutionsHovered(true)
-  }
-
-  const mouseLeave = () => {
-    // setIsEvolutionsHovered(false)
-  }
-
   const onCardEnter = () => {
     setIsCardHovered(true)
   }
@@ -129,55 +115,47 @@ export const TileView = ({ pokemon, cardIndex, isCardDeleted }: Props) => {
   return (
     <Container>
       <Wrapper key={`grid-${cardIndex}`}>
-        <Grow
-          in={true}
-          style={{ transformOrigin: "1 1 1" }}
-          {...(true ? { timeout: 1000 } : { timeout: 1000 })}
-        >
-          <Images>
-            <Card
-              sx={cardStyles(pokemon)}
-              variant="elevation"
-              raised
-              onMouseEnter={onCardEnter}
-              onMouseLeave={onCardLeave}
-              onClick={handleClick}
+        <Images>
+          <Card
+            sx={cardStyles(pokemon)}
+            variant="elevation"
+            raised
+            onMouseEnter={onCardEnter}
+            onMouseLeave={onCardLeave}
+            onClick={handleClick}
+          >
+            <ReactCardFlip
+              isFlipped={isFlipped}
+              flipDirection="vertical"
+              containerStyle={{ height: "100%" }}
             >
-              <ReactCardFlip
-                isFlipped={isFlipped}
-                flipDirection="vertical"
-                containerStyle={{ height: "100%" }}
-              >
-                <TileImage
-                  isCardHovered={isCardHovered}
-                  isEditView={false}
-                  isEvolutionsHovered={false}
-                  mouseEnter={mouseEnter}
-                  mouseLeave={mouseLeave}
-                  pokemon={pokemon}
-                  ref={ref}
-                />
+              <TileImage
+                isCardHovered={isCardHovered}
+                isEditView={false}
+                isEvolutionsHovered={false}
+                pokemon={pokemon}
+                ref={ref}
+              />
 
-                {Object.entries(
-                  fieldsToMap(false, fields, false, pokemon, pokemon.id, true)
-                ).map(([k, v], index) => (
-                  <Row>
-                    <Icon
-                      style={{
-                        width: "auto",
-                        paddingRight: 20,
-                        height: "auto",
-                      }}
-                    >
-                      {v.icon ?? <></>}
-                    </Icon>
-                    <Data>{pokemon[k] || ""}</Data>
-                  </Row>
-                ))}
-              </ReactCardFlip>
-            </Card>
-          </Images>
-        </Grow>
+              {Object.entries(
+                fieldsToMap(false, fields, false, pokemon, pokemon.id, true)
+              ).map(([k, v], index) => (
+                <Row>
+                  <Icon
+                    style={{
+                      width: "auto",
+                      paddingRight: 20,
+                      height: "auto",
+                    }}
+                  >
+                    {v.icon ?? <></>}
+                  </Icon>
+                  <Data>{pokemon[k] || ""}</Data>
+                </Row>
+              ))}
+            </ReactCardFlip>
+          </Card>
+        </Images>
       </Wrapper>
     </Container>
   )

@@ -6,11 +6,6 @@ import { PokemonCard } from "./PokemonCard"
 import { useSelector } from "react-redux"
 import { CardState, RootState } from "../../redux/store"
 
-interface Props {
-  pokemon: Record<string, any>[]
-  isCardDeleted: (hasChanged: boolean, pokemon: Record<string, any>) => void
-}
-
 const Container = styled.div`
   max-width: 100%;
   max-height: 100%;
@@ -35,14 +30,21 @@ const PaginationWrapper = styled.div`
   justify-content: center;
 `
 
-export const Cards = ({ pokemon, isCardDeleted }: Props) => {
+export const Cards = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const { filterView, isDataLoading } = useSelector(
+  const { filterView, isDataLoading, cardField, cardData } = useSelector(
     (state: RootState) => state.root
   )
   const { isCardOpen } = useSelector((state: CardState) => state.card)
 
   const itemsPerPage = 50
+
+  const pokemon =
+    cardField.value !== ""
+      ? cardData.filter((p: Record<string, any>) =>
+          p[cardField.key?.toLowerCase() || "name"]?.includes(cardField.value)
+        )
+      : cardData
 
   const filteredCards = useMemo(() => {
     const cardIds = new Set(pokemon.map(({ cardId }) => cardId))
@@ -74,10 +76,6 @@ export const Cards = ({ pokemon, isCardDeleted }: Props) => {
     })
   }, [currentPage])
 
-  const isDeleted = (hasChanged: boolean, pokemon: Record<string, any>) => {
-    isCardDeleted(hasChanged, pokemon)
-  }
-
   return (
     <Slide direction="up" in={isCardOpen} mountOnEnter unmountOnExit>
       <Container>
@@ -93,12 +91,7 @@ export const Cards = ({ pokemon, isCardDeleted }: Props) => {
             }}
           >
             {paginatedCards.map((poke, index) => (
-              <PokemonCard
-                key={index}
-                isCardDeleted={isDeleted}
-                pokemon={poke}
-                cardIndex={index}
-              />
+              <PokemonCard key={index} pokemon={poke} cardIndex={index} />
             ))}
           </StyledPaper>
         )}

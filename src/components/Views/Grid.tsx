@@ -1,11 +1,10 @@
-import { Card, RadioGroup, TextField, Tooltip } from "@mui/material"
+import { Card, TextField, Tooltip } from "@mui/material"
 import { ChangeEvent, SyntheticEvent, useMemo, useRef, useState } from "react"
 import styled from "styled-components"
 import { theme } from "../../theme"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
-import { energyImageMap } from "../../helpers/trainerImageMap"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 import { ReadOrEditEnum } from "../../helpers/view"
 import { AttributeSelect } from "../AttributeSelect"
@@ -14,11 +13,15 @@ import { GridImage } from "../Grid/GridImage"
 import { Snackbar } from "../Grid/Snackbar"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../redux/store"
+import {
+  setIsConfirmationModalOpen,
+  setPokemonToBeDeleted,
+} from "../../redux/card"
+import { CardState } from "../../redux/store"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
-  isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
 //#region Styled Components
@@ -77,7 +80,12 @@ const Details = styled.div<{ isCardHovered: boolean; isEditView: boolean }>`
 `
 //#endregion
 
-export const GridView = ({ pokemon, cardIndex, isCardDeleted }: Props) => {
+export const Grid = ({ pokemon, cardIndex }: Props) => {
+  const dispatch = useDispatch()
+  const { isConfirmationModalOpen } = useSelector(
+    (state: CardState) => state.card
+  )
+
   //#region state
   const [isEvolutionsHovered, setIsEvolutionsHovered] = useState<boolean>(false)
   const [editAlert, setEditAlert] = useState<string>("")
@@ -158,7 +166,8 @@ export const GridView = ({ pokemon, cardIndex, isCardDeleted }: Props) => {
   }
 
   const handleDelete = async () => {
-    isCardDeleted(true, pokemon)
+    dispatch(setIsConfirmationModalOpen(!isConfirmationModalOpen))
+    dispatch(setPokemonToBeDeleted(pokemon))
   }
 
   const handleClear = async () => {

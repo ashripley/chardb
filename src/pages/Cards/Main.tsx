@@ -144,7 +144,7 @@ const StyledForm = styled(FormControl)`
 
 export const Main = () => {
   const dispatch = useDispatch()
-  const { cardView, cardData, cardField, isDataLoading } = useSelector(
+  const { cardView, cardField, isDataLoading } = useSelector(
     (state: RootState) => state.root
   )
   const {
@@ -193,14 +193,6 @@ export const Main = () => {
   useEffect(() => {
     if (!isAddModalOpen) fetchData()
   }, [isAddModalOpen])
-
-  // Function to handle card deletion confirmation
-  const isDeleted = (hasChanged: boolean, pokemon: Record<string, any>) => {
-    if (hasChanged) {
-      dispatch(setIsConfirmationModalOpen(!isConfirmationModalOpen))
-      dispatch(setPokemonToBeDeleted(pokemon))
-    }
-  }
 
   // Initial data fetch on component mount
   useEffect(() => {
@@ -467,22 +459,7 @@ export const Main = () => {
       <AddModal />
       <ConfirmationModal />
       <AnalyticsModal />
-      <Wrap>
-        {isCardOpen && (
-          <Cards
-            isCardDeleted={isDeleted}
-            pokemon={
-              cardField.value !== ""
-                ? cardData.filter((p: Record<string, any>) =>
-                    p[cardField.key?.toLowerCase() || "name"]?.includes(
-                      cardField.value
-                    )
-                  )
-                : cardData
-            }
-          />
-        )}
-      </Wrap>
+      <Wrap>{isCardOpen && <Cards />}</Wrap>
     </Wrap>
   )
 }
