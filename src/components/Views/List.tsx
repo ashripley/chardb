@@ -1,4 +1,4 @@
-import { Card, RadioGroup, Skeleton, TextField, Tooltip } from "@mui/material"
+import { Card, Skeleton, TextField, Tooltip } from "@mui/material"
 import { ChangeEvent, SyntheticEvent, useState } from "react"
 import styled from "styled-components"
 import { theme } from "../../theme"
@@ -6,7 +6,6 @@ import { UpdateCard } from "../../api/mutations/updateCard"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
-import { ReadOrEditEnum } from "../../helpers/view"
 import { AttributeSelect } from "../AttributeSelect"
 import { Snackbar } from "../Grid/Snackbar"
 import { ListActions } from "../List/ListActions"
@@ -15,7 +14,9 @@ import { CardState, RootState } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import {
   setIsConfirmationModalOpen,
+  setListFields,
   setPokemonToBeDeleted,
+  setViewAlert,
 } from "../../redux/card"
 
 interface Props {
@@ -62,13 +63,6 @@ const Data = styled.div`
   font-size: 0.9em;
 `
 
-const StyledRadioGroup = styled(RadioGroup)`
-  width: 100%;
-  margin: 5px;
-  font-weight: 300 !important;
-  font-family: ${theme.fontFamily};
-`
-
 const Icon = styled.div`
   display: flex;
   width: 15%;
@@ -104,32 +98,18 @@ export const editIconStyles = {
 
 export const List = ({ pokemon, cardIndex }: Props) => {
   const dispatch = useDispatch()
-  const { isConfirmationModalOpen } = useSelector(
+  const { isConfirmationModalOpen, listFields } = useSelector(
     (state: CardState) => state.card
   )
 
   //#region State
-  const [cardView, setCardView] = useState<Record<string, any>>({
-    view: ReadOrEditEnum.READ,
-  })
-  const [fields, setFields] = useState<Record<string, any>>({
-    name: "",
-    type: "",
-    set: "",
-    setNumber: "",
-    year: "",
-    quantity: "",
-    attribute: "",
-  })
+  const [isEditView, setIsEditView] = useState<boolean>(false)
   const [isEvolutionsHovered, setIsEvolutionsHovered] = useState<boolean>(false)
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
-  const [alert, setAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
   //#endregion
 
   const { isDataLoading } = useSelector((state: RootState) => state.root)
-
-  const isEditView = cardView.view === ReadOrEditEnum.EDIT
 
   const cardStyles = {
     width: "100%",
@@ -178,7 +158,7 @@ export const List = ({ pokemon, cardIndex }: Props) => {
   }
 
   const handleEdit = () => {
-    setCardView({ view: ReadOrEditEnum.EDIT })
+    setIsEditView(true)
   }
 
   const handleDelete = async () => {
@@ -187,7 +167,7 @@ export const List = ({ pokemon, cardIndex }: Props) => {
   }
 
   const handleClear = async () => {
-    setCardView({ view: ReadOrEditEnum.READ })
+    setIsEditView(false)
   }
 
   const handleClose = (event?: SyntheticEvent | Event, reason?: string) => {
@@ -201,44 +181,50 @@ export const List = ({ pokemon, cardIndex }: Props) => {
   const handleSubmit = async () => {
     await UpdateCard(
       pokemon.cardId,
-      fields.name?.toLowerCase() || pokemon.name,
-      fields.type?.toLowerCase() || pokemon.type,
-      fields.set?.toLowerCase() || pokemon.set,
-      fields.setNumber || pokemon.setNumber,
-      fields.year || pokemon.year,
-      fields.quantity || pokemon.quantity,
-      fields.attribute?.toLowerCase() || pokemon.attribute,
-      theme.typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
+      listFields.name?.toLowerCase() || pokemon.name,
+      listFields.type?.toLowerCase() || pokemon.type,
+      listFields.set?.toLowerCase() || pokemon.set,
+      listFields.setNumber || pokemon.setNumber,
+      listFields.year || pokemon.year,
+      listFields.quantity || pokemon.quantity,
+      listFields.attribute?.toLowerCase() || pokemon.attribute,
+      theme.typeColours[listFields.type?.toLowerCase()] ?? pokemon.colour
     )
 
     setOpen(true)
-    setAlert(
-      `Fields for ${upperCaseFirst(
-        pokemon.name
-      )} have been updated! Please refresh for results`
+    dispatch(
+      setViewAlert(
+        `Fields for ${upperCaseFirst(
+          pokemon.name
+        )} have been updated! Please refresh for results`
+      )
     )
 
-    setCardView({ view: ReadOrEditEnum.READ })
+    setIsEditView(false)
     clearFields()
   }
 
   const clearFields = () => {
-    setFields({
-      name: "",
-      type: "",
-      set: "",
-      setNumber: "",
-      year: "",
-      quantity: "",
-      attribute: "",
-    })
+    dispatch(
+      setListFields({
+        name: "",
+        type: "",
+        set: "",
+        setNumber: "",
+        year: "",
+        quantity: "",
+        attribute: "",
+      })
+    )
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFields({
-      attribute: (event.target as HTMLInputElement).value,
-      ...omit("attribute", fields),
-    })
+    dispatch(
+      setListFields({
+        attribute: (event.target as HTMLInputElement).value,
+        ...omit("attribute", listFields),
+      })
+    )
   }
 
   return (
@@ -266,7 +252,7 @@ export const List = ({ pokemon, cardIndex }: Props) => {
           />
           <Details isHovered={isCardHovered}>
             {Object.entries(
-              fieldsToMap(isEditView, fields, false, pokemon, pokemon.id)
+              fieldsToMap(isEditView, listFields, false, pokemon, pokemon.id)
             ).map(([k, v], index) => (
               <Column key={index}>
                 <Tooltip title={v.label} placement="top-start">
@@ -276,7 +262,7 @@ export const List = ({ pokemon, cardIndex }: Props) => {
                   <Data>{pokemon[k] || ""}</Data>
                 ) : v.label === "Attribute" ? (
                   <AttributeSelect
-                    fields={fields}
+                    fields={listFields}
                     handleSelectChange={handleChange}
                   />
                 ) : (
@@ -289,43 +275,18 @@ export const List = ({ pokemon, cardIndex }: Props) => {
                     style={{ width: "80%", margin: "0px 5px" }}
                     sx={{ borderRadius: 15 }}
                     onChange={(e) => {
-                      setFields({
-                        [k]: e.target.value,
-                        ...omit(k, fields),
-                      })
+                      dispatch(
+                        setListFields({
+                          [k]: e.target.value,
+                          ...omit(k, listFields),
+                        })
+                      )
                     }}
                     InputProps={{ ...textFieldStyles }}
                   />
                 )}
               </Column>
             ))}
-            {/* {isEditView && (
-              <StyledRadioGroup
-                defaultValue={
-                  pokemon.attribute ? pokemon.attribute : fields.attribute
-                }
-                row
-                onChange={(e) => handleChange(e)}
-              >
-                {[
-                  "Standard",
-                  "Standard Holographic",
-                  "Reverse Holographic",
-                  "Special",
-                ].map((label, index) => (
-                  <FormControlLabel
-                    key={index}
-                    value={label.toLowerCase()}
-                    control={<Radio color="warning" />}
-                    label={label}
-                    sx={{
-                      height: 35,
-                      minWidth: 200,
-                    }}
-                  />
-                ))}
-              </StyledRadioGroup>
-            )} */}
           </Details>
           <ListActions
             handleClear={handleClear}
@@ -335,7 +296,7 @@ export const List = ({ pokemon, cardIndex }: Props) => {
             isCardHovered={isCardHovered}
             isEditView={isEditView}
           />
-          <Snackbar editAlert={alert} handleClose={handleClose} open={open} />
+          <Snackbar handleClose={handleClose} open={open} />
         </Card>
       )}
     </Wrapper>

@@ -1,6 +1,6 @@
 import MenuIcon from "@mui/icons-material/Menu"
 import { AppBar, Box, Card, IconButton, Toolbar } from "@mui/material"
-import { memo, useState } from "react"
+import { memo } from "react"
 import styled from "styled-components"
 import { theme } from "../theme"
 import flame from "../assets/icons/flame.png"
@@ -78,7 +78,7 @@ export const Header = memo(() => {
   return (
     <>
       <div style={{ height: "15%" }}>
-        <Box sx={{ height: "100%" }}>
+        <Box>
           <StyledAppBar position="static" variant="outlined">
             <Toolbar style={{ padding: 0 }}>
               <Container>

@@ -1,13 +1,12 @@
 import { Tooltip, styled } from "@mui/material"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
-import * as React from "react"
 import { icons } from "../helpers/fieldsToMap"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
 import { IconImageMap } from "./IconImageMap"
-import { FilterViewType, CardViewType } from "../helpers/view"
+import { FilterViewType } from "../helpers/view"
 import { useDispatch, useSelector } from "react-redux"
-import { setFilterView, setCardView } from "../redux/root"
+import { setFilterView } from "../redux/root"
 import { RootState } from "../redux/store"
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
@@ -37,14 +36,6 @@ export const SortToggleButton = () => {
   const fields: string[] = ["id", "name", "type", "year", "attribute"]
   const { filterView } = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
-
-  // const handleChange = (
-  //   event: React.MouseEvent<HTMLElement>,
-  //   nextView: string
-  // ) => {
-  //   console.log("nextView", nextView)
-  //   sortView(nextView)
-  // }
 
   return (
     <StyledToggleButtonGroup

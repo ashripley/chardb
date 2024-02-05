@@ -5,12 +5,11 @@ import Box from "@mui/material/Box"
 import Fade from "@mui/material/Fade"
 import Modal from "@mui/material/Modal"
 import * as React from "react"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import styled from "styled-components"
 import { theme } from "../theme"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
 import { useDispatch, useSelector } from "react-redux"
-import { CardViewType } from "../helpers/view"
 import {
   setIsReadyForDeletion,
   setIsConfirmationModalOpen,
@@ -100,10 +99,6 @@ const Buttons = styled.div`
   height: 50px;
   justify-content: flex-end;
   align-items: center;
-`
-
-const B = styled.p`
-  font-weight: 800;
 `
 
 const style = {

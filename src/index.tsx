@@ -10,7 +10,9 @@ import { Provider } from "react-redux"
 
 const queryClient = new QueryClient()
 
-const isMobile = window.matchMedia("only screen and (max-width: 760px)").matches
+export const isMobile = window.matchMedia(
+  "only screen and (max-width: 60px)"
+).matches
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(

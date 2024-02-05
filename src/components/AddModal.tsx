@@ -11,7 +11,7 @@ import Fade from "@mui/material/Fade"
 import Modal from "@mui/material/Modal"
 import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { collection } from "firebase/firestore"
-import { ChangeEvent, SyntheticEvent, useState } from "react"
+import { SyntheticEvent, useState } from "react"
 import styled from "styled-components"
 import { theme } from "../theme"
 import { AddCardMutation } from "../api/mutations/addCard"
@@ -21,8 +21,8 @@ import { upperCaseFirst } from "../helpers/upperCaseFirst"
 import { firestore } from "../services/firebase"
 import { AttributeSelect } from "./AttributeSelect"
 import { useDispatch, useSelector } from "react-redux"
-import { setIsAddModalOpen } from "../redux/card"
-import { CardState, RootState } from "../redux/store"
+import { setIcon, setIsAddModalOpen } from "../redux/card"
+import { CardState } from "../redux/store"
 
 const Container = styled.div`
   max-width: 100%;
@@ -139,9 +139,7 @@ export const AddModal = () => {
   const dispatch = useDispatch()
   const { isAddModalOpen } = useSelector((state: CardState) => state.card)
 
-  // const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [icon, setIcon] = useState("add")
   const [alert, setAlert] = useState("add")
   const [toastOpen, setToastOpen] = useState(false)
   const [fields, setFields] = useState<Record<string, any>>({
@@ -157,12 +155,12 @@ export const AddModal = () => {
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFields({
-      attribute: (event.target as HTMLInputElement).value,
-      ...omit("attribute", fields),
-    })
-  }
+  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setFields({
+  //     attribute: (event.target as HTMLInputElement).value,
+  //     ...omit("attribute", fields),
+  //   })
+  // }
 
   const handleSelectChange = (event: any) => {
     setFields({
@@ -195,7 +193,7 @@ export const AddModal = () => {
     setTimeout(() => {
       setIsLoading(false)
       clearFields()
-      setIcon("add")
+      dispatch(setIcon("add"))
     }, 1500)
 
     setToastOpen(true)

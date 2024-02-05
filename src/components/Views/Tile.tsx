@@ -94,8 +94,6 @@ export const Tile = ({ pokemon, cardIndex }: Props) => {
     quantity: pokemon.quantity,
   }
 
-  // this.handleClick = this.handleClick.bind(this);
-
   const handleClick = (e: any) => {
     e.preventDefault()
     setIsFlipped(!isFlipped)

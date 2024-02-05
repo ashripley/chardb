@@ -13,11 +13,13 @@ interface StoreState {
   isToastAddModalOpen: boolean
   confirmationModalAlert: string
   addModalAlert: string
+  viewAlert: string
   icon: string
   pokemonToBeDeleted: Record<string, any>
   data: Record<string, any>[]
   analyticsCardData: Record<string, any>[] | undefined
-  fields: Record<string, any>
+  gridFields: Record<string, any>
+  listFields: Record<string, any>
 }
 
 const initialState: StoreState = {
@@ -33,11 +35,12 @@ const initialState: StoreState = {
   isToastAddModalOpen: false,
   confirmationModalAlert: "",
   addModalAlert: "add",
+  viewAlert: "",
   icon: "add",
   pokemonToBeDeleted: {},
   analyticsCardData: undefined,
   data: [{}],
-  fields: {
+  gridFields: {
     name: "",
     type: "",
     set: "",
@@ -45,6 +48,15 @@ const initialState: StoreState = {
     year: "",
     attribute: "",
     quantity: "",
+  },
+  listFields: {
+    name: "",
+    type: "",
+    set: "",
+    setNumber: "",
+    year: "",
+    quantity: "",
+    attribute: "",
   },
 }
 
@@ -106,8 +118,14 @@ export const cardSlice = createSlice({
     ) => {
       state.analyticsCardData = action.payload
     },
-    setFields: (state, action: PayloadAction<Record<string, any>>) => {
-      state.fields = action.payload
+    setGridFields: (state, action: PayloadAction<Record<string, any>>) => {
+      state.gridFields = action.payload
+    },
+    setListFields: (state, action: PayloadAction<Record<string, any>>) => {
+      state.listFields = action.payload
+    },
+    setViewAlert: (state, action: PayloadAction<string>) => {
+      state.viewAlert = action.payload
     },
   },
 })
@@ -129,7 +147,9 @@ export const {
   setIcon,
   setPokemonToBeDeleted,
   setData,
-  setFields,
+  setGridFields,
+  setListFields,
+  setViewAlert,
 } = cardSlice.actions
 
 export default cardSlice.reducer

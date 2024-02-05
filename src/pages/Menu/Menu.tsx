@@ -2,7 +2,6 @@ import CloseIcon from "@mui/icons-material/Close"
 import { Button, IconButton } from "@mui/material"
 import Drawer from "@mui/material/Drawer"
 import List from "@mui/material/List"
-import { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
 import { theme } from "../../theme"
 import flame from "../../assets/icons/flame.png"
@@ -156,8 +155,6 @@ export const Menu = () => {
   }
 
   const onClick = (label: string) => {
-    console.log("label", label)
-    console.log("isMenuOpen", isMenuOpen)
     dispatch(setPage(label))
     dispatch(setMenuStatus(false))
   }

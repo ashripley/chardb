@@ -3,7 +3,7 @@ import Backdrop from "@mui/material/Backdrop"
 import Box from "@mui/material/Box"
 import Fade from "@mui/material/Fade"
 import Modal from "@mui/material/Modal"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect } from "react"
 import styled from "styled-components"
 import { theme } from "../theme"
 import { AllCards } from "../api/queries/allCards"
@@ -14,9 +14,7 @@ import {
   setIsAnalyticsOpen,
 } from "../redux/card"
 import { useDispatch, useSelector } from "react-redux"
-import { CardViewType } from "../helpers/view"
-import { setHasCardError } from "../redux/card"
-import { CardState, RootState } from "../redux/store"
+import { CardState } from "../redux/store"
 import Spinner from "./Spinner"
 
 const HWrapper = styled.div`

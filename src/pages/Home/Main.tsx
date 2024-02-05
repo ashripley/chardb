@@ -1,5 +1,5 @@
 import { Button, Grow, StyledEngineProvider } from "@mui/material"
-import { memo, useCallback } from "react"
+import { memo } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { theme } from "../../theme"
