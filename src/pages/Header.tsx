@@ -1,14 +1,11 @@
 import MenuIcon from "@mui/icons-material/Menu"
 import { AppBar, Box, Card, IconButton, Toolbar } from "@mui/material"
-import { memo, useState } from "react"
+import { memo } from "react"
 import styled from "styled-components"
 import { theme } from "../theme"
 import flame from "../assets/icons/flame.png"
-
-interface Props {
-  isOpen: (isClicked: boolean) => void
-  menuAction: string
-}
+import { setMenuStatus, setPage } from "../redux/root"
+import { useDispatch } from "react-redux"
 
 const Container = styled.div`
   max-width: 100%;
@@ -75,13 +72,13 @@ const HeaderText = styled.div`
   font-family: ${theme.fontFamily};
 `
 
-export const Header = memo(({ isOpen }: Props) => {
-  const [isClicked] = useState(false)
+export const Header = memo(() => {
+  const dispatch = useDispatch()
 
   return (
     <>
       <div style={{ height: "15%" }}>
-        <Box sx={{ height: "100%" }}>
+        <Box>
           <StyledAppBar position="static" variant="outlined">
             <Toolbar style={{ padding: 0 }}>
               <Container>
@@ -102,6 +99,7 @@ export const Header = memo(({ isOpen }: Props) => {
                           src={flame}
                           alt="menu"
                           style={{ width: 30, height: 30, padding: 5 }}
+                          onClick={() => dispatch(setPage("Home"))}
                         />
                       </IconWrapper>
                     </MenuWrapper>
@@ -132,7 +130,7 @@ export const Header = memo(({ isOpen }: Props) => {
                         },
                       }}
                       style={{ width: 50, height: 50, margin: 0 }}
-                      onClick={() => isOpen(!isClicked)}
+                      onClick={() => dispatch(setMenuStatus(true))}
                     >
                       <MenuIcon
                         style={{

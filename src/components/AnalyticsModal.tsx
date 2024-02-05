@@ -3,16 +3,19 @@ import Backdrop from "@mui/material/Backdrop"
 import Box from "@mui/material/Box"
 import Fade from "@mui/material/Fade"
 import Modal from "@mui/material/Modal"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect } from "react"
 import styled from "styled-components"
 import { theme } from "../theme"
 import { AllCards } from "../api/queries/allCards"
 import { Divider } from "@mui/material"
-
-interface Props {
-  analyticsToggle: (isOpen: boolean) => void
-  isOpen: boolean
-}
+import {
+  setAnalyticsCardData,
+  setIsAnalyticsLoading,
+  setIsAnalyticsOpen,
+} from "../redux/card"
+import { useDispatch, useSelector } from "react-redux"
+import { CardState } from "../redux/store"
+import Spinner from "./Spinner"
 
 const HWrapper = styled.div`
   height: auto;
@@ -112,32 +115,23 @@ const style = {
   p: 4,
 }
 
-export const AnalyticsModal = ({ analyticsToggle, isOpen }: Props) => {
-  const [open, setOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [cards, setCards] = useState<Record<string, any>[] | undefined>()
-
-  const handleClose = () => {
-    analyticsToggle(true)
-    setOpen(false)
-  }
-
-  useEffect(() => {
-    setOpen(isOpen)
-  }, [isOpen])
+export const AnalyticsModal = () => {
+  const dispatch = useDispatch()
+  const { isAnalyticsOpen, analyticsCardData, isAnalyticsLoading } =
+    useSelector((state: CardState) => state.card)
 
   // Function to fetch data
   const fetchData = useCallback(async () => {
-    setIsLoading(true)
+    dispatch(setIsAnalyticsLoading(true))
 
     try {
       const cards = await AllCards()
 
-      setCards(cards || [])
+      dispatch(setAnalyticsCardData(cards || []))
     } catch (error) {
       console.error("Analytics cards error: ", error)
     } finally {
-      setIsLoading(false)
+      dispatch(setIsAnalyticsLoading(false))
     }
   }, [])
 
@@ -146,25 +140,34 @@ export const AnalyticsModal = ({ analyticsToggle, isOpen }: Props) => {
     fetchData()
   }, [])
 
-  const total = cards
+  const total = analyticsCardData
     ?.map((c: Record<string, any>) => c["quantity"])
     .filter((c) => c !== undefined)
     .map((num) => parseInt(num))
     .reduce((partialSum, a) => partialSum + a)
 
   const data = {
-    cardCount: cards?.length,
-    totalCount: total && cards ? total + cards.length : 0,
-    typeCount: new Set(cards?.map((c: Record<string, any>) => c["type"])).size,
-    attributeCount: new Set(
-      cards?.map((c: Record<string, any>) => c["attribute"])
+    cardCount: analyticsCardData?.length,
+    totalCount:
+      total && analyticsCardData ? total + analyticsCardData.length : 0,
+    typeCount: new Set(
+      analyticsCardData?.map((c: Record<string, any>) => c["type"])
     ).size,
-    setCount: new Set(cards?.map((c: Record<string, any>) => c["set"])).size,
+    attributeCount: new Set(
+      analyticsCardData?.map((c: Record<string, any>) => c["attribute"])
+    ).size,
+    setCount: new Set(
+      analyticsCardData?.map((c: Record<string, any>) => c["set"])
+    ).size,
     trainerCount: new Set(
-      cards?.filter((c: Record<string, any>) => c["attribute"] === "trainer")
+      analyticsCardData?.filter(
+        (c: Record<string, any>) => c["attribute"] === "trainer"
+      )
     ).size,
     energyCount: new Set(
-      cards?.filter((c: Record<string, any>) => c["attribute"] == "energy")
+      analyticsCardData?.filter(
+        (c: Record<string, any>) => c["attribute"] == "energy"
+      )
     ).size,
   }
 
@@ -189,7 +192,7 @@ export const AnalyticsModal = ({ analyticsToggle, isOpen }: Props) => {
               cursor: "pointer",
             },
           }}
-          onClick={handleClose}
+          onClick={() => dispatch(setIsAnalyticsOpen(!isAnalyticsOpen))}
         />
       </Exit>
     </HWrapper>
@@ -243,32 +246,36 @@ export const AnalyticsModal = ({ analyticsToggle, isOpen }: Props) => {
 
   return (
     <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        style={{ backdropFilter: "blur(4px)" }}
-        slotProps={{
-          backdrop: {
-            timeout: {
-              appear: 1000,
-              enter: 1000,
-              exit: 1000,
+      {isAnalyticsLoading ? (
+        <Spinner />
+      ) : (
+        <Modal
+          open={isAnalyticsOpen}
+          onClose={() => dispatch(setIsAnalyticsOpen(!isAnalyticsOpen))}
+          closeAfterTransition
+          slots={{ backdrop: Backdrop }}
+          style={{ backdropFilter: "blur(4px)" }}
+          slotProps={{
+            backdrop: {
+              timeout: {
+                appear: 1000,
+                enter: 1000,
+                exit: 1000,
+              },
             },
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={style}>
-            <Container>
-              <Header />
-              <Divider orientation="horizontal" flexItem />
-              <Body />
-            </Container>
-          </Box>
-        </Fade>
-      </Modal>
+          }}
+        >
+          <Fade in={isAnalyticsOpen}>
+            <Box sx={style}>
+              <Container>
+                <Header />
+                <Divider orientation="horizontal" flexItem />
+                <Body />
+              </Container>
+            </Box>
+          </Fade>
+        </Modal>
+      )}
     </div>
   )
 }

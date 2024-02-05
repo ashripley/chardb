@@ -5,12 +5,6 @@ import blob from "../../assets/icons/blob.svg"
 import { Header } from "../Header"
 import { Main } from "./Main"
 
-interface Props {
-  menuAction: string
-  passMenuActionLabel: (label: string) => void
-  isOpen: (isClicked: boolean) => void
-}
-
 const Container = styled.div`
   background-color: ${theme.darkBg} !important;
   background: url(${blob});
@@ -21,17 +15,10 @@ const Container = styled.div`
   background-attachment: fixed;
   background-position: center;
 `
-export const Info = memo(({ menuAction, isOpen }: Props) => {
-  const onClick = useCallback(
-    (clicked: boolean) => {
-      isOpen(clicked)
-    },
-    [isOpen]
-  )
-
+export const Info = memo(() => {
   return (
     <Container>
-      <Header menuAction={menuAction} isOpen={onClick} />
+      <Header />
       <Main />
     </Container>
   )

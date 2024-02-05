@@ -1,17 +1,18 @@
 import { Alert, Snackbar as Bar } from "@mui/material"
-import React from "react"
+import { useSelector } from "react-redux"
+import { CardState } from "../../redux/store"
 
 interface Props {
   open: boolean
-  editAlert: string
   handleClose: () => void
 }
 
-export const Snackbar = ({ open, editAlert, handleClose }: Props) => {
+export const Snackbar = ({ open, handleClose }: Props) => {
+  const { viewAlert } = useSelector((state: CardState) => state.card)
   return (
     <Bar open={open} autoHideDuration={6000} onClose={handleClose}>
       <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-        {editAlert}
+        {viewAlert}
       </Alert>
     </Bar>
   )

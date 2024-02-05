@@ -3,15 +3,8 @@ import { useEffect, useMemo, useState } from "react"
 import styled from "styled-components"
 import { LoadingSkeleton } from "../Skeleton"
 import { PokemonCard } from "./PokemonCard"
-
-interface Props {
-  pokemon: Record<string, any>[]
-  mounted: boolean
-  isLoading: boolean
-  view: "Grid" | "List" | "Tile"
-  sortView: string
-  isCardDeleted: (hasChanged: boolean, pokemon: Record<string, any>) => void
-}
+import { useSelector } from "react-redux"
+import { CardState, RootState } from "../../redux/store"
 
 const Container = styled.div`
   max-width: 100%;
@@ -37,30 +30,34 @@ const PaginationWrapper = styled.div`
   justify-content: center;
 `
 
-export const Cards = ({
-  pokemon,
-  mounted,
-  isLoading,
-  view,
-  sortView,
-  isCardDeleted,
-}: Props) => {
+export const Cards = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
+  const { filterView, isDataLoading, cardField, cardData } = useSelector(
+    (state: RootState) => state.root
+  )
+  const { isCardOpen } = useSelector((state: CardState) => state.card)
 
   const itemsPerPage = 50
+
+  const pokemon =
+    cardField.value !== ""
+      ? cardData.filter((p: Record<string, any>) =>
+          p[cardField.key?.toLowerCase() || "name"]?.includes(cardField.value)
+        )
+      : cardData
 
   const filteredCards = useMemo(() => {
     const cardIds = new Set(pokemon.map(({ cardId }) => cardId))
     return pokemon
       .filter(({ cardId }) => cardId && cardIds.has(cardId))
       .sort((a, b) => {
-        return a[sortView || "id"] < b[sortView || "id"]
+        return a[filterView || "id"] < b[filterView || "id"]
           ? -1
-          : a[sortView || "id"] > b[sortView || "id"]
+          : a[filterView || "id"] > b[filterView || "id"]
           ? 1
           : 0
       })
-  }, [pokemon, sortView])
+  }, [pokemon, filterView])
 
   const paginatedCards = useMemo(
     () =>
@@ -68,7 +65,7 @@ export const Cards = ({
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
       ),
-    [pokemon, currentPage, itemsPerPage, sortView]
+    [pokemon, currentPage, itemsPerPage, filterView]
   )
 
   useEffect(() => {
@@ -79,14 +76,10 @@ export const Cards = ({
     })
   }, [currentPage])
 
-  const isDeleted = (hasChanged: boolean, pokemon: Record<string, any>) => {
-    isCardDeleted(hasChanged, pokemon)
-  }
-
   return (
-    <Slide direction="up" in={mounted} mountOnEnter unmountOnExit>
+    <Slide direction="up" in={isCardOpen} mountOnEnter unmountOnExit>
       <Container>
-        {isLoading ? (
+        {isDataLoading ? (
           <LoadingSkeleton />
         ) : (
           <StyledPaper
@@ -98,14 +91,7 @@ export const Cards = ({
             }}
           >
             {paginatedCards.map((poke, index) => (
-              <PokemonCard
-                key={index}
-                isCardDeleted={isDeleted}
-                pokemon={poke}
-                cardIndex={index}
-                view={view}
-                isLoading={isLoading}
-              />
+              <PokemonCard key={index} pokemon={poke} cardIndex={index} />
             ))}
           </StyledPaper>
         )}

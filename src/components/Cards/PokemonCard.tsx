@@ -1,55 +1,24 @@
-import { useEffect, useState } from "react"
-import { GridView } from "../Views/Grid"
-import { ListView } from "../Views/List"
-import { TileView } from "../Views/Tile"
+import { Grid } from "../Views/Grid"
+import { List } from "../Views/List"
+import { Tile } from "../Views/Tile"
+import { useSelector } from "react-redux"
+import { RootState } from "../../redux/store"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
-  view: "Grid" | "List" | "Tile"
-  isLoading: boolean
-  isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
-export const PokemonCard = ({
-  pokemon,
-  cardIndex,
-  view,
-  isLoading,
-  isCardDeleted,
-}: Props) => {
-  const [cardView, setCardView] = useState(view)
+export const PokemonCard = ({ pokemon, cardIndex }: Props) => {
+  const { cardView } = useSelector((state: RootState) => state.root)
 
-  const onDelete = (hasChanged: boolean, pokemon: Record<string, any>) => {
-    isCardDeleted(hasChanged, pokemon)
+  const components: Record<string, any> = {
+    Tile,
+    Grid,
+    List,
   }
 
-  useEffect(() => {
-    setCardView(view)
-  }, [view])
+  const Component = components[cardView] || (() => <></>)
 
-  return cardView === "Tile" ? (
-    <TileView
-      isCardDeleted={onDelete}
-      pokemon={pokemon}
-      cardIndex={cardIndex++}
-      isLoading={isLoading}
-    />
-  ) : cardView === "Grid" ? (
-    <GridView
-      isCardDeleted={onDelete}
-      pokemon={pokemon}
-      cardIndex={cardIndex++}
-      isLoading={isLoading}
-    />
-  ) : cardView === "List" ? (
-    <ListView
-      isCardDeleted={onDelete}
-      pokemon={pokemon}
-      cardIndex={cardIndex++}
-      isLoading={isLoading}
-    />
-  ) : (
-    <></>
-  )
+  return <Component pokemon={pokemon} cardIndex={cardIndex} />
 }

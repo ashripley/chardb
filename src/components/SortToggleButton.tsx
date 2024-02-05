@@ -1,15 +1,13 @@
 import { Tooltip, styled } from "@mui/material"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
-import * as React from "react"
 import { icons } from "../helpers/fieldsToMap"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
 import { IconImageMap } from "./IconImageMap"
-
-interface Props {
-  sortView: (view: string) => void
-  view: string
-}
+import { FilterViewType } from "../helpers/view"
+import { useDispatch, useSelector } from "react-redux"
+import { setFilterView } from "../redux/root"
+import { RootState } from "../redux/store"
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   "& .MuiToggleButtonGroup-grouped": {
@@ -34,23 +32,18 @@ const StyledToggleButton = styled(ToggleButton)`
   border: 1px solid rgb(227, 228, 219) !important;
 `
 
-export const SortToggleButton = ({ sortView, view }: Props) => {
+export const SortToggleButton = () => {
   const fields: string[] = ["id", "name", "type", "year", "attribute"]
-
-  const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    nextView: string
-  ) => {
-    sortView(nextView)
-  }
+  const { filterView } = useSelector((state: RootState) => state.root)
+  const dispatch = useDispatch()
 
   return (
     <StyledToggleButtonGroup
       orientation="horizontal"
-      value={view || "id"}
+      value={filterView || "id"}
       exclusive
       color="warning"
-      onChange={handleChange}
+      onChange={(e, view: FilterViewType) => dispatch(setFilterView(view))}
       style={{
         height: "auto",
         gap: 10,

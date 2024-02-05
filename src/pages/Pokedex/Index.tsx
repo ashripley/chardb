@@ -3,12 +3,6 @@ import { Header } from "../Header"
 import { Main } from "./Main"
 import greyWallpaper from "../../assets/icons/greyWallpaper.jpg"
 
-interface Props {
-  menuAction: string
-  passMenuActionLabel: (label: string) => void
-  isOpen: (isClicked: boolean) => void
-}
-
 const Container = styled.div`
   background: url(${greyWallpaper});
   background-size: cover;
@@ -17,14 +11,10 @@ const Container = styled.div`
   background-attachment: fixed;
   background-position: center;
 `
-export const Pokedex = ({ menuAction, isOpen }: Props) => {
-  const onClick = (clicked: boolean) => {
-    isOpen(clicked)
-  }
-
+export const Pokedex = () => {
   return (
     <Container>
-      <Header menuAction={menuAction} isOpen={onClick} />
+      <Header />
       <Main />
     </Container>
   )

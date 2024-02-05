@@ -11,7 +11,7 @@ import Fade from "@mui/material/Fade"
 import Modal from "@mui/material/Modal"
 import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { collection } from "firebase/firestore"
-import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react"
+import { SyntheticEvent, useState } from "react"
 import styled from "styled-components"
 import { theme } from "../theme"
 import { AddCardMutation } from "../api/mutations/addCard"
@@ -20,11 +20,9 @@ import { omit } from "../helpers/omit"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
 import { firestore } from "../services/firebase"
 import { AttributeSelect } from "./AttributeSelect"
-
-interface Props {
-  openModal: boolean
-  closeModal: (isClosed: boolean) => void
-}
+import { useDispatch, useSelector } from "react-redux"
+import { setIcon, setIsAddModalOpen } from "../redux/card"
+import { CardState } from "../redux/store"
 
 const Container = styled.div`
   max-width: 100%;
@@ -137,10 +135,11 @@ const inputProps = {
   },
 }
 
-export const AddModal = ({ openModal, closeModal }: Props) => {
-  const [open, setOpen] = useState(false)
+export const AddModal = () => {
+  const dispatch = useDispatch()
+  const { isAddModalOpen } = useSelector((state: CardState) => state.card)
+
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [icon, setIcon] = useState("add")
   const [alert, setAlert] = useState("add")
   const [toastOpen, setToastOpen] = useState(false)
   const [fields, setFields] = useState<Record<string, any>>({
@@ -156,12 +155,12 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFields({
-      attribute: (event.target as HTMLInputElement).value,
-      ...omit("attribute", fields),
-    })
-  }
+  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setFields({
+  //     attribute: (event.target as HTMLInputElement).value,
+  //     ...omit("attribute", fields),
+  //   })
+  // }
 
   const handleSelectChange = (event: any) => {
     setFields({
@@ -169,15 +168,6 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
       ...omit("attribute", fields),
     })
   }
-
-  const handleClose = () => {
-    setOpen(false)
-    closeModal(false)
-  }
-
-  useEffect(() => {
-    setOpen(openModal)
-  }, [openModal])
 
   const toastClose = (event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
@@ -203,7 +193,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
     setTimeout(() => {
       setIsLoading(false)
       clearFields()
-      setIcon("add")
+      dispatch(setIcon("add"))
     }, 1500)
 
     setToastOpen(true)
@@ -227,8 +217,8 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
+        open={isAddModalOpen}
+        onClose={() => dispatch(setIsAddModalOpen(false))}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         style={{ backdropFilter: "blur(2px)" }}
@@ -242,7 +232,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
           },
         }}
       >
-        <Fade in={open}>
+        <Fade in={isAddModalOpen}>
           <Box sx={style}>
             <Container>
               <div>
@@ -313,7 +303,7 @@ export const AddModal = ({ openModal, closeModal }: Props) => {
                       height: "100%",
                       borderColor: theme.darkBg,
                     }}
-                    onClick={handleClose}
+                    onClick={() => dispatch(setIsAddModalOpen(false))}
                   >
                     Cancel
                   </Button>

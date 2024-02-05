@@ -1,23 +1,28 @@
-import { Card, RadioGroup, TextField, Tooltip } from "@mui/material"
+import { Card, TextField, Tooltip } from "@mui/material"
 import { ChangeEvent, SyntheticEvent, useMemo, useRef, useState } from "react"
 import styled from "styled-components"
 import { theme } from "../../theme"
 import { UpdateCard } from "../../api/mutations/updateCard"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
-import { energyImageMap } from "../../helpers/trainerImageMap"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
-import { View } from "../../helpers/view"
 import { AttributeSelect } from "../AttributeSelect"
 import { Actions } from "../Grid/Actions"
 import { GridImage } from "../Grid/GridImage"
 import { Snackbar } from "../Grid/Snackbar"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../../redux/store"
+import {
+  setGridFields,
+  setIsConfirmationModalOpen,
+  setPokemonToBeDeleted,
+  setViewAlert,
+} from "../../redux/card"
+import { CardState } from "../../redux/store"
 
 interface Props {
   cardIndex: number
   pokemon: Record<string, any>
-  isLoading: boolean
-  isCardDeleted: (isDeleted: boolean, pokemon: Record<string, any>) => void
 }
 
 //#region Styled Components
@@ -76,36 +81,19 @@ const Details = styled.div<{ isCardHovered: boolean; isEditView: boolean }>`
 `
 //#endregion
 
-export const GridView = ({
-  pokemon,
-  cardIndex,
-  isLoading,
-  isCardDeleted,
-}: Props) => {
-  //#region state
+export const Grid = ({ pokemon, cardIndex }: Props) => {
+  const dispatch = useDispatch()
+  const { isDataLoading } = useSelector((state: RootState) => state.root)
+  const { isConfirmationModalOpen, gridFields } = useSelector(
+    (state: CardState) => state.card
+  )
+
   const [isEvolutionsHovered, setIsEvolutionsHovered] = useState<boolean>(false)
-  const [editAlert, setEditAlert] = useState<string>("")
   const [open, setOpen] = useState<boolean>(false)
   const [isCardHovered, setIsCardHovered] = useState<boolean>(false)
-  const [cardView, setCardView] = useState<Record<string, any>>({
-    view: View.READ,
-  })
-  const [fields, setFields] = useState<Record<string, any>>({
-    name: "",
-    type: "",
-    set: "",
-    setNumber: "",
-    year: "",
-    attribute: "",
-    quantity: "",
-  })
+  const [isEditView, setIsEditView] = useState<boolean>(false)
 
   const ref = useRef(null)
-  //#endregion
-
-  const isEditView = cardView.view === View.EDIT
-
-  //#region styles
 
   const shadowStyle = useMemo(
     () => ({
@@ -156,23 +144,25 @@ export const GridView = ({
   }
 
   const handleEdit = () => {
-    setCardView({ view: View.EDIT })
-    console.log("trainerImageMap", energyImageMap("water"))
+    setIsEditView(true)
   }
 
   const handleDelete = async () => {
-    isCardDeleted(true, pokemon)
+    dispatch(setIsConfirmationModalOpen(!isConfirmationModalOpen))
+    dispatch(setPokemonToBeDeleted(pokemon))
   }
 
   const handleClear = async () => {
-    setCardView({ view: View.READ })
+    setIsEditView(false)
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFields({
-      attribute: (event.target as HTMLInputElement).value,
-      ...omit("attribute", fields),
-    })
+    dispatch(
+      setGridFields({
+        attribute: (event.target as HTMLInputElement).value,
+        ...omit("attribute", gridFields),
+      })
+    )
   }
 
   const handleSubmit = async () => {
@@ -180,47 +170,53 @@ export const GridView = ({
   }
 
   const updateCard = async () => {
-    setFields({
-      ...fields,
-    })
+    dispatch(
+      setGridFields({
+        ...gridFields,
+      })
+    )
 
     await UpdateCard(
       pokemon.cardId,
-      fields.name?.toLowerCase() || pokemon.name,
-      fields.type?.toLowerCase() || pokemon.type,
-      fields.set?.toLowerCase() || pokemon.set,
-      fields.setNumber || pokemon.setNumber,
-      fields.year || pokemon.year,
-      fields.quantity || pokemon.quantity,
-      fields.attribute?.toLowerCase() || pokemon.attribute,
-      theme.typeColours[fields.type?.toLowerCase()] ?? pokemon.colour
+      gridFields.name?.toLowerCase() || pokemon.name,
+      gridFields.type?.toLowerCase() || pokemon.type,
+      gridFields.set?.toLowerCase() || pokemon.set,
+      gridFields.setNumber || pokemon.setNumber,
+      gridFields.year || pokemon.year,
+      gridFields.quantity || pokemon.quantity,
+      gridFields.attribute?.toLowerCase() || pokemon.attribute,
+      theme.typeColours[gridFields.type?.toLowerCase()] ?? pokemon.colour
     )
 
     setOpen(true)
-    setEditAlert(
-      `Fields for ${upperCaseFirst(
-        pokemon.name
-      )} have been updated! Please refresh for results`
+    dispatch(
+      setViewAlert(
+        `Fields for ${upperCaseFirst(
+          pokemon.name
+        )} have been updated! Please refresh for results`
+      )
     )
 
-    setCardView({ view: View.READ })
+    setIsEditView(false)
     clearFields()
   }
 
   const clearFields = () => {
-    setFields({
-      name: "",
-      type: "",
-      set: "",
-      year: "",
-      quantity: "",
-      attribute: "",
-    })
+    dispatch(
+      setGridFields({
+        name: "",
+        type: "",
+        set: "",
+        year: "",
+        quantity: "",
+        attribute: "",
+      })
+    )
   }
 
   return (
     <Wrapper
-      isLoading={isLoading}
+      isLoading={isDataLoading}
       isEditView={isEditView}
       isCardHovered={isCardHovered}
       key={`grid-${cardIndex}`}
@@ -243,7 +239,7 @@ export const GridView = ({
         />
         <Details isEditView={isEditView} isCardHovered={isCardHovered}>
           {Object.entries(
-            fieldsToMap(isEditView, fields, false, pokemon, pokemon.id)
+            fieldsToMap(isEditView, gridFields, false, pokemon, pokemon.id)
           ).map(([k, v], index) => (
             <Row key={index}>
               <Tooltip title={v.label} placement="top-start">
@@ -253,7 +249,7 @@ export const GridView = ({
                 <Data>{pokemon[k] || ""}</Data>
               ) : v.label === "Attribute" ? (
                 <AttributeSelect
-                  fields={fields}
+                  fields={gridFields}
                   handleSelectChange={handleChange}
                 />
               ) : (
@@ -266,10 +262,12 @@ export const GridView = ({
                   style={{ width: "80%", margin: 5 }}
                   sx={{ borderRadius: 15 }}
                   onChange={(e) => {
-                    setFields({
-                      [k]: e.target.value,
-                      ...omit(k, fields),
-                    })
+                    dispatch(
+                      setGridFields({
+                        [k]: e.target.value,
+                        ...omit(k, gridFields),
+                      })
+                    )
                   }}
                   InputProps={{
                     sx: {
@@ -291,30 +289,6 @@ export const GridView = ({
               )}
             </Row>
           ))}
-          {/* {isEditView && (
-            <StyledRadioGroup
-              defaultValue={
-                pokemon.attribute ? pokemon.attribute : fields.attribute
-              }
-              row
-              onChange={(e) => handleChange(e)}
-            >
-              {[
-                "Standard",
-                "Standard Holographic",
-                "Reverse Holographic",
-                "Special",
-              ].map((label, index) => (
-                <FormControlLabel
-                  key={index}
-                  value={label.toLowerCase()}
-                  control={<Radio color="warning" />}
-                  label={label}
-                  sx={{ height: 35 }}
-                />
-              ))}
-            </StyledRadioGroup>
-          )} */}
         </Details>
         <Actions
           handleClear={handleClear}
@@ -324,7 +298,7 @@ export const GridView = ({
           isCardHovered={isCardHovered}
           isEditView={isEditView}
         />
-        <Snackbar editAlert={editAlert} handleClose={handleClose} open={open} />
+        <Snackbar handleClose={handleClose} open={open} />
       </Card>
     </Wrapper>
   )

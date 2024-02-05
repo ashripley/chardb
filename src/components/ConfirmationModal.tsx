@@ -5,16 +5,21 @@ import Box from "@mui/material/Box"
 import Fade from "@mui/material/Fade"
 import Modal from "@mui/material/Modal"
 import * as React from "react"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import styled from "styled-components"
 import { theme } from "../theme"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
-
-interface Props {
-  openModal: boolean
-  pokemon: Record<string, any>
-  isDeleted: (isDeleted: boolean) => void
-}
+import { useDispatch, useSelector } from "react-redux"
+import {
+  setIsReadyForDeletion,
+  setIsConfirmationModalOpen,
+  setConfirmationModalAlert,
+} from "../redux/card"
+import { CardState } from "../redux/store"
+import { deleteDoc, doc } from "firebase/firestore"
+import { firestore } from "../services/firebase"
+import { AllCards } from "../api/queries/allCards"
+import { setCardData } from "../redux/root"
 
 const HWrapper = styled.div`
   height: 40px;
@@ -96,10 +101,6 @@ const Buttons = styled.div`
   align-items: center;
 `
 
-const B = styled.p`
-  font-weight: 800;
-`
-
 const style = {
   position: "absolute",
   top: "50%",
@@ -114,22 +115,26 @@ const style = {
   p: 4,
 }
 
-export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
-  const [open, setOpen] = useState(false)
-  const [isReadyForDeletion, setIsReadyForDeletion] = useState<boolean>(false)
-  const [alert, setAlert] = useState<string>("")
+export const ConfirmationModal = () => {
+  const dispatch = useDispatch()
+  const {
+    isConfirmationModalOpen,
+    pokemonToBeDeleted,
+    isReadyForDeletion,
+    confirmationModalAlert,
+  } = useSelector((state: CardState) => state.card)
 
-  const handleClose = () => {
-    setOpen(false)
-    // closeModal(true)
-  }
-
+  // Function to handle card deletion
   useEffect(() => {
-    setOpen(openModal)
-  }, [openModal])
+    const handleDelete = async () => {
+      await deleteDoc(doc(firestore, "cards", pokemonToBeDeleted.cardId))
+      const cards = await AllCards()
 
-  useEffect(() => {
-    if (isReadyForDeletion) isDeleted(isReadyForDeletion)
+      dispatch(setCardData([...cards]))
+      dispatch(setIsConfirmationModalOpen(false))
+    }
+
+    if (isReadyForDeletion) handleDelete()
   }, [isReadyForDeletion])
 
   const toastClose = (
@@ -140,7 +145,7 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
       return
     }
 
-    setIsReadyForDeletion(false)
+    dispatch(setIsReadyForDeletion(false))
   }
 
   const Header = () => (
@@ -164,7 +169,9 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
               cursor: "pointer",
             },
           }}
-          onClick={handleClose}
+          onClick={() =>
+            dispatch(setIsConfirmationModalOpen(!isConfirmationModalOpen))
+          }
         />
       </Exit>
     </HWrapper>
@@ -174,9 +181,9 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
     <BWrapper>
       <Text>
         {`You are about to delete ${upperCaseFirst(
-          pokemon.name
+          pokemonToBeDeleted.name
         )} from the ${upperCaseFirst(
-          pokemon.set
+          pokemonToBeDeleted.set
         )} set. This action is irreversible.`}
       </Text>
       <Text>{"Are you sure you wish to continue?"}</Text>
@@ -205,8 +212,12 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
             transition: "0.3s ease-in-out all",
           }}
           onClick={() => {
-            setIsReadyForDeletion(!isReadyForDeletion)
-            setAlert(`${upperCaseFirst(pokemon.name)} Removed`)
+            dispatch(setIsReadyForDeletion(true))
+            dispatch(
+              setConfirmationModalAlert(
+                `${upperCaseFirst(pokemonToBeDeleted.name)} Removed`
+              )
+            )
           }}
         >
           Delete
@@ -222,7 +233,9 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
             borderColor: theme.darkBg,
             marginLeft: 10,
           }}
-          onClick={handleClose}
+          onClick={() =>
+            dispatch(setIsConfirmationModalOpen(!isConfirmationModalOpen))
+          }
         >
           Cancel
         </Button>
@@ -233,8 +246,10 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
   return (
     <div>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={isConfirmationModalOpen}
+        onClose={() =>
+          dispatch(setIsConfirmationModalOpen(!isConfirmationModalOpen))
+        }
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         style={{ backdropFilter: "blur(4px)" }}
@@ -248,7 +263,7 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
           },
         }}
       >
-        <Fade in={open}>
+        <Fade in={isConfirmationModalOpen}>
           <Box sx={style}>
             <Container>
               <Header />
@@ -264,7 +279,7 @@ export const ConfirmationModal = ({ openModal, pokemon, isDeleted }: Props) => {
         onClose={toastClose}
       >
         <Alert onClose={toastClose} severity="success" sx={{ width: "100%" }}>
-          {alert}
+          {confirmationModalAlert}
         </Alert>
       </Snackbar>
     </div>

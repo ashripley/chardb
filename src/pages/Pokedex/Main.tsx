@@ -75,7 +75,6 @@ const PaginationWrapper = styled.div`
 `
 
 export const Main = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [pokedex, setPokedex] = useState<Record<string, any>[]>([{}])
   const [hasPokemon, setHasPokemon] = useState<string[]>([])
@@ -257,11 +256,6 @@ export const Main = () => {
           style={{ margin: 50, marginTop: 80 }}
         />
       </PaginationWrapper>
-      {/* <PokedexModal
-        pokemon={pokemon}
-        openModal={isModalOpen}
-        closeModal={onClose}
-      /> */}
     </Container>
   )
 }
