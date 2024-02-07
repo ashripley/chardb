@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { FilterViewType, CardViewType } from "../helpers/view"
+import { FilterViewType, CardViewType, PageType } from "../helpers/view"
 
 interface StoreState {
   page: string

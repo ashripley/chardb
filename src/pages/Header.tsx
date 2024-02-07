@@ -77,7 +77,7 @@ export const Header = memo(() => {
 
   return (
     <>
-      <div style={{ height: "15%" }}>
+      <div style={{ height: "15vh" }}>
         <Box>
           <StyledAppBar position="static" variant="outlined">
             <Toolbar style={{ padding: 0 }}>

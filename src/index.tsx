@@ -5,21 +5,19 @@ import "./index.css"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { Index } from "./pages/Index"
 import { MobileModal } from "./components/MobileModal"
+import { isMobile } from "./helpers/view"
 import store from "./redux/store"
 import { Provider } from "react-redux"
 
 const queryClient = new QueryClient()
-
-export const isMobile = window.matchMedia(
-  "only screen and (max-width: 60px)"
-).matches
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient} contextSharing={true}>
       <Provider store={store}>
-        {isMobile ? <MobileModal /> : <Index />}
+        {/* {isMobile ? <MobileModal /> : <Index />} */}
+        <Index />
       </Provider>
     </QueryClientProvider>
   </React.StrictMode>

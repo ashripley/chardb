@@ -19,22 +19,22 @@ import {
 import { deleteDoc, doc } from "firebase/firestore"
 import { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
-import { AllCards } from "../../api/queries/allCards"
-import { AddModal } from "../../components/AddModal"
-import { Cards } from "../../components/Cards/Cards"
-import { ConfirmationModal } from "../../components/ConfirmationModal"
-import { SortToggleButton } from "../../components/SortToggleButton"
-import { firestore } from "../../services/firebase"
-import { theme } from "../../theme"
+import { AllCards } from "../api/queries/allCards"
+import { AddModal } from "../components/AddModal"
+import { Cards } from "../components/Cards/Cards"
+import { ConfirmationModal } from "../components/ConfirmationModal"
+import { SortToggleButton } from "../components/SortToggleButton"
+import { firestore } from "../services/firebase"
+import { theme } from "../theme"
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
-import { AnalyticsModal } from "../../components/AnalyticsModal"
+import { AnalyticsModal } from "../components/AnalyticsModal"
 import { useDispatch, useSelector } from "react-redux"
 import {
   setCardData,
   setCardField,
   setCardView,
   setIsDataLoading,
-} from "../../redux/root"
+} from "../redux/root"
 import {
   setHasCardError,
   setIsAddModalOpen,
@@ -42,8 +42,8 @@ import {
   setIsCardOpen,
   setIsConfirmationModalOpen,
   setPokemonToBeDeleted,
-} from "../../redux/card"
-import { CardState, RootState } from "../../redux/store"
+} from "../redux/card"
+import { CardState, RootState } from "../redux/store"
 
 const Wrap = styled.div``
 
@@ -142,7 +142,7 @@ const StyledForm = styled(FormControl)`
   }
 `
 
-export const Main = () => {
+export const PokemonCards = () => {
   const dispatch = useDispatch()
   const { cardView, cardField, isDataLoading } = useSelector(
     (state: RootState) => state.root

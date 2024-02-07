@@ -2,8 +2,8 @@ import { Button, Grow, StyledEngineProvider } from "@mui/material"
 import { memo } from "react"
 import styled from "styled-components"
 import { useDispatch } from "react-redux"
-import { theme } from "../../theme"
-import { setPage } from "../../redux/root"
+import { theme } from "../theme"
+import { setPage } from "../redux/root"
 
 const Root = styled.div`
   display: flex;
@@ -16,13 +16,14 @@ const Root = styled.div`
 
 const Wrapper = styled.div`
   max-height: 60%;
+  height: 60vh;
 `
 
 const Title = styled.h1`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 8rem;
+  font-size: calc(24px + 6vw);
   max-width: 100%;
   width: 100%;
   height: 80%;
@@ -30,7 +31,7 @@ const Title = styled.h1`
 `
 
 const SubTitle = styled.h3`
-  font-size: 1.5rem;
+  font-size: calc(12px + 0.8vw);
   max-width: 100%;
   width: 100%;
   display: flex;
@@ -45,7 +46,7 @@ const ButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  height: 30%;
+  height: auto;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-evenly;
@@ -55,10 +56,10 @@ const StyledButton = styled(Button)`
   border-radius: 15px;
   background-color: ${theme.darkBg};
   font-family: ${theme.fontFamily};
-  font-size: 16px;
+  font-size: calc(12px + 0.2vw);
   width: 14rem;
   padding: 15px;
-  height: 25%;
+  height: 100%;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
     rgba(0, 0, 0, 0.05) 0px 5px 10px;
   transition: all 1s ease;
@@ -70,7 +71,11 @@ const StyledButton = styled(Button)`
   }
 `
 
-export const Main = memo(() => {
+const StyledImage = styled.img`
+  width: calc(100px + 6vw);
+`
+
+export const Home = memo(() => {
   const dispatch = useDispatch()
 
   return (
@@ -83,7 +88,7 @@ export const Main = memo(() => {
                 char
               </span>
               <a href="https://pokemondb.net/pokedex/charmander">
-                <img
+                <StyledImage
                   src="https://img.pokemondb.net/sprites/home/normal/charmander.png"
                   alt="Charmander"
                 />

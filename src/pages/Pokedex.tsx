@@ -11,11 +11,12 @@ import {
 import axios from "axios"
 import { useCallback, useEffect, useState } from "react"
 import styled from "styled-components"
-import { theme } from "../../theme"
-import { AllCards } from "../../api/queries/allCards"
-import tick from "../../assets/icons/tick.png"
-import { IconImageMap } from "../../components/IconImageMap"
-import { upperCaseFirst } from "../../helpers/upperCaseFirst"
+import { theme } from "../theme"
+import { AllCards } from "../api/queries/allCards"
+import tick from "../assets/icons/tick.png"
+import { IconImageMap } from "../components/IconImageMap"
+import { upperCaseFirst } from "../helpers/upperCaseFirst"
+import { isMobile } from "../helpers/view"
 
 const Container = styled.div`
   max-height: 100%;
@@ -33,6 +34,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 30px;
+  flex-wrap: wrap;
 `
 
 const Header = styled.div`
@@ -44,12 +46,13 @@ const Header = styled.div`
   justify-content: center;
   padding: 30px 0px;
   width: 100%;
-  margin-right: -320px;
+  min-width: 300px;
 `
 
 const StyledPaper = styled(Paper)`
   margin: 0px 30px;
   width: 100%;
+  flex-wrap: wrap;
 `
 
 const Images = styled.div`
@@ -61,10 +64,10 @@ const Images = styled.div`
   justify-content: center;
 `
 
-const Image = styled.img<{ hasPokemon: boolean }>`
+const Image = styled.img<{ hasPokemon: boolean; isMobile: boolean }>`
   display: flex;
-  height: 150px;
-  width: 150px;
+  height: ${({ isMobile }) => (isMobile ? "50px" : "150px")};
+  weight: ${({ isMobile }) => (isMobile ? "50px" : "150px")};
   padding: 20px;
   ${({ hasPokemon }) => hasPokemon && `margin-top: -25px`}
 `
@@ -74,7 +77,7 @@ const PaginationWrapper = styled.div`
   justify-content: center;
 `
 
-export const Main = () => {
+export const Pokedex = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [pokedex, setPokedex] = useState<Record<string, any>[]>([{}])
   const [hasPokemon, setHasPokemon] = useState<string[]>([])
@@ -85,10 +88,10 @@ export const Main = () => {
 
   const cardStyles = (p: Record<string, any>) => {
     return {
-      height: 200,
-      width: 200,
-      padding: "2rem",
-      margin: "1rem",
+      height: isMobile ? 100 : 200,
+      width: isMobile ? 100 : 200,
+      padding: isMobile ? "1rem" : "2rem",
+      margin: isMobile ? "0.5rem" : "1rem",
       backgroundColor: theme.lightBg,
       borderRadius: "15px",
       boxShadow: "rgba(0, 0, 0, 0.4) 0px 40px 90px",
@@ -100,6 +103,12 @@ export const Main = () => {
         } , 0px 0px 0px 0px #ffffff`,
       },
     }
+  }
+
+  const fieldStyle = {
+    minWidth: 250,
+    width: "20%",
+    margin: "20px auto",
   }
 
   const fetchAllPokemon = useCallback(async () => {
@@ -186,10 +195,9 @@ export const Main = () => {
               value={pokedexName}
               label={"Search"}
               variant="outlined"
-              style={{ width: 300, margin: 20 }}
+              style={{ ...fieldStyle }}
               color={"warning"}
               onChange={(e) => setPokedexName(e.target.value)}
-              // error={error}
               InputProps={{
                 sx: {
                   borderRadius: "15px !important",
@@ -197,6 +205,7 @@ export const Main = () => {
                     borderColor: theme.darkBg,
                   },
                   input: { color: theme.primaryText },
+                  width: "auto",
 
                   "&:hover": {
                     fieldset: {
@@ -237,6 +246,7 @@ export const Main = () => {
                 }}
               >
                 <Image
+                  isMobile={isMobile}
                   hasPokemon={!!hasPokemon.includes(p.name)}
                   key={index}
                   src={p.image}

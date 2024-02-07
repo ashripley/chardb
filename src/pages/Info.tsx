@@ -1,20 +1,21 @@
 import styled from "styled-components"
-import { theme } from "../../theme"
+import { theme } from "../theme"
+import { isMobile } from "../helpers/view"
 
 const Content = styled.div`
   display: flex;
   flex-wrap: wrap;
-  height: 85%;
+  height: 85vh;
   justify-content: space-between;
 `
 
 const HeaderText = styled.h1`
   display: flex;
   height: 20%;
-  font-size: 5.5rem;
+  font-size: calc(24px + 2vw);
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: auto;
   display: flex;
   margin: 0;
   padding: 10px;
@@ -25,49 +26,56 @@ const HeaderText = styled.h1`
 
 const Body = styled.div`
   display: flex;
-  height: 70%;
+  height: 80%;
   justify-content: center;
-  width: 100%;
+  width: auto;
+  align-items: center;
 `
 
-const Text = styled.span`
+const Text = styled.span<{ isMobile: boolean }>`
+  margin: 0px 50px;
+  font-size: calc(12px + 0.4vw);
+  height: ${({ isMobile }) => (isMobile ? "auto" : "100%")};
   color: ${theme.primaryText};
   text-align: center;
-  font-size: 1.3rem;
   display: flex;
-  width: 60%;
+  width: ${({ isMobile }) => (isMobile ? "auto" : "60%")};
   justify-content: center;
   font-family: ${theme.fontFamily};
 `
 
-const PokemonImage = styled.img<{ pokemon: string }>`
+const PokemonImage = styled.img`
   width: 150px;
   height: 150px;
-  position: relative;
-  ${({ pokemon }) =>
-    pokemon === "dragonite"
-      ? `bottom: 15%; left: 75%;`
-      : `top: 60%; right: 35%;`}
 `
 
-export const Main = () => {
+const Header = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+`
+
+export const Info = () => {
   return (
     <Content>
-      <HeaderText>
-        <span className="char">char</span>
-        <span className="db" style={{ color: theme.primaryText }}>
-          db
-        </span>
-      </HeaderText>
-      <Body>
+      <Header>
+        <HeaderText>
+          <span className="char">char</span>
+          <span className="db" style={{ color: theme.primaryText }}>
+            db
+          </span>
+        </HeaderText>
         <a href="https://pokemondb.net/pokedex/dragonite">
           <PokemonImage
-            pokemon="dragonite"
             src="https://img.pokemondb.net/sprites/home/normal/dragonite.png"
             alt="dragonite"
           />
         </a>
-        <Text>
+      </Header>
+      <Body>
+        <Text isMobile={isMobile}>
           Welcome to chardb! Chardb is a place to store your nostalgia.
           <br />
           <br />
@@ -92,13 +100,6 @@ export const Main = () => {
           So what are you waiting for? Add in your collection, and watch chardb
           bring your cards to life!
         </Text>
-        <a href="https://pokemondb.net/pokedex/squirtle">
-          <PokemonImage
-            pokemon="squirtle"
-            src="https://img.pokemondb.net/sprites/home/normal/squirtle.png"
-            alt="squirtle"
-          />
-        </a>
       </Body>
     </Content>
   )
