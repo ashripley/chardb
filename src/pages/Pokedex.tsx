@@ -235,7 +235,7 @@ export const Pokedex = () => {
         ) : (
           (pokedexName !== ""
             ? pokedex.filter((p: Record<string, any>) =>
-                p.name?.includes(pokedexName)
+                p.name?.includes(pokedexName.toLowerCase())
               )
             : paginatedPokemon
           ).map((p, index) => (
