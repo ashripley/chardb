@@ -51,6 +51,9 @@ const StyledDrawer = styled(Drawer)<{ isMobile: boolean }>`
     width: ${({ isMobile }) => (isMobile ? "100%" : "40%")};
     height: 100%;
     color: white;
+    padding-top: env(safe-area-inset-top);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
 
     ${({ isMobile }) =>
       !isMobile &&

@@ -23,6 +23,10 @@ const StyledAppBar = styled(AppBar)`
   justify-content: center;
   height: 100%;
   border-bottom: none !important;
+  border-top: none !important;
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 `
 
 const StyledHeader = styled.div`
