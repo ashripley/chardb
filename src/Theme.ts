@@ -30,8 +30,8 @@ export const theme: Record<string, any> = {
   },
   attributeColour: {
     standard: "#eeefeb",
-    "standard holographic": "#EE4B2B",
-    "reverse holographic": "#0096FF",
+    "standard holo": "#EE4B2B",
+    "reverse holo": "#0096FF",
     special: "#FFD700",
     gold: "#FFD700",
   },

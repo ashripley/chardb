@@ -4,14 +4,16 @@ import styled from "styled-components"
 import { useDispatch } from "react-redux"
 import { theme } from "../theme"
 import { setPage } from "../redux/root"
+import { firestore } from "../services/firebase"
 
 const Root = styled.div`
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  justify-content: space-evenly;
   max-height: 80%;
-  height: 80%;
+  height: 85vh;
+  justify-content: flex-start;
+  gap: 100px;
 `
 
 const Wrapper = styled.div`

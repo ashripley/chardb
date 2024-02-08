@@ -44,6 +44,7 @@ const Details = styled.div`
   justify-content: space-evenly;
   padding-bottom: 20px;
   gap: 10px;
+  height: 80%;
 `
 
 const Row = styled.div`
@@ -55,16 +56,18 @@ const Row = styled.div`
   justify-content: center;
   flex-direction: row;
   gap: 10px;
+  min-height: 30px;
 `
 
 const Data = styled.div`
   display: flex;
   width: 80%;
-  font-weight: 800;
+  g-weight: 800;
   justify-content: center;
   align-items: center;
   font-family: ${theme.fontFamily};
   text-transform: capitalize;
+  min-height: 30px;
 `
 
 const IconWrapper = styled.div`
@@ -77,11 +80,11 @@ const IconWrapper = styled.div`
 const Buttons = styled.div`
   display: flex;
   width: auto;
-  height: auto;
   min-height: 50px;
   min-width: 150px;
   justify-content: center;
   align-items: center;
+  height: 10%;
 `
 
 const ActionButton = styled.div`
@@ -100,6 +103,8 @@ const Header = styled.h1`
   font-family: ${theme.fontFamily};
   color: ${theme.primaryText};
   margin-bottom: 20px;
+  font-size: calc(12px + 1vw);
+  height: 10%;
 `
 
 const style = {
@@ -230,7 +235,7 @@ export const AddModal = () => {
         <Fade in={isAddModalOpen}>
           <Box sx={style}>
             <Container>
-              <div>
+              <div style={{ maxHeight: "90%", height: "90%" }}>
                 <Header>Add Card</Header>
                 <Details>
                   {Object.entries(fieldsToMap(false, fields, true)).map(

@@ -48,8 +48,6 @@ const Images = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     -webkit-line-clamp: 1;
-    overflow: hidden;
-    overflow-y: auto;
   }
 `
 

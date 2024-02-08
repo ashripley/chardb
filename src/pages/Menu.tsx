@@ -35,6 +35,8 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+  min-height: 50px;
+  height: auto;
 `
 
 const HeaderWrapper = styled.div`
@@ -62,7 +64,7 @@ const StyledDrawer = styled(Drawer)<{ isMobile: boolean }>`
 const Body = styled.div`
   display: flex;
   flex-direction: column;
-  height: 85%;
+  height: 80%;
   width: 100%;
   justify-content: center;
   justify-items: center;
@@ -169,7 +171,7 @@ export const Menu = () => {
         variant="temporary"
       >
         <Container>
-          <Toolbar style={{ padding: 0 }}>
+          <Toolbar style={{ padding: 0, height: "20%" }}>
             <HeaderContainer>
               <HeaderWrapper>
                 <StyledHeader>

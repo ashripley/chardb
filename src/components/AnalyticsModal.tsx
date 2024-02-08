@@ -34,7 +34,7 @@ const HTitle = styled.h2`
   background: ${theme.lightBg};
   align-items: center;
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: calc(12px + 0.8vw);
   font-family: ${theme.fontFamily};
   color: ${theme.primaryText};
   margin-bottom: 20px;
@@ -74,6 +74,7 @@ const Text = styled.h3`
   font-weight: 800;
   font-family: ${theme.fontFamily};
   color: ${theme.primaryText};
+  font-size: calc(12px + 0.5vw);
 `
 
 const Data = styled.p`
@@ -82,7 +83,7 @@ const Data = styled.p`
   justify-content: flex-start;
   font-weight: 100;
   font-family: ${theme.fontFamily};
-  font-size: 1.2rem;
+  font-size: calc(12px + 0.5vw);
   color: ${theme.primaryText};
 `
 
@@ -107,8 +108,8 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: "auto",
   minWidth: isMobile ? "60vw" : "30vw",
+  minHeight: isMobile ? "60vw" : "30vw",
   height: "auto",
-  minHeight: "600px",
   border: "8px solid white",
   bgcolor: theme.lightBg,
   boxShadow: `${theme.lightBg} 0px 0px 2px 0px !important`,
@@ -179,8 +180,8 @@ export const AnalyticsModal = () => {
         <CloseIcon
           fontSize="large"
           style={{
-            width: 30,
-            height: 30,
+            width: isMobile ? 20 : 30,
+            height: isMobile ? 20 : 30,
             borderRadius: 100,
             padding: 10,
             color: theme.primaryText,

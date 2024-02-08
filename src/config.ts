@@ -10,8 +10,8 @@ export const sets = {
 
 export const attributes = [
   "Standard",
-  "Standard Holographic",
-  "Reverse Holographic",
+  "Standard Holo",
+  "Reverse Holo",
   "Special",
   "EX",
   "Trainer",
