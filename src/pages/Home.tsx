@@ -1,10 +1,12 @@
 import { Button, Grow, StyledEngineProvider } from "@mui/material"
 import { memo } from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { theme } from "../theme"
 import { setPage } from "../redux/root"
 import { firestore } from "../services/firebase"
+import { RootState } from "../redux/store"
+import { DbType } from "../helpers/view"
 
 const Root = styled.div`
   display: flex;
@@ -54,7 +56,7 @@ const ButtonWrapper = styled.div`
   justify-content: space-evenly;
 `
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(Button)<{ dbType: DbType }>`
   border-radius: 15px;
   background-color: ${theme.darkBg};
   font-family: ${theme.fontFamily};
@@ -67,7 +69,7 @@ const StyledButton = styled(Button)`
   transition: all 1s ease;
 
   &:hover {
-    background-color: ${theme.charAccent} !important;
+    background-color: ${({ dbType }) => theme[`${dbType}Accent`]} !important;
     box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
     color: ${theme.darkBg} !important;
   }
@@ -79,6 +81,13 @@ const StyledImage = styled.img`
 
 export const Home = memo(() => {
   const dispatch = useDispatch()
+  const { dbType } = useSelector((state: RootState) => state.root)
+
+  const nameMap: Record<string, any> = {
+    bulb: "bulbasaur",
+    squir: "squirtle",
+    char: "charmander",
+  }
 
   return (
     <>
@@ -86,13 +95,15 @@ export const Home = memo(() => {
         <Root>
           <Wrapper>
             <Title>
-              <span style={{ color: theme.charAccent, fontWeight: 800 }}>
-                char
+              <span
+                style={{ color: theme[`${dbType}Accent`], fontWeight: 800 }}
+              >
+                {dbType}
               </span>
-              <a href="https://pokemondb.net/pokedex/charmander">
+              <a href={`https://pokemondb.net/pokedex/${nameMap[dbType]}`}>
                 <StyledImage
-                  src="https://img.pokemondb.net/sprites/home/normal/charmander.png"
-                  alt="Charmander"
+                  src={`https://img.pokemondb.net/sprites/home/normal/${nameMap[dbType]}.png`}
+                  alt={nameMap[dbType]}
                 />
               </a>
               <span style={{ color: theme.primaryText }}>db</span>
@@ -106,6 +117,7 @@ export const Home = memo(() => {
           <ButtonWrapper>
             <StyledEngineProvider injectFirst>
               <StyledButton
+                dbType={dbType}
                 variant="contained"
                 onClick={() => dispatch(setPage("Cards"))}
                 sx={{ color: theme.primaryText }}

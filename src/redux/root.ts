@@ -4,6 +4,7 @@ import {
   CardViewType,
   PageType,
   isMobile,
+  DbType,
 } from "../helpers/view"
 
 interface StoreState {
@@ -14,6 +15,7 @@ interface StoreState {
   cardView: CardViewType
   cardField: Record<string, any>
   filterView: FilterViewType
+  dbType: DbType
 }
 
 const initialState: StoreState = {
@@ -27,6 +29,7 @@ const initialState: StoreState = {
   },
   cardView: isMobile ? "Tile" : "Grid",
   filterView: "id",
+  dbType: "char",
 }
 
 export const rootSlice = createSlice({
@@ -45,8 +48,6 @@ export const rootSlice = createSlice({
       state,
       action: PayloadAction<StoreState["isDataLoading"]>
     ) => {
-      console.log("isDataLoading")
-      console.log("action.payload", action.payload)
       state.isDataLoading = action.payload
     },
     setCardData: (state, action: PayloadAction<StoreState["cardData"]>) => {
@@ -61,6 +62,9 @@ export const rootSlice = createSlice({
     setFilterView: (state, action: PayloadAction<StoreState["filterView"]>) => {
       state.filterView = action.payload
     },
+    setDbType: (state, action: PayloadAction<StoreState["dbType"]>) => {
+      state.dbType = action.payload
+    },
   },
 })
 
@@ -72,6 +76,7 @@ export const {
   setIsDataLoading,
   setCardData,
   setCardField,
+  setDbType,
 } = rootSlice.actions
 
 export default rootSlice.reducer

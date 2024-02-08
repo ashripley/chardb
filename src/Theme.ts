@@ -3,6 +3,8 @@ export const theme: Record<string, any> = {
   lightBg: "#eeefeb", // light part of home wallpaper
   darkBg: "#e3e4db", // dark part of home wallpaper
   charAccent: "#ff8c00", // dark orange
+  bulbAccent: "#78c84f", // dark green
+  squirAccent: "#62bbe0", // dark blue
   success: "#2f7d31", // mui green
   card: "#333333", // background of card
   fontFamily:

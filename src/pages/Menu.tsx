@@ -5,9 +5,9 @@ import List from "@mui/material/List"
 import styled from "styled-components"
 import { theme } from "../theme"
 import { useDispatch, useSelector } from "react-redux"
-import { setMenuStatus, setPage } from "../redux/root"
+import { setDbType, setMenuStatus, setPage } from "../redux/root"
 import { RootState } from "../redux/store"
-import { isMobile } from "../helpers/view"
+import { DbType, isMobile } from "../helpers/view"
 
 const Container = styled.div`
   display: flex;
@@ -69,11 +69,9 @@ const Body = styled.div`
   flex-direction: column;
   height: 80%;
   width: 100%;
-  justify-content: center;
-  justify-items: center;
   align-items: center;
-  justify-content: center;
   background-color: ${theme.lightBg};
+  justify-content: space-evenly;
 
   border-top-left-radius: 45% 50%;
   border-top-right-radius: 95% 60%;
@@ -136,6 +134,23 @@ const Anchor = styled.a`
   }
 `
 
+const HeaderText = styled.div`
+  display: flex;
+  font-size: calc(20px + 1vw);
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  display: flex;
+  margin: 0;
+  gap: 20px;
+  font-family: ${theme.fontFamily};
+`
+
+const StyledButton = styled(Button)`
+  text-transform: lowercase !important;
+  font-size: calc(16px + 0.5vw) !important;
+`
+
 const buttonStyles = {
   width: "20vw",
   height: "auto",
@@ -149,6 +164,34 @@ const buttonStyles = {
   ":hover": {
     backgroundColor: theme.lightBg,
   },
+}
+
+const DbButton: React.FC<{ label: DbType; accent: string }> = ({
+  label,
+  accent,
+}) => {
+  const dispatch = useDispatch()
+  return (
+    <StyledButton onClick={() => dispatch(setDbType(label))}>
+      <span
+        className={label}
+        style={{
+          color: theme[accent],
+          fontWeight: 800,
+        }}
+      >
+        {label}
+      </span>
+      <span
+        className="db"
+        style={{
+          color: theme.primaryText,
+        }}
+      >
+        db
+      </span>
+    </StyledButton>
+  )
 }
 
 export const Menu = () => {
@@ -219,6 +262,11 @@ export const Menu = () => {
                 </Wrapper>
               ))}
             </StyledList>
+            <HeaderText>
+              <DbButton label="bulb" accent="bulbAccent" />
+              <DbButton label="squir" accent="squirAccent" />
+              <DbButton label="char" accent="charAccent" />
+            </HeaderText>
           </Body>
         </Container>
       </StyledDrawer>

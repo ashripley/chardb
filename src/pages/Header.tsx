@@ -4,8 +4,11 @@ import { memo } from "react"
 import styled from "styled-components"
 import { theme } from "../theme"
 import flame from "../assets/icons/flame.png"
+import water from "../assets/icons/water.png"
+import leaf from "../assets/icons/leaf.png"
 import { setMenuStatus, setPage } from "../redux/root"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../redux/store"
 
 const Container = styled.div`
   max-width: 100%;
@@ -78,6 +81,13 @@ const HeaderText = styled.div`
 
 export const Header = memo(() => {
   const dispatch = useDispatch()
+  const { dbType } = useSelector((state: RootState) => state.root)
+
+  const imageMap = {
+    char: flame,
+    bulb: leaf,
+    squir: water,
+  }
 
   return (
     <>
@@ -95,12 +105,14 @@ export const Header = memo(() => {
                           transition: "all 0.5s !important",
                           ":hover": {
                             background: theme.lightBg,
-                            boxShadow: `0px 0px 10px 0px ${theme.charAccent} , 0px 0px 10px 0px #ffffff`,
+                            boxShadow: `0px 0px 10px 0px ${
+                              theme[`${dbType}Accent`]
+                            } , 0px 0px 10px 0px #ffffff`,
                           },
                         }}
                       >
                         <img
-                          src={flame}
+                          src={imageMap[dbType]}
                           alt="menu"
                           style={{ width: 30, height: 30, padding: 5 }}
                           onClick={() => dispatch(setPage("Home"))}
@@ -109,10 +121,13 @@ export const Header = memo(() => {
                     </MenuWrapper>
                     <HeaderText>
                       <span
-                        className="char"
-                        style={{ color: theme.charAccent, fontWeight: 800 }}
+                        className={dbType}
+                        style={{
+                          color: theme[`${dbType}Accent`],
+                          fontWeight: 800,
+                        }}
                       >
-                        char
+                        {dbType}
                       </span>
                       <span className="db" style={{ color: theme.primaryText }}>
                         db
@@ -130,7 +145,9 @@ export const Header = memo(() => {
                         transition: "all 0.5s !important",
                         ":hover": {
                           background: theme.lightBg,
-                          boxShadow: `0px 0px 10px 0px ${theme.charAccent} , 0px 0px 10px 0px #ffffff`,
+                          boxShadow: `0px 0px 10px 0px ${
+                            theme[`${dbType}Accent`]
+                          } , 0px 0px 10px 0px #ffffff`,
                         },
                       }}
                       style={{ width: 50, height: 50, margin: 0 }}
