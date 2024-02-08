@@ -77,14 +77,14 @@ const IconWrapper = styled.div`
   color: ${theme.primaryText};
 `
 
-const Buttons = styled.div`
+const Buttons = styled.div<{ isMobile: boolean }>`
   display: flex;
   width: auto;
   min-height: 50px;
   min-width: 150px;
   justify-content: center;
   align-items: center;
-  height: 10%;
+  height: ${({ isMobile }) => (isMobile ? "5%" : "10%")};
 `
 
 const ActionButton = styled.div`
@@ -102,7 +102,6 @@ const Header = styled.h1`
   justify-content: center;
   font-family: ${theme.fontFamily};
   color: ${theme.primaryText};
-  margin-bottom: 20px;
   font-size: calc(12px + 1vw);
   height: 10%;
 `
@@ -115,7 +114,7 @@ const style = {
   width: "auto",
   minWidth: isMobile ? "60vw" : 600,
   maxWidth: 400,
-  height: "80%",
+  height: isMobile ? "85%" : "80%",
   maxHeight: 800,
   minHeight: isMobile ? "60vh" : 700,
   border: "8px solid white",
@@ -272,7 +271,7 @@ export const AddModal = () => {
                   )}
                 </Details>
               </div>
-              <Buttons>
+              <Buttons isMobile={isMobile}>
                 <ActionButton>
                   <Button
                     variant="outlined"
