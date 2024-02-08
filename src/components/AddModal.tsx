@@ -42,9 +42,7 @@ const Details = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  padding-bottom: 20px;
-  gap: 10px;
-  height: 80%;
+  height: 90%;
 `
 
 const Row = styled.div`
@@ -235,7 +233,7 @@ export const AddModal = () => {
         <Fade in={isAddModalOpen}>
           <Box sx={style}>
             <Container>
-              <div style={{ maxHeight: "90%", height: "90%" }}>
+              <div style={{ maxHeight: "95%", height: "95%" }}>
                 <Header>Add Card</Header>
                 <Details>
                   {Object.entries(fieldsToMap(false, fields, true)).map(
