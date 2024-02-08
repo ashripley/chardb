@@ -16,6 +16,7 @@ import {
 import { useDispatch, useSelector } from "react-redux"
 import { CardState } from "../redux/store"
 import Spinner from "./Spinner"
+import { isMobile } from "../helpers/view"
 
 const HWrapper = styled.div`
   height: auto;
@@ -105,7 +106,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "auto",
-  minWidth: "500px",
+  minWidth: isMobile ? "60vw" : "30vw",
   height: "auto",
   minHeight: "600px",
   border: "8px solid white",
@@ -203,43 +204,39 @@ export const AnalyticsModal = () => {
       <TextWrapper>
         <Text>{data.totalCount}</Text>
         <Divider orientation="vertical" flexItem />
-        <Data>{`total card${data.totalCount !== 1 ? "s" : ""} in chardb`}</Data>
+        <Data>{`total card${data.totalCount !== 1 ? "s" : ""}`}</Data>
       </TextWrapper>
       <TextWrapper>
         <Text>{data.cardCount}</Text>
         <Divider orientation="vertical" flexItem />
-        <Data>{`unique card${data.cardCount !== 1 ? "s" : ""} in chardb`}</Data>
+        <Data>{`unique card${data.cardCount !== 1 ? "s" : ""}`}</Data>
       </TextWrapper>
       <TextWrapper>
         <Text>{data.typeCount}</Text>
         <Divider orientation="vertical" flexItem />
-        <Data>{`type${data.typeCount !== 1 ? "s" : ""} in chardb`}</Data>
+        <Data>{`type${data.typeCount !== 1 ? "s" : ""}`}</Data>
       </TextWrapper>
       <TextWrapper>
         <Text>{data.attributeCount}</Text>
         <Divider orientation="vertical" flexItem />
-        <Data>{`attribute${
-          data.attributeCount !== 1 ? "s" : ""
-        } in chardb`}</Data>
+        <Data>{`attribute${data.attributeCount !== 1 ? "s" : ""}`}</Data>
       </TextWrapper>
       <TextWrapper>
         <Text>{data.setCount}</Text>
         <Divider orientation="vertical" flexItem />
-        <Data>{`set${data.setCount !== 1 ? "s" : ""} in chardb`}</Data>
+        <Data>{`set${data.setCount !== 1 ? "s" : ""}`}</Data>
       </TextWrapper>
       <TextWrapper>
         <Text>{data.trainerCount}</Text>
         <Divider orientation="vertical" flexItem />
         <Data>{`unique trainer card${
           data.trainerCount !== 1 ? "s" : ""
-        } in chardb`}</Data>
+        }`}</Data>
       </TextWrapper>
       <TextWrapper>
         <Text>{data.energyCount}</Text>
         <Divider orientation="vertical" flexItem />
-        <Data>{`unique energy card${
-          data.energyCount !== 1 ? "s" : ""
-        } in chardb`}</Data>
+        <Data>{`unique energy card${data.energyCount !== 1 ? "s" : ""}`}</Data>
       </TextWrapper>
     </BWrapper>
   )

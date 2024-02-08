@@ -31,18 +31,26 @@ const Wrapper = styled.div`
   align-items: center;
 `
 
-const BackWrapper = styled.div`
-  display: grid;
-  height: 100%;
-  align-items: center;
-`
-
 const Images = styled.div`
   display: flex;
   width: 100%;
   height: auto;
   flex-wrap: wrap;
   justify-content: center;
+
+  .react-card-back {
+    display: grid;
+    align-items: center;
+    height: auto;
+    width: auto;
+    max-height: 120px;
+    max-width: 120px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    overflow-y: auto;
+  }
 `
 
 const Row = styled.div<{ isMobile: boolean }>`
@@ -79,8 +87,8 @@ const Data = styled.div<{ isMobile: boolean }>`
 
 const cardStyles = (p: Record<string, any>) => {
   return {
-    height: isMobile ? 110 : 250,
-    width: isMobile ? 110 : 250,
+    height: isMobile ? 120 : 250,
+    width: isMobile ? 115 : 250,
     minWidth: isMobile ? 110 : 200,
     minHeight: isMobile ? 110 : 200,
     backgroundColor: theme.lightBg,
@@ -152,25 +160,22 @@ export const Tile = ({ pokemon, cardIndex }: Props) => {
                 pokemon={pokemon}
                 ref={ref}
               />
-
-              <BackWrapper>
-                {Object.entries(
-                  fieldsToMap(false, fields, false, pokemon, pokemon.id, true)
-                ).map(([k, v], index) => (
-                  <Row isMobile={isMobile}>
-                    <Icon
-                      style={{
-                        width: "auto",
-                        paddingRight: isMobile ? 10 : 20,
-                        height: "auto",
-                      }}
-                    >
-                      {v.icon ?? <></>}
-                    </Icon>
-                    <Data isMobile={isMobile}>{pokemon[k] || ""}</Data>
-                  </Row>
-                ))}
-              </BackWrapper>
+              {Object.entries(
+                fieldsToMap(false, fields, false, pokemon, pokemon.id, true)
+              ).map(([k, v], index) => (
+                <Row isMobile={isMobile}>
+                  <Icon
+                    style={{
+                      width: "auto",
+                      paddingRight: isMobile ? 10 : 20,
+                      height: "auto",
+                    }}
+                  >
+                    {v.icon ?? <></>}
+                  </Icon>
+                  <Data isMobile={isMobile}>{pokemon[k] || ""}</Data>
+                </Row>
+              ))}
             </ReactCardFlip>
           </Card>
         </Images>

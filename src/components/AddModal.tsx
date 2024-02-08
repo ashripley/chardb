@@ -23,6 +23,7 @@ import { AttributeSelect } from "./AttributeSelect"
 import { useDispatch, useSelector } from "react-redux"
 import { setIcon, setIsAddModalOpen } from "../redux/card"
 import { CardState } from "../redux/store"
+import { isMobile } from "../helpers/view"
 
 const Container = styled.div`
   max-width: 100%;
@@ -53,6 +54,7 @@ const Row = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  gap: 10px;
 `
 
 const Data = styled.div`
@@ -105,12 +107,12 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "40%",
-  maxWidth: 600,
-  minWidth: 400,
+  width: "auto",
+  minWidth: isMobile ? "60vw" : 600,
+  maxWidth: 400,
   height: "80%",
   maxHeight: 800,
-  minHeight: 700,
+  minHeight: isMobile ? "60vh" : 700,
   border: "8px solid white",
   bgcolor: theme.lightBg,
   boxShadow: `${theme.lightBg} 0px 0px 2px 0px !important`,
@@ -154,13 +156,6 @@ export const AddModal = () => {
 
   const ref = collection(firestore, "cards")
   const mutation = useFirestoreCollectionMutation(ref)
-
-  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setFields({
-  //     attribute: (event.target as HTMLInputElement).value,
-  //     ...omit("attribute", fields),
-  //   })
-  // }
 
   const handleSelectChange = (event: any) => {
     setFields({

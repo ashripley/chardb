@@ -118,16 +118,6 @@ const Actions = styled.div`
   gap: 20px;
 `
 
-const Chips = styled.div`
-  display: flex;
-  align-items: center;
-  min-width: 200px;
-  gap: 10px;
-  width: 100%;
-  justify-content: center;
-}
-`
-
 const StyledForm = styled(FormControl)`
   width: 100%;
 `
@@ -361,96 +351,6 @@ export const MobileSearch = () => {
                         </Actions>
                       </Buttons>
                       <SortToggleButton />
-                      <Chips>
-                        <Chip
-                          label="TILE"
-                          onClick={() => dispatch(setCardView("Tile"))}
-                          icon={
-                            <AppsOutlinedIcon
-                              fontSize="small"
-                              style={{
-                                color: `${
-                                  cardView !== "Tile"
-                                    ? theme.primaryText
-                                    : "#ff8c00"
-                                }`,
-                              }}
-                            />
-                          }
-                          sx={{
-                            padding: "15px 5px",
-                            borderRadius: "15px",
-                            borderColor: theme.darkBg,
-                            color: `${
-                              cardView !== "Tile"
-                                ? theme.primaryText
-                                : "#ff8c00"
-                            }`,
-                            fontFamily: theme.fontFamily,
-                          }}
-                          variant={cardView === "Tile" ? "filled" : "outlined"}
-                        />
-                        <Chip
-                          label="GRID"
-                          onClick={() => dispatch(setCardView("Grid"))}
-                          icon={
-                            <WindowIcon
-                              fontSize="small"
-                              style={{
-                                color: `${
-                                  cardView !== "Grid"
-                                    ? theme.primaryText
-                                    : "#ff8c00"
-                                }`,
-                              }}
-                            />
-                          }
-                          sx={{
-                            padding: "15px 5px",
-                            borderRadius: "15px",
-                            borderColor: theme.darkBg,
-                            color: `${
-                              cardView !== "Grid"
-                                ? theme.primaryText
-                                : "#ff8c00"
-                            }`,
-                            fontFamily: theme.fontFamily,
-                          }}
-                          variant={cardView === "Grid" ? "filled" : "outlined"}
-                        />
-                        {!isMobile && (
-                          <Chip
-                            label="LIST"
-                            onClick={() => dispatch(setCardView("List"))}
-                            icon={
-                              <ListIcon
-                                fontSize="small"
-                                style={{
-                                  color: `${
-                                    cardView !== "List"
-                                      ? theme.primaryText
-                                      : "#ff8c00"
-                                  }`,
-                                }}
-                              />
-                            }
-                            sx={{
-                              padding: "15px 5px",
-                              borderRadius: "15px",
-                              borderColor: theme.darkBg,
-                              color: `${
-                                cardView !== "List"
-                                  ? theme.primaryText
-                                  : "#ff8c00"
-                              }`,
-                              fontFamily: theme.fontFamily,
-                            }}
-                            variant={
-                              cardView === "List" ? "filled" : "outlined"
-                            }
-                          />
-                        )}
-                      </Chips>
                     </Body>
                   ) : (
                     <></>
