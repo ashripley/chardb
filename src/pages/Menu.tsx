@@ -100,7 +100,7 @@ const StyledHeader = styled.div`
   justify-content: flex-end;
 `
 
-const Anchor = styled.a`
+const Anchor = styled.a<{ dbType: DbType }>`
   color: ${theme.primaryText};
   text-transform: uppercase;
   text-decoration: none;
@@ -119,7 +119,7 @@ const Anchor = styled.a`
     height: 2px;
     left: 50%;
     position: absolute;
-    background: ${theme.charAccent};
+    background: ${({ dbType }) => theme[`${dbType}Accent`]};
     transition: width 0.3s ease 0s, left 0.3s ease 0s;
     width: 0;
   }
@@ -130,7 +130,36 @@ const Anchor = styled.a`
   }
 
   &:hover {
-    color: ${theme.charAccent} !important;
+    color: ${({ dbType }) => theme[`${dbType}Accent`]} !important;
+  }
+`
+
+const Starters = styled.div<{ dbType: DbType }>`
+  text-decoration: none;
+  letter-spacing: 0.15em;
+  display: inline-block;
+  transition: all ease 0.5s;
+
+  &:after {
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 2px;
+    left: 50%;
+    position: absolute;
+    background: ${({ dbType }) => theme[`${dbType}Accent`]};
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 0;
+  }
+
+  &:hover:after {
+    width: 100%;
+    left: 0;
+  }
+
+  &:hover {
+    color: ${({ dbType }) => theme[`${dbType}Accent`]} !important;
   }
 `
 
@@ -149,6 +178,10 @@ const HeaderText = styled.div`
 const StyledButton = styled(Button)`
   text-transform: lowercase !important;
   font-size: calc(16px + 0.5vw) !important;
+
+  &:hover {
+    background-color: transparent !important;
+  }
 `
 
 const buttonStyles = {
@@ -173,29 +206,31 @@ const DbButton: React.FC<{ label: DbType; accent: string }> = ({
   const dispatch = useDispatch()
   return (
     <StyledButton onClick={() => dispatch(setDbType(label))}>
-      <span
-        className={label}
-        style={{
-          color: theme[accent],
-          fontWeight: 800,
-        }}
-      >
-        {label}
-      </span>
-      <span
-        className="db"
-        style={{
-          color: theme.primaryText,
-        }}
-      >
-        db
-      </span>
+      <Starters dbType={label}>
+        <span
+          className={label}
+          style={{
+            color: theme[accent],
+            fontWeight: 800,
+          }}
+        >
+          {label}
+        </span>
+        <span
+          className="db"
+          style={{
+            color: theme.primaryText,
+          }}
+        >
+          db
+        </span>
+      </Starters>
     </StyledButton>
   )
 }
 
 export const Menu = () => {
-  const { isMenuOpen } = useSelector((state: RootState) => state.root)
+  const { isMenuOpen, dbType } = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
 
   const onClose = () => {
@@ -228,7 +263,9 @@ export const Menu = () => {
                       transition: "all 0.5s !important",
                       ":hover": {
                         background: theme.lightBg,
-                        boxShadow: `0px 0px 10px 0px ${theme.charAccent} , 0px 0px 10px 0px #ffffff`,
+                        boxShadow: `0px 0px 10px 0px ${
+                          theme[`${dbType}Accent`]
+                        } , 0px 0px 10px 0px #ffffff`,
                       },
                     }}
                     style={{ width: 50, height: 50, margin: 0 }}
@@ -257,7 +294,7 @@ export const Menu = () => {
                     onClick={() => onClick(label)}
                     sx={buttonStyles}
                   >
-                    <Anchor>{label}</Anchor>
+                    <Anchor dbType={dbType}>{label}</Anchor>
                   </Button>
                 </Wrapper>
               ))}

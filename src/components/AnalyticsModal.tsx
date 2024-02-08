@@ -14,7 +14,7 @@ import {
   setIsAnalyticsOpen,
 } from "../redux/card"
 import { useDispatch, useSelector } from "react-redux"
-import { CardState } from "../redux/store"
+import { CardState, RootState } from "../redux/store"
 import Spinner from "./Spinner"
 import { isMobile } from "../helpers/view"
 
@@ -122,6 +122,8 @@ export const AnalyticsModal = () => {
   const { isAnalyticsOpen, analyticsCardData, isAnalyticsLoading } =
     useSelector((state: CardState) => state.card)
 
+  const { dbType } = useSelector((state: RootState) => state.root)
+
   // Function to fetch data
   const fetchData = useCallback(async () => {
     dispatch(setIsAnalyticsLoading(true))
@@ -190,7 +192,9 @@ export const AnalyticsModal = () => {
             transition: "all 0.5s !important",
             ":hover": {
               background: theme.lightBg,
-              boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
+              boxShadow: `0px 0px 10px 0px ${
+                theme[`${dbType}Accent`]
+              } , 0px 0px 10px 0px #ffffff`,
               cursor: "pointer",
             },
           }}

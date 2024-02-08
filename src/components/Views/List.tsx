@@ -18,6 +18,7 @@ import {
   setPokemonToBeDeleted,
   setViewAlert,
 } from "../../redux/card"
+import { sxColourMap } from "../../helpers/view"
 
 interface Props {
   cardIndex: number
@@ -109,7 +110,9 @@ export const List = ({ pokemon, cardIndex }: Props) => {
   const [open, setOpen] = useState<boolean>(false)
   //#endregion
 
-  const { isDataLoading } = useSelector((state: RootState) => state.root)
+  const { isDataLoading, dbType } = useSelector(
+    (state: RootState) => state.root
+  )
 
   const cardStyles = {
     width: "100%",
@@ -134,7 +137,7 @@ export const List = ({ pokemon, cardIndex }: Props) => {
 
       "&:hover": {
         fieldset: {
-          borderColor: `${theme.charAccent} !important`,
+          borderColor: `${theme[`${dbType}Accent`]} !important`,
           borderWidth: 2,
         },
       },
@@ -271,7 +274,7 @@ export const List = ({ pokemon, cardIndex }: Props) => {
                     value={v.value}
                     placeholder={upperCaseFirst(pokemon[k])}
                     variant="outlined"
-                    color="warning"
+                    color={sxColourMap[dbType]}
                     style={{ width: "80%", margin: "0px 5px" }}
                     sx={{ borderRadius: 15 }}
                     onChange={(e) => {

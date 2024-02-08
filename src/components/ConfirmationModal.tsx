@@ -15,7 +15,7 @@ import {
   setIsConfirmationModalOpen,
   setConfirmationModalAlert,
 } from "../redux/card"
-import { CardState } from "../redux/store"
+import { CardState, RootState } from "../redux/store"
 import { deleteDoc, doc } from "firebase/firestore"
 import { firestore } from "../services/firebase"
 import { AllCards } from "../api/queries/allCards"
@@ -124,6 +124,8 @@ export const ConfirmationModal = () => {
     confirmationModalAlert,
   } = useSelector((state: CardState) => state.card)
 
+  const { dbType } = useSelector((state: RootState) => state.root)
+
   // Function to handle card deletion
   useEffect(() => {
     const handleDelete = async () => {
@@ -165,7 +167,9 @@ export const ConfirmationModal = () => {
             transition: "all 0.5s !important",
             ":hover": {
               background: theme.lightBg,
-              boxShadow: `0px 0px 10px 0px #ff8c00 , 0px 0px 10px 0px #ffffff`,
+              boxShadow: `0px 0px 10px 0px ${
+                theme[`${dbType}Accent`]
+              }, 0px 0px 10px 0px #ffffff`,
               cursor: "pointer",
             },
           }}

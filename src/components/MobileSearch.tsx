@@ -37,7 +37,7 @@ import {
   setIsSearchOpen,
 } from "../redux/card"
 import { CardState, RootState } from "../redux/store"
-import { isMobile } from "../helpers/view"
+import { isMobile, sxColourMap } from "../helpers/view"
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp"
 
@@ -124,7 +124,7 @@ const StyledForm = styled(FormControl)`
 
 export const MobileSearch = () => {
   const dispatch = useDispatch()
-  const { cardView, cardField, isDataLoading } = useSelector(
+  const { dbType, cardField, isDataLoading } = useSelector(
     (state: RootState) => state.root
   )
   const { isAddModalOpen, hasCardError, isSearchOpen, isAnalyticsOpen } =
@@ -192,7 +192,7 @@ export const MobileSearch = () => {
                       label={`Search ${cardField.key || "All Cards"}...`}
                       variant="outlined"
                       style={{ width: "auto" }}
-                      color={"warning"}
+                      color={sxColourMap[dbType]}
                       onChange={(e) =>
                         dispatch(
                           setCardField({
@@ -212,7 +212,12 @@ export const MobileSearch = () => {
 
                           "&:hover": {
                             fieldset: {
-                              borderColor: "#ff8c00 !important",
+                              borderColor:
+                                (dbType === "char"
+                                  ? theme.charAccent
+                                  : dbType === "squir"
+                                  ? theme.squirAccent
+                                  : theme.bulbAccent) + "!important",
                             },
                           },
                         },
@@ -221,7 +226,7 @@ export const MobileSearch = () => {
                     <Button
                       variant="outlined"
                       size="small"
-                      color="warning"
+                      color={sxColourMap[dbType]}
                       style={{
                         width: "auto",
                         height: "auto",
@@ -247,13 +252,15 @@ export const MobileSearch = () => {
                           // minWidth: 200,
                         }}
                       >
-                        <InputLabel color="warning">{"Category"}</InputLabel>
+                        <InputLabel color={sxColourMap[dbType]}>
+                          {"Category"}
+                        </InputLabel>
                         <Select
                           id="standard"
                           variant="outlined"
                           value={cardField.key}
                           label={"Category"}
-                          color="warning"
+                          color={sxColourMap[dbType]}
                           MenuProps={{
                             PaperProps: {
                               sx: {
@@ -279,7 +286,12 @@ export const MobileSearch = () => {
 
                             "&:hover": {
                               fieldset: {
-                                borderColor: "#ff8c00 !important",
+                                borderColor:
+                                  (dbType === "char"
+                                    ? theme.charAccent
+                                    : dbType === "squir"
+                                    ? theme.squirAccent
+                                    : theme.bulbAccent) + "!important",
                               },
                             },
                           }}
@@ -303,7 +315,7 @@ export const MobileSearch = () => {
                           <Button
                             variant="outlined"
                             size="small"
-                            color="warning"
+                            color={sxColourMap[dbType]}
                             style={{
                               width: "auto",
                               height: "auto",
@@ -327,7 +339,7 @@ export const MobileSearch = () => {
                             onClick={handleRefresh}
                           >
                             {isDataLoading === true ? (
-                              <CircularProgress color="warning" />
+                              <CircularProgress color={sxColourMap[dbType]} />
                             ) : (
                               <RefreshIcon />
                             )}

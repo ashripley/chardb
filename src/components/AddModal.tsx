@@ -22,8 +22,8 @@ import { firestore } from "../services/firebase"
 import { AttributeSelect } from "./AttributeSelect"
 import { useDispatch, useSelector } from "react-redux"
 import { setIcon, setIsAddModalOpen } from "../redux/card"
-import { CardState } from "../redux/store"
-import { isMobile } from "../helpers/view"
+import { CardState, RootState } from "../redux/store"
+import { isMobile, sxColourMap } from "../helpers/view"
 
 const Container = styled.div`
   max-width: 100%;
@@ -125,26 +125,27 @@ const style = {
   p: 4,
 }
 
-const inputProps = {
-  sx: {
-    borderRadius: "15px !important",
-    minWidth: 150,
-    fieldset: {
-      borderColor: theme.darkBg,
-    },
-    input: { color: theme.primaryText },
-
-    "&:hover": {
-      fieldset: {
-        borderColor: `${theme.charAccent} !important`,
-      },
-    },
-  },
-}
-
 export const AddModal = () => {
   const dispatch = useDispatch()
   const { isAddModalOpen } = useSelector((state: CardState) => state.card)
+  const { dbType } = useSelector((state: RootState) => state.root)
+
+  const inputProps = {
+    sx: {
+      borderRadius: "15px !important",
+      minWidth: 150,
+      fieldset: {
+        borderColor: theme.darkBg,
+      },
+      input: { color: theme.primaryText },
+
+      "&:hover": {
+        fieldset: {
+          borderColor: `${theme[`${dbType}Accent`]} !important`,
+        },
+      },
+    },
+  }
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [alert, setAlert] = useState("add")
@@ -254,7 +255,7 @@ export const AddModal = () => {
                               value={v.value}
                               label={v.label}
                               variant="outlined"
-                              color="warning"
+                              color={sxColourMap[dbType]}
                               style={{ width: "100%", margin: 5 }}
                               InputProps={inputProps}
                               onChange={(e) => {

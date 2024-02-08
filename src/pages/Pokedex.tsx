@@ -16,7 +16,9 @@ import { AllCards } from "../api/queries/allCards"
 import tick from "../assets/icons/tick.png"
 import { IconImageMap } from "../components/IconImageMap"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
-import { isMobile } from "../helpers/view"
+import { isMobile, sxColourMap } from "../helpers/view"
+import { useSelector } from "react-redux"
+import { RootState } from "../redux/store"
 
 const Container = styled.div`
   max-height: 100%;
@@ -83,6 +85,8 @@ export const Pokedex = () => {
   const [hasPokemon, setHasPokemon] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pokedexName, setPokedexName] = useState<string>("")
+
+  const { dbType } = useSelector((state: RootState) => state.root)
 
   const itemsPerPage = 50
 
@@ -196,7 +200,7 @@ export const Pokedex = () => {
               label={"Search"}
               variant="outlined"
               style={{ ...fieldStyle }}
-              color={"warning"}
+              color={sxColourMap[dbType]}
               onChange={(e) => setPokedexName(e.target.value)}
               InputProps={{
                 sx: {
@@ -209,7 +213,12 @@ export const Pokedex = () => {
 
                   "&:hover": {
                     fieldset: {
-                      borderColor: "#ff8c00 !important",
+                      borderColor:
+                        (dbType === "char"
+                          ? theme.charAccent
+                          : dbType === "squir"
+                          ? theme.squirAccent
+                          : theme.bulbAccent) + "!important",
                     },
                   },
                 },
@@ -221,7 +230,7 @@ export const Pokedex = () => {
       <Images>
         {isLoading ? (
           <div style={{ top: "50%", position: "relative" }}>
-            <CircularProgress color="warning" />
+            <CircularProgress color={sxColourMap[dbType]} />
           </div>
         ) : (
           (pokedexName !== ""

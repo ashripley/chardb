@@ -4,7 +4,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
 import { icons } from "../helpers/fieldsToMap"
 import { upperCaseFirst } from "../helpers/upperCaseFirst"
 import { IconImageMap } from "./IconImageMap"
-import { FilterViewType } from "../helpers/view"
+import { FilterViewType, sxColourMap } from "../helpers/view"
 import { useDispatch, useSelector } from "react-redux"
 import { setFilterView } from "../redux/root"
 import { RootState } from "../redux/store"
@@ -34,7 +34,7 @@ const StyledToggleButton = styled(ToggleButton)`
 
 export const SortToggleButton = () => {
   const fields: string[] = ["id", "name", "type", "year", "attribute"]
-  const { filterView } = useSelector((state: RootState) => state.root)
+  const { filterView, dbType } = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
 
   return (
@@ -42,7 +42,7 @@ export const SortToggleButton = () => {
       orientation="horizontal"
       value={filterView || "id"}
       exclusive
-      color="warning"
+      color={sxColourMap[dbType]}
       onChange={(e, view: FilterViewType) => dispatch(setFilterView(view))}
       style={{
         height: "auto",

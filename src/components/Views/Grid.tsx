@@ -19,6 +19,7 @@ import {
   setViewAlert,
 } from "../../redux/card"
 import { CardState } from "../../redux/store"
+import { sxColourMap } from "../../helpers/view"
 
 interface Props {
   cardIndex: number
@@ -83,7 +84,9 @@ const Details = styled.div<{ isCardHovered: boolean; isEditView: boolean }>`
 
 export const Grid = ({ pokemon, cardIndex }: Props) => {
   const dispatch = useDispatch()
-  const { isDataLoading } = useSelector((state: RootState) => state.root)
+  const { isDataLoading, dbType } = useSelector(
+    (state: RootState) => state.root
+  )
   const { isConfirmationModalOpen, gridFields } = useSelector(
     (state: CardState) => state.card
   )
@@ -258,7 +261,7 @@ export const Grid = ({ pokemon, cardIndex }: Props) => {
                   value={v.value}
                   placeholder={upperCaseFirst(pokemon[k])}
                   variant="outlined"
-                  color="warning"
+                  color={sxColourMap[dbType]}
                   style={{ width: "80%", margin: 5 }}
                   sx={{ borderRadius: 15 }}
                   onChange={(e) => {
@@ -279,7 +282,7 @@ export const Grid = ({ pokemon, cardIndex }: Props) => {
 
                       "&:hover": {
                         fieldset: {
-                          borderColor: `${theme.charAccent} !important`,
+                          borderColor: `${theme[`${dbType}Accent`]} !important`,
                           borderWidth: 2,
                         },
                       },

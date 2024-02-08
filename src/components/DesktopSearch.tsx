@@ -36,7 +36,7 @@ import {
   setIsCardOpen,
 } from "../redux/card"
 import { CardState, RootState } from "../redux/store"
-import { isMobile } from "../helpers/view"
+import { isMobile, sxColourMap } from "../helpers/view"
 
 const Wrapper = styled.div`
   max-width: 100%;
@@ -134,7 +134,7 @@ const StyledForm = styled(FormControl)`
 
 export const DesktopSearch = () => {
   const dispatch = useDispatch()
-  const { cardView, cardField, isDataLoading } = useSelector(
+  const { cardView, cardField, isDataLoading, dbType } = useSelector(
     (state: RootState) => state.root
   )
   const { isAddModalOpen, hasCardError, isAnalyticsOpen } = useSelector(
@@ -203,13 +203,15 @@ export const DesktopSearch = () => {
                       minWidth: 200,
                     }}
                   >
-                    <InputLabel color="warning">{"Category"}</InputLabel>
+                    <InputLabel color={sxColourMap[dbType]}>
+                      {"Category"}
+                    </InputLabel>
                     <Select
                       id="standard"
                       variant="outlined"
                       value={cardField.key}
                       label={"Category"}
-                      color="warning"
+                      color={sxColourMap[dbType]}
                       MenuProps={{
                         PaperProps: {
                           sx: {
@@ -235,7 +237,12 @@ export const DesktopSearch = () => {
 
                         "&:hover": {
                           fieldset: {
-                            borderColor: "#ff8c00 !important",
+                            borderColor:
+                              (dbType === "char"
+                                ? theme.charAccent
+                                : dbType === "squir"
+                                ? theme.squirAccent
+                                : theme.bulbAccent) + "!important",
                           },
                         },
                       }}
@@ -261,7 +268,7 @@ export const DesktopSearch = () => {
                       label={`Search ${cardField.key || "All Cards"}...`}
                       variant="outlined"
                       style={{ width: "auto", minWidth: 400 }}
-                      color={"warning"}
+                      color={sxColourMap[dbType]}
                       onChange={(e) =>
                         dispatch(
                           setCardField({
@@ -281,7 +288,12 @@ export const DesktopSearch = () => {
 
                           "&:hover": {
                             fieldset: {
-                              borderColor: "#ff8c00 !important",
+                              borderColor:
+                                (dbType === "char"
+                                  ? theme.charAccent
+                                  : dbType === "squir"
+                                  ? theme.squirAccent
+                                  : theme.bulbAccent) + "!important",
                             },
                           },
                         },
@@ -293,7 +305,7 @@ export const DesktopSearch = () => {
                       <Button
                         variant="outlined"
                         size="small"
-                        color="warning"
+                        color={sxColourMap[dbType]}
                         style={{
                           width: "auto",
                           height: "auto",
@@ -317,7 +329,7 @@ export const DesktopSearch = () => {
                         onClick={handleRefresh}
                       >
                         {isDataLoading === true ? (
-                          <CircularProgress color="warning" />
+                          <CircularProgress color={sxColourMap[dbType]} />
                         ) : (
                           <RefreshIcon />
                         )}
@@ -354,7 +366,7 @@ export const DesktopSearch = () => {
                             color: `${
                               cardView !== "Tile"
                                 ? theme.primaryText
-                                : "#ff8c00"
+                                : theme[`${dbType}Accent`]
                             }`,
                           }}
                         />
@@ -364,7 +376,9 @@ export const DesktopSearch = () => {
                         borderRadius: "15px",
                         borderColor: theme.darkBg,
                         color: `${
-                          cardView !== "Tile" ? theme.primaryText : "#ff8c00"
+                          cardView !== "Tile"
+                            ? theme.primaryText
+                            : theme[`${dbType}Accent`]
                         }`,
                         fontFamily: theme.fontFamily,
                       }}
@@ -380,7 +394,7 @@ export const DesktopSearch = () => {
                             color: `${
                               cardView !== "Grid"
                                 ? theme.primaryText
-                                : "#ff8c00"
+                                : theme[`${dbType}Accent`]
                             }`,
                           }}
                         />
@@ -390,7 +404,9 @@ export const DesktopSearch = () => {
                         borderRadius: "15px",
                         borderColor: theme.darkBg,
                         color: `${
-                          cardView !== "Grid" ? theme.primaryText : "#ff8c00"
+                          cardView !== "Grid"
+                            ? theme.primaryText
+                            : theme[`${dbType}Accent`]
                         }`,
                         fontFamily: theme.fontFamily,
                       }}
@@ -407,7 +423,7 @@ export const DesktopSearch = () => {
                               color: `${
                                 cardView !== "List"
                                   ? theme.primaryText
-                                  : "#ff8c00"
+                                  : theme[`${dbType}Accent`]
                               }`,
                             }}
                           />
@@ -417,7 +433,9 @@ export const DesktopSearch = () => {
                           borderRadius: "15px",
                           borderColor: theme.darkBg,
                           color: `${
-                            cardView !== "List" ? theme.primaryText : "#ff8c00"
+                            cardView !== "List"
+                              ? theme.primaryText
+                              : theme[`${dbType}Accent`]
                           }`,
                           fontFamily: theme.fontFamily,
                         }}

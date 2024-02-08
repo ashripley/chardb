@@ -8,6 +8,9 @@ import {
 import styled from "styled-components"
 import { theme } from "../theme"
 import { attributes } from "../config"
+import { sxColourMap } from "../helpers/view"
+import { RootState } from "../redux/store"
+import { useSelector } from "react-redux"
 
 interface Props {
   fields: Record<string, any>
@@ -27,6 +30,8 @@ const AttributeWrapper = styled.div`
 `
 
 export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
+  const { dbType } = useSelector((state: RootState) => state.root)
+
   return (
     <AttributeWrapper>
       <StyledForm
@@ -35,12 +40,12 @@ export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
           width: "100%",
         }}
       >
-        <InputLabel color="warning">{"Attribute"}</InputLabel>
+        <InputLabel color={sxColourMap[dbType]}>{"Attribute"}</InputLabel>
         <Select
           id="attribute"
           variant="outlined"
           value={fields.attribute}
-          color="warning"
+          color={sxColourMap[dbType]}
           MenuProps={{
             PaperProps: {
               sx: {
@@ -61,7 +66,12 @@ export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
 
             "&:hover": {
               fieldset: {
-                borderColor: "#ff8c00 !important",
+                borderColor:
+                  (dbType === "char"
+                    ? theme.charAccent
+                    : dbType === "squir"
+                    ? theme.squirAccent
+                    : theme.bulbAccent) + "!important",
               },
             },
           }}
