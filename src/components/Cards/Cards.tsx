@@ -5,6 +5,7 @@ import { LoadingSkeleton } from "../Skeleton"
 import { PokemonCard } from "./PokemonCard"
 import { useSelector } from "react-redux"
 import { CardState, RootState } from "../../redux/store"
+import { isMobile } from "../../helpers/view"
 
 const Container = styled.div`
   max-width: 100%;
@@ -13,7 +14,7 @@ const Container = styled.div`
   justify-content: center;
 `
 
-const StyledPaper = styled(Paper)`
+const StyledPaper = styled(Paper)<{ isMobile: boolean }>`
   background-color: transparent;
   display: flex;
   max-width: 100%;
@@ -22,7 +23,7 @@ const StyledPaper = styled(Paper)`
   padding: 30px;
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
+  ${({ isMobile }) => !isMobile && `gap: 15px`};
 `
 
 const PaginationWrapper = styled.div`
@@ -83,6 +84,7 @@ export const Cards = () => {
           <LoadingSkeleton />
         ) : (
           <StyledPaper
+            isMobile={isMobile}
             elevation={0}
             style={{
               backgroundColor: "transparent",

@@ -8,8 +8,16 @@ const Icon = styled.div<{ isPokedex: boolean }>`
   color: ${theme.card};
 `
 
-export const IconImageMap = (src: string, isPokedex: boolean) => (
+export const IconImageMap = (
+  src: string,
+  isPokedex: boolean,
+  isTile?: boolean
+) => (
   <Icon isPokedex={isPokedex}>
-    <img src={src} alt="menu" style={{ width: 25, height: 25 }} />
+    <img
+      src={src}
+      alt="menu"
+      style={{ width: isTile ? 15 : 25, height: isTile ? 15 : 25 }}
+    />
   </Icon>
 )

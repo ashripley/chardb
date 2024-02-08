@@ -20,6 +20,7 @@ interface StoreState {
   analyticsCardData: Record<string, any>[] | undefined
   gridFields: Record<string, any>
   listFields: Record<string, any>
+  isSearchOpen: boolean
 }
 
 const initialState: StoreState = {
@@ -58,6 +59,7 @@ const initialState: StoreState = {
     quantity: "",
     attribute: "",
   },
+  isSearchOpen: false,
 }
 
 export const cardSlice = createSlice({
@@ -127,6 +129,9 @@ export const cardSlice = createSlice({
     setViewAlert: (state, action: PayloadAction<string>) => {
       state.viewAlert = action.payload
     },
+    setIsSearchOpen: (state, action: PayloadAction<boolean>) => {
+      state.isSearchOpen = action.payload
+    },
   },
 })
 
@@ -150,6 +155,7 @@ export const {
   setGridFields,
   setListFields,
   setViewAlert,
+  setIsSearchOpen,
 } = cardSlice.actions
 
 export default cardSlice.reducer

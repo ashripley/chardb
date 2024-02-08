@@ -5,6 +5,7 @@ import pokemonTrainer from "../../assets/icons/pokemon-trainer.svg"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
 import { energyImageMap } from "../../helpers/trainerImageMap"
 import { AttributeBadge } from "../Grid/AttributeBadge"
+import { isMobile } from "../../helpers/view"
 
 interface Props {
   isEvolutionsHovered: boolean
@@ -55,18 +56,20 @@ export const TileImage = ({
   }
 
   const imageStyles: Record<string, any> = {
-    width:
-      pokemon.attribute === "trainer"
-        ? 1300
-        : pokemon.attribute === "energy"
-        ? 130
-        : 150,
-    height:
-      pokemon.attribute === "trainer"
-        ? 130
-        : pokemon.attribute === "energy"
-        ? 130
-        : 150,
+    width: isMobile
+      ? 80
+      : pokemon.attribute === "trainer"
+      ? 130
+      : pokemon.attribute === "energy"
+      ? 130
+      : 150,
+    height: isMobile
+      ? 80
+      : pokemon.attribute === "trainer"
+      ? 130
+      : pokemon.attribute === "energy"
+      ? 130
+      : 150,
     zIndex: 100,
     position: "absolute",
   }

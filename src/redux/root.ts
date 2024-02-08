@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { FilterViewType, CardViewType, PageType } from "../helpers/view"
+import {
+  FilterViewType,
+  CardViewType,
+  PageType,
+  isMobile,
+} from "../helpers/view"
 
 interface StoreState {
   page: string
@@ -20,7 +25,7 @@ const initialState: StoreState = {
     key: "",
     value: "",
   },
-  cardView: "Grid",
+  cardView: isMobile ? "Tile" : "Grid",
   filterView: "id",
 }
 

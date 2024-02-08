@@ -5,6 +5,7 @@ import { theme } from "../../theme"
 import { TileImage } from "../Tile/TileImage"
 import ReactCardFlip from "react-card-flip"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
+import { isMobile } from "../../helpers/view"
 
 interface Props {
   cardIndex: number
@@ -12,9 +13,9 @@ interface Props {
 }
 
 //#region Styled Components
-const Container = styled.div`
-  min-height: 200px;
-  min-width: 200px;
+const Container = styled.div<{ isMobile: boolean }>`
+  min-height: ${({ isMobile }) => (isMobile ? "100px" : "200px")};
+  min-width: ${({ isMobile }) => (isMobile ? "100px" : "200px")};
   height: auto;
   width: auto;
   position: relative;
@@ -30,6 +31,12 @@ const Wrapper = styled.div`
   align-items: center;
 `
 
+const BackWrapper = styled.div`
+  display: grid;
+  height: 100%;
+  align-items: center;
+`
+
 const Images = styled.div`
   display: flex;
   width: 100%;
@@ -38,39 +45,50 @@ const Images = styled.div`
   justify-content: center;
 `
 
-const Row = styled.div`
+const Row = styled.div<{ isMobile: boolean }>`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 35px;
+  height: ${({ isMobile }) => (isMobile ? "17px" : "35px")};
+  width: 100%;
 
   & div > span > div {
     width: auto;
   }
 `
 
-const Data = styled.div`
+const Data = styled.div<{ isMobile: boolean }>`
   display: flex;
   width: auto;
   font-weight: 800;
   font-family: ${theme.fontFamily};
   text-transform: capitalize;
   color: ${theme.primaryText};
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  ${({ isMobile }) =>
+    isMobile &&
+    `
+    font-size: calc(6px + 1vw)
+
+  `};
 `
 //#endregion
 
 const cardStyles = (p: Record<string, any>) => {
   return {
-    height: 250,
-    width: 250,
-    minWidth: 200,
-    minHeight: 200,
+    height: isMobile ? 110 : 250,
+    width: isMobile ? 110 : 250,
+    minWidth: isMobile ? 110 : 200,
+    minHeight: isMobile ? 110 : 200,
     backgroundColor: theme.lightBg,
     borderRadius: "15px",
     boxShadow: "rgba(0, 0, 0, 0.4) 0px 40px 90px",
     transition: "all 0.5s !important",
-    gap: 10,
-    padding: 5,
+    gap: "10px !important",
+    padding: isMobile ? "20px !important" : "40px !important",
     border: "8px solid white",
     ":hover": {
       boxShadow: `0px 0px 10px 5px ${
@@ -111,7 +129,7 @@ export const Tile = ({ pokemon, cardIndex }: Props) => {
   }
 
   return (
-    <Container>
+    <Container isMobile={isMobile}>
       <Wrapper key={`grid-${cardIndex}`}>
         <Images>
           <Card
@@ -135,22 +153,24 @@ export const Tile = ({ pokemon, cardIndex }: Props) => {
                 ref={ref}
               />
 
-              {Object.entries(
-                fieldsToMap(false, fields, false, pokemon, pokemon.id, true)
-              ).map(([k, v], index) => (
-                <Row>
-                  <Icon
-                    style={{
-                      width: "auto",
-                      paddingRight: 20,
-                      height: "auto",
-                    }}
-                  >
-                    {v.icon ?? <></>}
-                  </Icon>
-                  <Data>{pokemon[k] || ""}</Data>
-                </Row>
-              ))}
+              <BackWrapper>
+                {Object.entries(
+                  fieldsToMap(false, fields, false, pokemon, pokemon.id, true)
+                ).map(([k, v], index) => (
+                  <Row isMobile={isMobile}>
+                    <Icon
+                      style={{
+                        width: "auto",
+                        paddingRight: isMobile ? 10 : 20,
+                        height: "auto",
+                      }}
+                    >
+                      {v.icon ?? <></>}
+                    </Icon>
+                    <Data isMobile={isMobile}>{pokemon[k] || ""}</Data>
+                  </Row>
+                ))}
+              </BackWrapper>
             </ReactCardFlip>
           </Card>
         </Images>
