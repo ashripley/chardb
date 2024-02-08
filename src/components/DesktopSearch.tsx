@@ -87,8 +87,9 @@ const NameField = styled.div`
   max-width: 100%;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
+  gap: 20px;
 `
 
 const Buttons = styled.div`
@@ -112,6 +113,7 @@ const Actions = styled.div`
 `
 
 const Chips = styled.div`
+  min-height: 55px;
   width: auto;
   display: flex;
   justify-content: space-evenly;
@@ -129,6 +131,12 @@ const Chips = styled.div`
 const StyledForm = styled(FormControl)`
   @media only screen and (max-width: 600px) {
     margin: 10px !important;
+  }
+`
+
+const StyledDivider = styled(Divider)`
+  @media only screen and (max-width: 1700px) {
+    display: none;
   }
 `
 
@@ -354,7 +362,7 @@ export const DesktopSearch = () => {
                   </Buttons>
                   <Divider orientation="vertical" flexItem />
                   <SortToggleButton />
-                  <Divider orientation="vertical" flexItem />
+                  <StyledDivider orientation="vertical" flexItem />
                   <Chips>
                     <Chip
                       label="TILE"

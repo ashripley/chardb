@@ -40,9 +40,7 @@ export const rootSlice = createSlice({
       state.page = action.payload
     },
     setMenuStatus: (state, action: PayloadAction<StoreState["isMenuOpen"]>) => {
-      console.log("action.payload", action.payload)
       state.isMenuOpen = action.payload
-      console.log("state.isMenuOpen", state.isMenuOpen)
     },
     setIsDataLoading: (
       state,

@@ -12,9 +12,8 @@ import { DbType, isMobile } from "../helpers/view"
 const Container = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   justify-content: space-between;
-  flex-wrap: wrap;
   flex-direction: column;
   background-color: ${theme.darkBg};
   z-index: 1;
@@ -65,9 +64,10 @@ const StyledDrawer = styled(Drawer)<{ isMobile: boolean }>`
 `
 
 const Body = styled.div`
+  height: auto;
+  min-height: 90vh;
   display: flex;
   flex-direction: column;
-  height: 80%;
   width: 100%;
   align-items: center;
   background-color: ${theme.lightBg};
@@ -168,7 +168,7 @@ const HeaderText = styled.div`
   font-size: calc(20px + 1vw);
   justify-content: center;
   align-items: center;
-  width: 60%;
+  width: auto;
   display: flex;
   margin: 0;
   gap: 20px;
@@ -205,7 +205,12 @@ const DbButton: React.FC<{ label: DbType; accent: string }> = ({
 }) => {
   const dispatch = useDispatch()
   return (
-    <StyledButton onClick={() => dispatch(setDbType(label))}>
+    <StyledButton
+      onClick={() => {
+        dispatch(setDbType(label))
+        dispatch(setMenuStatus(false))
+      }}
+    >
       <Starters dbType={label}>
         <span
           className={label}
@@ -252,7 +257,7 @@ export const Menu = () => {
         variant="temporary"
       >
         <Container>
-          <Toolbar style={{ padding: 0, height: "20%" }}>
+          <Toolbar style={{ padding: 0, minHeight: "10vh", height: "auto" }}>
             <HeaderContainer>
               <HeaderWrapper>
                 <StyledHeader>
