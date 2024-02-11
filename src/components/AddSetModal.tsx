@@ -11,7 +11,7 @@ import Fade from "@mui/material/Fade"
 import Modal from "@mui/material/Modal"
 import { useFirestoreCollectionMutation } from "@react-query-firebase/firestore"
 import { collection } from "firebase/firestore"
-import { SyntheticEvent, useEffect, useState } from "react"
+import { SyntheticEvent, useState } from "react"
 import styled from "styled-components"
 import { theme } from "../theme"
 import { AddCardMutation } from "../api/mutations/addCard"
@@ -21,12 +21,18 @@ import { upperCaseFirst } from "../helpers/upperCaseFirst"
 import { firestore } from "../services/firebase"
 import { AttributeSelect } from "./AttributeSelect"
 import { useDispatch, useSelector } from "react-redux"
-import { setIcon, setIsAddModalOpen } from "../redux/card"
+import {
+  setAddSetAlert,
+  setIsAddModalOpen,
+  setIsAddSetModalOpen,
+  setSetIcon,
+} from "../redux/card"
 import { CardState, RootState } from "../redux/store"
 import { isMobile, sxColourMap } from "../helpers/view"
-import { SetSelect } from "./SetSelect"
-import { AllSets } from "../api/queries/allSets"
-import { setSetData } from "../redux/root"
+import { AddSetMutation } from "../api/mutations/addSet"
+import pokemonNameIcon from "../assets/icons/pokemonName.png"
+import setIcon from "../assets/icons/set.png"
+import { IconImageMap } from "./IconImageMap"
 
 const Container = styled.div`
   max-width: 100%;
@@ -56,14 +62,14 @@ const Row = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  gap: 10px;l
+  gap: 10px;
   min-height: 30px;
 `
 
 const Data = styled.div`
   display: flex;
   width: 80%;
-  font-weight: 800;
+  g-weight: 800;
   justify-content: center;
   align-items: center;
   font-family: ${theme.fontFamily};
@@ -113,11 +119,11 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "auto",
-  minWidth: isMobile ? "60vw" : 600,
+  minWidth: isMobile ? "60vw" : "30vw",
   maxWidth: 400,
-  height: isMobile ? "85%" : "80%",
+  height: isMobile ? "85%" : "40%",
   maxHeight: 800,
-  minHeight: isMobile ? "60vh" : 700,
+  minHeight: isMobile ? "70vh" : "25vh",
   border: "8px solid white",
   bgcolor: theme.lightBg,
   boxShadow: `${theme.lightBg} 0px 0px 2px 0px !important`,
@@ -125,10 +131,12 @@ const style = {
   p: 4,
 }
 
-export const AddModal = () => {
+export const AddSetModal = () => {
   const dispatch = useDispatch()
-  const { isAddModalOpen } = useSelector((state: CardState) => state.card)
-  const { dbType, setData } = useSelector((state: RootState) => state.root)
+  const { isAddSetModalOpen, addSetAlert } = useSelector(
+    (state: CardState) => state.card
+  )
+  const { dbType } = useSelector((state: RootState) => state.root)
 
   const inputProps = {
     sx: {
@@ -148,45 +156,14 @@ export const AddModal = () => {
   }
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [alert, setAlert] = useState("add")
   const [toastOpen, setToastOpen] = useState(false)
   const [fields, setFields] = useState<Record<string, any>>({
     name: "",
-    type: "",
-    set: "",
-    setNumber: "",
-    year: "",
-    attribute: "",
-    quantity: "",
+    totalCards: "",
   })
 
-  const ref = collection(firestore, "cards")
+  const ref = collection(firestore, "sets")
   const mutation = useFirestoreCollectionMutation(ref)
-
-  const handleAttributeSelectChange = (event: any) => {
-    setFields({
-      attribute: (event.target as HTMLInputElement).value,
-      ...omit("attribute", fields),
-    })
-  }
-
-  const handleSetSelectChange = (event: any) => {
-    setFields({
-      set: (event.target as HTMLInputElement).value,
-      ...omit("set", fields),
-    })
-  }
-
-  useEffect(() => {
-    if (fields.set !== "") {
-      setFields({
-        setNumber: ` / ${
-          setData.find((set) => set.name === fields.set)?.totalCards ?? ""
-        }`,
-        ...omit("setNumber", fields),
-      })
-    }
-  }, [fields.set])
 
   const toastClose = (event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {
@@ -199,61 +176,48 @@ export const AddModal = () => {
   const onClick = async () => {
     setIsLoading(true)
 
-    await AddCardMutation(
+    await AddSetMutation(
       fields.name?.toLowerCase() ?? "",
-      fields.type?.toLowerCase() ?? "",
-      fields.set?.toLowerCase() ?? "",
-      fields.setNumber ?? "",
-      fields.year ?? "",
-      fields.quantity ?? "",
-      fields.attribute?.toLowerCase() ?? ""
+      fields.totalCards ?? ""
     )
 
     setTimeout(() => {
       setIsLoading(false)
       clearFields()
-      dispatch(setIcon("add"))
+      dispatch(setSetIcon("add"))
     }, 1500)
 
     setToastOpen(true)
-    setAlert(`${upperCaseFirst(fields.name)} Added`)
+    dispatch(setAddSetAlert(`${upperCaseFirst(fields.name)} Added`))
   }
 
   const clearFields = () => {
     setFields({
       name: "",
-      type: "",
-      set: "",
-      setNumber: "",
-      year: "",
-      quantity: "",
-      attribute: "",
+      totalCards: "",
     })
   }
 
-  useEffect(() => {
-    const fetchSets = async () => {
-      try {
-        const sets = await AllSets()
-
-        dispatch(setSetData(sets || []))
-      } catch (error) {
-        console.error("set error: ", error)
-      }
-    }
-
-    fetchSets()
-
-    console.log("setData", setData)
-  }, [])
+  const mappedFields = {
+    name: {
+      label: "Name",
+      value: fields.name,
+      icon: IconImageMap(pokemonNameIcon, false, false),
+    },
+    totalCards: {
+      label: "Total Cards",
+      value: fields.totalCards,
+      icon: IconImageMap(setIcon, false, false),
+    },
+  }
 
   return (
     <div>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={isAddModalOpen}
-        onClose={() => dispatch(setIsAddModalOpen(false))}
+        open={isAddSetModalOpen}
+        onClose={() => dispatch(setIsAddSetModalOpen(false))}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         style={{ backdropFilter: "blur(2px)" }}
@@ -267,48 +231,34 @@ export const AddModal = () => {
           },
         }}
       >
-        <Fade in={isAddModalOpen}>
+        <Fade in={isAddSetModalOpen}>
           <Box sx={style}>
             <Container>
               <div style={{ maxHeight: "95%", height: "95%" }}>
-                <Header>Add Card</Header>
+                <Header>Add Set</Header>
                 <Details>
-                  {Object.entries(fieldsToMap(false, fields, true)).map(
-                    ([k, v], index) => (
-                      <Row key={index}>
-                        <IconWrapper>{v.icon ?? <></>}</IconWrapper>
-                        <Data>
-                          {v.label === "Attribute" ? (
-                            <AttributeSelect
-                              fields={fields}
-                              handleSelectChange={handleAttributeSelectChange}
-                            />
-                          ) : v.label === "Set" ? (
-                            <SetSelect
-                              fields={fields}
-                              handleSetSelectChange={handleSetSelectChange}
-                            />
-                          ) : (
-                            <TextField
-                              id="standard"
-                              value={v.value}
-                              label={v.label}
-                              variant="outlined"
-                              color={sxColourMap[dbType]}
-                              style={{ width: "100%", margin: 5 }}
-                              InputProps={inputProps}
-                              onChange={(e) => {
-                                setFields({
-                                  [k]: e.target.value,
-                                  ...omit(k, fields),
-                                })
-                              }}
-                            />
-                          )}
-                        </Data>
-                      </Row>
-                    )
-                  )}
+                  {Object.entries(mappedFields).map(([k, v], index) => (
+                    <Row key={index}>
+                      <IconWrapper>{v.icon}</IconWrapper>
+                      <Data>
+                        <TextField
+                          id="standard"
+                          value={v.value}
+                          label={v.label}
+                          variant="outlined"
+                          color={sxColourMap[dbType]}
+                          style={{ width: "100%", margin: 5 }}
+                          InputProps={inputProps}
+                          onChange={(e) => {
+                            setFields({
+                              [k]: e.target.value,
+                              ...omit(k, fields),
+                            })
+                          }}
+                        />
+                      </Data>
+                    </Row>
+                  ))}
                 </Details>
               </div>
               <Buttons isMobile={isMobile}>
@@ -343,7 +293,7 @@ export const AddModal = () => {
                       height: "100%",
                       borderColor: theme.darkBg,
                     }}
-                    onClick={() => dispatch(setIsAddModalOpen(false))}
+                    onClick={() => dispatch(setIsAddSetModalOpen(false))}
                   >
                     Cancel
                   </Button>
@@ -355,7 +305,7 @@ export const AddModal = () => {
       </Modal>
       <Snackbar open={toastOpen} autoHideDuration={6000} onClose={toastClose}>
         <Alert onClose={toastClose} severity="success" sx={{ width: "100%" }}>
-          {alert}
+          {addSetAlert}
         </Alert>
       </Snackbar>
     </div>

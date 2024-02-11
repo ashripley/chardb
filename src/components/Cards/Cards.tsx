@@ -43,7 +43,9 @@ export const Cards = () => {
   const pokemon =
     cardField.value !== ""
       ? cardData.filter((p: Record<string, any>) =>
-          p[cardField.key?.toLowerCase() || "name"]?.includes(cardField.value)
+          p[cardField.key?.toLowerCase() || "name"]?.includes(
+            cardField.value.toLowerCase()
+          )
         )
       : cardData
 

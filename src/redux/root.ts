@@ -12,6 +12,7 @@ interface StoreState {
   isMenuOpen: boolean
   isDataLoading: boolean
   cardData: Record<string, any>[]
+  setData: Record<string, any>[]
   cardView: CardViewType
   cardField: Record<string, any>
   filterView: FilterViewType
@@ -23,6 +24,7 @@ const initialState: StoreState = {
   isMenuOpen: false,
   isDataLoading: false,
   cardData: [{}],
+  setData: [{}],
   cardField: {
     key: "",
     value: "",
@@ -51,6 +53,9 @@ export const rootSlice = createSlice({
     setCardData: (state, action: PayloadAction<StoreState["cardData"]>) => {
       state.cardData = action.payload
     },
+    setSetData: (state, action: PayloadAction<StoreState["setData"]>) => {
+      state.setData = action.payload
+    },
     setCardField: (state, action: PayloadAction<Record<string, any>>) => {
       state.cardField = action.payload
     },
@@ -73,6 +78,7 @@ export const {
   setFilterView,
   setIsDataLoading,
   setCardData,
+  setSetData,
   setCardField,
   setDbType,
 } = rootSlice.actions

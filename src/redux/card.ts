@@ -13,8 +13,11 @@ interface StoreState {
   isToastAddModalOpen: boolean
   confirmationModalAlert: string
   addModalAlert: string
+  addSetAlert: string
+  isAddSetModalOpen: boolean
   viewAlert: string
   icon: string
+  setIcon: string
   pokemonToBeDeleted: Record<string, any>
   data: Record<string, any>[]
   analyticsCardData: Record<string, any>[] | undefined
@@ -27,6 +30,7 @@ const initialState: StoreState = {
   hasCardError: false,
   isCardOpen: false,
   isAddModalOpen: false,
+  isAddSetModalOpen: false,
   isMainLoading: false,
   isPokemonCardLoading: false,
   isAnalyticsOpen: false,
@@ -36,8 +40,10 @@ const initialState: StoreState = {
   isToastAddModalOpen: false,
   confirmationModalAlert: "",
   addModalAlert: "add",
+  addSetAlert: "add",
   viewAlert: "",
   icon: "add",
+  setIcon: "add",
   pokemonToBeDeleted: {},
   analyticsCardData: undefined,
   data: [{}],
@@ -75,6 +81,9 @@ export const cardSlice = createSlice({
     setIsAddModalOpen: (state, action: PayloadAction<boolean>) => {
       state.isAddModalOpen = action.payload
     },
+    setIsAddSetModalOpen: (state, action: PayloadAction<boolean>) => {
+      state.isAddSetModalOpen = action.payload
+    },
     setIsMainLoading: (state, action: PayloadAction<boolean>) => {
       state.isMainLoading = action.payload
     },
@@ -102,8 +111,14 @@ export const cardSlice = createSlice({
     setAddModalAlert: (state, action: PayloadAction<string>) => {
       state.addModalAlert = action.payload
     },
+    setAddSetAlert: (state, action: PayloadAction<string>) => {
+      state.addSetAlert = action.payload
+    },
     setIcon: (state, action: PayloadAction<string>) => {
       state.icon = action.payload
+    },
+    setSetIcon: (state, action: PayloadAction<string>) => {
+      state.setIcon = action.payload
     },
     setPokemonToBeDeleted: (
       state,
@@ -150,12 +165,15 @@ export const {
   setAnalyticsCardData,
   setAddModalAlert,
   setIcon,
+  setSetIcon,
   setPokemonToBeDeleted,
   setData,
   setGridFields,
   setListFields,
   setViewAlert,
   setIsSearchOpen,
+  setAddSetAlert,
+  setIsAddSetModalOpen,
 } = cardSlice.actions
 
 export default cardSlice.reducer

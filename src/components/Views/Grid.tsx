@@ -1,5 +1,12 @@
 import { Card, TextField, Tooltip } from "@mui/material"
-import { ChangeEvent, SyntheticEvent, useMemo, useRef, useState } from "react"
+import {
+  ChangeEvent,
+  SyntheticEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import styled from "styled-components"
 import { theme } from "../../theme"
 import { UpdateCard } from "../../api/mutations/updateCard"
@@ -20,6 +27,7 @@ import {
 } from "../../redux/card"
 import { CardState } from "../../redux/store"
 import { sxColourMap } from "../../helpers/view"
+import { SetSelect } from "../SetSelect"
 
 interface Props {
   cardIndex: number
@@ -84,7 +92,7 @@ const Details = styled.div<{ isCardHovered: boolean; isEditView: boolean }>`
 
 export const Grid = ({ pokemon, cardIndex }: Props) => {
   const dispatch = useDispatch()
-  const { isDataLoading, dbType } = useSelector(
+  const { isDataLoading, dbType, setData } = useSelector(
     (state: RootState) => state.root
   )
   const { isConfirmationModalOpen, gridFields } = useSelector(
@@ -164,6 +172,15 @@ export const Grid = ({ pokemon, cardIndex }: Props) => {
       setGridFields({
         attribute: (event.target as HTMLInputElement).value,
         ...omit("attribute", gridFields),
+      })
+    )
+  }
+
+  const handleSetChange = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(
+      setGridFields({
+        set: (event.target as HTMLInputElement).value,
+        ...omit("set", gridFields),
       })
     )
   }
@@ -254,6 +271,11 @@ export const Grid = ({ pokemon, cardIndex }: Props) => {
                 <AttributeSelect
                   fields={gridFields}
                   handleSelectChange={handleChange}
+                />
+              ) : v.label === "Set" ? (
+                <SetSelect
+                  fields={gridFields}
+                  handleSetSelectChange={handleSetChange}
                 />
               ) : (
                 <TextField
