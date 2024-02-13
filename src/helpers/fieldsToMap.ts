@@ -6,6 +6,7 @@ import quantityIcon from "../assets/icons/quantity.png"
 import setIcon from "../assets/icons/set.png"
 import setNumberIcon from "../assets/icons/setNumber.png"
 import yearIcon from "../assets/icons/year.png"
+import rarityIcon from "../assets/icons/rarityIcon.png"
 import { IconImageMap } from "../components/IconImageMap"
 
 export const icons: Record<string, any> = {
@@ -17,6 +18,7 @@ export const icons: Record<string, any> = {
   year: yearIcon,
   attribute: attributeIcon,
   quantity: quantityIcon,
+  rarity: rarityIcon,
 }
 
 export const fieldsToMap = (
@@ -42,11 +44,13 @@ export const fieldsToMap = (
       value: fields.name,
       icon: IconImageMap(icons.name, isTileView ?? false, isTileView),
     },
-    type: {
-      label: "Type",
-      value: fields.type,
-      icon: IconImageMap(icons.type, isTileView ?? false, isTileView),
-    },
+    ...(!isAddModal && {
+      type: {
+        label: "Type",
+        value: fields.type,
+        icon: IconImageMap(icons.type, isTileView ?? false, isTileView),
+      },
+    }),
     set: {
       label: "Set",
       value: fields.set,
@@ -74,5 +78,12 @@ export const fieldsToMap = (
       value: pokemon?.attribute,
       icon: IconImageMap(icons.attribute, isTileView ?? false, isTileView),
     },
+    ...(isAddModal && {
+      rarity: {
+        label: "Rarity",
+        value: pokemon?.rarity,
+        icon: IconImageMap(icons.rarity, isTileView ?? false, isTileView),
+      },
+    }),
   }
 }

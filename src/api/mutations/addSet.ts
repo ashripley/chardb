@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid"
 import { theme } from "../../theme"
 import { firestore } from "../../services/firebase"
 
-export const AddSetMutation = async (name: string, totalCards: number) => {
+export const AddSetMutation = async (name: string, totalCards: string) => {
   const uniqueId = uuidv4()
 
   await setDoc(doc(firestore, "sets", uniqueId), {

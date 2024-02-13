@@ -291,7 +291,7 @@ export const Menu = () => {
           </Toolbar>
           <Body>
             <StyledList>
-              {["Cards", "Pokedex", "Info", "Home"].map((label, index) => (
+              {["Cards", "Pokedex", "Info", "Settings"].map((label, index) => (
                 <Wrapper key={index}>
                   <Button
                     key={index}

@@ -13,6 +13,10 @@ interface StoreState {
   isDataLoading: boolean
   cardData: Record<string, any>[]
   setData: Record<string, any>[]
+  attributeData: Record<string, any>[]
+  typeData: Record<string, any>[]
+  rarityData: Record<string, any>[]
+  pokemonData: Record<string, any>[]
   cardView: CardViewType
   cardField: Record<string, any>
   filterView: FilterViewType
@@ -25,6 +29,10 @@ const initialState: StoreState = {
   isDataLoading: false,
   cardData: [{}],
   setData: [{}],
+  attributeData: [{}],
+  typeData: [{}],
+  rarityData: [{}],
+  pokemonData: [{}],
   cardField: {
     key: "",
     value: "",
@@ -56,6 +64,24 @@ export const rootSlice = createSlice({
     setSetData: (state, action: PayloadAction<StoreState["setData"]>) => {
       state.setData = action.payload
     },
+    setAttributeData: (
+      state,
+      action: PayloadAction<StoreState["attributeData"]>
+    ) => {
+      state.attributeData = action.payload
+    },
+    setTypeData: (state, action: PayloadAction<StoreState["typeData"]>) => {
+      state.typeData = action.payload
+    },
+    setRarityData: (state, action: PayloadAction<StoreState["rarityData"]>) => {
+      state.rarityData = action.payload
+    },
+    setPokemonData: (
+      state,
+      action: PayloadAction<StoreState["pokemonData"]>
+    ) => {
+      state.pokemonData = action.payload
+    },
     setCardField: (state, action: PayloadAction<Record<string, any>>) => {
       state.cardField = action.payload
     },
@@ -79,6 +105,10 @@ export const {
   setIsDataLoading,
   setCardData,
   setSetData,
+  setAttributeData,
+  setTypeData,
+  setRarityData,
+  setPokemonData,
   setCardField,
   setDbType,
 } = rootSlice.actions

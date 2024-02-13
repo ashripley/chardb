@@ -12,7 +12,6 @@ import { CardState } from "../redux/store"
 import { isMobile } from "../helpers/view"
 import { DesktopSearch } from "../components/DesktopSearch"
 import { MobileSearch } from "../components/MobileSearch"
-import { AddSetModal } from "../components/AddSetModal"
 
 const Wrap = styled.div``
 
@@ -52,7 +51,6 @@ export const PokemonCards = () => {
     <Wrap>
       {isMobile ? <MobileSearch /> : <DesktopSearch />}
       <AddModal />
-      <AddSetModal />
       <ConfirmationModal />
       <AnalyticsModal />
       <Wrap>{isCardOpen && <Cards />}</Wrap>

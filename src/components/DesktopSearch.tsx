@@ -1,4 +1,3 @@
-import AddIcon from "@mui/icons-material/Add"
 import AppsOutlinedIcon from "@mui/icons-material/AppsOutlined"
 import ListIcon from "@mui/icons-material/List"
 import RefreshIcon from "@mui/icons-material/Refresh"
@@ -31,14 +30,11 @@ import {
 } from "../redux/root"
 import {
   setHasCardError,
-  setIsAddModalOpen,
-  setIsAddSetModalOpen,
   setIsAnalyticsOpen,
   setIsCardOpen,
 } from "../redux/card"
 import { CardState, RootState } from "../redux/store"
 import { isMobile, sxColourMap } from "../helpers/view"
-import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd"
 
 const Wrapper = styled.div`
   max-width: 100%;
@@ -147,8 +143,9 @@ export const DesktopSearch = () => {
   const { cardView, cardField, isDataLoading, dbType } = useSelector(
     (state: RootState) => state.root
   )
-  const { isAddModalOpen, isAddSetModalOpen, hasCardError, isAnalyticsOpen } =
-    useSelector((state: CardState) => state.card)
+  const { hasCardError, isAnalyticsOpen } = useSelector(
+    (state: CardState) => state.card
+  )
 
   const categories = ["Name", "Type", "Set", "Year", "Attribute"]
 
@@ -172,24 +169,6 @@ export const DesktopSearch = () => {
   const handleRefresh = () => {
     dispatch(setCardField({ key: "", value: "" }))
     fetchData()
-  }
-
-  // Function to handle add button click
-  const handleAdd = () => {
-    if (isAddModalOpen) {
-      dispatch(setIsAddModalOpen(false))
-    } else {
-      dispatch(setIsAddModalOpen(true))
-    }
-  }
-
-  // Function to handle add set button click
-  const handleAddSet = () => {
-    if (isAddSetModalOpen) {
-      dispatch(setIsAddSetModalOpen(false))
-    } else {
-      dispatch(setIsAddSetModalOpen(true))
-    }
   }
 
   return (
@@ -320,34 +299,6 @@ export const DesktopSearch = () => {
                   </TextFieldWrapper>
                   <Buttons>
                     <Actions>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        color={sxColourMap[dbType]}
-                        style={{
-                          width: "auto",
-                          height: "auto",
-                          borderRadius: 15,
-                          borderColor: theme.darkBg,
-                        }}
-                        onClick={handleAdd}
-                      >
-                        <AddIcon />
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        color={sxColourMap[dbType]}
-                        style={{
-                          width: "auto",
-                          height: "auto",
-                          borderRadius: 15,
-                          borderColor: theme.darkBg,
-                        }}
-                        onClick={handleAddSet}
-                      >
-                        <PlaylistAddIcon />
-                      </Button>
                       <Button
                         variant="outlined"
                         size="small"
