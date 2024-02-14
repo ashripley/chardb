@@ -6,8 +6,8 @@ import Fade from "@mui/material/Fade"
 import Modal from "@mui/material/Modal"
 import { useEffect, useState } from "react"
 import styled from "styled-components"
-import { theme } from "../theme"
-import { upperCaseFirst } from "../helpers/upperCaseFirst"
+import { theme } from "../../theme"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 
 interface Props {
   pokemon: Record<string, any>

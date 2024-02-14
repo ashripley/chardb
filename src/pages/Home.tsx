@@ -3,10 +3,11 @@ import { memo } from "react"
 import styled from "styled-components"
 import { useDispatch, useSelector } from "react-redux"
 import { theme } from "../theme"
-import { setPage } from "../redux/root"
+import { setDbType, setMenuStatus, setPage } from "../redux/root"
 import { firestore } from "../services/firebase"
 import { RootState } from "../redux/store"
 import { DbType } from "../helpers/view"
+import { Info } from "./Info"
 
 const Root = styled.div`
   display: flex;
@@ -21,6 +22,8 @@ const Root = styled.div`
 const Wrapper = styled.div`
   max-height: 60%;
   height: 60vh;
+  align-items: center;
+  display: grid;
 `
 
 const Title = styled.h1`
@@ -32,6 +35,18 @@ const Title = styled.h1`
   width: 100%;
   height: 80%;
   font-family: ${theme.fontFamily};
+`
+
+const ThemeTitle = styled.h3`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: calc(20px + 2vw);
+  max-width: 100%;
+  width: auto;
+  font-family: ${theme.fontFamily};
+  min-width: 300px;
+  margin: 20px;
 `
 
 const SubTitle = styled.h3`
@@ -79,6 +94,23 @@ const StyledImage = styled.img`
   width: calc(100px + 6vw);
 `
 
+const StyledThemeImage = styled.img`
+  width: 100px;
+`
+
+const Theme = styled.div`
+  display: block;
+  font-size: calc(20px + 1vw);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin: 0;
+  gap: 100px;
+  font-family: ${theme.fontFamily};
+  width: auto;
+  flex-wrap: wrap;
+`
+
 export const Home = memo(() => {
   const dispatch = useDispatch()
   const { dbType } = useSelector((state: RootState) => state.root)
@@ -92,41 +124,84 @@ export const Home = memo(() => {
   return (
     <>
       <Grow in={true} style={{ transformOrigin: "1 1 1" }} timeout={1000}>
-        <Root>
-          <Wrapper>
-            <Title>
-              <span
-                style={{ color: theme[`${dbType}Accent`], fontWeight: 800 }}
-              >
-                {dbType}
-              </span>
-              <a href={`https://pokemondb.net/pokedex/${nameMap[dbType]}`}>
-                <StyledImage
-                  src={`https://img.pokemondb.net/sprites/home/normal/${nameMap[dbType]}.png`}
-                  alt={nameMap[dbType]}
-                />
-              </a>
-              <span style={{ color: theme.primaryText }}>db</span>
-            </Title>
-            <SubTitle>
-              <span style={{ color: theme.primaryText }}>
-                a place to store your nostalgia
-              </span>
-            </SubTitle>
-          </Wrapper>
-          <ButtonWrapper>
-            <StyledEngineProvider injectFirst>
-              <StyledButton
-                dbType={dbType}
-                variant="contained"
-                onClick={() => dispatch(setPage("Cards"))}
-                sx={{ color: theme.primaryText }}
-              >
-                View Cards
-              </StyledButton>
-            </StyledEngineProvider>
-          </ButtonWrapper>
-        </Root>
+        <div>
+          <Root>
+            <Wrapper>
+              <Title>
+                <span
+                  style={{ color: theme[`${dbType}Accent`], fontWeight: 800 }}
+                >
+                  {dbType}
+                </span>
+                <a href={`https://pokemondb.net/pokedex/${nameMap[dbType]}`}>
+                  <StyledImage
+                    src={`https://img.pokemondb.net/sprites/home/normal/${nameMap[dbType]}.png`}
+                    alt={nameMap[dbType]}
+                  />
+                </a>
+                <span style={{ color: theme.primaryText }}>db</span>
+              </Title>
+              <SubTitle>
+                <span style={{ color: theme.primaryText }}>
+                  a place to store your nostalgia
+                </span>
+              </SubTitle>
+            </Wrapper>
+            <ButtonWrapper>
+              <StyledEngineProvider injectFirst>
+                <StyledButton
+                  dbType={dbType}
+                  variant="contained"
+                  onClick={() => dispatch(setPage("Cards"))}
+                  sx={{ color: theme.primaryText }}
+                >
+                  View Cards
+                </StyledButton>
+              </StyledEngineProvider>
+            </ButtonWrapper>
+          </Root>
+          <Root>
+            <Info />
+          </Root>
+          <Root>
+            <Wrapper>
+              <Theme>
+                {Object.entries(nameMap).map(([shortName, label], index) => (
+                  <ThemeTitle key={index}>
+                    <span
+                      style={{
+                        color: theme[`${shortName}Accent`],
+                        fontWeight: 800,
+                      }}
+                    >
+                      {shortName}
+                    </span>
+                    <a href={`https://pokemondb.net/pokedex/${label}`}>
+                      <StyledThemeImage
+                        src={`https://img.pokemondb.net/sprites/home/normal/${label}.png`}
+                        alt={label}
+                      />
+                    </a>
+                    <span style={{ color: theme.primaryText }}>db</span>
+                  </ThemeTitle>
+                ))}
+              </Theme>
+            </Wrapper>
+            <ButtonWrapper>
+              <StyledEngineProvider injectFirst>
+                <StyledButton
+                  dbType={dbType}
+                  variant="contained"
+                  onClick={() => dispatch(setPage("Configuration"))}
+                  sx={{ color: theme.primaryText }}
+                  style={{ minWidth: 300 }}
+                >
+                  Choose Your Starter
+                </StyledButton>
+              </StyledEngineProvider>
+            </ButtonWrapper>
+          </Root>
+        </div>
       </Grow>
     </>
   )

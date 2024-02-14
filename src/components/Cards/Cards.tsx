@@ -1,11 +1,11 @@
 import { Pagination, Paper, Slide } from "@mui/material"
 import { useEffect, useMemo, useState } from "react"
 import styled from "styled-components"
-import { LoadingSkeleton } from "../Skeleton"
 import { PokemonCard } from "./PokemonCard"
 import { useSelector } from "react-redux"
 import { CardState, RootState } from "../../redux/store"
 import { isMobile } from "../../helpers/view"
+import { LoadingSkeleton } from "../Loaders/Skeleton"
 
 const Container = styled.div`
   max-width: 100%;

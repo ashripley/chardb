@@ -7,19 +7,19 @@ import Modal from "@mui/material/Modal"
 import * as React from "react"
 import { useEffect } from "react"
 import styled from "styled-components"
-import { theme } from "../theme"
-import { upperCaseFirst } from "../helpers/upperCaseFirst"
+import { theme } from "../../theme"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 import { useDispatch, useSelector } from "react-redux"
 import {
   setIsReadyForDeletion,
   setIsConfirmationModalOpen,
   setConfirmationModalAlert,
-} from "../redux/card"
-import { CardState, RootState } from "../redux/store"
+} from "../../redux/card"
+import { CardState, RootState } from "../../redux/store"
 import { deleteDoc, doc } from "firebase/firestore"
-import { firestore } from "../services/firebase"
-import { AllCards } from "../api/queries/allCards"
-import { setCardData } from "../redux/root"
+import { firestore } from "../../services/firebase"
+import { AllCards } from "../../api/queries/allCards"
+import { setCardData } from "../../redux/root"
 
 const HWrapper = styled.div`
   height: 40px;

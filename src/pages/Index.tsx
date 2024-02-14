@@ -6,18 +6,19 @@ import styled from "styled-components"
 import greyWallpaper from "../assets/icons/greyWallpaper.jpg"
 import settingsBackground from "../assets/icons/settingsBackground.svg"
 import blob from "../assets/icons/blob.svg"
-import { Settings } from "./Settings"
+import { Configuration } from "./Configuration"
 import { PokemonCards as Cards } from "./Cards"
 import { theme } from "../theme"
 import { Info } from "./Info"
 import { Pokedex } from "./Pokedex"
 import { Home } from "./Home"
+import { Studio } from "./Studio"
 
 const Container = styled.div<{ page: string }>`
   background: url(${({ page }) =>
     page === "Info"
       ? blob
-      : page === "Settings"
+      : page === "Configuration"
       ? settingsBackground
       : greyWallpaper});
   background-size: cover;
@@ -32,10 +33,11 @@ const Container = styled.div<{ page: string }>`
 
 const components: Record<string, any> = {
   Home,
-  Settings,
+  Configuration,
   Cards,
   Pokedex,
   Info,
+  Studio,
 }
 
 export const Index = () => {

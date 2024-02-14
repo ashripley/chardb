@@ -1,13 +1,13 @@
 import { Tooltip, styled } from "@mui/material"
 import ToggleButton from "@mui/material/ToggleButton"
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup"
-import { icons } from "../helpers/fieldsToMap"
-import { upperCaseFirst } from "../helpers/upperCaseFirst"
-import { IconImageMap } from "./IconImageMap"
-import { FilterViewType, sxColourMap } from "../helpers/view"
+import { icons } from "../../helpers/fieldsToMap"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
+import { IconImageMap } from "../IconImageMap"
+import { FilterViewType, sxColourMap } from "../../helpers/view"
 import { useDispatch, useSelector } from "react-redux"
-import { setFilterView } from "../redux/root"
-import { RootState } from "../redux/store"
+import { setFilterView } from "../../redux/root"
+import { RootState } from "../../redux/store"
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   "& .MuiToggleButtonGroup-grouped": {

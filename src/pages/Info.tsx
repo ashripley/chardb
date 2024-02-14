@@ -3,30 +3,13 @@ import { theme } from "../theme"
 import { isMobile } from "../helpers/view"
 
 const Content = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: block;
   height: 85vh;
-  justify-content: space-between;
-`
-
-const HeaderText = styled.h1`
-  display: flex;
-  height: 20%;
-  font-size: calc(24px + 2vw);
-  justify-content: center;
-  align-items: center;
-  width: auto;
-  display: flex;
-  margin: 0;
-  padding: 10px;
-  font-family: ${theme.fontFamily};
-  color: ${theme.charAccent};
-  font-weight: 800;
 `
 
 const Body = styled.div`
   display: flex;
-  height: 80%;
+  height: 60%;
   justify-content: center;
   width: auto;
   align-items: center;
@@ -39,9 +22,10 @@ const Text = styled.span<{ isMobile: boolean }>`
   color: ${theme.primaryText};
   text-align: center;
   display: flex;
-  width: ${({ isMobile }) => (isMobile ? "auto" : "60%")};
+  width: ${({ isMobile }) => (isMobile ? "auto" : "90%")};
   justify-content: center;
   font-family: ${theme.fontFamily};
+  align-items: center;
 `
 
 const PokemonImage = styled.img`
@@ -61,16 +45,22 @@ export const Info = () => {
   return (
     <Content>
       <Header>
-        <HeaderText>
-          <span className="char">char</span>
-          <span className="db" style={{ color: theme.primaryText }}>
-            db
-          </span>
-        </HeaderText>
-        <a href="https://pokemondb.net/pokedex/dragonite">
+        <a href="https://pokemondb.net/pokedex/moltres">
           <PokemonImage
-            src="https://img.pokemondb.net/sprites/home/normal/dragonite.png"
-            alt="dragonite"
+            src="https://img.pokemondb.net/sprites/home/normal/moltres.png"
+            alt="moltres"
+          />
+        </a>
+        <a href="https://pokemondb.net/pokedex/zapdos">
+          <PokemonImage
+            src="https://img.pokemondb.net/sprites/home/normal/zapdos.png"
+            alt="zapdos"
+          />
+        </a>
+        <a href="https://pokemondb.net/pokedex/articuno">
+          <PokemonImage
+            src="https://img.pokemondb.net/sprites/home/normal/articuno.png"
+            alt="articuno"
           />
         </a>
       </Header>

@@ -13,7 +13,7 @@ import { UpdateCard } from "../../api/mutations/updateCard"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
-import { AttributeSelect } from "../AttributeSelect"
+import { AttributeSelect } from "../Selects/AttributeSelect"
 import { Actions } from "../Grid/Actions"
 import { GridImage } from "../Grid/GridImage"
 import { Snackbar } from "../Grid/Snackbar"
@@ -27,7 +27,7 @@ import {
 } from "../../redux/card"
 import { CardState } from "../../redux/store"
 import { sxColourMap } from "../../helpers/view"
-import { SetSelect } from "../SetSelect"
+import { SetSelect } from "../Selects/SetSelect"
 
 interface Props {
   cardIndex: number

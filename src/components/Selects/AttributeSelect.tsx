@@ -6,10 +6,10 @@ import {
   Select,
 } from "@mui/material"
 import styled from "styled-components"
-import { theme } from "../theme"
-import { attributes } from "../config"
-import { sxColourMap } from "../helpers/view"
-import { RootState } from "../redux/store"
+import { theme } from "../../theme"
+import { attributes } from "../../config"
+import { sxColourMap } from "../../helpers/view"
+import { RootState } from "../../redux/store"
 import { useSelector } from "react-redux"
 
 interface Props {

@@ -1,9 +1,9 @@
 import { Autocomplete, Paper, TextField } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
-import { CardState, RootState } from "../redux/store"
-import { upperCaseFirst } from "../helpers/upperCaseFirst"
-import { sxColourMap } from "../helpers/view"
-import { theme } from "../theme"
+import { CardState, RootState } from "../../redux/store"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
+import { sxColourMap } from "../../helpers/view"
+import { theme } from "../../theme"
 
 export const AutoSelectComponent = () => {
   const dispatch = useDispatch()

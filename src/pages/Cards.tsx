@@ -1,17 +1,17 @@
 import { useCallback, useEffect } from "react"
 import styled from "styled-components"
 import { AllCards } from "../api/queries/allCards"
-import { AddModal } from "../components/AddModal"
+import { AddModal } from "../components/Modals/AddModal"
 import { Cards } from "../components/Cards/Cards"
-import { ConfirmationModal } from "../components/ConfirmationModal"
-import { AnalyticsModal } from "../components/AnalyticsModal"
+import { ConfirmationModal } from "../components/Modals/ConfirmationModal"
+import { AnalyticsModal } from "../components/Modals/AnalyticsModal"
 import { useDispatch, useSelector } from "react-redux"
 import { setCardData, setIsDataLoading } from "../redux/root"
 import { setHasCardError, setIsCardOpen } from "../redux/card"
 import { CardState } from "../redux/store"
 import { isMobile } from "../helpers/view"
-import { DesktopSearch } from "../components/DesktopSearch"
-import { MobileSearch } from "../components/MobileSearch"
+import { DesktopSearch } from "../components/Search/DesktopSearch"
+import { MobileSearch } from "../components/Search/MobileSearch"
 
 const Wrap = styled.div``
 

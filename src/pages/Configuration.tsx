@@ -6,11 +6,11 @@ import Box from "@mui/material/Box"
 import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
 import { useState } from "react"
-import { Sets } from "../components/Settings/Sets"
-import { Attributes } from "../components/Settings/Attributes"
-import { Types } from "../components/Settings/Types"
-import { Rarities } from "../components/Settings/Rarities"
-import { Pokemon } from "../components/Settings/Pokemon"
+import { Sets } from "../components/ConfigurationTabs/Sets"
+import { Attributes } from "../components/ConfigurationTabs/Attributes"
+import { Types } from "../components/ConfigurationTabs/Types"
+import { Rarities } from "../components/ConfigurationTabs/Rarities"
+import { Pokemon } from "../components/ConfigurationTabs/Pokemon"
 
 const Wrapper = styled.div`
   width: 90%;
@@ -81,7 +81,7 @@ const buttonStyles = {
   textTransform: "none",
 }
 
-const Configuration = () => {
+const DB = () => {
   const [tab, setTab] = useState(0)
 
   const tabLabels = ["Sets", "Attributes", "Types", "Rarities", "Pokemon"]
@@ -148,23 +148,14 @@ const Analytics = () => {
   return <></>
 }
 
-const Home = () => {
-  return (
-    <>
-      <HomeHeader>Welcome!</HomeHeader>
-    </>
-  )
-}
-
 const componentMap: Record<string, any> = {
-  Configuration,
+  DB,
   Theme,
   Analytics,
-  Home,
 }
 
-export const Settings = () => {
-  const [settingOption, setSettingOption] = useState<string>("Home")
+export const Configuration = () => {
+  const [settingOption, setSettingOption] = useState<string>("DB")
 
   const Setting = componentMap[settingOption] || (() => <></>)
 
@@ -173,10 +164,10 @@ export const Settings = () => {
       <LeftBox>
         <SidePanel>
           <Header>
-            <>Settings</>
+            <>Configuration</>
           </Header>
           <Options>
-            {["Home", "Configuration", "Theme", "Analytics"].map(
+            {["DB", "Theme", "Analytics"].map(
               (label: string, index: number) => (
                 <Button
                   sx={buttonStyles}

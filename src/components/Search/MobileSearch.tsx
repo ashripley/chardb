@@ -18,9 +18,9 @@ import {
 } from "@mui/material"
 import { useCallback } from "react"
 import styled from "styled-components"
-import { AllCards } from "../api/queries/allCards"
-import { SortToggleButton } from "../components/SortToggleButton"
-import { theme } from "../theme"
+import { AllCards } from "../../api/queries/allCards"
+import { SortToggleButton } from "../Buttons/SortToggleButton"
+import { theme } from "../../theme"
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
 import { useDispatch, useSelector } from "react-redux"
 import {
@@ -28,16 +28,16 @@ import {
   setCardField,
   setCardView,
   setIsDataLoading,
-} from "../redux/root"
+} from "../../redux/root"
 import {
   setHasCardError,
   setIsAddModalOpen,
   setIsAnalyticsOpen,
   setIsCardOpen,
   setIsSearchOpen,
-} from "../redux/card"
-import { CardState, RootState } from "../redux/store"
-import { isMobile, sxColourMap } from "../helpers/view"
+} from "../../redux/card"
+import { CardState, RootState } from "../../redux/store"
+import { isMobile, sxColourMap } from "../../helpers/view"
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp"
 

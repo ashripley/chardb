@@ -6,18 +6,18 @@ import {
   Select,
 } from "@mui/material"
 import styled from "styled-components"
-import { theme } from "../theme"
-import { attributes } from "../config"
-import { sxColourMap } from "../helpers/view"
-import { RootState } from "../redux/store"
+import { theme } from "../../theme"
+import { sxColourMap } from "../../helpers/view"
+import { RootState } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
-import { useCallback, useEffect } from "react"
-import { AllSets } from "../api/queries/allSets"
-import { setSetData } from "../redux/root"
+import { useEffect, useState } from "react"
+import { AllRarities } from "../../api/queries/allRarities"
+import { setRarityData } from "../../redux/root"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 
 interface Props {
   fields: Record<string, any>
-  handleSetSelectChange: (e: any) => void
+  handleSelectChange: (e: any) => void
 }
 
 const StyledForm = styled(FormControl)`
@@ -26,48 +26,45 @@ const StyledForm = styled(FormControl)`
   }
 `
 
-const Wrapper = styled.div`
+const RarityWrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
 `
 
-const StyledMenuItem = styled(MenuItem)`
-  text-transform: capitalize;
-`
-
-export const SetSelect = ({ fields, handleSetSelectChange }: Props) => {
-  const { dbType, setData } = useSelector((state: RootState) => state.root)
+export const RaritySelect = ({ fields, handleSelectChange }: Props) => {
+  const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
+  const { dbType, rarityData } = useSelector((state: RootState) => state.root)
 
-  useEffect(() => {
-    const fetchSets = async () => {
-      try {
-        const sets = await AllSets()
+  const fetchRarities = async () => {
+    setIsLoading(true)
+    try {
+      const rarities = await AllRarities()
 
-        dispatch(setSetData(sets || []))
-      } catch (error) {
-        console.error("set error: ", error)
-      }
+      dispatch(setRarityData(rarities || []))
+      setIsLoading(false)
+    } catch (error) {
+      console.error("set error: ", error)
     }
-
-    fetchSets()
+  }
+  useEffect(() => {
+    fetchRarities()
   }, [])
 
   return (
-    <Wrapper>
+    <RarityWrapper>
       <StyledForm
         sx={{
           borderRadius: "15px !important",
           width: "100%",
-          minWidth: 150,
         }}
       >
-        <InputLabel color={sxColourMap[dbType]}>{"Set"}</InputLabel>
+        <InputLabel color={sxColourMap[dbType]}>{"Rarity"}</InputLabel>
         <Select
-          id="set"
+          id="rarity"
           variant="outlined"
-          value={fields.set}
+          value={fields.rarity}
           color={sxColourMap[dbType]}
           MenuProps={{
             PaperProps: {
@@ -77,8 +74,8 @@ export const SetSelect = ({ fields, handleSetSelectChange }: Props) => {
               },
             },
           }}
-          input={<OutlinedInput label="Set" />}
-          onChange={handleSetSelectChange}
+          input={<OutlinedInput label="Rarity" />}
+          onChange={handleSelectChange}
           sx={{
             borderRadius: "15px",
             fieldset: {
@@ -100,19 +97,19 @@ export const SetSelect = ({ fields, handleSetSelectChange }: Props) => {
           }}
         >
           <MenuItem value="">
-            <b style={{ color: theme.primaryText }}>Set</b>
+            <b style={{ color: theme.primaryText }}>Rarity</b>
           </MenuItem>
-          {setData.map((set, index) => (
-            <StyledMenuItem
+          {rarityData.map((rarity, index) => (
+            <MenuItem
               key={index}
-              value={set.name}
+              value={rarity.name}
               sx={{ color: theme.primaryText }}
             >
-              {set.name}
-            </StyledMenuItem>
+              {upperCaseFirst(rarity.name)}
+            </MenuItem>
           ))}
         </Select>
       </StyledForm>
-    </Wrapper>
+    </RarityWrapper>
   )
 }

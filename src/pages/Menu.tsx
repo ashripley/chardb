@@ -73,10 +73,10 @@ const Body = styled.div`
   background-color: ${theme.lightBg};
   justify-content: space-evenly;
 
-  border-top-left-radius: 45% 50%;
-  border-top-right-radius: 95% 60%;
-  border-bottom-left-radius: 45% 70%;
-  border-bottom-right-radius: 95% 60%;
+  border-top-left-radius: 100% 100%;
+  border-top-right-radius: 100% 0%;
+  border-bottom-left-radius: 100% 0%;
+  border-bottom-right-radius: 100% 100%;
   bottom: 0;
   z-index: -1;
   transition: all 2s ease;
@@ -291,18 +291,20 @@ export const Menu = () => {
           </Toolbar>
           <Body>
             <StyledList>
-              {["Cards", "Pokedex", "Info", "Settings"].map((label, index) => (
-                <Wrapper key={index}>
-                  <Button
-                    key={index}
-                    variant="text"
-                    onClick={() => onClick(label)}
-                    sx={buttonStyles}
-                  >
-                    <Anchor dbType={dbType}>{label}</Anchor>
-                  </Button>
-                </Wrapper>
-              ))}
+              {["Cards", "Studio", "Pokedex", "Configuration"].map(
+                (label, index) => (
+                  <Wrapper key={index}>
+                    <Button
+                      key={index}
+                      variant="text"
+                      onClick={() => onClick(label)}
+                      sx={buttonStyles}
+                    >
+                      <Anchor dbType={dbType}>{label}</Anchor>
+                    </Button>
+                  </Wrapper>
+                )
+              )}
             </StyledList>
             <HeaderText>
               <DbButton label="bulb" accent="bulbAccent" />

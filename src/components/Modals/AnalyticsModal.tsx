@@ -5,18 +5,18 @@ import Fade from "@mui/material/Fade"
 import Modal from "@mui/material/Modal"
 import { useCallback, useEffect } from "react"
 import styled from "styled-components"
-import { theme } from "../theme"
-import { AllCards } from "../api/queries/allCards"
+import { theme } from "../../theme"
+import { AllCards } from "../../api/queries/allCards"
 import { Divider } from "@mui/material"
 import {
   setAnalyticsCardData,
   setIsAnalyticsLoading,
   setIsAnalyticsOpen,
-} from "../redux/card"
+} from "../../redux/card"
 import { useDispatch, useSelector } from "react-redux"
-import { CardState, RootState } from "../redux/store"
-import Spinner from "./Spinner"
-import { isMobile } from "../helpers/view"
+import { CardState, RootState } from "../../redux/store"
+import { isMobile } from "../../helpers/view"
+import Spinner from "../Loaders/Spinner"
 
 const HWrapper = styled.div`
   height: auto;

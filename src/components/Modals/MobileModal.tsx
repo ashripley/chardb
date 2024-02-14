@@ -2,7 +2,7 @@ import Backdrop from "@mui/material/Backdrop"
 import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 import styled from "styled-components"
-import { theme } from "../theme"
+import { theme } from "../../theme"
 
 const Wrapper = styled.div`
   height: 50%;
