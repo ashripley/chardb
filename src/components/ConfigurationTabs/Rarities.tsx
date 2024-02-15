@@ -110,9 +110,10 @@ export const Rarities = () => {
       console.error("set error: ", error)
     }
   }
-  useEffect(() => {
-    fetchRarities()
-  }, [])
+  // useEffect(() => {
+  //   console.log("useEffect fetch rarities")
+  //   fetchRarities()
+  // }, [])
 
   const onSave = async () => {
     setIsLoading(true)

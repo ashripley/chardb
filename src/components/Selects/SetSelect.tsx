@@ -40,19 +40,20 @@ export const SetSelect = ({ fields, handleSetSelectChange }: Props) => {
   const { dbType, setData } = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    const fetchSets = async () => {
-      try {
-        const sets = await AllSets()
+  // useEffect(() => {
+  //   console.log("useEffect set select")
+  //   const fetchSets = async () => {
+  //     try {
+  //       const sets = await AllSets()
 
-        dispatch(setSetData(sets || []))
-      } catch (error) {
-        console.error("set error: ", error)
-      }
-    }
+  //       dispatch(setSetData(sets || []))
+  //     } catch (error) {
+  //       console.error("set error: ", error)
+  //     }
+  //   }
 
-    fetchSets()
-  }, [])
+  //   fetchSets()
+  // }, [])
 
   return (
     <Wrapper>
@@ -60,10 +61,10 @@ export const SetSelect = ({ fields, handleSetSelectChange }: Props) => {
         sx={{
           borderRadius: "15px !important",
           width: "100%",
-          minWidth: 150,
+          minWidth: 200,
         }}
       >
-        <InputLabel color={sxColourMap[dbType]}>{"Set"}</InputLabel>
+        <InputLabel color={sxColourMap[dbType]}>{}</InputLabel>
         <Select
           id="set"
           variant="outlined"
@@ -77,7 +78,7 @@ export const SetSelect = ({ fields, handleSetSelectChange }: Props) => {
               },
             },
           }}
-          input={<OutlinedInput label="Set" />}
+          input={<OutlinedInput />}
           onChange={handleSetSelectChange}
           sx={{
             borderRadius: "15px",

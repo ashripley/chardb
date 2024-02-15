@@ -112,6 +112,7 @@ const Theme = styled.div`
 `
 
 export const Home = memo(() => {
+  console.log("home")
   const dispatch = useDispatch()
   const { dbType } = useSelector((state: RootState) => state.root)
 

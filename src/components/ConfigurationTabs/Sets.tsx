@@ -107,9 +107,10 @@ export const Sets = () => {
       console.error("set error: ", error)
     }
   }
-  useEffect(() => {
-    fetchSets()
-  }, [])
+  // useEffect(() => {
+  //   console.log("useEffect fetch sets")
+  //   fetchSets()
+  // }, [])
 
   const onSave = async () => {
     setIsLoading(true)

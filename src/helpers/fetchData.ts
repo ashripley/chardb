@@ -1,22 +1,36 @@
-import { useDispatch, useSelector } from "react-redux"
-import { setCardData, setIsDataLoading } from "../redux/root"
-import { AllCards } from "../api/queries/allCards"
-import { setHasCardError, setIsCardOpen } from "../redux/card"
+import React, { useEffect } from "react"
+import { useDispatch } from "react-redux"
+import {
+  setAttributeData,
+  setPokemonData,
+  setRarityData,
+  setSetData,
+  setTypeData,
+} from "../redux/root"
+import { AllSets } from "../api/queries/allSets"
+import { AllPokemon } from "../api/queries/allPokemon"
+import { AllTypes } from "../api/queries/allTypes"
+import { AllAttributes } from "../api/queries/allAttributes"
+import { AllRarities } from "../api/queries/allRarities"
+import { Dispatch, UnknownAction } from "@reduxjs/toolkit"
 
-// Function to fetch data
-const fetchData = async () => {
-  const dispatch = useDispatch()
-
-  dispatch(setIsDataLoading(true))
-
+export const DataFetcher = async (dispatch: Dispatch<UnknownAction>) => {
   try {
-    const cards = await AllCards()
+    const sets = await AllSets()
+    dispatch(setSetData(sets || []))
 
-    dispatch(setCardData(cards || []))
-    dispatch(setIsCardOpen(true))
+    const pokemon = await AllPokemon()
+    dispatch(setPokemonData(pokemon || []))
+
+    const types = await AllTypes()
+    dispatch(setTypeData(types || []))
+
+    const attributes = await AllAttributes()
+    dispatch(setAttributeData(attributes || []))
+
+    const rarities = await AllRarities()
+    dispatch(setRarityData(rarities || []))
   } catch (error) {
-    dispatch(setHasCardError(true))
-  } finally {
-    dispatch(setIsDataLoading(false))
+    console.error("Error fetching data: ", error)
   }
 }

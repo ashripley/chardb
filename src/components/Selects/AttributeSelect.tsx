@@ -38,9 +38,10 @@ export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
         sx={{
           borderRadius: "15px !important",
           width: "100%",
+          minWidth: 200,
         }}
       >
-        <InputLabel color={sxColourMap[dbType]}>{"Attribute"}</InputLabel>
+        <InputLabel color={sxColourMap[dbType]}>{}</InputLabel>
         <Select
           id="attribute"
           variant="outlined"
@@ -54,7 +55,7 @@ export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
               },
             },
           }}
-          input={<OutlinedInput label="Attribute" />}
+          input={<OutlinedInput />}
           onChange={handleSelectChange}
           sx={{
             borderRadius: "15px",

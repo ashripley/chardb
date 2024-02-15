@@ -166,9 +166,10 @@ export const Pokemon = () => {
       console.error("set error: ", error)
     }
   }
-  useEffect(() => {
-    fetchPokemon()
-  }, [])
+  // useEffect(() => {
+  //   console.log("useEffect fetch pokemon")
+  //   fetchPokemon()
+  // }, [])
 
   const onSync = async () => {
     setIsSyncLoading(true)

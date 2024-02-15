@@ -227,31 +227,32 @@ export const AddModal = () => {
     })
   }
 
-  useEffect(() => {
-    const fetchSets = async () => {
-      try {
-        const sets = await AllSets()
+  // useEffect(() => {
+  //   console.log("add modal useEffect")
+  //   const fetchSets = async () => {
+  //     try {
+  //       const sets = await AllSets()
 
-        dispatch(setSetData(sets || []))
-      } catch (error) {
-        console.error("set error: ", error)
-      }
-    }
+  //       dispatch(setSetData(sets || []))
+  //     } catch (error) {
+  //       console.error("set error: ", error)
+  //     }
+  //   }
 
-    const fetchPokemon = async () => {
-      try {
-        const pokemon = await AllPokemon()
+  //   const fetchPokemon = async () => {
+  //     try {
+  //       const pokemon = await AllPokemon()
 
-        dispatch(setPokemonData(pokemon || []))
-      } catch (error) {
-        console.error("set error: ", error)
-      }
-    }
+  //       dispatch(setPokemonData(pokemon || []))
+  //     } catch (error) {
+  //       console.error("set error: ", error)
+  //     }
+  //   }
 
-    console.log("useEffect on mount")
-    // fetchSets()
-    // fetchPokemon()
-  }, [])
+  //   console.log("useEffect on mount")
+  //   // fetchSets()
+  //   // fetchPokemon()
+  // }, [])
 
   // styles
   const inputProps = {

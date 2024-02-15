@@ -108,9 +108,10 @@ export const Attributes = () => {
       console.error("set error: ", error)
     }
   }
-  useEffect(() => {
-    fetchAttributes()
-  }, [])
+  // useEffect(() => {
+  //   console.log("useEffect fetch attributes")
+  //   fetchAttributes()
+  // }, [])
 
   const onSave = async () => {
     setIsLoading(true)

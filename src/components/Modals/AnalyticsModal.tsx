@@ -141,6 +141,7 @@ export const AnalyticsModal = () => {
 
   // Initial data fetch on component mount
   useEffect(() => {
+    console.log("useEffect analytics modal")
     fetchData()
   }, [])
 

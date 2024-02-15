@@ -235,6 +235,7 @@ const DbButton: React.FC<{ label: DbType; accent: string }> = ({
 }
 
 export const Menu = () => {
+  console.log("menu")
   const { isMenuOpen, dbType } = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
 

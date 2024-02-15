@@ -155,6 +155,7 @@ const componentMap: Record<string, any> = {
 }
 
 export const Configuration = () => {
+  console.log("configuration")
   const [settingOption, setSettingOption] = useState<string>("DB")
 
   const Setting = componentMap[settingOption] || (() => <></>)

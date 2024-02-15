@@ -109,9 +109,10 @@ export const Types = () => {
       console.error("set error: ", error)
     }
   }
-  useEffect(() => {
-    fetchTypes()
-  }, [])
+  // useEffect(() => {
+  //   console.log("useEffect fetch types")
+  //   fetchTypes()
+  // }, [])
 
   const onSave = async () => {
     setIsLoading(true)

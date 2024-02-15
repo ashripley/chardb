@@ -80,6 +80,7 @@ const PaginationWrapper = styled.div`
 `
 
 export const Pokedex = () => {
+  console.log("pokedex")
   const [isLoading, setIsLoading] = useState(false)
   const [pokedex, setPokedex] = useState<Record<string, any>[]>([{}])
   const [hasPokemon, setHasPokemon] = useState<string[]>([])
@@ -159,9 +160,11 @@ export const Pokedex = () => {
     currentPage * itemsPerPage
   )
 
-  useEffect(() => {
-    fetchAllPokemon()
-  }, [])
+  // fetch pokemon when landing on home page instead!!
+  // useEffect(() => {
+  //   console.log("useEffect pokedex fetch all pokemon")
+  //   fetchAllPokemon()
+  // }, [])
 
   useEffect(() => {
     window.scrollTo({

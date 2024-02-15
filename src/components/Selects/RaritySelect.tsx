@@ -37,20 +37,21 @@ export const RaritySelect = ({ fields, handleSelectChange }: Props) => {
   const dispatch = useDispatch()
   const { dbType, rarityData } = useSelector((state: RootState) => state.root)
 
-  const fetchRarities = async () => {
-    setIsLoading(true)
-    try {
-      const rarities = await AllRarities()
+  // const fetchRarities = async () => {
+  //   setIsLoading(true)
+  //   try {
+  //     const rarities = await AllRarities()
 
-      dispatch(setRarityData(rarities || []))
-      setIsLoading(false)
-    } catch (error) {
-      console.error("set error: ", error)
-    }
-  }
-  useEffect(() => {
-    fetchRarities()
-  }, [])
+  //     dispatch(setRarityData(rarities || []))
+  //     setIsLoading(false)
+  //   } catch (error) {
+  //     console.error("set error: ", error)
+  //   }
+  // }
+  // useEffect(() => {
+  //   console.log("useEffect rarities select")
+  //   fetchRarities()
+  // }, [])
 
   return (
     <RarityWrapper>
@@ -58,9 +59,10 @@ export const RaritySelect = ({ fields, handleSelectChange }: Props) => {
         sx={{
           borderRadius: "15px !important",
           width: "100%",
+          minWidth: 200,
         }}
       >
-        <InputLabel color={sxColourMap[dbType]}>{"Rarity"}</InputLabel>
+        <InputLabel color={sxColourMap[dbType]}>{}</InputLabel>
         <Select
           id="rarity"
           variant="outlined"
@@ -74,7 +76,7 @@ export const RaritySelect = ({ fields, handleSelectChange }: Props) => {
               },
             },
           }}
-          input={<OutlinedInput label="Rarity" />}
+          input={<OutlinedInput />}
           onChange={handleSelectChange}
           sx={{
             borderRadius: "15px",

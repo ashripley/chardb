@@ -151,9 +151,10 @@ export const PokedexModal = ({ openModal, closeModal, pokemon }: Props) => {
 
   const { name, image, types, abilities, id, height, weight } = pokemon ?? ""
 
-  useEffect(() => {
-    setOpen(openModal)
-  }, [openModal])
+  // useEffect(() => {
+  //   console.log("useEffect pokedex modal")
+  //   setOpen(openModal)
+  // }, [openModal])
 
   const handleClose = () => {
     setOpen(false)

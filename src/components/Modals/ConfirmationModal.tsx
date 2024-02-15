@@ -128,6 +128,7 @@ export const ConfirmationModal = () => {
 
   // Function to handle card deletion
   useEffect(() => {
+    console.log("useEffect confirmation modal")
     const handleDelete = async () => {
       await deleteDoc(doc(firestore, "cards", pokemonToBeDeleted.cardId))
       const cards = await AllCards()

@@ -40,13 +40,13 @@ export const AutoSelectComponent = () => {
   }
 
   const sxStyles = {
-    minWidth: 200,
-    width: "100%",
     fieldset: {
       borderColor: theme.darkBg,
     },
     color: theme.primaryText,
     justifyContent: "center",
+    width: "80%",
+    minWidth: 200,
 
     "&:hover": {
       fieldset: {
@@ -73,7 +73,6 @@ export const AutoSelectComponent = () => {
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Choose a Pokemon"
           color={sxColourMap[dbType]}
           inputProps={{
             ...inputProps,

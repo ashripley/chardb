@@ -38,14 +38,17 @@ export const PokemonCards = () => {
   }, [])
 
   // Callback function when AddModal is closed
-  useEffect(() => {
-    if (!isAddModalOpen) fetchData()
-  }, [isAddModalOpen])
+  // useEffect(() => {
+  //   console.log("useEffect cards add modal fetch data")
+  //   if (!isAddModalOpen) fetchData()
+  // }, [isAddModalOpen])
 
   // Initial data fetch on component mount
-  useEffect(() => {
-    fetchData()
-  }, [])
+  // fetch cards when land on home screen instead!!
+  // useEffect(() => {
+  //   console.log("useEffect cards fetch data on load")
+  //   fetchData()
+  // }, [])
 
   return (
     <Wrap>

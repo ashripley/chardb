@@ -17,7 +17,7 @@ interface StoreState {
   icon: string
   setIcon: string
   pokemonToBeDeleted: Record<string, any>
-  data: Record<string, any>[]
+  data: Record<string, any>
   analyticsCardData: Record<string, any>[] | undefined
   gridFields: Record<string, any>
   listFields: Record<string, any>
@@ -42,7 +42,16 @@ const initialState: StoreState = {
   setIcon: "add",
   pokemonToBeDeleted: {},
   analyticsCardData: undefined,
-  data: [{}],
+  data: {
+    name: "",
+    type: "",
+    set: "",
+    setNumber: "",
+    year: "",
+    quantity: "",
+    attribute: "",
+    rarity: "",
+  },
   gridFields: {
     name: "",
     type: "",
@@ -116,8 +125,10 @@ export const cardSlice = createSlice({
     ) => {
       state.pokemonToBeDeleted = action.payload
     },
-    setData: (state, action: PayloadAction<Record<string, any>[]>) => {
-      state.data = action.payload
+    setData: (state, action: PayloadAction<Record<string, any>>) => {
+      console.log("state.data", state.data)
+      console.log("action.payload", action.payload)
+      state.data = { ...state.data, ...action.payload }
     },
     setAnalyticsCardData: (
       state,
