@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux"
 import { AllDataQuery } from "../api/queries/allData"
 import { PokemonTypes } from "../components/ConfigurationTabs/PokemonTypes"
 import { Conditions } from "../components/ConfigurationTabs/Conditions"
+import { ThemeSelect } from "../components/Selects/ThemeSelect"
 
 const Wrapper = styled.div`
   width: 90%;
@@ -39,6 +40,36 @@ const TabWrapper = styled.div`
   margin: 0px 25px !important;
   border-top-left-radius: 35px !important;
   border-bottom-left-radius: 35px !important;
+  overflow-y: auto;
+  height: 100%;
+`
+
+const ThemeContainer = styled.div`
+  min-height: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
+
+const Header = styled.h2`
+  min-height: 100px;
+  height: 10%;
+  width: auto;
+  display: flex;
+  align-items: center;
+  font-family: ${theme.fontFamily};
+  font-size: 1.5rem;
+`
+
+const Body = styled.div`
+  min-height: 100px;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  min-width: 300px;
+  width: auto;
 `
 
 const DB = () => {
@@ -111,7 +142,23 @@ const DB = () => {
 }
 
 const Theme = () => {
-  return <></>
+  const dispatch = useDispatch()
+
+  const saveButton = {
+    width: "auto",
+    minWidth: "100px",
+    minHeight: "40px",
+    height: "auto",
+  }
+
+  return (
+    <ThemeContainer>
+      <Header>Choose a theme!</Header>
+      <Body>
+        <ThemeSelect />
+      </Body>
+    </ThemeContainer>
+  )
 }
 
 const Analytics = () => {
@@ -169,6 +216,7 @@ export const Configuration = () => {
           <Tab label="DB" {...tabProps(0)} />
           <Tab label="Theme" {...tabProps(1)} />
           <Tab label="Analytics" {...tabProps(2)} />
+          <Button></Button>
         </Tabs>
         <TabPanel value={value} index={0}>
           <DB />

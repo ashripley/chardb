@@ -127,7 +127,7 @@ export const PokemonTypes = () => {
   return (
     <StyledBox>
       <Header>
-        {"Add Type"}
+        {"Add Pokemon Type"}
         <Box sx={{ m: 1, position: "relative" }}>
           <Button
             variant="outlined"
@@ -190,7 +190,7 @@ export const PokemonTypes = () => {
         </Row>
       </Details>
 
-      <Header>Current Types</Header>
+      <Header>Current Pokemon Types</Header>
       <Details>
         {Object.entries(tempPokemonTypes).map(([_, value], index) => (
           <Row key={index}>
