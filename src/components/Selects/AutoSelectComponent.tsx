@@ -36,7 +36,6 @@ export const AutoSelectComponent = () => {
     borderRadius: 15,
     overflow: "hidden",
     boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-    maxHeight: 300,
   }
 
   const sxStyles = {
@@ -64,11 +63,17 @@ export const AutoSelectComponent = () => {
     },
   }
 
+  console.log("pokemonData", pokemonData)
+
+  // const mappedData = Object.entries(data)?.map((d) => d)
+
+  // console.log("mappedData", mappedData)
+
   return (
     <Autocomplete
       id="pokemon-name-autocomplete-select"
-      options={pokemonData
-        .map((pokemon) => upperCaseFirst(pokemon.name))
+      options={Object.keys(pokemonData!)
+        .map((pokemon) => upperCaseFirst(pokemon))
         .sort((a, b) => a.localeCompare(b))}
       renderInput={(params) => (
         <TextField

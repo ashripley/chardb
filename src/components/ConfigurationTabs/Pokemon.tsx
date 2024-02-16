@@ -8,8 +8,10 @@ import { RootState } from "../../redux/store"
 import { AllSets } from "../../api/queries/allSets"
 import { setPokemonData, setSetData } from "../../redux/root"
 import { sxColourMap } from "../../helpers/view"
-import { AddPokemonMutation } from "../../api/mutations/addPokemon"
+import { BulkAddPokemonMutation } from "../../api/mutations/bulkAddPokemon"
 import { AllPokemon } from "../../api/queries/allPokemon"
+import { AddPokemonMutation } from "../../api/mutations/addPokemon"
+import { DeletePokemonMutation } from "../../api/mutations/deletePokemon"
 
 const Header = styled.div`
   font-size: 1.5rem;
@@ -142,8 +144,12 @@ const inputProps = {
   },
 }
 export const Pokemon = () => {
-  const [name, setName] = useState("")
+  const [searchName, setSearchName] = useState("")
+  const [addName, setAddName] = useState("")
+  const [deleteName, setDeleteName] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [isAddLoading, setIsAddLoading] = useState(false)
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false)
   const [isSyncLoading, setIsSyncLoading] = useState(false)
   const [isFetchLoading, setIsFetchLoading] = useState(false)
   const [showPokemon, setShowPokemon] = useState(false)
@@ -160,41 +166,76 @@ export const Pokemon = () => {
     try {
       const pokemon = await AllPokemon()
 
-      dispatch(setPokemonData(pokemon || []))
-      setIsFetchLoading(false)
+      dispatch(setPokemonData(pokemon))
     } catch (error) {
       console.error("set error: ", error)
+    } finally {
+      setIsFetchLoading(false)
     }
   }
-  // useEffect(() => {
-  //   console.log("useEffect fetch pokemon")
-  //   fetchPokemon()
-  // }, [])
+  useEffect(() => {
+    fetchPokemon()
+  }, [])
 
   const onSync = async () => {
-    setIsSyncLoading(true)
-
-    await AddPokemonMutation()
-
-    setIsSyncLoading(false)
+    fetchPokemon()
   }
 
-  const onSearch = () => {
+  // upsert for 151 bulk add
+  // const upsert = async () => {
+  //   setIsLoading(true)
+  //   await BulkAddPokemonMutation()
+  //   setIsLoading(false)
+  // }
+
+  const onSearch = async () => {
     setIsLoading(true)
-    if (pokemonData.some((obj) => obj.name === name)) {
-      console.log("in if")
+    if (pokemonData[searchName]) {
+      setSearchedPokemon(pokemonData[searchName])
       setIsLoading(false)
-      setSearchedPokemon(pokemonData.filter((obj) => obj.name === name))
+      setSearchedPokemon(pokemonData[searchName])
       setShowPokemon(true)
     } else {
-      console.log("in else")
       setNoResultsFound(true)
       setIsLoading(false)
     }
   }
 
+  const onAdd = async () => {
+    setIsAddLoading(true)
+    if (!pokemonData[addName]) {
+      try {
+        await AddPokemonMutation(addName)
+        setAddName("")
+      } catch (e) {
+        console.error("Error adding pokemon to DB: ", e)
+      } finally {
+        fetchPokemon()
+        console.log("pokemonData", pokemonData)
+        setIsAddLoading(false)
+      }
+    }
+  }
+
+  const onDelete = async () => {
+    setIsDeleteLoading(true)
+    if (pokemonData[deleteName]) {
+      try {
+        console.log("deleteName", deleteName)
+        await DeletePokemonMutation(deleteName)
+        setDeleteName("")
+      } catch (e) {
+        console.error("Error deleting pokemon from DB: ", e)
+      } finally {
+        fetchPokemon()
+        console.log("pokemonData", pokemonData)
+        setIsDeleteLoading(false)
+      }
+    }
+  }
+
   const onClear = () => {
-    setName("")
+    setSearchName("")
     setShowPokemon(false)
     setNoResultsFound(false)
   }
@@ -202,21 +243,20 @@ export const Pokemon = () => {
   return (
     <StyledBox>
       <Details>
-        {isFetchLoading ? (
-          <CircularProgress
-            size={24}
-            sx={{
-              color: theme.charAccent,
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              marginTop: "-12px",
-              marginLeft: "-12px",
-            }}
-          />
-        ) : (
-          <Header>Number of Pokemon in chardb: {pokemonData.length}</Header>
-        )}
+        <Header>
+          Number of Pokemon in DB:
+          {isFetchLoading ? (
+            <CircularProgress
+              size={24}
+              sx={{
+                color: theme.charAccent,
+                marginLeft: "20px",
+              }}
+            />
+          ) : (
+            <Header>{Object.keys(pokemonData).length}</Header>
+          )}
+        </Header>
         <Box sx={{ m: 1, position: "relative" }}>
           <Button
             variant="outlined"
@@ -224,11 +264,11 @@ export const Pokemon = () => {
             color="success"
             onClick={onSync}
             sx={saveButton}
-            disabled={isSyncLoading}
+            disabled={isFetchLoading}
           >
             sync db
           </Button>
-          {isSyncLoading && (
+          {isFetchLoading && (
             <CircularProgress
               size={24}
               sx={{
@@ -241,22 +281,46 @@ export const Pokemon = () => {
               }}
             />
           )}
+          {/* button to upsert 151 pokemon into db */}
+          {/* <Button
+            variant="outlined"
+            size="small"
+            color="error"
+            onClick={upsert}
+            sx={saveButton}
+            disabled={isFetchLoading}
+          >
+            upsert 151
+          </Button>
+          {isFetchLoading && (
+            <CircularProgress
+              size={24}
+              sx={{
+                color: theme.bulbAccent,
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginTop: "-12px",
+                marginLeft: "-12px",
+              }}
+            />
+          )} */}
         </Box>
       </Details>
-      <Header>{"Search Pokemon in chardb"}</Header>
+      <Header>{"Search Pokemon in DB"}</Header>
       <Details>
         <Row>
           <Data>
             <TextField
               id="standard"
-              value={name}
+              value={searchName}
               label="Name"
               variant="outlined"
               color={sxColourMap["char"]}
               style={{ width: "100%", margin: 5 }}
               InputProps={inputProps}
               onChange={(e) => {
-                setName(e.target.value)
+                setSearchName(e.target.value)
               }}
             />
           </Data>
@@ -268,9 +332,9 @@ export const Pokemon = () => {
             color="warning"
             onClick={onSearch}
             sx={searchButton}
-            disabled={!name}
+            disabled={!searchName}
           >
-            Search DB
+            Search
           </Button>
           <Button
             variant="outlined"
@@ -278,7 +342,7 @@ export const Pokemon = () => {
             color="error"
             onClick={onClear}
             sx={searchButton}
-            disabled={name == ""}
+            disabled={searchName == ""}
           >
             Clear
           </Button>
@@ -287,11 +351,6 @@ export const Pokemon = () => {
               size={24}
               sx={{
                 color: theme.bulbAccent,
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginTop: "-12px",
-                marginLeft: "-12px",
               }}
             />
           )}
@@ -299,14 +358,11 @@ export const Pokemon = () => {
       </Details>
       {showPokemon ? (
         <Container>
-          <StyledImage
-            src={searchedPokemon[0].image}
-            alt={searchedPokemon[0].name}
-          />
+          <StyledImage src={searchedPokemon.image} alt={searchedPokemon.name} />
           <Wrapper>
-            <PokemonRowData>Name: {searchedPokemon[0].name}</PokemonRowData>
-            <PokemonRowData>Id: {searchedPokemon[0].id}</PokemonRowData>
-            <PokemonRowData>Type: {searchedPokemon[0].type}</PokemonRowData>
+            <PokemonRowData>Name: {searchedPokemon.name}</PokemonRowData>
+            <PokemonRowData>Id: {searchedPokemon.id}</PokemonRowData>
+            <PokemonRowData>Type: {searchedPokemon.type}</PokemonRowData>
           </Wrapper>
         </Container>
       ) : noResultsFound ? (
@@ -314,6 +370,106 @@ export const Pokemon = () => {
       ) : (
         <></>
       )}
+      <br></br>
+      <Header>{"Add Pokemon To DB"}</Header>
+      <Details>
+        <Row>
+          <Data>
+            <TextField
+              id="standard"
+              value={addName}
+              label="Name"
+              variant="outlined"
+              color={sxColourMap["char"]}
+              style={{ width: "100%", margin: 5 }}
+              InputProps={inputProps}
+              onChange={(e) => {
+                setAddName(e.target.value)
+              }}
+            />
+          </Data>
+        </Row>
+        <Box sx={{ m: 1, position: "relative", display: "flex", gap: 5 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            color="warning"
+            onClick={onAdd}
+            sx={searchButton}
+            disabled={!addName}
+          >
+            Add
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="error"
+            onClick={onClear}
+            sx={searchButton}
+            disabled={addName == ""}
+          >
+            Clear
+          </Button>
+          {isAddLoading && (
+            <CircularProgress
+              size={24}
+              sx={{
+                color: theme.bulbAccent,
+              }}
+            />
+          )}
+        </Box>
+      </Details>
+      <br></br>
+      <Header>{"Delete Pokemon From DB"}</Header>
+      <Details>
+        <Row>
+          <Data>
+            <TextField
+              id="standard"
+              value={deleteName}
+              label="Name"
+              variant="outlined"
+              color={sxColourMap["char"]}
+              style={{ width: "100%", margin: 5 }}
+              InputProps={inputProps}
+              onChange={(e) => {
+                setDeleteName(e.target.value)
+              }}
+            />
+          </Data>
+        </Row>
+        <Box sx={{ m: 1, position: "relative", display: "flex", gap: 5 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            color="warning"
+            onClick={onDelete}
+            sx={searchButton}
+            disabled={!deleteName}
+          >
+            Delete
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="error"
+            onClick={onClear}
+            sx={searchButton}
+            disabled={deleteName == ""}
+          >
+            Clear
+          </Button>
+          {isDeleteLoading && (
+            <CircularProgress
+              size={24}
+              sx={{
+                color: theme.bulbAccent,
+              }}
+            />
+          )}
+        </Box>
+      </Details>
     </StyledBox>
   )
 }

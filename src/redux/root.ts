@@ -6,6 +6,9 @@ import {
   isMobile,
   DbType,
 } from "../helpers/view"
+import { Card } from "../api/types/card"
+import { Pokemon } from "../api/types/pokemon"
+import { Attribute } from "../api/types/attribute"
 
 interface StoreState {
   page: string
@@ -16,11 +19,14 @@ interface StoreState {
   attributeData: Record<string, any>[]
   typeData: Record<string, any>[]
   rarityData: Record<string, any>[]
-  pokemonData: Record<string, any>[]
+  pokemonData: Record<string, any>
   cardView: CardViewType
   cardField: Record<string, any>
   filterView: FilterViewType
   dbType: DbType
+
+  card: Card
+  attribute: Attribute
 }
 
 const initialState: StoreState = {
@@ -32,7 +38,7 @@ const initialState: StoreState = {
   attributeData: [{}],
   typeData: [{}],
   rarityData: [{}],
-  pokemonData: [{}],
+  pokemonData: {},
   cardField: {
     key: "",
     value: "",
@@ -40,6 +46,71 @@ const initialState: StoreState = {
   cardView: isMobile ? "Tile" : "Grid",
   filterView: "id",
   dbType: "char",
+
+  card: [
+    {
+      cardId: "",
+      name: "",
+      id: 0,
+      type: {
+        name: "",
+        colour: "",
+      },
+      typeOfCard: "",
+      set: {
+        name: "",
+        totalCards: 0,
+      },
+      setNumber: 0,
+      rarity: "",
+      grading: {
+        isGraded: false,
+        grading: "",
+      },
+      condition: "",
+      evolutionChain: {
+        first: {
+          name: "",
+          image: "",
+        },
+        second: {
+          name: "",
+          image: "",
+        },
+        third: {
+          name: "",
+          image: "",
+        },
+      },
+      image: "",
+    },
+  ],
+  attribute: [
+    {
+      type: {
+        typeId: "",
+        name: "",
+        colour: "",
+      },
+      typeOfCard: {
+        typeOfCardId: "",
+        name: "",
+      },
+      set: {
+        setId: "",
+        name: "",
+        totalCards: "",
+      },
+      rarity: {
+        rarityId: "",
+        name: "",
+      },
+      condition: {
+        conditionId: "",
+        name: "",
+      },
+    },
+  ],
 }
 
 export const rootSlice = createSlice({
@@ -80,7 +151,7 @@ export const rootSlice = createSlice({
       state,
       action: PayloadAction<StoreState["pokemonData"]>
     ) => {
-      state.pokemonData = action.payload
+      if (action.payload) state.pokemonData = action.payload
     },
     setCardField: (state, action: PayloadAction<Record<string, any>>) => {
       state.cardField = action.payload
@@ -93,6 +164,12 @@ export const rootSlice = createSlice({
     },
     setDbType: (state, action: PayloadAction<StoreState["dbType"]>) => {
       state.dbType = action.payload
+    },
+    updatePokemonData: (
+      state,
+      action: PayloadAction<StoreState["pokemonData"]>
+    ) => {
+      state.pokemonData = { ...state.pokemonData, ...action.payload }
     },
   },
 })
@@ -111,6 +188,7 @@ export const {
   setPokemonData,
   setCardField,
   setDbType,
+  updatePokemonData,
 } = rootSlice.actions
 
 export default rootSlice.reducer

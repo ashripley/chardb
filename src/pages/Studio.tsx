@@ -136,7 +136,22 @@ const StockImage = styled.img`
   opacity: 0.8;
 `
 
-const TabPanel = (props: TabPanelProps) => {
+const tabSxStyles = {
+  width: "10%",
+  height: "100%",
+  justifyContent: "center",
+  alignItems: "center",
+  minWidth: 120,
+
+  "& > div": {
+    marginRight: 0,
+    justifyContent: "center !important",
+    display: "flex !important",
+    alignItems: "center !important",
+  },
+}
+
+export const TabPanel = (props: TabPanelProps) => {
   const { children, value, index, ...other } = props
 
   return (
@@ -157,7 +172,7 @@ const TabPanel = (props: TabPanelProps) => {
   )
 }
 
-const a11yProps = (index: number) => {
+export const tabProps = (index: number) => {
   return {
     id: `vertical-tab-${index}`,
     "aria-controls": `vertical-tabpanel-${index}`,
@@ -179,21 +194,6 @@ export const Studio = () => {
     setValue(newValue)
   }
 
-  const tabSxStyles = {
-    width: "10%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    minWidth: 120,
-
-    "& > div": {
-      marginRight: 0,
-      justifyContent: "center !important",
-      display: "flex !important",
-      alignItems: "center !important",
-    },
-  }
-
   return (
     <Wrapper>
       <LeftBox>
@@ -211,9 +211,9 @@ export const Studio = () => {
           }}
           sx={{ borderRight: 1, borderColor: "divider", ...tabSxStyles }}
         >
-          <Tab label="Add" {...a11yProps(0)} />
-          <Tab label="Update" {...a11yProps(1)} />
-          <Tab label="Delete" {...a11yProps(2)} />
+          <Tab label="Add" {...tabProps(0)} />
+          <Tab label="Update" {...tabProps(1)} />
+          <Tab label="Delete" {...tabProps(2)} />
         </Tabs>
         <TabPanel value={value} index={0}>
           <AddCardPanel />

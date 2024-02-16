@@ -11,12 +11,13 @@ import { Attributes } from "../components/ConfigurationTabs/Attributes"
 import { Types } from "../components/ConfigurationTabs/Types"
 import { Rarities } from "../components/ConfigurationTabs/Rarities"
 import { Pokemon } from "../components/ConfigurationTabs/Pokemon"
+import { TabPanel, tabProps } from "./Studio"
 
 const Wrapper = styled.div`
   width: 90%;
   height: 75vh;
   display: flex;
-  border-radius: 15px;
+  border-radius: 35px;
   margin: auto;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 `
@@ -48,15 +49,14 @@ const Options = styled.div`
   gap: 20px;
 `
 
-const LeftBox = styled(Paper)`
-  width: 20%;
+const Container = styled(Paper)`
+  width: 100%;
   height: 100%;
-  background-color: ${theme.darkBg} !important;
-  border-top-left-radius: 15px !important;
-  border-bottom-left-radius: 15px !important;
-  border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
+  background-color: ${theme.lightBg} !important;
+  border-radius: 35px !important;
   min-width: 300px;
+  box-shadow: none !important;
+  display: flex;
 `
 
 const RightBox = styled(Paper)`
@@ -67,6 +67,12 @@ const RightBox = styled(Paper)`
   border-bottom-right-radius: 15px !important;
   border-top-left-radius: 0px !important;
   border-bottom-left-radius: 0px !important;
+`
+
+const TabWrapper = styled.div`
+  margin: 0px 25px !important;
+  border-top-left-radius: 35px !important;
+  border-bottom-left-radius: 35px !important;
 `
 
 const buttonStyles = {
@@ -108,7 +114,7 @@ const DB = () => {
   }
 
   return (
-    <>
+    <TabWrapper>
       <Box
         sx={{
           width: "auto",
@@ -116,6 +122,7 @@ const DB = () => {
           color: theme.primaryText,
           padding: "15px",
           borderTopRightRadius: "15px !important",
+          margin: "0px 25px !important",
         }}
       >
         <Tabs
@@ -136,7 +143,7 @@ const DB = () => {
       </Box>
 
       {renderSwitch(tab)}
-    </>
+    </TabWrapper>
   )
 }
 
@@ -155,36 +162,66 @@ const componentMap: Record<string, any> = {
 }
 
 export const Configuration = () => {
-  console.log("configuration")
-  const [settingOption, setSettingOption] = useState<string>("DB")
+  const [value, setValue] = React.useState(0)
 
-  const Setting = componentMap[settingOption] || (() => <></>)
+  // useEffect(() => {
+  //   console.log("fetch data on mount of studio")
+  //   DataFetcher(dispatch)
+  // }, [])
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue)
+  }
+
+  const tabSxStyles = {
+    width: "10%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    minWidth: 250,
+    backgroundColor: theme.darkBg,
+    borderTopLeftRadius: 35,
+    borderBottomLeftRadius: 35,
+
+    "& > div": {
+      marginRight: 0,
+      justifyContent: "center !important",
+      display: "flex !important",
+      alignItems: "center !important",
+    },
+  }
 
   return (
     <Wrapper>
-      <LeftBox>
-        <SidePanel>
-          <Header>
-            <>Configuration</>
-          </Header>
-          <Options>
-            {["DB", "Theme", "Analytics"].map(
-              (label: string, index: number) => (
-                <Button
-                  sx={buttonStyles}
-                  onClick={() => setSettingOption(label)}
-                  key={index}
-                >
-                  {label}
-                </Button>
-              )
-            )}
-          </Options>
-        </SidePanel>
-      </LeftBox>
-      <RightBox>
-        <Setting />
-      </RightBox>
+      <Container>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          onChange={handleChange}
+          aria-label="Vertical tabs example"
+          textColor={theme.charAccent}
+          TabIndicatorProps={{
+            sx: {
+              backgroundColor: theme.charAccent,
+            },
+          }}
+          sx={{ borderRight: 1, borderColor: "divider", ...tabSxStyles }}
+        >
+          <Tab label="DB" {...tabProps(0)} />
+          <Tab label="Theme" {...tabProps(1)} />
+          <Tab label="Analytics" {...tabProps(2)} />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <DB />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <Theme />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          <Analytics />
+        </TabPanel>
+      </Container>
     </Wrapper>
   )
 }

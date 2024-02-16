@@ -81,7 +81,7 @@ const HeaderText = styled.div`
 
 export const Header = memo(() => {
   const dispatch = useDispatch()
-  const { dbType } = useSelector((state: RootState) => state.root)
+  const { dbType, page } = useSelector((state: RootState) => state.root)
 
   const imageMap = {
     char: flame,
@@ -119,20 +119,37 @@ export const Header = memo(() => {
                         />
                       </IconWrapper>
                     </MenuWrapper>
-                    <HeaderText>
-                      <span
-                        className={dbType}
-                        style={{
-                          color: theme[`${dbType}Accent`],
-                          fontWeight: 800,
-                        }}
-                      >
-                        {dbType}
-                      </span>
-                      <span className="db" style={{ color: theme.primaryText }}>
-                        db
-                      </span>
-                    </HeaderText>
+                    {page === "Home" ? (
+                      <HeaderText>
+                        <span
+                          className={dbType}
+                          style={{
+                            color: theme[`${dbType}Accent`],
+                            fontWeight: 800,
+                          }}
+                        >
+                          {dbType}
+                        </span>
+                        <span
+                          className="db"
+                          style={{ color: theme.primaryText }}
+                        >
+                          db
+                        </span>
+                      </HeaderText>
+                    ) : (
+                      <HeaderText>
+                        <span
+                          className={dbType}
+                          style={{
+                            color: theme[`${dbType}Accent`],
+                            fontWeight: 800,
+                          }}
+                        >
+                          {page}
+                        </span>
+                      </HeaderText>
+                    )}
                   </LeftWrapper>
                   <RightWrapper>
                     <IconButton
