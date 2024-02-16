@@ -92,7 +92,7 @@ const Details = styled.div<{ isCardHovered: boolean; isEditView: boolean }>`
 
 export const Grid = ({ pokemon, cardIndex }: Props) => {
   const dispatch = useDispatch()
-  const { isDataLoading, dbType, setData } = useSelector(
+  const { isDataLoading, dbType } = useSelector(
     (state: RootState) => state.root
   )
   const { isConfirmationModalOpen, gridFields } = useSelector(

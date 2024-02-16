@@ -1,16 +1,11 @@
-import { collection, getDocs, query } from "firebase/firestore"
+import { doc, getDoc } from "firebase/firestore"
 import { firestore } from "../../services/firebase"
 
 export const AllAttributes = async () => {
-  let snapshot: Record<string, any>[] = []
+  const docRef = doc(firestore, "attributes", "data")
+  const docSnap = await getDoc(docRef)
 
-  const ref = await collection(firestore, "attributes")
-  const data = await query(ref)
-  const res = await getDocs(data)
+  const result = docSnap.data() || {}
 
-  await res?.forEach((doc: Record<string, any>) => {
-    snapshot.push({ ...doc.data() })
-  })
-
-  return snapshot
+  return result
 }

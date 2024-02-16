@@ -4,11 +4,12 @@ import Box from "@mui/material/Box"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { theme } from "../../theme"
-import { RootState } from "../../redux/store"
-import { updateRarities } from "../../redux/root"
+
 import { sxColourMap } from "../../helpers/view"
-import { upperCaseFirst } from "../../helpers/upperCaseFirst"
+import { RootState } from "../../redux/store"
 import { AddAttributeMutation } from "../../api/mutations/addAttribute"
+import { updatePokemonTypes } from "../../redux/root"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 
 const Header = styled.div`
   font-size: 1.5rem;
@@ -85,30 +86,34 @@ const inputProps = {
     },
   },
 }
-export const Rarities = () => {
+export const PokemonTypes = () => {
   const [name, setName] = useState("")
+  const [colour, setColour] = useState("")
   const [isSaveLoading, setIsSaveLoading] = useState(false)
-  const [isFetchLoading, setIsFetchLoading] = useState(false)
 
   const dispatch = useDispatch()
-  const { tempRarities } = useSelector((state: RootState) => state.root)
+
+  const { tempPokemonTypes } = useSelector((state: RootState) => state.root)
 
   const onSave = async () => {
     try {
       setIsSaveLoading(true)
 
-      await AddAttributeMutation("rarity", {
+      console.log("colour", colour)
+      await AddAttributeMutation("pokemonType", {
         name: name?.toLowerCase() ?? "",
+        colour: colour ?? "",
       })
       clearFields()
 
       dispatch(
-        updateRarities({
+        updatePokemonTypes({
           name: name?.toLowerCase() ?? "",
+          colour: colour ?? "",
         })
       )
     } catch (e) {
-      console.error("Error saving rarity to attribute DB: ", e)
+      console.error("Error saving pokemon type to attribute DB: ", e)
     } finally {
       setIsSaveLoading(false)
     }
@@ -116,12 +121,13 @@ export const Rarities = () => {
 
   const clearFields = () => {
     setName("")
+    setColour("")
   }
 
   return (
     <StyledBox>
       <Header>
-        {"Add Rarity"}
+        {"Add Type"}
         <Box sx={{ m: 1, position: "relative" }}>
           <Button
             variant="outlined"
@@ -129,7 +135,7 @@ export const Rarities = () => {
             color="success"
             onClick={onSave}
             sx={saveButton}
-            disabled={!name || isSaveLoading}
+            disabled={(!name && !colour) || isSaveLoading}
           >
             Save
           </Button>
@@ -165,39 +171,52 @@ export const Rarities = () => {
             />
           </Data>
         </Row>
+        <Row>
+          <Data>
+            <TextField
+              id="standard"
+              value={colour}
+              placeholder="#"
+              label="Hex Colour (#)"
+              variant="outlined"
+              color={sxColourMap["char"]}
+              style={{ width: "100%", margin: 5 }}
+              InputProps={inputProps}
+              onChange={(e) => {
+                setColour(e.target.value)
+              }}
+            />
+          </Data>
+        </Row>
       </Details>
 
-      <Header>Current Rarities</Header>
-      {isFetchLoading ? (
-        <CircularProgress
-          size={24}
-          sx={{
-            color: theme.charAccent,
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            marginTop: "-12px",
-            marginLeft: "-12px",
-          }}
-        />
-      ) : (
-        <Details>
-          {Object.entries(tempRarities).map(([_, value], index) => (
-            <Row key={index}>
-              <Data>
-                <TextField
-                  id="standard"
-                  value={upperCaseFirst(value.name)}
-                  variant="outlined"
-                  color={sxColourMap["char"]}
-                  style={{ width: "100%", margin: 5 }}
-                  InputProps={inputProps}
-                />
-              </Data>
-            </Row>
-          ))}
-        </Details>
-      )}
+      <Header>Current Types</Header>
+      <Details>
+        {Object.entries(tempPokemonTypes).map(([_, value], index) => (
+          <Row key={index}>
+            <Data>
+              <TextField
+                id="standard"
+                value={upperCaseFirst(value.name)}
+                variant="outlined"
+                color={sxColourMap["char"]}
+                style={{ width: "100%", margin: 5 }}
+                InputProps={inputProps}
+              />
+            </Data>
+            <Data>
+              <TextField
+                id="standard"
+                value={value.colour}
+                variant="outlined"
+                color={sxColourMap["char"]}
+                style={{ width: "100%", margin: 5 }}
+                InputProps={inputProps}
+              />
+            </Data>
+          </Row>
+        ))}
+      </Details>
     </StyledBox>
   )
 }

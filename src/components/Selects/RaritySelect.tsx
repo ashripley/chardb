@@ -11,8 +11,6 @@ import { sxColourMap } from "../../helpers/view"
 import { RootState } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
-import { AllRarities } from "../../api/queries/allRarities"
-import { setRarityData } from "../../redux/root"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 
 interface Props {
@@ -35,7 +33,7 @@ const RarityWrapper = styled.div`
 export const RaritySelect = ({ fields, handleSelectChange }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch()
-  const { dbType, rarityData } = useSelector((state: RootState) => state.root)
+  const { dbType } = useSelector((state: RootState) => state.root)
 
   // const fetchRarities = async () => {
   //   setIsLoading(true)
@@ -101,7 +99,7 @@ export const RaritySelect = ({ fields, handleSelectChange }: Props) => {
           <MenuItem value="">
             <b style={{ color: theme.primaryText }}>Rarity</b>
           </MenuItem>
-          {rarityData.map((rarity, index) => (
+          {/* {rarityData.map((rarity, index) => (
             <MenuItem
               key={index}
               value={rarity.name}
@@ -109,7 +107,7 @@ export const RaritySelect = ({ fields, handleSelectChange }: Props) => {
             >
               {upperCaseFirst(rarity.name)}
             </MenuItem>
-          ))}
+          ))} */}
         </Select>
       </StyledForm>
     </RarityWrapper>

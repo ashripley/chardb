@@ -1,16 +1,14 @@
 import { Button, CircularProgress, TextField } from "@mui/material"
 import styled from "styled-components"
-import * as React from "react"
 import Box from "@mui/material/Box"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { theme } from "../../theme"
 import { RootState } from "../../redux/store"
-import { AllSets } from "../../api/queries/allSets"
-import { setSetData } from "../../redux/root"
-import { AddSetMutation } from "../../api/mutations/addSet"
 import { sxColourMap } from "../../helpers/view"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
+import { updateSets } from "../../redux/root"
+import { AddAttributeMutation } from "../../api/mutations/addAttribute"
 
 const Header = styled.div`
   font-size: 1.5rem;
@@ -90,38 +88,33 @@ const inputProps = {
 export const Sets = () => {
   const [name, setName] = useState("")
   const [totalCards, setTotalCards] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSaveLoading, setIsSaveLoading] = useState(false)
   const [isFetchLoading, setIsFetchLoading] = useState(false)
 
   const dispatch = useDispatch()
-  const { setData } = useSelector((state: RootState) => state.root)
-
-  const fetchSets = async () => {
-    setIsFetchLoading(true)
-    try {
-      const sets = await AllSets()
-
-      dispatch(setSetData(sets || []))
-      setIsFetchLoading(false)
-    } catch (error) {
-      console.error("set error: ", error)
-    }
-  }
-  // useEffect(() => {
-  //   console.log("useEffect fetch sets")
-  //   fetchSets()
-  // }, [])
+  const { tempSets } = useSelector((state: RootState) => state.root)
 
   const onSave = async () => {
-    setIsLoading(true)
+    try {
+      setIsSaveLoading(true)
 
-    await AddSetMutation(name?.toLowerCase() ?? "", totalCards ?? "")
-
-    setTimeout(() => {
-      setIsLoading(false)
+      await AddAttributeMutation("set", {
+        name: name?.toLowerCase() ?? "",
+        totalCards: totalCards ?? "",
+      })
       clearFields()
-      fetchSets()
-    }, 1500)
+
+      dispatch(
+        updateSets({
+          name: name?.toLowerCase() ?? "",
+          totalCards: totalCards ?? "",
+        })
+      )
+    } catch (e) {
+      console.error("Error saving set to attribute DB: ", e)
+    } finally {
+      setIsSaveLoading(false)
+    }
   }
 
   const clearFields = () => {
@@ -140,11 +133,11 @@ export const Sets = () => {
             color="success"
             onClick={onSave}
             sx={saveButton}
-            disabled={(!name && !totalCards) || isLoading}
+            disabled={isSaveLoading || (!name && !totalCards)}
           >
             Save
           </Button>
-          {isLoading && (
+          {isSaveLoading && (
             <CircularProgress
               size={24}
               sx={{
@@ -209,12 +202,12 @@ export const Sets = () => {
         />
       ) : (
         <Details>
-          {setData.map((set, index) => (
+          {Object.entries(tempSets).map(([_, value], index) => (
             <Row key={index}>
               <Data>
                 <TextField
                   id="standard"
-                  value={upperCaseFirst(set.name)}
+                  value={upperCaseFirst(value.name)}
                   variant="outlined"
                   color={sxColourMap["char"]}
                   style={{ width: "100%", margin: 5 }}
@@ -224,7 +217,7 @@ export const Sets = () => {
               <Data>
                 <TextField
                   id="standard"
-                  value={set.totalCards}
+                  value={value.totalCards}
                   variant="outlined"
                   color={sxColourMap["char"]}
                   style={{ width: "100%", margin: 5 }}

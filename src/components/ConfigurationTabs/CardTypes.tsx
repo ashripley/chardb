@@ -1,18 +1,14 @@
 import { Button, CircularProgress, TextField } from "@mui/material"
 import styled from "styled-components"
-import * as React from "react"
 import Box from "@mui/material/Box"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { theme } from "../../theme"
 import { RootState } from "../../redux/store"
-import { AllSets } from "../../api/queries/allSets"
-import { setAttributeData, setSetData } from "../../redux/root"
-import { AddSetMutation } from "../../api/mutations/addSet"
 import { sxColourMap } from "../../helpers/view"
-import { upperCaseFirst } from "../../helpers/upperCaseFirst"
-import { AllAttributes } from "../../api/queries/allAttributes"
+import { updateCardTypes } from "../../redux/root"
 import { AddAttributeMutation } from "../../api/mutations/addAttribute"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 
 const Header = styled.div`
   font-size: 1.5rem;
@@ -89,40 +85,33 @@ const inputProps = {
     },
   },
 }
-export const Attributes = () => {
+export const CardTypes = () => {
   const [name, setName] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSaveLoading, setIsSaveLoading] = useState(false)
   const [isFetchLoading, setIsFetchLoading] = useState(false)
 
   const dispatch = useDispatch()
-  const { attributeData } = useSelector((state: RootState) => state.root)
-
-  const fetchAttributes = async () => {
-    setIsFetchLoading(true)
-    try {
-      const attributes = await AllAttributes()
-
-      dispatch(setAttributeData(attributes || []))
-      setIsFetchLoading(false)
-    } catch (error) {
-      console.error("set error: ", error)
-    }
-  }
-  // useEffect(() => {
-  //   console.log("useEffect fetch attributes")
-  //   fetchAttributes()
-  // }, [])
+  const { tempCardTypes } = useSelector((state: RootState) => state.root)
 
   const onSave = async () => {
-    setIsLoading(true)
+    try {
+      setIsSaveLoading(true)
 
-    await AddAttributeMutation(name?.toLowerCase() ?? "")
-
-    setTimeout(() => {
-      setIsLoading(false)
+      await AddAttributeMutation("cardType", {
+        name: name?.toLowerCase() ?? "",
+      })
       clearFields()
-      fetchAttributes()
-    }, 1500)
+
+      dispatch(
+        updateCardTypes({
+          name: name?.toLowerCase() ?? "",
+        })
+      )
+    } catch (e) {
+      console.error("Error saving card type to attribute DB: ", e)
+    } finally {
+      setIsSaveLoading(false)
+    }
   }
 
   const clearFields = () => {
@@ -132,7 +121,7 @@ export const Attributes = () => {
   return (
     <StyledBox>
       <Header>
-        {"Add Attribute"}
+        {"Add Card Type"}
         <Box sx={{ m: 1, position: "relative" }}>
           <Button
             variant="outlined"
@@ -140,11 +129,11 @@ export const Attributes = () => {
             color="success"
             onClick={onSave}
             sx={saveButton}
-            disabled={!name || isLoading}
+            disabled={!name || isSaveLoading}
           >
             Save
           </Button>
-          {isLoading && (
+          {isSaveLoading && (
             <CircularProgress
               size={24}
               sx={{
@@ -178,7 +167,7 @@ export const Attributes = () => {
         </Row>
       </Details>
 
-      <Header>Current Attributes</Header>
+      <Header>Current Card Types</Header>
       {isFetchLoading ? (
         <CircularProgress
           size={24}
@@ -193,12 +182,12 @@ export const Attributes = () => {
         />
       ) : (
         <Details>
-          {attributeData.map((att, index) => (
+          {Object.entries(tempCardTypes).map(([_, value], index) => (
             <Row key={index}>
               <Data>
                 <TextField
                   id="standard"
-                  value={upperCaseFirst(att.name)}
+                  value={upperCaseFirst(value.name)}
                   variant="outlined"
                   color={sxColourMap["char"]}
                   style={{ width: "100%", margin: 5 }}

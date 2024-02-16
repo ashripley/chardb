@@ -12,8 +12,6 @@ import { sxColourMap } from "../../helpers/view"
 import { RootState } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { useCallback, useEffect } from "react"
-import { AllSets } from "../../api/queries/allSets"
-import { setSetData } from "../../redux/root"
 
 interface Props {
   fields: Record<string, any>
@@ -37,7 +35,7 @@ const StyledMenuItem = styled(MenuItem)`
 `
 
 export const SetSelect = ({ fields, handleSetSelectChange }: Props) => {
-  const { dbType, setData } = useSelector((state: RootState) => state.root)
+  const { dbType } = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
 
   // useEffect(() => {
@@ -103,7 +101,7 @@ export const SetSelect = ({ fields, handleSetSelectChange }: Props) => {
           <MenuItem value="">
             <b style={{ color: theme.primaryText }}>Set</b>
           </MenuItem>
-          {setData.map((set, index) => (
+          {/* {setData.map((set, index) => (
             <StyledMenuItem
               key={index}
               value={set.name}
@@ -111,7 +109,7 @@ export const SetSelect = ({ fields, handleSetSelectChange }: Props) => {
             >
               {set.name}
             </StyledMenuItem>
-          ))}
+          ))} */}
         </Select>
       </StyledForm>
     </Wrapper>

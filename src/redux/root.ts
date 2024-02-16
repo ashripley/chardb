@@ -14,31 +14,26 @@ interface StoreState {
   page: string
   isMenuOpen: boolean
   isDataLoading: boolean
-  cardData: Record<string, any>[]
-  setData: Record<string, any>[]
-  attributeData: Record<string, any>[]
-  typeData: Record<string, any>[]
-  rarityData: Record<string, any>[]
-  pokemonData: Record<string, any>
   cardView: CardViewType
   cardField: Record<string, any>
   filterView: FilterViewType
   dbType: DbType
 
-  card: Card
-  attribute: Attribute
+  pokemonData: Record<string, any>
+  attributeData: Record<string, any>
+  cardData: Record<string, any>
+
+  tempSets: Record<string, any>
+  tempPokemonTypes: Record<string, any>
+  tempCardTypes: Record<string, any>
+  tempRarities: Record<string, any>
+  tempConditions: Record<string, any>
 }
 
 const initialState: StoreState = {
   page: "Home",
   isMenuOpen: false,
   isDataLoading: false,
-  cardData: [{}],
-  setData: [{}],
-  attributeData: [{}],
-  typeData: [{}],
-  rarityData: [{}],
-  pokemonData: {},
   cardField: {
     key: "",
     value: "",
@@ -47,70 +42,15 @@ const initialState: StoreState = {
   filterView: "id",
   dbType: "char",
 
-  card: [
-    {
-      cardId: "",
-      name: "",
-      id: 0,
-      type: {
-        name: "",
-        colour: "",
-      },
-      typeOfCard: "",
-      set: {
-        name: "",
-        totalCards: 0,
-      },
-      setNumber: 0,
-      rarity: "",
-      grading: {
-        isGraded: false,
-        grading: "",
-      },
-      condition: "",
-      evolutionChain: {
-        first: {
-          name: "",
-          image: "",
-        },
-        second: {
-          name: "",
-          image: "",
-        },
-        third: {
-          name: "",
-          image: "",
-        },
-      },
-      image: "",
-    },
-  ],
-  attribute: [
-    {
-      type: {
-        typeId: "",
-        name: "",
-        colour: "",
-      },
-      typeOfCard: {
-        typeOfCardId: "",
-        name: "",
-      },
-      set: {
-        setId: "",
-        name: "",
-        totalCards: "",
-      },
-      rarity: {
-        rarityId: "",
-        name: "",
-      },
-      condition: {
-        conditionId: "",
-        name: "",
-      },
-    },
-  ],
+  cardData: {},
+  pokemonData: {},
+  attributeData: {},
+
+  tempSets: {},
+  tempPokemonTypes: {},
+  tempCardTypes: {},
+  tempRarities: {},
+  tempConditions: {},
 }
 
 export const rootSlice = createSlice({
@@ -132,20 +72,26 @@ export const rootSlice = createSlice({
     setCardData: (state, action: PayloadAction<StoreState["cardData"]>) => {
       state.cardData = action.payload
     },
-    setSetData: (state, action: PayloadAction<StoreState["setData"]>) => {
-      state.setData = action.payload
-    },
     setAttributeData: (
       state,
       action: PayloadAction<StoreState["attributeData"]>
     ) => {
+      state.tempSets = Object.values(action.payload).filter(
+        (val) => val.attribute == "set"
+      )
+      state.tempPokemonTypes = Object.values(action.payload).filter(
+        (val) => val.attribute == "pokemonType"
+      )
+      state.tempCardTypes = Object.values(action.payload).filter(
+        (val) => val.attribute == "cardType"
+      )
+      state.tempRarities = Object.values(action.payload).filter(
+        (val) => val.attribute == "rarity"
+      )
+      state.tempConditions = Object.values(action.payload).filter(
+        (val) => val.attribute == "condition"
+      )
       state.attributeData = action.payload
-    },
-    setTypeData: (state, action: PayloadAction<StoreState["typeData"]>) => {
-      state.typeData = action.payload
-    },
-    setRarityData: (state, action: PayloadAction<StoreState["rarityData"]>) => {
-      state.rarityData = action.payload
     },
     setPokemonData: (
       state,
@@ -171,6 +117,42 @@ export const rootSlice = createSlice({
     ) => {
       state.pokemonData = { ...state.pokemonData, ...action.payload }
     },
+    updateSets: (state, action: PayloadAction<StoreState["tempSets"]>) => {
+      state.tempSets.push(action.payload)
+    },
+    updateCardTypes: (
+      state,
+      action: PayloadAction<StoreState["tempCardTypes"]>
+    ) => {
+      state.tempCardTypes.push(action.payload)
+    },
+    updatePokemonTypes: (
+      state,
+      action: PayloadAction<StoreState["tempPokemonTypes"]>
+    ) => {
+      state.tempPokemonTypes.push(action.payload)
+    },
+    updateRarities: (
+      state,
+      action: PayloadAction<StoreState["tempRarities"]>
+    ) => {
+      state.tempRarities.push(action.payload)
+    },
+    updateConditions: (
+      state,
+      action: PayloadAction<StoreState["tempConditions"]>
+    ) => {
+      state.tempConditions.push(action.payload)
+    },
+    updateAttributeData: (
+      state,
+      action: PayloadAction<StoreState["attributeData"]>
+    ) => {
+      state.attributeData = { ...state.attributeData, ...action.payload }
+    },
+    updateCardData: (state, action: PayloadAction<StoreState["cardData"]>) => {
+      state.cardData = { ...state.cardData, ...action.payload }
+    },
   },
 })
 
@@ -181,14 +163,18 @@ export const {
   setFilterView,
   setIsDataLoading,
   setCardData,
-  setSetData,
   setAttributeData,
-  setTypeData,
-  setRarityData,
   setPokemonData,
   setCardField,
   setDbType,
+  updateCardData,
   updatePokemonData,
+  updateAttributeData,
+  updateSets,
+  updateCardTypes,
+  updatePokemonTypes,
+  updateRarities,
+  updateConditions,
 } = rootSlice.actions
 
 export default rootSlice.reducer

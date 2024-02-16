@@ -9,9 +9,9 @@ import Typography from "@mui/material/Typography"
 import Box from "@mui/material/Box"
 import { AddCardPanel } from "../components/Navigation/AddCardPanel"
 import { useEffect } from "react"
-import { DataFetcher } from "../helpers/fetchData"
 import { useDispatch, useSelector } from "react-redux"
 import { CardState } from "../redux/store"
+import { AllDataQuery } from "../api/queries/allData"
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -187,7 +187,7 @@ export const Studio = () => {
 
   useEffect(() => {
     console.log("fetch data on mount of studio")
-    DataFetcher(dispatch)
+    AllDataQuery(dispatch)
   }, [])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

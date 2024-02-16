@@ -5,8 +5,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { theme } from "../../theme"
 import { RootState } from "../../redux/store"
-import { AllSets } from "../../api/queries/allSets"
-import { setPokemonData, setSetData } from "../../redux/root"
+import { setPokemonData } from "../../redux/root"
 import { sxColourMap } from "../../helpers/view"
 import { BulkAddPokemonMutation } from "../../api/mutations/bulkAddPokemon"
 import { AllPokemon } from "../../api/queries/allPokemon"
@@ -162,8 +161,9 @@ export const Pokemon = () => {
   const { pokemonData } = useSelector((state: RootState) => state.root)
 
   const fetchPokemon = async () => {
-    setIsFetchLoading(true)
     try {
+      setIsFetchLoading(true)
+
       const pokemon = await AllPokemon()
 
       dispatch(setPokemonData(pokemon))

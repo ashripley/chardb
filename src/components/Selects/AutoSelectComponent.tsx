@@ -8,9 +8,7 @@ import { theme } from "../../theme"
 export const AutoSelectComponent = () => {
   const dispatch = useDispatch()
   const { isAddModalOpen } = useSelector((state: CardState) => state.card)
-  const { dbType, setData, pokemonData } = useSelector(
-    (state: RootState) => state.root
-  )
+  const { dbType, pokemonData } = useSelector((state: RootState) => state.root)
 
   // styles
   const inputProps = {

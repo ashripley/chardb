@@ -5,13 +5,16 @@ import * as React from "react"
 import Box from "@mui/material/Box"
 import Tabs from "@mui/material/Tabs"
 import Tab from "@mui/material/Tab"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Sets } from "../components/ConfigurationTabs/Sets"
-import { Attributes } from "../components/ConfigurationTabs/Attributes"
-import { Types } from "../components/ConfigurationTabs/Types"
+import { CardTypes } from "../components/ConfigurationTabs/CardTypes"
 import { Rarities } from "../components/ConfigurationTabs/Rarities"
 import { Pokemon } from "../components/ConfigurationTabs/Pokemon"
 import { TabPanel, tabProps } from "./Studio"
+import { useDispatch } from "react-redux"
+import { AllDataQuery } from "../api/queries/allData"
+import { PokemonTypes } from "../components/ConfigurationTabs/PokemonTypes"
+import { Conditions } from "../components/ConfigurationTabs/Conditions"
 
 const Wrapper = styled.div`
   width: 90%;
@@ -20,33 +23,6 @@ const Wrapper = styled.div`
   border-radius: 35px;
   margin: auto;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-`
-
-const SidePanel = styled.div``
-
-const Header = styled.div`
-  font-size: 1.5rem;
-  justify-content: space-between;
-  align-items: center;
-  display: flex;
-  margin: 0;
-  font-family: ${theme.fontFamily};
-  min-height: 50px;
-  padding: 15px;
-  width: auto;
-`
-
-const HomeHeader = styled(Header)`
-  justify-content: center;
-  align-items: center;
-  height: 10%;
-`
-
-const Options = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 20px;
-  gap: 20px;
 `
 
 const Container = styled(Paper)`
@@ -59,38 +35,23 @@ const Container = styled(Paper)`
   display: flex;
 `
 
-const RightBox = styled(Paper)`
-  width: 80%;
-  height: 100%;
-  background-color: ${theme.lightBg} !important;
-  border-top-right-radius: 15px !important;
-  border-bottom-right-radius: 15px !important;
-  border-top-left-radius: 0px !important;
-  border-bottom-left-radius: 0px !important;
-`
-
 const TabWrapper = styled.div`
   margin: 0px 25px !important;
   border-top-left-radius: 35px !important;
   border-bottom-left-radius: 35px !important;
 `
 
-const buttonStyles = {
-  borderRadius: "15px",
-  fontFamily: theme.fontFamily,
-  color: theme.primaryText,
-  fontSize: "calc(12px + 0.2vw)",
-  width: "auto",
-  justifyContent: "flex-start",
-  minHeight: "40px",
-  display: "flex",
-  textTransform: "none",
-}
-
 const DB = () => {
   const [tab, setTab] = useState(0)
 
-  const tabLabels = ["Sets", "Attributes", "Types", "Rarities", "Pokemon"]
+  const tabLabels = [
+    "Sets",
+    "Card Types",
+    "Pokemon Types",
+    "Rarities",
+    "Conditions",
+    "Pokemon",
+  ]
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue)
@@ -101,12 +62,14 @@ const DB = () => {
       case 0:
         return <Sets />
       case 1:
-        return <Attributes />
+        return <CardTypes />
       case 2:
-        return <Types />
+        return <PokemonTypes />
       case 3:
         return <Rarities />
       case 4:
+        return <Conditions />
+      case 5:
         return <Pokemon />
       default:
         return <></>
@@ -155,19 +118,14 @@ const Analytics = () => {
   return <></>
 }
 
-const componentMap: Record<string, any> = {
-  DB,
-  Theme,
-  Analytics,
-}
-
 export const Configuration = () => {
   const [value, setValue] = React.useState(0)
+  const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   console.log("fetch data on mount of studio")
-  //   DataFetcher(dispatch)
-  // }, [])
+  useEffect(() => {
+    console.log("fetch data on mount of studio")
+    AllDataQuery(dispatch)
+  }, [])
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)

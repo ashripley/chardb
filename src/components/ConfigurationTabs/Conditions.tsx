@@ -1,18 +1,14 @@
 import { Button, CircularProgress, TextField } from "@mui/material"
 import styled from "styled-components"
-import * as React from "react"
 import Box from "@mui/material/Box"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { theme } from "../../theme"
 import { RootState } from "../../redux/store"
-import { AllSets } from "../../api/queries/allSets"
-import { setSetData, setTypeData } from "../../redux/root"
-import { AddSetMutation } from "../../api/mutations/addSet"
+import { updateConditions } from "../../redux/root"
 import { sxColourMap } from "../../helpers/view"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
-import { AllTypes } from "../../api/queries/allTypes"
-import { AddTypeMutation } from "../../api/mutations/addType"
+import { AddAttributeMutation } from "../../api/mutations/addAttribute"
 
 const Header = styled.div`
   font-size: 1.5rem;
@@ -89,52 +85,43 @@ const inputProps = {
     },
   },
 }
-export const Types = () => {
+export const Conditions = () => {
   const [name, setName] = useState("")
-  const [colour, setColour] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const [isSaveLoading, setIsSaveLoading] = useState(false)
   const [isFetchLoading, setIsFetchLoading] = useState(false)
 
   const dispatch = useDispatch()
-  const { typeData } = useSelector((state: RootState) => state.root)
-
-  const fetchTypes = async () => {
-    setIsFetchLoading(true)
-    try {
-      const types = await AllTypes()
-
-      dispatch(setTypeData(types || []))
-      setIsFetchLoading(false)
-    } catch (error) {
-      console.error("set error: ", error)
-    }
-  }
-  // useEffect(() => {
-  //   console.log("useEffect fetch types")
-  //   fetchTypes()
-  // }, [])
+  const { tempConditions } = useSelector((state: RootState) => state.root)
 
   const onSave = async () => {
-    setIsLoading(true)
+    try {
+      setIsSaveLoading(true)
 
-    await AddTypeMutation(name?.toLowerCase() ?? "", colour ?? "")
-
-    setTimeout(() => {
-      setIsLoading(false)
+      await AddAttributeMutation("condition", {
+        name: name?.toLowerCase() ?? "",
+      })
       clearFields()
-      fetchTypes()
-    }, 1500)
+
+      dispatch(
+        updateConditions({
+          name: name?.toLowerCase() ?? "",
+        })
+      )
+    } catch (e) {
+      console.error("Error saving condition to attribute DB: ", e)
+    } finally {
+      setIsSaveLoading(false)
+    }
   }
 
   const clearFields = () => {
     setName("")
-    setColour("")
   }
 
   return (
     <StyledBox>
       <Header>
-        {"Add Type"}
+        {"Add Condition"}
         <Box sx={{ m: 1, position: "relative" }}>
           <Button
             variant="outlined"
@@ -142,11 +129,11 @@ export const Types = () => {
             color="success"
             onClick={onSave}
             sx={saveButton}
-            disabled={(!name && !colour) || isLoading}
+            disabled={!name || isSaveLoading}
           >
             Save
           </Button>
-          {isLoading && (
+          {isSaveLoading && (
             <CircularProgress
               size={24}
               sx={{
@@ -178,26 +165,9 @@ export const Types = () => {
             />
           </Data>
         </Row>
-        <Row>
-          <Data>
-            <TextField
-              id="standard"
-              value={colour}
-              placeholder="#"
-              label="Hex Colour (#)"
-              variant="outlined"
-              color={sxColourMap["char"]}
-              style={{ width: "100%", margin: 5 }}
-              InputProps={inputProps}
-              onChange={(e) => {
-                setColour(e.target.value)
-              }}
-            />
-          </Data>
-        </Row>
       </Details>
 
-      <Header>Current Types</Header>
+      <Header>Current Conditions</Header>
       {isFetchLoading ? (
         <CircularProgress
           size={24}
@@ -212,22 +182,12 @@ export const Types = () => {
         />
       ) : (
         <Details>
-          {typeData.map((type, index) => (
+          {Object.entries(tempConditions).map(([_, value], index) => (
             <Row key={index}>
               <Data>
                 <TextField
                   id="standard"
-                  value={upperCaseFirst(type.name)}
-                  variant="outlined"
-                  color={sxColourMap["char"]}
-                  style={{ width: "100%", margin: 5 }}
-                  InputProps={inputProps}
-                />
-              </Data>
-              <Data>
-                <TextField
-                  id="standard"
-                  value={"#" + type.colour}
+                  value={upperCaseFirst(value.name)}
                   variant="outlined"
                   color={sxColourMap["char"]}
                   style={{ width: "100%", margin: 5 }}

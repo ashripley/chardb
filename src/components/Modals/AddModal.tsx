@@ -24,8 +24,7 @@ import { setIcon, setIsAddModalOpen } from "../../redux/card"
 import { CardState, RootState } from "../../redux/store"
 import { isMobile, sxColourMap } from "../../helpers/view"
 import { SetSelect } from "../Selects/SetSelect"
-import { AllSets } from "../../api/queries/allSets"
-import { setPokemonData, setSetData } from "../../redux/root"
+
 import { AllPokemon } from "../../api/queries/allPokemon"
 import { RaritySelect } from "../Selects/RaritySelect"
 import { AutoSelectComponent } from "../Selects/AutoSelectComponent"
@@ -131,9 +130,7 @@ const Header = styled.h1`
 export const AddModal = () => {
   const dispatch = useDispatch()
   const { isAddModalOpen } = useSelector((state: CardState) => state.card)
-  const { dbType, setData, pokemonData } = useSelector(
-    (state: RootState) => state.root
-  )
+  const { dbType, pokemonData } = useSelector((state: RootState) => state.root)
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [alert, setAlert] = useState("add")
@@ -173,16 +170,16 @@ export const AddModal = () => {
     })
   }
 
-  useEffect(() => {
-    if (fields.set !== "") {
-      setFields({
-        setNumber: ` / ${
-          setData.find((set) => set.name === fields.set)?.totalCards ?? ""
-        }`,
-        ...omit("setNumber", fields),
-      })
-    }
-  }, [fields.set])
+  // useEffect(() => {
+  //   if (fields.set !== "") {
+  //     setFields({
+  //       setNumber: ` / ${
+  //         setData.find((set) => set.name === fields.set)?.totalCards ?? ""
+  //       }`,
+  //       ...omit("setNumber", fields),
+  //     })
+  //   }
+  // }, [fields.set])
 
   const toastClose = (event?: SyntheticEvent | Event, reason?: string) => {
     if (reason === "clickaway") {

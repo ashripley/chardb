@@ -49,27 +49,27 @@ export const Cards = () => {
         )
       : cardData
 
-  const filteredCards = useMemo(() => {
-    const cardIds = new Set(pokemon.map(({ cardId }) => cardId))
-    return pokemon
-      .filter(({ cardId }) => cardId && cardIds.has(cardId))
-      .sort((a, b) => {
-        return a[filterView || "id"] < b[filterView || "id"]
-          ? -1
-          : a[filterView || "id"] > b[filterView || "id"]
-          ? 1
-          : 0
-      })
-  }, [pokemon, filterView])
+  // const filteredCards = useMemo(() => {
+  //   const cardIds = new Set(pokemon.map(({ cardId }) => cardId))
+  //   return pokemon
+  //     .filter(({ cardId }) => cardId && cardIds.has(cardId))
+  //     .sort((a, b) => {
+  //       return a[filterView || "id"] < b[filterView || "id"]
+  //         ? -1
+  //         : a[filterView || "id"] > b[filterView || "id"]
+  //         ? 1
+  //         : 0
+  //     })
+  // }, [pokemon, filterView])
 
-  const paginatedCards = useMemo(
-    () =>
-      filteredCards.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-      ),
-    [pokemon, currentPage, itemsPerPage, filterView]
-  )
+  // const paginatedCards = useMemo(
+  //   () =>
+  //     filteredCards.slice(
+  //       (currentPage - 1) * itemsPerPage,
+  //       currentPage * itemsPerPage
+  //     ),
+  //   [pokemon, currentPage, itemsPerPage, filterView]
+  // )
 
   useEffect(() => {
     window.scrollTo({
@@ -94,14 +94,14 @@ export const Cards = () => {
               padding: 0,
             }}
           >
-            {paginatedCards.map((poke, index) => (
+            {/* {paginatedCards.map((poke, index) => (
               <PokemonCard key={index} pokemon={poke} cardIndex={index} />
-            ))}
+            ))} */}
           </StyledPaper>
         )}
         <PaginationWrapper>
           <Pagination
-            count={Math.ceil(filteredCards.length / itemsPerPage)}
+            // count={Math.ceil(filteredCards.length / itemsPerPage)}
             page={currentPage}
             onChange={(event, value) => setCurrentPage(value)}
             color="standard"
