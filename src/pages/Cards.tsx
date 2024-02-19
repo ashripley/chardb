@@ -1,10 +1,8 @@
 import { useCallback, useEffect } from "react"
 import styled from "styled-components"
 import { AllCards } from "../api/queries/allCards"
-import { AddModal } from "../components/Modals/AddModal"
 import { Cards } from "../components/Cards/Cards"
 import { ConfirmationModal } from "../components/Modals/ConfirmationModal"
-import { AnalyticsModal } from "../components/Modals/AnalyticsModal"
 import { useDispatch, useSelector } from "react-redux"
 import { setCardData, setIsDataLoading } from "../redux/root"
 import { setHasCardError, setIsCardOpen } from "../redux/card"
@@ -53,9 +51,7 @@ export const PokemonCards = () => {
   return (
     <Wrap>
       {isMobile ? <MobileSearch /> : <DesktopSearch />}
-      <AddModal />
       <ConfirmationModal />
-      <AnalyticsModal />
       <Wrap>{isCardOpen && <Cards />}</Wrap>
     </Wrap>
   )

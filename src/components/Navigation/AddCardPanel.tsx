@@ -1,14 +1,16 @@
 import styled from "styled-components"
 import { theme } from "../../theme"
-import { TextField } from "@mui/material"
+import { Button, TextField } from "@mui/material"
 import { AutoSelectComponent } from "../Selects/AutoSelectComponent"
 import { SetSelect } from "../Selects/SetSelect"
 import { sxColourMap } from "../../helpers/view"
-import { AttributeSelect } from "../Selects/AttributeSelect"
+import { CardTypeSelect } from "../Selects/CardTypeSelect"
 import { RaritySelect } from "../Selects/RaritySelect"
 import { useDispatch, useSelector } from "react-redux"
-import { CardState, RootState } from "../../redux/store"
-import { setData } from "../../redux/card"
+import { RootState } from "../../redux/store"
+import { GradedRadioButton } from "../GradedRadioButton"
+import { updateCard } from "../../redux/root"
+import { ConditionSelect } from "../Selects/ConditionSelect"
 
 const StudioHeader = styled.div`
   display: flex;
@@ -36,20 +38,9 @@ const Body = styled.div`
   gap: 30px;
 `
 
-const Label = styled.h3`
-  font-weight: 800;
-  font-family: ${theme.fontFamily};
-  text-transform: capitalize;
-  min-width: 200px;
-  width: 15%;
-  justify-content: center;
-  display: flex;
-`
-
-// add
 const Row = styled.div`
-  width: 100%;
-  min-width: 100px;
+  width: auto;
+  min-width: 650px;
   height: auto;
   display: flex;
   align-items: center;
@@ -59,23 +50,17 @@ const Row = styled.div`
   min-height: 30px;
 `
 
-const Data = styled.div`
+const Footer = styled.div`
   display: flex;
-  width: 80%;
-  font-weight: 800;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  font-family: ${theme.fontFamily};
-  text-transform: capitalize;
-  min-height: 30px;
+  height: 10%;
+  min-width: 400px;
 `
 
 export const AddCardPanel = () => {
-  const { dbType } = useSelector((state: RootState) => state.root)
-  const { data } = useSelector((state: CardState) => state.card)
+  const { dbType, tempCard } = useSelector((state: RootState) => state.root)
   const dispatch = useDispatch()
-
-  // dispatch(setUserSettings({ setting3: 'some other text'})
 
   const inputProps = {
     sx: {
@@ -94,6 +79,14 @@ export const AddCardPanel = () => {
     },
   }
 
+  const saveButton = {
+    width: "auto",
+    minWidth: "200px",
+    minHeight: "50px",
+    height: "auto",
+    borderRadius: "15px !important",
+  }
+
   return (
     <>
       <StudioHeader>
@@ -101,75 +94,86 @@ export const AddCardPanel = () => {
       </StudioHeader>
       <Body>
         <Row>
-          <Data>
-            <Label>Name</Label>
-            <AutoSelectComponent />
-          </Data>
+          <AutoSelectComponent />
+          <SetSelect />
         </Row>
         <Row>
-          <Data>
-            <Label>Set</Label>
-            <SetSelect fields={{}} handleSetSelectChange={() => {}} />
-          </Data>
+          <TextField
+            id="standard"
+            type="number"
+            label="Set Number"
+            value={tempCard.setNumber}
+            variant="outlined"
+            color={sxColourMap[dbType]}
+            InputProps={inputProps}
+            onChange={(e) =>
+              dispatch(updateCard({ setNumber: Number(e.target.value) }))
+            }
+            sx={{ width: "auto", minWidth: 300 }}
+          />
+          <CardTypeSelect />
         </Row>
         <Row>
-          <Data>
-            <Label>Set Number</Label>
-            <TextField
-              id="standard"
-              value={data.setNumber}
-              variant="outlined"
-              color={sxColourMap[dbType]}
-              InputProps={inputProps}
-              onChange={(e) => dispatch(setData({ setNumber: e.target.value }))}
-              sx={{ width: "80%", minWidth: 200 }}
-            />
-          </Data>
+          <RaritySelect />
+          <TextField
+            id="standard"
+            type="number"
+            label="Quantity"
+            value={tempCard.quantity}
+            variant="outlined"
+            color={sxColourMap[dbType]}
+            InputProps={inputProps}
+            onChange={(e) =>
+              dispatch(updateCard({ quantity: Number(e.target.value) }))
+            }
+            sx={{ width: "auto", minWidth: 300 }}
+          />
         </Row>
         <Row>
-          <Data>
-            <Label>Year</Label>
-            <TextField
-              id="standard"
-              type="number"
-              value={data.year}
-              variant="outlined"
-              color={sxColourMap[dbType]}
-              style={{ width: "100%" }}
-              InputProps={inputProps}
-              onChange={(e) => dispatch(setData({ year: e.target.value }))}
-              sx={{ width: "80%", minWidth: 200 }}
-            />
-          </Data>
+          <TextField
+            id="standard"
+            type="number"
+            value={tempCard.year}
+            label="Year"
+            variant="outlined"
+            color={sxColourMap[dbType]}
+            InputProps={inputProps}
+            onChange={(e) =>
+              dispatch(updateCard({ year: Number(e.target.value) }))
+            }
+            sx={{ width: "auto", minWidth: 300 }}
+          />
+          <ConditionSelect />
         </Row>
         <Row>
-          <Data>
-            <Label>Quantity</Label>
-            <TextField
-              id="standard"
-              type="number"
-              value={data.quantity}
-              variant="outlined"
-              color={sxColourMap[dbType]}
-              style={{ width: "100%" }}
-              InputProps={inputProps}
-              onChange={(e) => dispatch(setData({ quantity: e.target.value }))}
-              sx={{ width: "80%", minWidth: 200 }}
-            />
-          </Data>
+          <GradedRadioButton />
+          <TextField
+            id="standard"
+            type="number"
+            value={tempCard.grade}
+            label="grade"
+            variant="outlined"
+            color={sxColourMap[dbType]}
+            InputProps={inputProps}
+            onChange={(e) =>
+              dispatch(updateCard({ grade: Number(e.target.value) }))
+            }
+            disabled={!tempCard.isGraded}
+            sx={{ width: "auto", minWidth: 300 }}
+          />
         </Row>
-        <Row>
-          <Data>
-            <Label>Attribute</Label>
-            <AttributeSelect fields={{}} handleSelectChange={() => {}} />
-          </Data>
-        </Row>
-        <Row>
-          <Data>
-            <Label>Rarity</Label>
-            <RaritySelect fields={{}} handleSelectChange={() => {}} />
-          </Data>
-        </Row>
+        <Footer>
+          <Button
+            variant="outlined"
+            size="small"
+            color="success"
+            onClick={() => {}}
+            sx={saveButton}
+            disabled={false}
+          >
+            Save
+          </Button>
+        </Footer>
       </Body>
     </>
   )

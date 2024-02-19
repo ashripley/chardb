@@ -13,7 +13,7 @@ import { UpdateCard } from "../../api/mutations/updateCard"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
-import { AttributeSelect } from "../Selects/AttributeSelect"
+import { CardTypeSelect } from "../Selects/CardTypeSelect"
 import { Actions } from "../Grid/Actions"
 import { GridImage } from "../Grid/GridImage"
 import { Snackbar } from "../Grid/Snackbar"
@@ -268,14 +268,14 @@ export const Grid = ({ pokemon, cardIndex }: Props) => {
               {!isEditView ? (
                 <Data>{pokemon[k] || ""}</Data>
               ) : v.label === "Attribute" ? (
-                <AttributeSelect
-                  fields={gridFields}
-                  handleSelectChange={handleChange}
+                <CardTypeSelect
+                // fields={gridFields}
+                // handleSelectChange={handleChange}
                 />
               ) : v.label === "Set" ? (
                 <SetSelect
-                  fields={gridFields}
-                  handleSetSelectChange={handleSetChange}
+                // fields={gridFields}
+                // handleSetSelectChange={handleSetChange}
                 />
               ) : (
                 <TextField

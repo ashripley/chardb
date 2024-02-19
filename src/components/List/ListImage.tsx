@@ -3,7 +3,7 @@ import { Card, Grow, Tooltip } from "@mui/material"
 import styled from "styled-components"
 import { theme } from "../../theme"
 import pokemonTrainer from "../../assets/icons/pokemon-trainer.svg"
-import { energyImageMap } from "../../helpers/trainerImageMap"
+import { energyImageMap } from "../../helpers/imageMap"
 import { AttributeBadge } from "../Grid/AttributeBadge"
 import { nonPokemonImage } from "../Grid/GridImage"
 

@@ -11,6 +11,7 @@ import { theme } from "../../theme"
 import { sxColourMap } from "../../helpers/view"
 import { RootState } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 import { updateCard } from "../../redux/root"
 
 const StyledForm = styled(FormControl)`
@@ -26,18 +27,14 @@ const Wrapper = styled.div`
   min-width: 300px;
 `
 
-const StyledMenuItem = styled(MenuItem)`
-  text-transform: capitalize;
-`
-
-export const SetSelect = () => {
-  const { dbType, tempSets, tempCard } = useSelector(
+export const ConditionSelect = () => {
+  const dispatch = useDispatch()
+  const { dbType, tempConditions, tempCard } = useSelector(
     (state: RootState) => state.root
   )
-  const dispatch = useDispatch()
 
   const handleChange = (e: SelectChangeEvent) => {
-    dispatch(updateCard({ set: e.target.value as string }))
+    dispatch(updateCard({ condition: e.target.value as string }))
   }
 
   return (
@@ -49,12 +46,12 @@ export const SetSelect = () => {
           minWidth: 300,
         }}
       >
-        <InputLabel color={sxColourMap[dbType]}>Set</InputLabel>
+        <InputLabel color={sxColourMap[dbType]}>Condition</InputLabel>
         <Select
-          id="set"
+          id="condition"
           variant="outlined"
-          label="Set"
-          value={tempCard.set}
+          label="Condition"
+          value={tempCard.condition}
           color={sxColourMap[dbType]}
           MenuProps={{
             PaperProps: {
@@ -86,14 +83,17 @@ export const SetSelect = () => {
             },
           }}
         >
-          {Object.entries(tempSets).map(([_, value], index) => (
-            <StyledMenuItem
+          <MenuItem value="">
+            <b style={{ color: theme.primaryText }}>Condition</b>
+          </MenuItem>
+          {Object.entries(tempConditions).map(([_, value], index) => (
+            <MenuItem
               key={index}
               value={value.name}
               sx={{ color: theme.primaryText }}
             >
-              {value.name}
-            </StyledMenuItem>
+              {upperCaseFirst(value.name)}
+            </MenuItem>
           ))}
         </Select>
       </StyledForm>

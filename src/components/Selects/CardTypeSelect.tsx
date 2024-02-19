@@ -4,18 +4,17 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  SelectChangeEvent,
 } from "@mui/material"
 import styled from "styled-components"
 import { theme } from "../../theme"
 import { attributes } from "../../config"
 import { sxColourMap } from "../../helpers/view"
 import { RootState } from "../../redux/store"
-import { useSelector } from "react-redux"
-
-interface Props {
-  fields: Record<string, any>
-  handleSelectChange: (e: any) => void
-}
+import { useDispatch, useSelector } from "react-redux"
+import { upperCaseFirst } from "../../helpers/upperCaseFirst"
+import { useState } from "react"
+import { updateCard } from "../../redux/root"
 
 const StyledForm = styled(FormControl)`
   @media only screen and (max-width: 600px) {
@@ -25,27 +24,36 @@ const StyledForm = styled(FormControl)`
 
 const AttributeWrapper = styled.div`
   display: flex;
-  width: 100%;
+  width: auto;
+  min-width: 300px;
   justify-content: center;
 `
 
-export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
-  const { dbType } = useSelector((state: RootState) => state.root)
+export const CardTypeSelect = () => {
+  const dispatch = useDispatch()
+  const { dbType, tempCardTypes, tempCard } = useSelector(
+    (state: RootState) => state.root
+  )
+
+  const handleChange = (e: SelectChangeEvent) => {
+    dispatch(updateCard({ cardType: e.target.value as string }))
+  }
 
   return (
     <AttributeWrapper>
       <StyledForm
         sx={{
           borderRadius: "15px !important",
-          width: "100%",
-          minWidth: 200,
+          width: "auto",
+          minWidth: 300,
         }}
       >
-        <InputLabel color={sxColourMap[dbType]}>{}</InputLabel>
+        <InputLabel color={sxColourMap[dbType]}>Card Type</InputLabel>
         <Select
           id="attribute"
           variant="outlined"
-          value={fields.attribute}
+          value={tempCard.cardType}
+          label="Card Type"
           color={sxColourMap[dbType]}
           MenuProps={{
             PaperProps: {
@@ -56,7 +64,7 @@ export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
             },
           }}
           input={<OutlinedInput />}
-          onChange={handleSelectChange}
+          onChange={handleChange}
           sx={{
             borderRadius: "15px",
             fieldset: {
@@ -78,15 +86,15 @@ export const AttributeSelect = ({ fields, handleSelectChange }: Props) => {
           }}
         >
           <MenuItem value="">
-            <b style={{ color: theme.primaryText }}>Attribute</b>
+            <b style={{ color: theme.primaryText }}>Card Type</b>
           </MenuItem>
-          {attributes.map((attribute, index) => (
+          {Object.entries(tempCardTypes).map(([_, value], index) => (
             <MenuItem
               key={index}
-              value={attribute}
+              value={value.name}
               sx={{ color: theme.primaryText }}
             >
-              {attribute}
+              {upperCaseFirst(value.name)}
             </MenuItem>
           ))}
         </Select>

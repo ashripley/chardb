@@ -1,5 +1,3 @@
-import React, { useEffect } from "react"
-import { useDispatch } from "react-redux"
 import { Dispatch, UnknownAction } from "@reduxjs/toolkit"
 import { AllPokemon } from "./allPokemon"
 import { setAttributeData, setPokemonData } from "../../redux/root"

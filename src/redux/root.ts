@@ -28,6 +28,7 @@ interface StoreState {
   tempCardTypes: Record<string, any>
   tempRarities: Record<string, any>
   tempConditions: Record<string, any>
+  tempCard: Record<string, any>
 }
 
 const initialState: StoreState = {
@@ -51,6 +52,7 @@ const initialState: StoreState = {
   tempCardTypes: {},
   tempRarities: {},
   tempConditions: {},
+  tempCard: {},
 }
 
 export const rootSlice = createSlice({
@@ -92,12 +94,15 @@ export const rootSlice = createSlice({
         (val) => val.attribute == "condition"
       )
       state.attributeData = action.payload
+
+      console.log("state.tempSets", state.tempSets)
     },
     setPokemonData: (
       state,
       action: PayloadAction<StoreState["pokemonData"]>
     ) => {
       if (action.payload) state.pokemonData = action.payload
+      console.log("state.pokemonData", state.pokemonData)
     },
     setCardField: (state, action: PayloadAction<Record<string, any>>) => {
       state.cardField = action.payload
@@ -144,6 +149,10 @@ export const rootSlice = createSlice({
     ) => {
       state.tempConditions.push(action.payload)
     },
+    updateCard: (state, action: PayloadAction<StoreState["tempCard"]>) => {
+      state.tempCard = { ...state.tempCard, ...action.payload }
+      console.log("state.tempCard", state.tempCard)
+    },
     updateAttributeData: (
       state,
       action: PayloadAction<StoreState["attributeData"]>
@@ -174,6 +183,7 @@ export const {
   updateCardTypes,
   updatePokemonTypes,
   updateRarities,
+  updateCard,
   updateConditions,
 } = rootSlice.actions
 

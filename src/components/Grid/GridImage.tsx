@@ -4,7 +4,7 @@ import { Card, Grow } from "@mui/material"
 import { AttributeBadge } from "./AttributeBadge"
 import pokemonTrainer from "../../assets/icons/pokemon-trainer.svg"
 import InsertPhotoOutlinedIcon from "@mui/icons-material/InsertPhotoOutlined"
-import { energyImageMap } from "../../helpers/trainerImageMap"
+import { energyImageMap } from "../../helpers/imageMap"
 
 interface Props {
   isEvolutionsHovered: boolean

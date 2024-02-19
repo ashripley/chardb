@@ -16,6 +16,7 @@ import { AllDataQuery } from "../api/queries/allData"
 import { PokemonTypes } from "../components/ConfigurationTabs/PokemonTypes"
 import { Conditions } from "../components/ConfigurationTabs/Conditions"
 import { ThemeSelect } from "../components/Selects/ThemeSelect"
+import { DBAnalytics } from "../components/DBAnalytics"
 
 const Wrapper = styled.div`
   width: 90%;
@@ -45,6 +46,15 @@ const TabWrapper = styled.div`
 `
 
 const ThemeContainer = styled.div`
+  min-height: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
+
+const AnalyticsContainer = styled.div`
   min-height: 100%;
   height: auto;
   display: flex;
@@ -142,15 +152,6 @@ const DB = () => {
 }
 
 const Theme = () => {
-  const dispatch = useDispatch()
-
-  const saveButton = {
-    width: "auto",
-    minWidth: "100px",
-    minHeight: "40px",
-    height: "auto",
-  }
-
   return (
     <ThemeContainer>
       <Header>Choose a theme!</Header>
@@ -162,7 +163,14 @@ const Theme = () => {
 }
 
 const Analytics = () => {
-  return <></>
+  return (
+    <AnalyticsContainer>
+      <Header>DB Analytics</Header>
+      <Body>
+        <DBAnalytics />
+      </Body>
+    </AnalyticsContainer>
+  )
 }
 
 export const Configuration = () => {

@@ -6,7 +6,7 @@ import { UpdateCard } from "../../api/mutations/updateCard"
 import { fieldsToMap } from "../../helpers/fieldsToMap"
 import { omit } from "../../helpers/omit"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
-import { AttributeSelect } from "../Selects/AttributeSelect"
+import { CardTypeSelect } from "../Selects/CardTypeSelect"
 import { Snackbar } from "../Grid/Snackbar"
 import { ListActions } from "../List/ListActions"
 import { ListImage } from "../List/ListImage"
@@ -264,9 +264,9 @@ export const List = ({ pokemon, cardIndex }: Props) => {
                 {!isEditView ? (
                   <Data>{pokemon[k] || ""}</Data>
                 ) : v.label === "Attribute" ? (
-                  <AttributeSelect
-                    fields={listFields}
-                    handleSelectChange={handleChange}
+                  <CardTypeSelect
+                  // fields={listFields}
+                  // handleSelectChange={handleChange}
                   />
                 ) : (
                   <TextField

@@ -1,14 +1,18 @@
 import { Autocomplete, Paper, TextField } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
-import { CardState, RootState } from "../../redux/store"
+import { RootState } from "../../redux/store"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
 import { sxColourMap } from "../../helpers/view"
 import { theme } from "../../theme"
+import { updateCard } from "../../redux/root"
 
 export const AutoSelectComponent = () => {
   const dispatch = useDispatch()
-  const { isAddModalOpen } = useSelector((state: CardState) => state.card)
   const { dbType, pokemonData } = useSelector((state: RootState) => state.root)
+
+  const onChange = (value: string | null) => {
+    dispatch(updateCard({ ...(pokemonData[value?.toLowerCase() ?? ""] ?? {}) }))
+  }
 
   // styles
   const inputProps = {
@@ -42,8 +46,8 @@ export const AutoSelectComponent = () => {
     },
     color: theme.primaryText,
     justifyContent: "center",
-    width: "80%",
-    minWidth: 200,
+    width: "auto",
+    minWidth: 300,
 
     "&:hover": {
       fieldset: {
@@ -61,12 +65,6 @@ export const AutoSelectComponent = () => {
     },
   }
 
-  console.log("pokemonData", pokemonData)
-
-  // const mappedData = Object.entries(data)?.map((d) => d)
-
-  // console.log("mappedData", mappedData)
-
   return (
     <Autocomplete
       id="pokemon-name-autocomplete-select"
@@ -76,6 +74,7 @@ export const AutoSelectComponent = () => {
       renderInput={(params) => (
         <TextField
           {...params}
+          label="Name"
           color={sxColourMap[dbType]}
           inputProps={{
             ...inputProps,
@@ -88,6 +87,7 @@ export const AutoSelectComponent = () => {
         <Paper style={paperStyles}>{children}</Paper>
       )}
       sx={sxStyles}
+      onChange={(_, value) => onChange(value)}
     />
   )
 }

@@ -12,6 +12,7 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { CardState } from "../redux/store"
 import { AllDataQuery } from "../api/queries/allData"
+import { CardPreview } from "../components/CardPreview"
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -93,49 +94,6 @@ const Body = styled.div`
   gap: 30px;
 `
 
-const Card = styled.div`
-  height: 85%;
-  width: 80%;
-  border: 1px solid ${theme.primaryText};
-  border-radius: 15px;
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-`
-
-const Image = styled.div`
-  width: 80%;
-  border: 1px solid ${theme.primaryText};
-  border-radius: 15px;
-  margin: auto;
-  height: 35%;
-`
-
-const Details = styled.div`
-  width: 80%;
-  border: 1px dotted ${theme.primaryText};
-  border-radius: 15px;
-  margin: auto;
-  height: 45%;
-`
-
-const ImageContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const StockImage = styled.img`
-  width: 100px;
-  height: 100px;
-  filter: brightness(0) saturate(100%) invert(34%) sepia(10%) saturate(0%)
-    hue-rotate(134deg) brightness(97%) contrast(92%);
-  opacity: 0.8;
-`
-
 const tabSxStyles = {
   width: "10%",
   height: "100%",
@@ -180,8 +138,6 @@ export const tabProps = (index: number) => {
 }
 
 export const Studio = () => {
-  const { data } = useSelector((state: CardState) => state.card)
-
   const [value, setValue] = React.useState(0)
   const dispatch = useDispatch()
 
@@ -227,25 +183,10 @@ export const Studio = () => {
       </LeftBox>
       <RightBox>
         <StudioHeader>
-          <Heading>Simulator</Heading>
+          <Heading>Live View</Heading>
         </StudioHeader>
         <Body>
-          <Card>
-            <Image>
-              <ImageContainer>
-                <StockImage src={pokeball} />
-              </ImageContainer>
-            </Image>
-            <Details>
-              <p>{data.name ?? <></>}</p>
-              <p>{data.set ?? <></>}</p>
-              <p>{data.setNumber ?? <></>}</p>
-              <p>{data.year ?? <></>}</p>
-              <p>{data.quantity ?? <></>}</p>
-              <p>{data.attribute ?? <></>}</p>
-              <p>{data.rarity ?? <></>}</p>
-            </Details>
-          </Card>
+          <CardPreview />
         </Body>
       </RightBox>
     </Wrapper>

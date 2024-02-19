@@ -4,19 +4,15 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  SelectChangeEvent,
 } from "@mui/material"
 import styled from "styled-components"
 import { theme } from "../../theme"
 import { sxColourMap } from "../../helpers/view"
 import { RootState } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
-import { useEffect, useState } from "react"
 import { upperCaseFirst } from "../../helpers/upperCaseFirst"
-
-interface Props {
-  fields: Record<string, any>
-  handleSelectChange: (e: any) => void
-}
+import { updateCard } from "../../redux/root"
 
 const StyledForm = styled(FormControl)`
   @media only screen and (max-width: 600px) {
@@ -26,45 +22,36 @@ const StyledForm = styled(FormControl)`
 
 const RarityWrapper = styled.div`
   display: flex;
-  width: 100%;
   justify-content: center;
+  width: auto;
+  min-width: 300px;
 `
 
-export const RaritySelect = ({ fields, handleSelectChange }: Props) => {
-  const [isLoading, setIsLoading] = useState(false)
+export const RaritySelect = () => {
   const dispatch = useDispatch()
-  const { dbType } = useSelector((state: RootState) => state.root)
+  const { dbType, tempRarities, tempCard } = useSelector(
+    (state: RootState) => state.root
+  )
 
-  // const fetchRarities = async () => {
-  //   setIsLoading(true)
-  //   try {
-  //     const rarities = await AllRarities()
-
-  //     dispatch(setRarityData(rarities || []))
-  //     setIsLoading(false)
-  //   } catch (error) {
-  //     console.error("set error: ", error)
-  //   }
-  // }
-  // useEffect(() => {
-  //   console.log("useEffect rarities select")
-  //   fetchRarities()
-  // }, [])
+  const handleChange = (e: SelectChangeEvent) => {
+    dispatch(updateCard({ rarity: e.target.value as string }))
+  }
 
   return (
     <RarityWrapper>
       <StyledForm
         sx={{
           borderRadius: "15px !important",
-          width: "100%",
-          minWidth: 200,
+          width: "auto",
+          minWidth: 300,
         }}
       >
-        <InputLabel color={sxColourMap[dbType]}>{}</InputLabel>
+        <InputLabel color={sxColourMap[dbType]}>Rarity</InputLabel>
         <Select
           id="rarity"
           variant="outlined"
-          value={fields.rarity}
+          label="Rarity"
+          value={tempCard.rarity}
           color={sxColourMap[dbType]}
           MenuProps={{
             PaperProps: {
@@ -75,7 +62,7 @@ export const RaritySelect = ({ fields, handleSelectChange }: Props) => {
             },
           }}
           input={<OutlinedInput />}
-          onChange={handleSelectChange}
+          onChange={handleChange}
           sx={{
             borderRadius: "15px",
             fieldset: {
@@ -96,18 +83,18 @@ export const RaritySelect = ({ fields, handleSelectChange }: Props) => {
             },
           }}
         >
-          <MenuItem value="">
+          {/* <MenuItem value="">
             <b style={{ color: theme.primaryText }}>Rarity</b>
-          </MenuItem>
-          {/* {rarityData.map((rarity, index) => (
+          </MenuItem> */}
+          {Object.entries(tempRarities).map(([_, value], index) => (
             <MenuItem
               key={index}
-              value={rarity.name}
+              value={value.name}
               sx={{ color: theme.primaryText }}
             >
-              {upperCaseFirst(rarity.name)}
+              {upperCaseFirst(value.name)}
             </MenuItem>
-          ))} */}
+          ))}
         </Select>
       </StyledForm>
     </RarityWrapper>
