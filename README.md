@@ -14,6 +14,9 @@
 
 
 <!-- PROJECT LOGO -->
+<div>
+  <h2>Version 2.0 In Progress</h1>
+</div>
 <br />
 <div align="center">
 <!-- <img width="554" style={{borderRadius: '50%'}} alt="Screenshot 2023-09-29 at 1 29 45 pm" src="https://github.com/ashripley/chardb/assets/84573770/d81bcaa5-dfaa-442c-9958-c023b56ec953"> -->
