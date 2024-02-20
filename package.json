@@ -6,6 +6,8 @@
     "@apollo/client": "^3.8.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mantine/core": "^7.5.3",
+    "@mantine/hooks": "^7.5.3",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.4",
     "@react-query-firebase/firestore": "^1.0.0-dev.7",
@@ -21,7 +23,6 @@
     "axios": "^1.4.0",
     "axios-cache-interceptor": "^1.2.0",
     "firebase": "^9.0.1",
-    "framer-motion": "^10.16.4",
     "graphql": "^16.7.1",
     "pokenode-ts": "^1.20.0",
     "react": ">=16.8.0",
@@ -66,7 +67,10 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.3",
-    "tailwindcss": "^3.4.1"
+    "postcss": "^8.4.35",
+    "postcss-loader": "^8.1.0",
+    "postcss-preset-mantine": "^1.13.0",
+    "postcss-simple-vars": "^7.0.1"
   },
   "peerDependencies": {
     "react": ">=16.8.0",
