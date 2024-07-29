@@ -15,7 +15,7 @@
 
 <!-- PROJECT LOGO -->
 <div>
-  <h2>Version 2.0 In Progress</h1>
+  <h2>Deprecated. Version 2.0 Live</h1>
 </div>
 <br />
 <div align="center">
