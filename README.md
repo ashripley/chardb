@@ -29,7 +29,7 @@
 
 </br>
 
-<h4 align="center">Welcome to <a href="https://chardb.web.app/" target="_blank">chardb</a>.</h4>
+<h4 align="center">Welcome to <a href="chardb-642dd.web.app" target="_blank">chardb</a>.</h4>
 
 </br>
 
